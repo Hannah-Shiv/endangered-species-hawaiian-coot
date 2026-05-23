@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import cootPortrait from "@assets/image_1779576736888.png";
 
 export const sections = [
   "Meet the Species",
@@ -56,8 +57,13 @@ export function RadialNav({ activeSection, onSelect }: RadialNavProps) {
     >
       <div className="relative w-full max-w-4xl aspect-square max-h-[90vh] flex items-center justify-center">
         {/* Center Image */}
-        <div className="absolute z-10 w-48 h-48 md:w-64 md:h-64 rounded-full overflow-hidden border-4 border-primary/30 shadow-[0_0_50px_rgba(var(--primary),0.2)]">
-          <img src="/src/assets/silhouette.png" alt="Hawaiian Coot" className="w-full h-full object-cover opacity-80" />
+        <div className="absolute z-10 w-48 h-48 md:w-64 md:h-64 rounded-full overflow-hidden border-4 border-primary/70 shadow-[0_0_70px_rgba(80,220,170,0.55)]">
+          <img
+            src={cootPortrait}
+            alt="Hawaiian Coot"
+            className="w-full h-full object-cover object-top"
+            style={{ filter: "brightness(1.2) saturate(1.5) contrast(1.05)" }}
+          />
         </div>
         
         {/* Radial Buttons */}

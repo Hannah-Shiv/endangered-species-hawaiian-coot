@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { Button } from "@/components/ui/button";
+import heroBg from "@assets/image_1779576726784.png";
 
 export function LandingHero({ onEnter }: { onEnter: () => void }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -74,11 +75,13 @@ export function LandingHero({ onEnter }: { onEnter: () => void }) {
 
   return (
     <div ref={containerRef} className="relative w-full h-screen overflow-hidden bg-background">
-      <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-60"
-        style={{ backgroundImage: "url('/src/assets/hero-bg.png')" }}
+      <img
+        src={heroBg}
+        alt=""
+        className="absolute inset-0 w-full h-full object-cover object-center"
+        style={{ filter: "brightness(1.15) saturate(1.4) contrast(1.05)" }}
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/50 to-background" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/5 via-transparent to-background/85" />
       <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none" />
       
       <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-4">
