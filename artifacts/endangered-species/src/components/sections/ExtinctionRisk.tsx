@@ -17,7 +17,7 @@ export function ExtinctionRisk() {
           </div>
           <h1 className="text-6xl md:text-8xl font-serif text-destructive mb-4 tracking-tighter">VULNERABLE</h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Downlisted from "Endangered" in 2017—but the threat remains severe. The population is still declining.
+            Downlisted from Endangered after partial recovery, but still entirely dependent on conservation management.
           </p>
         </motion.div>
 
@@ -28,47 +28,55 @@ export function ExtinctionRisk() {
               <div className="space-y-6">
                 <div>
                   <div className="flex justify-between mb-2">
-                    <span>Habitat Loss (Climate Change)</span>
-                    <span className="text-destructive font-bold">CRITICAL</span>
-                  </div>
-                  <Progress value={90} className="h-2 [&>div]:bg-destructive" />
-                </div>
-                <div>
-                  <div className="flex justify-between mb-2">
-                    <span>Poaching & Retaliation</span>
+                    <span>Habitat Loss</span>
                     <span className="text-destructive font-bold">HIGH</span>
                   </div>
-                  <Progress value={75} className="h-2 [&>div]:bg-destructive" />
+                  <Progress value={85} className="h-2 [&>div]:bg-destructive" />
                 </div>
                 <div>
                   <div className="flex justify-between mb-2">
-                    <span>Prey Decline</span>
-                    <span className="text-accent font-bold">MEDIUM</span>
+                    <span>Invasive Predators</span>
+                    <span className="text-destructive font-bold">HIGH</span>
                   </div>
-                  <Progress value={60} className="h-2 [&>div]:bg-accent" />
+                  <Progress value={80} className="h-2 [&>div]:bg-destructive" />
                 </div>
                 <div>
                   <div className="flex justify-between mb-2">
-                    <span>Infrastructure (Roads/Mining)</span>
+                    <span>Climate Change</span>
+                    <span className="text-destructive font-bold">MED-HIGH</span>
+                  </div>
+                  <Progress value={70} className="h-2 [&>div]:bg-destructive" />
+                </div>
+                <div>
+                  <div className="flex justify-between mb-2">
+                    <span>Disease</span>
                     <span className="text-accent font-bold">MEDIUM</span>
                   </div>
                   <Progress value={50} className="h-2 [&>div]:bg-accent" />
+                </div>
+                <div>
+                  <div className="flex justify-between mb-2">
+                    <span>Human Disturbance</span>
+                    <span className="text-accent font-bold">MEDIUM</span>
+                  </div>
+                  <Progress value={45} className="h-2 [&>div]:bg-accent" />
                 </div>
               </div>
             </CardContent>
           </Card>
 
           <Card className="bg-destructive/10 border-destructive/30 flex flex-col justify-center items-center text-center p-8">
-            <h3 className="text-2xl font-serif text-destructive mb-4">What ~4,500 Looks Like</h3>
-            <p className="text-muted-foreground mb-8">If every living wild snow leopard was put in one stadium, it would only fill about 10% of the seats.</p>
+            <h3 className="text-2xl font-serif text-destructive mb-4">A Fragile Balance</h3>
+            <p className="text-foreground font-bold mb-2">Only ~3,200 Hawaiian Coots remain.</p>
+            <p className="text-muted-foreground mb-8">One major hurricane season or severe prolonged drought could reduce the population by 30%.</p>
             
-            {/* Visual representation of 4500 - using a condensed dot grid */}
-            <div className="w-full max-w-xs grid grid-cols-20 gap-1 opacity-50">
-              {Array.from({ length: 400 }).map((_, i) => (
+            {/* Visual representation - approx 320 dots, 1 dot = 10 birds */}
+            <div className="w-full max-w-xs grid grid-cols-20 gap-1 opacity-60">
+              {Array.from({ length: 320 }).map((_, i) => (
                 <div key={i} className="w-1.5 h-1.5 rounded-full bg-primary" />
               ))}
             </div>
-            <p className="text-xs text-muted-foreground mt-4">Each dot represents ~11 leopards</p>
+            <p className="text-xs text-muted-foreground mt-4">Each dot represents ~10 birds</p>
           </Card>
         </div>
       </div>

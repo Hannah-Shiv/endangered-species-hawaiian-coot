@@ -6,31 +6,31 @@ export function Sources() {
   const sources = [
     {
       title: "IUCN Red List of Threatened Species",
-      desc: "Panthera uncia classification and assessment data.",
+      desc: "Fulica alai assessment and global status.",
       url: "https://www.iucnredlist.org"
     },
     {
-      title: "Snow Leopard Trust",
-      desc: "Population statistics, biology, and conservation program details.",
-      url: "https://www.snowleopard.org"
+      title: "U.S. Fish and Wildlife Service",
+      desc: "Hawaiian Waterbird Recovery Plan and refuge data.",
+      url: "https://www.fws.gov"
     },
     {
-      title: "WWF Snow Leopard Program",
-      desc: "Threat assessments, climate change impacts on habitat.",
-      url: "https://www.worldwildlife.org"
+      title: "Hawaii Division of Forestry and Wildlife",
+      desc: "Biannual Hawaiian Waterbird Status Reports.",
+      url: "https://dlnr.hawaii.gov/dofaw"
     },
     {
-      title: "Global Snow Leopard & Ecosystem Protection Program",
-      desc: "Bishkek Declaration and international policy goals.",
-      url: "https://globalsnowleopard.org"
+      title: "BirdLife International",
+      desc: "Hawaiian Coot species factsheet.",
+      url: "http://datazone.birdlife.org"
     },
     {
-      title: "McCarthy et al., 2017",
-      desc: "Scientific paper on snow leopard conservation status and population modeling."
+      title: "Reed, J.M. et al. (2011)",
+      desc: "Scientific paper on Hawaiian waterbird population trends."
     },
     {
-      title: "Jackson et al., 2019",
-      desc: "Research on human-wildlife conflict and retaliation killing metrics."
+      title: "Engilis, A. Jr. and Pratt, T.K. (1993)",
+      desc: "Status and population trends of Hawaiian waterbirds."
     }
   ];
 
@@ -73,8 +73,8 @@ export function Sources() {
           </div>
 
           <div className="border-t border-border pt-8 text-center text-sm text-muted-foreground">
-            <p>Image Credits: Custom generation and open-source nature photography.</p>
-            <p className="mt-2">Created for educational purposes.</p>
+            <p>Image Credits: AI-generated images used for educational purposes.</p>
+            <p className="mt-2">Conservation Organizations: James Campbell NWR, Kealia Pond NWR, Hawaii Wildlife Fund, The Nature Conservancy Hawaii.</p>
           </div>
         </motion.div>
       </div>

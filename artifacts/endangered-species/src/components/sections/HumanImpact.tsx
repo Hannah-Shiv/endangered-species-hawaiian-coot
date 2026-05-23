@@ -14,7 +14,7 @@ export function HumanImpact() {
         >
           <h1 className="text-5xl font-serif text-foreground mb-4">Human Impact</h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            The story of the snow leopard is intimately tied to the people who share its mountains. It is a story of conflict, but also of coexistence.
+            Our footprint has drastically reduced their habitat, but human intervention is now the only thing keeping them alive.
           </p>
         </motion.div>
 
@@ -30,22 +30,22 @@ export function HumanImpact() {
             
             <Card className="bg-destructive/10 border-destructive/20">
               <CardContent className="p-6">
-                <h3 className="text-xl font-bold text-destructive mb-2">Retaliatory Killing</h3>
-                <p className="text-foreground/80">As wild prey declines, leopards hunt domestic livestock. For a herder, losing a single yak can mean losing months of income. In retaliation, leopards are often poisoned, trapped, or shot. This accounts for over 50% of unnatural deaths.</p>
+                <h3 className="text-xl font-bold text-destructive mb-2">Wetland Drainage</h3>
+                <p className="text-foreground/80">Historical draining of wetlands for agriculture and modern coastal development has eliminated roughly 70% of Hawaii's natural wetlands.</p>
               </CardContent>
             </Card>
 
             <Card className="bg-card/50 border-border">
               <CardContent className="p-6">
-                <h3 className="text-xl font-bold text-foreground mb-2">Poaching & Illegal Trade</h3>
-                <p className="text-muted-foreground">Hunted for their magnificent pelts and for bones used in traditional medicines as a substitute for tiger bones.</p>
+                <h3 className="text-xl font-bold text-foreground mb-2">Introduced Predators</h3>
+                <p className="text-muted-foreground">Mongoose, rats, and feral cats brought by human settlement decimate ground-nesting birds.</p>
               </CardContent>
             </Card>
 
             <Card className="bg-card/50 border-border">
               <CardContent className="p-6">
-                <h3 className="text-xl font-bold text-foreground mb-2">Habitat Fragmentation</h3>
-                <p className="text-muted-foreground">New roads, mining operations, and border fences physically divide populations, reducing genetic diversity and access to prey.</p>
+                <h3 className="text-xl font-bold text-foreground mb-2">Pollution & Disturbance</h3>
+                <p className="text-muted-foreground">Pesticide runoff contaminates food sources, while recreational activities and off-leash dogs disturb critical nesting sites.</p>
               </CardContent>
             </Card>
           </motion.div>
@@ -61,22 +61,22 @@ export function HumanImpact() {
             
             <Card className="bg-primary/10 border-primary/20">
               <CardContent className="p-6">
-                <h3 className="text-xl font-bold text-primary mb-2">Community Insurance</h3>
-                <p className="text-foreground/80">Conservationists partner with local villages to create livestock insurance programs. Herders pay a small premium; if a leopard kills their animal, they are compensated. Retaliatory killings drop to near zero in these areas.</p>
+                <h3 className="text-xl font-bold text-primary mb-2">Refuge Creation</h3>
+                <p className="text-foreground/80">National Wildlife Refuges protect key remaining habitats, managing water levels actively to maximize breeding success.</p>
               </CardContent>
             </Card>
 
             <Card className="bg-card/50 border-border">
               <CardContent className="p-6">
-                <h3 className="text-xl font-bold text-foreground mb-2">Predator-Proof Corrals</h3>
-                <p className="text-muted-foreground">Upgrading night pens with wire mesh roofs prevents "surplus killing" events where a leopard enters a pen and panics, killing dozens of animals.</p>
+                <h3 className="text-xl font-bold text-foreground mb-2">Taro Farmer Partnerships</h3>
+                <p className="text-muted-foreground">Collaborations with traditional taro (loi) farmers help maintain agricultural wetlands that serve as crucial secondary habitat.</p>
               </CardContent>
             </Card>
 
             <Card className="bg-card/50 border-border">
               <CardContent className="p-6">
-                <h3 className="text-xl font-bold text-foreground mb-2">Handicraft Enterprises</h3>
-                <p className="text-muted-foreground">Programs like Snow Leopard Enterprises train local women to make and sell wool crafts, tying community income directly to the presence of living snow leopards.</p>
+                <h3 className="text-xl font-bold text-foreground mb-2">Predator Control</h3>
+                <p className="text-muted-foreground">Active trapping and fencing programs around major refuges provide safe havens for chicks to reach adulthood.</p>
               </CardContent>
             </Card>
           </motion.div>
@@ -89,23 +89,28 @@ export function HumanImpact() {
           className="bg-card/30 border border-border p-8 md:p-12 rounded-2xl text-center"
         >
           <h2 className="text-3xl font-serif text-accent mb-6">How You Can Help</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8 text-left">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8 text-left">
             <div>
-              <h4 className="font-bold text-foreground mb-2">1. Support Community Programs</h4>
-              <p className="text-sm text-muted-foreground">Donate to organizations funding predator-proof corrals and insurance schemes.</p>
+              <h4 className="font-bold text-foreground mb-2">1. Support Wildlife Refuges</h4>
+              <p className="text-sm text-muted-foreground">Donate or volunteer at local Hawaii wildlife refuges.</p>
             </div>
             <div>
-              <h4 className="font-bold text-foreground mb-2">2. Buy Predator-Friendly</h4>
-              <p className="text-sm text-muted-foreground">Purchase cashmere and wool products certified as snow-leopard friendly.</p>
+              <h4 className="font-bold text-foreground mb-2">2. Manage Pets</h4>
+              <p className="text-sm text-muted-foreground">Keep cats indoors and always keep dogs on leash near wetland areas.</p>
             </div>
             <div>
-              <h4 className="font-bold text-foreground mb-2">3. Reduce Carbon Footprint</h4>
-              <p className="text-sm text-muted-foreground">Climate change is the ultimate threat to high-altitude habitats.</p>
+              <h4 className="font-bold text-foreground mb-2">3. Wetland Restoration</h4>
+              <p className="text-sm text-muted-foreground">Participate in community wetland workday events.</p>
+            </div>
+            <div>
+              <h4 className="font-bold text-foreground mb-2">4. Support TNR</h4>
+              <p className="text-sm text-muted-foreground">Support trap-neuter-return programs for feral cat management.</p>
+            </div>
+            <div className="lg:col-span-2">
+              <h4 className="font-bold text-foreground mb-2">5. Report Wildlife</h4>
+              <p className="text-sm text-muted-foreground">Contact the Hawaii Wildlife Center if you spot injured or distressed waterbirds.</p>
             </div>
           </div>
-          <Button className="bg-accent text-accent-foreground hover:bg-accent/90" size="lg" data-testid="button-donate">
-            Take Action Today
-          </Button>
         </motion.div>
       </div>
     </div>

@@ -4,34 +4,34 @@ import { Card, CardContent } from "@/components/ui/card";
 export function Adaptations() {
   const adaptations = [
     {
-      title: "Thick Fur",
+      title: "Lobed Feet",
       type: "Physical",
-      desc: "7cm thick in winter. Keeps them warm in temperatures that plummet to -40°C.",
-      icon: "❄️"
+      desc: "Unique lobed toes act as paddles for swimming AND spread weight for walking on floating vegetation.",
+      icon: "🦆"
     },
     {
-      title: "Enlarged Nasal Cavities",
+      title: "White Frontal Shield",
       type: "Physical",
-      desc: "Warms the thin, freezing mountain air before it reaches their lungs.",
-      icon: "🫁"
+      desc: "Highly visible white plate used for communication, mate selection, and territorial signaling; unique among Hawaiian birds.",
+      icon: "🛡️"
     },
     {
-      title: "Wide Paws",
+      title: "Dense Waterproof Plumage",
       type: "Physical",
-      desc: "Act as natural snowshoes to distribute weight on snow and provide grip on rocky cliffs.",
-      icon: "🐾"
+      desc: "Oil gland preening keeps feathers water-repellent; can dive briefly to escape threats.",
+      icon: "🪶"
     },
     {
-      title: "Long Thick Tail",
-      type: "Physical",
-      desc: "80–105cm long. Crucial for balance on precipices and acts as a built-in scarf for their face when resting.",
-      icon: "🐈"
-    },
-    {
-      title: "Crepuscular Hunting",
+      title: "Aggressive Nest Defense",
       type: "Behavioral",
-      desc: "Most active at dawn and dusk, using the fading light and their camouflage to ambush prey.",
-      icon: "🌅"
+      desc: "Attacks intruders far larger than itself; has been documented confronting dogs and humans near nests.",
+      icon: "⚔️"
+    },
+    {
+      title: "Floating Nest Building",
+      type: "Behavioral",
+      desc: "Builds nests anchored to reeds on water surface to protect eggs from ground predators like mongoose.",
+      icon: "🪹"
     }
   ];
 
@@ -44,9 +44,9 @@ export function Adaptations() {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <h1 className="text-5xl font-serif text-foreground mb-4">Evolutionary Perfection</h1>
+          <h1 className="text-5xl font-serif text-foreground mb-4">Endemic Adaptations</h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Millions of years of adaptation have created the ultimate high-altitude predator.
+            Unique traits developed to survive and thrive in Hawaii's diverse wetland ecosystems.
           </p>
         </motion.div>
 

@@ -3,14 +3,20 @@ import { Card, CardContent } from "@/components/ui/card";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, AreaChart, Area } from 'recharts';
 
 const temperatureData = [
-  { year: '1970', temp: 0 },
+  { year: '1960', temp: 0.0 },
+  { year: '1965', temp: 0.05 },
+  { year: '1970', temp: 0.1 },
+  { year: '1975', temp: 0.15 },
   { year: '1980', temp: 0.2 },
-  { year: '1990', temp: 0.5 },
-  { year: '2000', temp: 0.8 },
-  { year: '2010', temp: 1.2 },
-  { year: '2020', temp: 1.5 },
-  { year: '2050 (Proj)', temp: 3.0 },
-  { year: '2100 (Proj)', temp: 4.5 },
+  { year: '1985', temp: 0.25 },
+  { year: '1990', temp: 0.3 },
+  { year: '1995', temp: 0.4 },
+  { year: '2000', temp: 0.45 },
+  { year: '2005', temp: 0.5 },
+  { year: '2010', temp: 0.55 },
+  { year: '2015', temp: 0.65 },
+  { year: '2020', temp: 0.75 },
+  { year: '2024', temp: 0.8 },
 ];
 
 export function ClimateStressors() {
@@ -25,7 +31,7 @@ export function ClimateStressors() {
         >
           <h1 className="text-5xl font-serif text-destructive mb-4">Climate Stressors</h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            The roof of the world is melting. The Himalayas are warming at roughly three times the global average, transforming the snow leopard's world.
+            Hawaii's delicate ecosystems are facing unprecedented changes, directly threatening the shallow wetlands coots depend on.
           </p>
         </motion.div>
 
@@ -57,9 +63,9 @@ export function ClimateStressors() {
           </Card>
 
           <Card className="bg-card/50 border-primary/20 backdrop-blur flex flex-col justify-center items-center text-center p-8">
-            <h3 className="text-xl font-medium text-muted-foreground mb-2">Habitat Projected to Shrink</h3>
-            <div className="text-7xl font-bold text-destructive mb-4">30%</div>
-            <p className="text-lg text-foreground/80">by the year 2050 due to treeline shift</p>
+            <h3 className="text-xl font-medium text-muted-foreground mb-2">Sea Level Rise Projection</h3>
+            <div className="text-7xl font-bold text-destructive mb-4">20-60<span className="text-4xl">cm</span></div>
+            <p className="text-lg text-foreground/80">by the year 2100, threatening coastal wetlands</p>
           </Card>
         </div>
 
@@ -69,9 +75,9 @@ export function ClimateStressors() {
               <div className="w-12 h-12 rounded-full bg-accent/20 flex items-center justify-center mb-4">
                 <span className="text-accent font-bold text-xl">1</span>
               </div>
-              <h4 className="text-xl font-medium mb-2 text-foreground">Treeline Shift</h4>
+              <h4 className="text-xl font-medium mb-2 text-foreground">Coastal Inundation</h4>
               <p className="text-muted-foreground text-sm">
-                As temperatures rise, forests move to higher altitudes. Snow leopards are alpine animals that avoid forests, meaning their habitat is shrinking from below, pushing them closer to the peaks where territory is smaller.
+                Sea level rise directly threatens low-lying coastal wetlands where Hawaiian Coots nest, increasing salinity and altering vegetation.
               </p>
             </CardContent>
           </Card>
@@ -81,9 +87,9 @@ export function ClimateStressors() {
               <div className="w-12 h-12 rounded-full bg-accent/20 flex items-center justify-center mb-4">
                 <span className="text-accent font-bold text-xl">2</span>
               </div>
-              <h4 className="text-xl font-medium mb-2 text-foreground">Prey Decline</h4>
+              <h4 className="text-xl font-medium mb-2 text-foreground">Increased Drought</h4>
               <p className="text-muted-foreground text-sm">
-                Changing vegetation patterns affect blue sheep and ibex. Reduced primary prey forces snow leopards to hunt domestic livestock, increasing human-wildlife conflict.
+                More frequent and severe droughts reduce freshwater pond levels, concentrating predators and shrinking available habitat.
               </p>
             </CardContent>
           </Card>
@@ -93,9 +99,9 @@ export function ClimateStressors() {
               <div className="w-12 h-12 rounded-full bg-accent/20 flex items-center justify-center mb-4">
                 <span className="text-accent font-bold text-xl">3</span>
               </div>
-              <h4 className="text-xl font-medium mb-2 text-foreground">Glacial Retreat</h4>
+              <h4 className="text-xl font-medium mb-2 text-foreground">Extreme Weather</h4>
               <p className="text-muted-foreground text-sm">
-                Himalayan glaciers are melting at unprecedented rates. This changes water availability, alters the microclimates essential for alpine flora, and fragments remaining snow leopard corridors.
+                Intensified hurricanes and flash flooding disrupt nesting seasons, while temperature increases accelerate harmful algal blooms.
               </p>
             </CardContent>
           </Card>

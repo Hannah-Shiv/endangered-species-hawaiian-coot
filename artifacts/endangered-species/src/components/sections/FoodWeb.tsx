@@ -10,37 +10,38 @@ type Node = {
 };
 
 const nodes: Node[] = [
-  { id: 'leopard', label: 'Snow Leopard', type: 'apex', x: 50, y: 15 },
-  { id: 'wolf', label: 'Mountain Wolf', type: 'competitor', x: 20, y: 25 },
-  { id: 'vulture', label: 'Griffon Vulture', type: 'scavenger', x: 80, y: 25 },
-  { id: 'sheep', label: 'Blue Sheep (Bharal)', type: 'prey', x: 35, y: 50 },
-  { id: 'tahr', label: 'Himalayan Tahr', type: 'prey', x: 65, y: 50 },
-  { id: 'argali', label: 'Argali', type: 'prey', x: 50, y: 65 },
-  { id: 'marmot', label: 'Marmots', type: 'prey', x: 20, y: 70 },
-  { id: 'pika', label: 'Pikas', type: 'prey', x: 80, y: 70 },
-  { id: 'snowcock', label: 'Snowcock', type: 'prey', x: 35, y: 80 },
-  { id: 'grass', label: 'Alpine Grasses/Shrubs', type: 'producer', x: 50, y: 90 },
+  { id: 'coot', label: 'Hawaiian Coot', type: 'apex', x: 50, y: 35 },
+  { id: 'stilt', label: 'Hawaiian Stilt', type: 'competitor', x: 20, y: 35 },
+  { id: 'heron', label: 'Night Heron', type: 'competitor', x: 80, y: 25 },
+  { id: 'mongoose', label: 'Mongoose', type: 'scavenger', x: 20, y: 15 },
+  { id: 'rats', label: 'Rats', type: 'scavenger', x: 50, y: 10 },
+  { id: 'bullfrog', label: 'Bullfrog', type: 'competitor', x: 80, y: 45 },
+  { id: 'insects', label: 'Aquatic Insects', type: 'prey', x: 35, y: 60 },
+  { id: 'fish', label: 'Small Fish', type: 'prey', x: 65, y: 60 },
+  { id: 'snails', label: 'Snails/Mollusks', type: 'prey', x: 50, y: 75 },
+  { id: 'algae', label: 'Algae/Plants', type: 'producer', x: 50, y: 90 },
   { id: 'bacteria', label: 'Decomposers', type: 'decomposer', x: 80, y: 90 },
 ];
 
 const edges = [
-  { source: 'sheep', target: 'leopard' },
-  { source: 'tahr', target: 'leopard' },
-  { source: 'argali', target: 'leopard' },
-  { source: 'marmot', target: 'leopard' },
-  { source: 'sheep', target: 'wolf' },
-  { source: 'marmot', target: 'wolf' },
-  { source: 'leopard', target: 'vulture' }, // scavenging kills
-  { source: 'wolf', target: 'vulture' },
-  { source: 'grass', target: 'sheep' },
-  { source: 'grass', target: 'tahr' },
-  { source: 'grass', target: 'argali' },
-  { source: 'grass', target: 'marmot' },
-  { source: 'grass', target: 'pika' },
-  { source: 'grass', target: 'snowcock' },
-  { source: 'leopard', target: 'bacteria' },
-  { source: 'sheep', target: 'bacteria' },
-  { source: 'vulture', target: 'bacteria' },
+  { source: 'insects', target: 'coot' },
+  { source: 'fish', target: 'coot' },
+  { source: 'algae', target: 'coot' },
+  { source: 'snails', target: 'coot' },
+  { source: 'algae', target: 'insects' },
+  { source: 'algae', target: 'fish' },
+  { source: 'insects', target: 'fish' },
+  { source: 'algae', target: 'snails' },
+  { source: 'insects', target: 'stilt' },
+  { source: 'fish', target: 'stilt' },
+  { source: 'coot', target: 'heron' },
+  { source: 'fish', target: 'heron' },
+  { source: 'coot', target: 'mongoose' },
+  { source: 'snails', target: 'mongoose' },
+  { source: 'insects', target: 'bullfrog' },
+  { source: 'fish', target: 'bullfrog' },
+  { source: 'coot', target: 'rats' },
+  { source: 'algae', target: 'bacteria' },
 ];
 
 export function FoodWeb() {
@@ -61,7 +62,7 @@ export function FoodWeb() {
   return (
     <div className="w-full min-h-screen pt-24 pb-12 px-6 md:px-12 bg-background overflow-hidden flex flex-col">
       <div className="text-center mb-8 relative z-10">
-        <h1 className="text-5xl font-serif text-primary mb-2">The Alpine Food Web</h1>
+        <h1 className="text-5xl font-serif text-primary mb-2">Wetland Food Web</h1>
         <p className="text-muted-foreground">Hover over organisms to see energy flow.</p>
       </div>
 

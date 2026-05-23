@@ -45,7 +45,7 @@ export function LandingHero({ onEnter }: { onEnter: () => void }) {
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255, 255, 255, ${p.alpha})`;
+        ctx.fillStyle = `rgba(100, 220, 200, ${p.alpha})`;
         ctx.fill();
       });
       animationFrameId = requestAnimationFrame(render);
@@ -83,13 +83,13 @@ export function LandingHero({ onEnter }: { onEnter: () => void }) {
       
       <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-4">
         <h2 ref={subtitleRef} className="text-xl md:text-3xl font-serif tracking-widest text-muted-foreground mb-4 italic">
-          Panthera uncia
+          Fulica alai  •  Alae keokeeo
         </h2>
         <h1 ref={titleRef} className="text-6xl md:text-8xl lg:text-9xl font-serif font-bold text-foreground tracking-tighter mb-6 shadow-black drop-shadow-2xl">
-          SNOW LEOPARD
+          HAWAIIAN COOT
         </h1>
         <p ref={tagRef} className="text-lg md:text-2xl text-foreground/80 font-light mb-12 max-w-2xl">
-          The Ghost of the Mountains — Vanishing in Plain Sight
+          Hawaii's Vulnerable Waterbird — Fighting to Survive in Shrinking Wetlands
         </p>
         
         <div ref={buttonRef}>

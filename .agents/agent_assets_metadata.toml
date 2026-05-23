@@ -5,7 +5,7 @@ outputs = []
 id = "X_fImbv3Z_kF3kfDPigbk"
 uri = "file://artifacts/endangered-species/src/assets/hero-bg.png"
 type = "image"
-title = "Hero background snow leopard"
+title = "Hawaiian Coot hero background"
 
 [[generated]]
 id = "VeUZBTZrEhBHrbCL2eYbA"
@@ -17,10 +17,16 @@ title = "Snow leopard portrait"
 id = "iaklzrexONEWiR5g7n9Yy"
 uri = "file://artifacts/endangered-species/src/assets/habitat.png"
 type = "image"
-title = "Himalayan mountain landscape"
+title = "Hawaiian wetland landscape"
 
 [[generated]]
 id = "vggftzyKK-ENv2FW5bm0c"
 uri = "file://artifacts/endangered-species/src/assets/silhouette.png"
 type = "image"
-title = "Snow leopard silhouette"
+title = "Hawaiian Coot silhouette"
+
+[[generated]]
+id = "s3k0ebbflvmRPsJgDmz6K"
+uri = "file://artifacts/endangered-species/src/assets/species-portrait.png"
+type = "image"
+title = "Hawaiian Coot close-up portrait"

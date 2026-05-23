@@ -1,13 +1,14 @@
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
+import portraitImg from "@/assets/species-portrait.png";
 
 export function MeetSpecies() {
   const facts = [
-    "Can leap up to 9 meters (30 feet) in a single bound",
-    "Thick tails aid balance and wrap around face for warmth",
-    "Estimated 4,000–6,500 remaining in the wild",
-    "Found across 12 countries in Central Asia",
-    "Cannot roar — uses a 'chuffing' sound called a prusten"
+    "The Hawaiian Coot is endemic to Hawaii — found nowhere else on Earth naturally",
+    "Their distinctive bright white frontal shield varies in size and can be bright red in some individuals — scientists believe it signals social status",
+    "Population crashed to fewer than 1,000 birds by the 1970s — recovery efforts brought them back to ~4,000 today",
+    "Unlike most waterbirds, Hawaiian Coots are highly territorial and will fiercely defend nesting territory even from much larger birds",
+    "Chicks have bright orange-red heads — bold coloring may stimulate parental feeding instincts"
   ];
 
   return (
@@ -19,7 +20,7 @@ export function MeetSpecies() {
           transition={{ duration: 0.8 }}
         >
           <h1 className="text-5xl font-serif text-primary mb-6">Meet the Species</h1>
-          <h2 className="text-2xl font-serif text-muted-foreground mb-8 italic">Panthera uncia</h2>
+          <h2 className="text-2xl font-serif text-muted-foreground mb-8 italic">Fulica alai</h2>
           
           <div className="space-y-4 mb-12">
             {facts.map((fact, idx) => (
@@ -46,11 +47,11 @@ export function MeetSpecies() {
             <p className="text-sm text-muted-foreground leading-relaxed">
               Kingdom: Animalia<br/>
               Phylum: Chordata<br/>
-              Class: Mammalia<br/>
-              Order: Carnivora<br/>
-              Family: Felidae<br/>
-              Genus: Panthera<br/>
-              Species: P. uncia
+              Class: Aves<br/>
+              Order: Gruiformes<br/>
+              Family: Rallidae<br/>
+              Genus: Fulica<br/>
+              Species: F. alai
             </p>
           </div>
         </motion.div>
@@ -62,24 +63,24 @@ export function MeetSpecies() {
           className="relative"
         >
           <div className="aspect-square rounded-2xl overflow-hidden border-2 border-primary/30 shadow-2xl relative">
-            <img src="/src/assets/portrait.png" alt="Snow Leopard Portrait" className="w-full h-full object-cover" />
+            <img src={portraitImg} alt="Hawaiian Coot Portrait" className="w-full h-full object-cover" />
             <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent flex flex-col justify-end p-8">
               <div className="grid grid-cols-2 gap-4 text-center">
                 <div className="bg-black/50 backdrop-blur p-4 rounded-lg">
-                  <div className="text-3xl font-bold text-primary">~4,500</div>
+                  <div className="text-3xl font-bold text-primary">~3,500</div>
                   <div className="text-xs text-muted-foreground uppercase tracking-wider">Wild Population</div>
                 </div>
                 <div className="bg-black/50 backdrop-blur p-4 rounded-lg">
-                  <div className="text-3xl font-bold text-accent">12</div>
-                  <div className="text-xs text-muted-foreground uppercase tracking-wider">Countries</div>
+                  <div className="text-3xl font-bold text-accent">1</div>
+                  <div className="text-xs text-muted-foreground uppercase tracking-wider">Endemic Chain</div>
                 </div>
                 <div className="bg-black/50 backdrop-blur p-4 rounded-lg">
-                  <div className="text-2xl font-bold text-primary">3-4.5k m</div>
+                  <div className="text-2xl font-bold text-primary">0-1.2k m</div>
                   <div className="text-xs text-muted-foreground uppercase tracking-wider">Elevation Range</div>
                 </div>
                 <div className="bg-black/50 backdrop-blur p-4 rounded-lg">
-                  <div className="text-3xl font-bold text-accent">35-55</div>
-                  <div className="text-xs text-muted-foreground uppercase tracking-wider">kg Weight</div>
+                  <div className="text-3xl font-bold text-accent">390-650</div>
+                  <div className="text-xs text-muted-foreground uppercase tracking-wider">g Weight</div>
                 </div>
               </div>
             </div>

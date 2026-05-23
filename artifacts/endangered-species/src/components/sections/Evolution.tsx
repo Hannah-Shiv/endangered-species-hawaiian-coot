@@ -12,7 +12,7 @@ export function Evolution() {
         >
           <h1 className="text-5xl font-serif text-foreground mb-4">Evolutionary Journey</h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            How a big cat conquered the roof of the world.
+            How a long-distance wanderer became an island endemic.
           </p>
         </motion.div>
 
@@ -25,9 +25,9 @@ export function Evolution() {
           >
             <div className="absolute top-0 right-full md:right-auto md:left-full w-4 h-4 rounded-full bg-primary -ml-[10px] md:-ml-2 mt-1.5" />
             <div className="bg-card/50 border border-border p-6 rounded-xl w-full md:w-96 text-left">
-              <span className="text-primary font-bold mb-2 block">~10.8 Million Years Ago</span>
-              <h3 className="text-xl font-serif text-foreground mb-2">Panthera Lineage Emerges</h3>
-              <p className="text-sm text-muted-foreground">The earliest big cats diverge from other felids in Asia.</p>
+              <span className="text-primary font-bold mb-2 block">~65 Million Years Ago</span>
+              <h3 className="text-xl font-serif text-foreground mb-2">Rallidae Family Diverges</h3>
+              <p className="text-sm text-muted-foreground">The rail family diverges from common avian ancestors following the dinosaur extinction.</p>
             </div>
           </motion.div>
 
@@ -39,9 +39,9 @@ export function Evolution() {
           >
             <div className="absolute top-0 left-0 w-4 h-4 rounded-full bg-primary -ml-[10px] md:-ml-[10px] mt-1.5" />
             <div className="bg-card/50 border border-border p-6 rounded-xl w-full md:w-96">
-              <span className="text-primary font-bold mb-2 block">~6.4 Million Years Ago</span>
-              <h3 className="text-xl font-serif text-foreground mb-2">Clouded Leopard Splits</h3>
-              <p className="text-sm text-muted-foreground">The clouded leopard lineage diverges, leaving the core Panthera group.</p>
+              <span className="text-primary font-bold mb-2 block">~10 Million Years Ago</span>
+              <h3 className="text-xl font-serif text-foreground mb-2">Fulica Genus Spreads</h3>
+              <p className="text-sm text-muted-foreground">Coots spread across the Americas and the Pacific, becoming highly adaptable wetland specialists.</p>
             </div>
           </motion.div>
 
@@ -53,12 +53,12 @@ export function Evolution() {
           >
             <div className="absolute top-0 right-full md:right-auto md:left-full w-4 h-4 rounded-full bg-primary -ml-[10px] md:-ml-2 mt-1.5" />
             <div className="bg-card/50 border border-border p-6 rounded-xl w-full md:w-96 text-left">
-              <span className="text-primary font-bold mb-2 block">~3.2 Million Years Ago</span>
-              <h3 className="text-xl font-serif text-accent mb-2">Tiger & Snow Leopard Split</h3>
-              <p className="text-sm text-muted-foreground">Genetically, the snow leopard's closest living relative is the tiger. They diverged as the Tibetan Plateau rose.</p>
+              <span className="text-primary font-bold mb-2 block">~500,000 Years Ago</span>
+              <h3 className="text-xl font-serif text-accent mb-2">Colonizing Hawaii</h3>
+              <p className="text-sm text-muted-foreground">Ancestral coots from the Americas arrive in the Hawaiian Islands via remarkable long-distance dispersal.</p>
             </div>
           </motion.div>
-          
+
           <motion.div 
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -67,9 +67,23 @@ export function Evolution() {
           >
             <div className="absolute top-0 left-0 w-4 h-4 rounded-full bg-primary -ml-[10px] mt-1.5" />
             <div className="bg-card/50 border border-border p-6 rounded-xl w-full md:w-96">
-              <span className="text-primary font-bold mb-2 block">Present</span>
-              <h3 className="text-xl font-serif text-foreground mb-2">High Altitude Specialist</h3>
-              <p className="text-sm text-muted-foreground">Evolved specialized hemoglobin for low oxygen, thick fur, and wide paws to dominate the harsh alpine environment.</p>
+              <span className="text-primary font-bold mb-2 block">~10,000 Years Ago</span>
+              <h3 className="text-xl font-serif text-foreground mb-2">Distinct Species</h3>
+              <p className="text-sm text-muted-foreground">Through isolation, Fulica alai becomes a distinct endemic species, adapted to island life.</p>
+            </div>
+          </motion.div>
+          
+          <motion.div 
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="mb-12 relative w-full md:w-[calc(100%+2rem)] md:-ml-[calc(50%+2rem)] flex md:justify-end pr-8 md:pr-12"
+          >
+            <div className="absolute top-0 right-full md:right-auto md:left-full w-4 h-4 rounded-full bg-primary -ml-[10px] md:-ml-2 mt-1.5" />
+            <div className="bg-card/50 border border-border p-6 rounded-xl w-full md:w-96 text-left">
+              <span className="text-primary font-bold mb-2 block">1820s-1970s</span>
+              <h3 className="text-xl font-serif text-destructive mb-2">Modern Bottleneck</h3>
+              <p className="text-sm text-muted-foreground">Western settlement and modern development decimate habitats, pushing the species to near-extinction by 1970.</p>
             </div>
           </motion.div>
         </div>

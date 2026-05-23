@@ -57,7 +57,7 @@ export function RadialNav({ activeSection, onSelect }: RadialNavProps) {
       <div className="relative w-full max-w-4xl aspect-square max-h-[90vh] flex items-center justify-center">
         {/* Center Image */}
         <div className="absolute z-10 w-48 h-48 md:w-64 md:h-64 rounded-full overflow-hidden border-4 border-primary/30 shadow-[0_0_50px_rgba(var(--primary),0.2)]">
-          <img src="/src/assets/silhouette.png" alt="Snow Leopard" className="w-full h-full object-cover invert opacity-80" />
+          <img src="/src/assets/silhouette.png" alt="Hawaiian Coot" className="w-full h-full object-cover opacity-80" />
         </div>
         
         {/* Radial Buttons */}
