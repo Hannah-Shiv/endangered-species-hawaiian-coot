@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "Endangered Species Interactive Website"
+version = "1.0.0"
+id = "artifacts/endangered-species"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 22417
+
+[services.development]
+run = "pnpm --filter @workspace/endangered-species run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/endangered-species", "run", "build" ]
+publicDir = "artifacts/endangered-species/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "22417"
+BASE_PATH = "/"

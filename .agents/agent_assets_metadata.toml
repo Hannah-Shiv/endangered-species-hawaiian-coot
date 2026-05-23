@@ -1,0 +1,26 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "X_fImbv3Z_kF3kfDPigbk"
+uri = "file://artifacts/endangered-species/src/assets/hero-bg.png"
+type = "image"
+title = "Hero background snow leopard"
+
+[[generated]]
+id = "VeUZBTZrEhBHrbCL2eYbA"
+uri = "file://artifacts/endangered-species/src/assets/portrait.png"
+type = "image"
+title = "Snow leopard portrait"
+
+[[generated]]
+id = "iaklzrexONEWiR5g7n9Yy"
+uri = "file://artifacts/endangered-species/src/assets/habitat.png"
+type = "image"
+title = "Himalayan mountain landscape"
+
+[[generated]]
+id = "vggftzyKK-ENv2FW5bm0c"
+uri = "file://artifacts/endangered-species/src/assets/silhouette.png"
+type = "image"
+title = "Snow leopard silhouette"
