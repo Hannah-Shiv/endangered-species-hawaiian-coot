@@ -2,9 +2,9 @@
  * CinematicIntro — Hawaiian Coot · Cooper Middle School Science Project
  *
  * 60-second YouTube aerial intro.
- * No boxes — elegant floating text on the center-right (water side).
- * All Playfair Display. Gold / white palette.
- * Names appear one at a time.
+ * All gold palette. Playfair Display throughout.
+ * Every card fades in, holds, then fades out before the next appears.
+ * Names cycle one at a time. No boxes.
  */
 
 import { useEffect, useRef, useState, useCallback } from "react";
@@ -12,256 +12,270 @@ import { motion, AnimatePresence } from "framer-motion";
 import birdCallSrc from "@assets/XC342210_-_Hawaiian_Coot_-_Fulica_alai_1779638749861.mp3";
 
 // ─── Config ───────────────────────────────────────────────────────────────────
-const VIDEO_ID  = "AWpvNtoG5nU";
-const START_SEC = 2244;
-const TOTAL_SEC = 62;
+const VIDEO_ID        = "AWpvNtoG5nU";
+const START_SEC       = 2244;
+const TOTAL_SEC       = 62;
 const BIRD_CALL_START = 10;
-const BIRD_CALL_VOL   = 0.40;
+const BIRD_CALL_VOL   = 0.42;
 
 // ─── Gold palette ─────────────────────────────────────────────────────────────
-const GOLD       = "#D4AF37";
-const GOLD_LIGHT = "#F5E070";
-const GOLD_DIM   = "rgba(212,175,55,0.65)";
-const WHITE      = "#ffffff";
-const WHITE_DIM  = "rgba(255,255,255,0.72)";
+// Three tones for visual hierarchy — all unmistakably gold.
+const G1 = "#FFF0A0";                    // brightest — large titles
+const G2 = "#D4AF37";                    // classic gold — subtitles & rules
+const G3 = "rgba(212,175,55,0.62)";      // soft gold — small labels
+
+// Gradient applied to big title text
+const TITLE_GRAD = `linear-gradient(140deg, ${G1} 0%, ${G2} 45%, #E8C84A 80%, ${G1} 100%)`;
+
+// Heavy text-shadow keeps every size legible on bright video
+const S = "0 2px 48px rgba(0,0,0,0.99), 0 0 90px rgba(0,0,0,0.97), 0 4px 18px rgba(0,0,0,0.94)";
+
+// ─── Shared animation config ──────────────────────────────────────────────────
+const FADE_DUR  = 0.90;   // seconds
+const EASE_IN   = [0.16, 1, 0.3, 1] as const;
+const EASE_OUT  = [0.4,  0, 1,   1] as const;
+
+// Every card shares the same fade-in / fade-out motion props
+const CARD_MOTION = {
+  initial:    { opacity: 0 },
+  animate:    { opacity: 1 },
+  exit:       { opacity: 0 },
+  transition: {
+    opacity: { duration: FADE_DUR, ease: EASE_IN },
+    exit:    { duration: 0.70,     ease: EASE_OUT },
+  },
+} as const;
+
+// ─── Layout anchor — center-right, over the water ────────────────────────────
+const BLOCK: React.CSSProperties = {
+  position:      "absolute",
+  right:         "7%",
+  top:           "50%",
+  transform:     "translateY(-50%)",
+  textAlign:     "right",
+  zIndex:        15,
+  pointerEvents: "none",
+  maxWidth:      "clamp(320px, 52%, 720px)",
+};
 
 // ─── CSS ─────────────────────────────────────────────────────────────────────
 const STYLES = `
   @keyframes ci-grain {
-    0%{transform:translate(0,0)} 10%{transform:translate(-2%,-3%)}
-    20%{transform:translate(2%,2%)} 30%{transform:translate(-3%,1%)}
-    40%{transform:translate(3%,-2%)} 50%{transform:translate(-1%,3%)}
-    60%{transform:translate(1%,-3%)} 70%{transform:translate(-3%,-1%)}
-    80%{transform:translate(3%,2%)} 90%{transform:translate(-2%,-3%)}
+    0%  {transform:translate(0,0)}    10%{transform:translate(-2%,-3%)}
+    20% {transform:translate(2%,2%)}  30%{transform:translate(-3%,1%)}
+    40% {transform:translate(3%,-2%)} 50%{transform:translate(-1%,3%)}
+    60% {transform:translate(1%,-3%)} 70%{transform:translate(-3%,-1%)}
+    80% {transform:translate(3%,2%)}  90%{transform:translate(-2%,-3%)}
     100%{transform:translate(0,0)}
   }
 `;
 
-const ease = [0.16, 1, 0.3, 1] as const;
-
-// ─── Shared text shadow for legibility over video ─────────────────────────────
-const shadow = "0 2px 40px rgba(0,0,0,0.98), 0 0 80px rgba(0,0,0,0.95), 0 4px 16px rgba(0,0,0,0.90)";
-
-// ─── Layout anchor — center-right, vertically centred ─────────────────────────
-const blockStyle: React.CSSProperties = {
-  position:"absolute",
-  right:"7%",
-  top:"50%",
-  transform:"translateY(-50%)",
-  textAlign:"right",
-  zIndex:15,
-  pointerEvents:"none",
-  maxWidth:"clamp(280px, 46%, 640px)",
-};
-
 // ─── Thin gold rule ───────────────────────────────────────────────────────────
-function GoldRule({ align="right" }: { align?:"right"|"center" }) {
+function Rule() {
   return (
     <motion.div
-      initial={{ scaleX:0 }} animate={{ scaleX:1 }}
-      transition={{ duration:0.8, ease }}
+      initial={{ scaleX: 0 }} animate={{ scaleX: 1 }}
+      transition={{ duration: 0.75, delay: 0.55, ease: EASE_IN }}
       style={{
-        height:"1px", width:"80px",
-        background:`linear-gradient(to ${align==="right"?"left":"right"}, transparent, ${GOLD}, ${GOLD})`,
-        marginLeft:"auto", marginTop:"14px", marginBottom:"14px",
-        transformOrigin: align==="right" ? "right" : "center",
+        height: "1.5px", width: "90px", marginLeft: "auto",
+        marginTop: "16px", marginBottom: "16px",
+        background: `linear-gradient(to left, transparent, ${G2} 40%, ${G1})`,
+        transformOrigin: "right",
       }}
     />
   );
 }
 
-// ─── 1. Floating lower-right nature caption ───────────────────────────────────
-function NatureCaption({ top, sub }: { top:string; sub:string }) {
+// ─── Shared text styles ───────────────────────────────────────────────────────
+const BIG: React.CSSProperties = {
+  fontFamily: "'Playfair Display', serif",
+  fontStyle:  "italic",
+  fontWeight: 700,
+  fontSize:   "clamp(36px, 5.0vw, 72px)",
+  lineHeight: 1.10,
+  background: TITLE_GRAD,
+  WebkitBackgroundClip: "text",
+  WebkitTextFillColor:  "transparent",
+  backgroundClip:       "text",
+  filter:     "drop-shadow(0 3px 40px rgba(0,0,0,0.99))",
+};
+
+const SUB: React.CSSProperties = {
+  fontFamily: "'Playfair Display', serif",
+  fontStyle:  "italic",
+  fontWeight: 400,
+  fontSize:   "clamp(22px, 2.8vw, 40px)",   // ← much bigger than before
+  lineHeight: 1.25,
+  color:      G2,
+  textShadow: S,
+};
+
+const LABEL: React.CSSProperties = {
+  fontFamily: "'Playfair Display', serif",
+  fontStyle:  "italic",
+  fontWeight: 400,
+  fontSize:   "clamp(16px, 1.6vw, 22px)",
+  color:      G3,
+  textShadow: S,
+};
+
+// ─── 1. Nature caption (lower-right) ─────────────────────────────────────────
+function NatureCaption({ top, sub }: { top: string; sub: string }) {
   return (
-    <motion.div
-      initial={{ opacity:0, y:14 }} animate={{ opacity:1, y:0 }}
-      exit={{ opacity:0, y:-8 }}
-      transition={{ duration:0.85, ease }}
-      style={blockStyle}
-    >
-      <div style={{
-        fontFamily:"'Playfair Display',serif", fontStyle:"italic", fontWeight:700,
-        fontSize:"clamp(30px,4.2vw,60px)", color:WHITE, lineHeight:1.12,
-        textShadow:shadow,
-      }}>{top}</div>
-      <GoldRule/>
-      <div style={{
-        fontFamily:"'Playfair Display',serif", fontStyle:"italic", fontWeight:400,
-        fontSize:"clamp(12px,1.3vw,17px)", color:GOLD,
-        letterSpacing:"0.06em", textShadow:shadow,
-      }}>{sub}</div>
+    <motion.div {...CARD_MOTION} style={BLOCK}>
+      <motion.div
+        initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -10 }}
+        transition={{ duration: FADE_DUR, ease: EASE_IN }}
+        style={BIG}
+      >{top}</motion.div>
+
+      <Rule/>
+
+      <motion.div
+        initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: FADE_DUR, delay: 0.35, ease: EASE_IN }}
+        style={SUB}
+      >{sub}</motion.div>
     </motion.div>
   );
 }
 
 // ─── 2. Center quote ──────────────────────────────────────────────────────────
-function CenterQuote({ quote }: { quote:string }) {
+function CenterQuote({ quote }: { quote: string }) {
   const lines = quote.split("\n");
   return (
     <motion.div
-      initial={{ opacity:0 }} animate={{ opacity:1 }} exit={{ opacity:0 }}
-      transition={{ duration:1.0, ease:"easeInOut" }}
+      {...CARD_MOTION}
       style={{
-        position:"absolute", inset:0, zIndex:15, pointerEvents:"none",
-        display:"flex", flexDirection:"column",
-        alignItems:"flex-end", justifyContent:"center",
-        paddingRight:"7%",
+        position: "absolute", inset: 0, zIndex: 15, pointerEvents: "none",
+        display: "flex", flexDirection: "column",
+        alignItems: "flex-end", justifyContent: "center",
+        paddingRight: "7%",
       }}
     >
-      {lines.map((line,i)=>(
+      {lines.map((line, i) => (
         <motion.div key={i}
-          initial={{ opacity:0, x:20 }} animate={{ opacity:1, x:0 }}
-          transition={{ delay:0.2+i*0.22, duration:0.9, ease }}
-          style={{
-            fontFamily:"'Playfair Display',serif", fontStyle:"italic", fontWeight:700,
-            fontSize:"clamp(32px,4.8vw,70px)", lineHeight:1.15,
-            background:`linear-gradient(135deg, ${WHITE} 0%, ${GOLD_LIGHT} 55%, ${WHITE} 100%)`,
-            WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent",
-            backgroundClip:"text",
-            textShadow:"none",
-            filter:"drop-shadow(0 2px 30px rgba(0,0,0,0.98))",
-          }}
+          initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: FADE_DUR, delay: 0.18 * i, ease: EASE_IN }}
+          style={{ ...BIG, fontSize: "clamp(38px, 5.5vw, 78px)" }}
         >{line}</motion.div>
       ))}
       <motion.div
-        initial={{ scaleX:0 }} animate={{ scaleX:1 }}
-        transition={{ delay:0.7, duration:0.8 }}
+        initial={{ scaleX: 0 }} animate={{ scaleX: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.80, delay: 0.60, ease: EASE_IN }}
         style={{
-          height:"1px", width:"90px",
-          background:`linear-gradient(to left, transparent, ${GOLD})`,
-          marginLeft:"auto", marginTop:"16px",
-          transformOrigin:"right",
+          height: "1.5px", width: "100px", marginLeft: "auto", marginTop: "18px",
+          background: `linear-gradient(to left, transparent, ${G2} 35%, ${G1})`,
+          transformOrigin: "right",
         }}
       />
     </motion.div>
   );
 }
 
-// ─── 3. Project / school text (no box) ───────────────────────────────────────
+// ─── 3. Project / school text ─────────────────────────────────────────────────
 function SchoolText() {
   return (
-    <motion.div
-      initial={{ opacity:0 }} animate={{ opacity:1 }} exit={{ opacity:0 }}
-      transition={{ duration:0.9, ease:"easeInOut" }}
-      style={blockStyle}
-    >
-      {/* Project label */}
+    <motion.div {...CARD_MOTION} style={BLOCK}>
       <motion.div
-        initial={{ opacity:0, y:10 }} animate={{ opacity:1, y:0 }}
-        transition={{ delay:0.3, duration:0.8, ease }}
-        style={{
-          fontFamily:"'Playfair Display',serif", fontStyle:"italic", fontWeight:400,
-          fontSize:"clamp(12px,1.2vw,16px)", color:GOLD_DIM,
-          letterSpacing:"0.08em", marginBottom:"8px", textShadow:shadow,
-        }}
+        initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+        transition={{ duration: FADE_DUR, delay: 0.20 }}
+        style={LABEL}
       >A Science Project</motion.div>
 
-      {/* Main title */}
       <motion.div
-        initial={{ opacity:0, y:14 }} animate={{ opacity:1, y:0 }}
-        transition={{ delay:0.5, duration:0.9, ease }}
-        style={{
-          fontFamily:"'Playfair Display',serif", fontStyle:"italic", fontWeight:700,
-          fontSize:"clamp(38px,5.5vw,80px)", lineHeight:1.06,
-          background:`linear-gradient(135deg, ${WHITE} 0%, ${GOLD_LIGHT} 45%, ${GOLD} 80%, ${GOLD_LIGHT} 100%)`,
-          WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent",
-          backgroundClip:"text",
-          filter:"drop-shadow(0 2px 40px rgba(0,0,0,0.98))",
-        }}
+        initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -10 }}
+        transition={{ duration: FADE_DUR, delay: 0.38, ease: EASE_IN }}
+        style={{ ...BIG, fontSize: "clamp(42px, 6.0vw, 86px)", lineHeight: 1.06 }}
       >Endangered<br/>Species</motion.div>
 
-      <GoldRule/>
+      <Rule/>
 
-      {/* School */}
       <motion.div
-        initial={{ opacity:0, y:8 }} animate={{ opacity:1, y:0 }}
-        transition={{ delay:1.1, duration:0.8, ease }}
-        style={{
-          fontFamily:"'Playfair Display',serif", fontWeight:600,
-          fontSize:"clamp(16px,1.8vw,24px)", color:WHITE,
-          letterSpacing:"0.03em", textShadow:shadow,
-        }}
+        initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: FADE_DUR, delay: 0.80, ease: EASE_IN }}
+        style={SUB}
       >Cooper Middle School</motion.div>
 
       <motion.div
-        initial={{ opacity:0 }} animate={{ opacity:1 }}
-        transition={{ delay:1.5, duration:0.7 }}
-        style={{
-          fontFamily:"'Playfair Display',serif", fontStyle:"italic", fontWeight:400,
-          fontSize:"clamp(11px,1.1vw,15px)", color:GOLD_DIM,
-          marginTop:"6px", textShadow:shadow,
-        }}
+        initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+        transition={{ duration: FADE_DUR, delay: 1.05 }}
+        style={{ ...LABEL, marginTop: "8px" }}
       >Science · 2026</motion.div>
     </motion.div>
   );
 }
 
-// ─── 4. Single name reveal ────────────────────────────────────────────────────
-function NameReveal({ name, role }: { name:string; role?:string }) {
+// ─── 4. Individual name reveal ────────────────────────────────────────────────
+function NameReveal({ name, role }: { name: string; role: string }) {
   return (
     <motion.div
       key={name}
-      initial={{ opacity:0, x:24 }} animate={{ opacity:1, x:0 }}
-      exit={{ opacity:0, x:-16 }}
-      transition={{ duration:0.85, ease }}
-      style={blockStyle}
+      initial={{ opacity: 0, x: 22 }} animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -18 }}
+      transition={{ duration: FADE_DUR, ease: EASE_IN }}
+      style={BLOCK}
     >
-      {role && (
-        <motion.div
-          initial={{ opacity:0 }} animate={{ opacity:1 }}
-          transition={{ delay:0.3, duration:0.6 }}
-          style={{
-            fontFamily:"'Playfair Display',serif", fontStyle:"italic", fontWeight:400,
-            fontSize:"clamp(12px,1.2vw,16px)", color:GOLD_DIM,
-            marginBottom:"6px", textShadow:shadow,
-          }}
-        >{role}</motion.div>
-      )}
-      <div style={{
-        fontFamily:"'Playfair Display',serif", fontStyle:"italic", fontWeight:700,
-        fontSize:"clamp(34px,4.8vw,68px)", color:WHITE, lineHeight:1.10,
-        textShadow:shadow,
-      }}>{name}</div>
-      <GoldRule/>
+      <motion.div
+        initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+        transition={{ duration: 0.65, delay: 0.25 }}
+        style={LABEL}
+      >{role}</motion.div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -8 }}
+        transition={{ duration: FADE_DUR, delay: 0.18, ease: EASE_IN }}
+        style={BIG}
+      >{name}</motion.div>
+
+      <Rule/>
     </motion.div>
   );
 }
 
-// ─── Team sequence data ───────────────────────────────────────────────────────
-const TEAM_BEATS: { name:string; role?:string; hold:number }[] = [
-  { name:"Hannah Shiv",     role:"Student Researcher",    hold:2500 },
-  { name:"Chloe Pan",       role:"Student Researcher",    hold:2500 },
-  { name:"Baram Oustad",    role:"Student Researcher",    hold:2500 },
-  { name:"Calliandra Harris", role:"Science Teacher",     hold:2500 },
+// ─── Team sequence — one person at a time ────────────────────────────────────
+const TEAM = [
+  { name: "Hannah Shiv",      role: "Student Researcher" },
+  { name: "Chloe Pan",        role: "Student Researcher" },
+  { name: "Baram Oustad",     role: "Student Researcher" },
+  { name: "Calliandra Harris", role: "Science Teacher"   },
 ];
+const PER_PERSON = 2500; // ms each person is visible
 
 function TeamSequence() {
   const [idx, setIdx] = useState(0);
   useEffect(() => {
-    const timer = setTimeout(() => setIdx(i => Math.min(i+1, TEAM_BEATS.length-1)), TEAM_BEATS[idx]?.hold ?? 2500);
-    return () => clearTimeout(timer);
+    if (idx >= TEAM.length - 1) return;
+    const t = setTimeout(() => setIdx(i => i + 1), PER_PERSON);
+    return () => clearTimeout(t);
   }, [idx]);
 
-  const beat = TEAM_BEATS[idx];
   return (
     <AnimatePresence mode="wait">
-      <NameReveal key={beat.name} name={beat.name} role={beat.role}/>
+      <NameReveal key={TEAM[idx].name} name={TEAM[idx].name} role={TEAM[idx].role}/>
     </AnimatePresence>
   );
 }
 
 // ─── Caption schedule ─────────────────────────────────────────────────────────
 type Card =
-  | { kind:"nature"; in:number; out:number; top:string; sub:string }
-  | { kind:"quote";  in:number; out:number; quote:string }
-  | { kind:"school"; in:number; out:number }
-  | { kind:"team";   in:number; out:number };
+  | { kind: "nature"; in: number; out: number; top: string; sub: string }
+  | { kind: "quote";  in: number; out: number; quote: string }
+  | { kind: "school"; in: number; out: number }
+  | { kind: "team";   in: number; out: number };
 
 const CARDS: Card[] = [
-  { kind:"nature", in:0,  out:7,  top:"Hawaiian Islands",   sub:"Pacific Ocean · Aerial View" },
-  { kind:"quote",  in:9,  out:17, quote:"Every Wetland\nTells a Story" },
-  { kind:"nature", in:19, out:26, top:"Freshwater Wetland", sub:"Hawai\u02BBi · Protected Ecosystem" },
-  { kind:"nature", in:28, out:36, top:"Hawaiian Coot",      sub:"\u02BBalae ke\u02BBoke\u02BBo  ·  Fulica alai" },
+  { kind:"nature", in:0,  out:7,  top:"Hawaiian Islands",    sub:"Pacific Ocean · Aerial View"          },
+  { kind:"quote",  in:9,  out:17, quote:"Every Wetland\nTells a Story"                                  },
+  { kind:"nature", in:19, out:26, top:"Freshwater Wetland",  sub:"Hawai\u02BBi · Protected Ecosystem"  },
+  { kind:"nature", in:28, out:36, top:"Hawaiian Coot",       sub:"\u02BBalae ke\u02BBoke\u02BBo  ·  Fulica alai" },
   { kind:"school", in:38, out:50 },
   { kind:"team",   in:52, out:62 },
 ];
@@ -279,43 +293,35 @@ function Grain() {
   );
 }
 
-// ─── Letterbox — tall enough to bury YouTube overlays ────────────────────────
+// ─── Letterbox bars ───────────────────────────────────────────────────────────
 function Letterbox() {
   return (
     <>
-      {/* Top bar — deliberately deep to cover YouTube's ad/info overlay */}
       <div style={{ position:"absolute", top:0, left:0, right:0, height:"16%", background:"#000", zIndex:20, pointerEvents:"none" }}/>
       <div style={{ position:"absolute", bottom:0, left:0, right:0, height:"10%", background:"#000", zIndex:20, pointerEvents:"none" }}/>
     </>
   );
 }
 
-// ─── Bird call badge ──────────────────────────────────────────────────────────
+// ─── Bird call waveform badge ─────────────────────────────────────────────────
 function BirdCallBadge() {
   return (
     <motion.div
       initial={{ opacity:0 }} animate={{ opacity:1 }} exit={{ opacity:0 }}
-      transition={{ duration:0.7 }}
+      transition={{ duration: 0.8 }}
       style={{
         position:"absolute", right:"7%", bottom:"13%", zIndex:15,
         display:"flex", alignItems:"center", gap:"5px", pointerEvents:"none",
-        justifyContent:"flex-end",
       }}
     >
-      {[0, 0.14, 0.30, 0.14, 0].map((h,i)=>(
+      {[0, 0.14, 0.32, 0.14, 0].map((h, i) => (
         <motion.div key={i}
-          animate={{ scaleY:[1, 1+h*5, 1] }}
+          animate={{ scaleY: [1, 1 + h * 5, 1] }}
           transition={{ duration:0.65, delay:i*0.09, repeat:Infinity, repeatType:"mirror" }}
-          style={{
-            width:"2.5px", height:"11px", borderRadius:"2px",
-            background:GOLD_DIM, transformOrigin:"bottom",
-          }}
+          style={{ width:"2.5px", height:"11px", borderRadius:"2px", background:G3, transformOrigin:"bottom" }}
         />
       ))}
-      <span style={{
-        fontFamily:"'Playfair Display',serif", fontStyle:"italic", fontWeight:400,
-        fontSize:"clamp(10px,0.9vw,13px)", color:GOLD_DIM, marginLeft:"5px",
-      }}>Hawaiian Coot call</span>
+      <span style={{ ...LABEL, fontSize:"clamp(10px,0.9vw,13px)", marginLeft:"5px" }}>Hawaiian Coot call</span>
     </motion.div>
   );
 }
@@ -325,7 +331,7 @@ function useElapsed() {
   const [elapsed, setElapsed] = useState(0);
   const t0 = useRef(Date.now());
   useEffect(() => {
-    const id = setInterval(() => setElapsed(Math.floor((Date.now()-t0.current)/1000)), 400);
+    const id = setInterval(() => setElapsed(Math.floor((Date.now() - t0.current) / 1000)), 400);
     return () => clearInterval(id);
   }, []);
   return elapsed;
@@ -333,30 +339,33 @@ function useElapsed() {
 
 function useBirdCall(elapsed: number) {
   const [playing, setPlaying] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const audioRef  = useRef<HTMLAudioElement | null>(null);
   const triggered = useRef(false);
+
   useEffect(() => {
     if (elapsed < BIRD_CALL_START || triggered.current) return;
     triggered.current = true;
     const audio = new Audio(birdCallSrc as string);
-    audio.loop = true; audio.volume = 0;
+    audio.loop = true;
+    audio.volume = 0;
     audioRef.current = audio;
     audio.play().then(() => {
       setPlaying(true);
       const start = Date.now();
       const ramp = () => {
-        const t = (Date.now()-start)/2000;
-        audio.volume = Math.min(BIRD_CALL_VOL*t, BIRD_CALL_VOL);
+        const t = (Date.now() - start) / 2000;
+        audio.volume = Math.min(BIRD_CALL_VOL * t, BIRD_CALL_VOL);
         if (t < 1) requestAnimationFrame(ramp);
       };
       requestAnimationFrame(ramp);
-    }).catch(()=>{});
+    }).catch(() => {});
     return () => { audio.pause(); };
   }, [elapsed >= BIRD_CALL_START]); // eslint-disable-line
+
   return playing;
 }
 
-// ─── Main ─────────────────────────────────────────────────────────────────────
+// ─── Main component ───────────────────────────────────────────────────────────
 interface Props { onComplete: () => void }
 
 export function CinematicIntro({ onComplete }: Props) {
@@ -367,7 +376,7 @@ export function CinematicIntro({ onComplete }: Props) {
   const finish = useCallback(() => {
     if (closing) return;
     setClosing(true);
-    setTimeout(onComplete, 950);
+    setTimeout(onComplete, 1000);
   }, [closing, onComplete]);
 
   useEffect(() => { if (elapsed >= TOTAL_SEC) finish(); }, [elapsed, finish]);
@@ -386,11 +395,11 @@ export function CinematicIntro({ onComplete }: Props) {
       <style>{STYLES}</style>
 
       <motion.div
-        animate={closing ? { opacity:0 } : { opacity:1 }}
-        transition={{ duration:0.95, ease:"easeInOut" }}
+        animate={closing ? { opacity: 0 } : { opacity: 1 }}
+        transition={{ duration: 1.0, ease: "easeInOut" }}
         style={{ position:"fixed", inset:0, zIndex:9990, background:"#000", overflow:"hidden" }}
       >
-        {/* YouTube iframe — cropped aggressively at top to hide ad overlays */}
+        {/* YouTube — top-cropped to bury YouTube ad overlays */}
         <iframe
           src={embedSrc}
           allow="autoplay; fullscreen"
@@ -404,54 +413,45 @@ export function CinematicIntro({ onComplete }: Props) {
           title="Hawaiian Islands aerial footage"
         />
 
-        {/* Gradient vignette — right side lighter so text pops */}
+        {/* Gradient vignette — right side darker so gold text pops */}
         <div style={{
           position:"absolute", inset:0, pointerEvents:"none", zIndex:5,
           background:[
-            "linear-gradient(to right, rgba(0,0,0,0.28) 0%, transparent 38%, rgba(0,0,0,0.42) 80%, rgba(0,0,0,0.62) 100%)",
-            "linear-gradient(to bottom, rgba(0,0,0,0.52) 0%, transparent 20%, transparent 76%, rgba(0,0,0,0.60) 100%)",
+            "linear-gradient(to right, rgba(0,0,0,0.18) 0%, transparent 35%, rgba(0,0,0,0.55) 72%, rgba(0,0,0,0.78) 100%)",
+            "linear-gradient(to bottom, rgba(0,0,0,0.50) 0%, transparent 20%, transparent 76%, rgba(0,0,0,0.60) 100%)",
           ].join(","),
         }}/>
 
-        {/* Fade-to-dark */}
+        {/* Fade-to-dark + final species reveal */}
         <motion.div
-          initial={{ opacity:0 }}
+          initial={{ opacity: 0 }}
           animate={{ opacity: fadingOut ? 1 : 0 }}
-          transition={{ duration:2.6, ease:"easeInOut" }}
+          transition={{ duration: 2.8, ease: "easeInOut" }}
           style={{ position:"absolute", inset:0, background:"#030810", zIndex:16, pointerEvents:"none" }}
         >
           {fadingOut && (
             <motion.div
               initial={{ opacity:0, x:20 }} animate={{ opacity:1, x:0 }}
-              transition={{ duration:1.0, delay:0.4, ease }}
+              transition={{ duration:1.0, delay:0.5, ease:EASE_IN }}
               style={{
                 position:"absolute", right:"7%", top:"50%", transform:"translateY(-50%)",
                 textAlign:"right",
               }}
             >
+              <div style={{ ...BIG, fontSize:"clamp(36px,5.0vw,70px)" }}>Hawaiian Coot</div>
+              <div style={{ ...SUB, marginTop:"14px" }}>{"\u02BBalae ke\u02BBoke\u02BBo"} · Fulica alai</div>
               <div style={{
-                fontFamily:"'Playfair Display',serif", fontStyle:"italic", fontWeight:700,
-                fontSize:"clamp(30px,4.2vw,60px)", lineHeight:1.1,
-                background:`linear-gradient(135deg, ${WHITE} 0%, ${GOLD_LIGHT} 50%, ${WHITE} 100%)`,
-                WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent",
-                backgroundClip:"text",
-              }}>Hawaiian Coot</div>
-              <div style={{
-                fontFamily:"'Playfair Display',serif", fontStyle:"italic", fontWeight:400,
-                fontSize:"clamp(13px,1.3vw,18px)", color:GOLD, marginTop:"10px",
-              }}>{"\u02BBalae ke\u02BBoke\u02BBo"} · Fulica alai</div>
-              <div style={{
-                height:"1px", width:"80px", marginLeft:"auto", marginTop:"14px",
-                background:`linear-gradient(to left, transparent, ${GOLD})`,
+                height:"1.5px", width:"90px", marginLeft:"auto", marginTop:"16px",
+                background:`linear-gradient(to left, transparent, ${G2} 35%, ${G1})`,
               }}/>
             </motion.div>
           )}
         </motion.div>
 
-        {/* Caption overlay */}
+        {/* Caption cards */}
         <AnimatePresence mode="wait">
           {activeCard && !fadingOut && (() => {
-            switch(activeCard.kind) {
+            switch (activeCard.kind) {
               case "nature": return <NatureCaption key={activeCard.in} top={activeCard.top} sub={activeCard.sub}/>;
               case "quote":  return <CenterQuote   key={activeCard.in} quote={activeCard.quote}/>;
               case "school": return <SchoolText    key="school"/>;
@@ -465,22 +465,26 @@ export function CinematicIntro({ onComplete }: Props) {
           {birdAudio && !fadingOut && <BirdCallBadge key="bird"/>}
         </AnimatePresence>
 
-        {/* Progress bar (inside bottom letterbox) */}
+        {/* Gold progress bar inside bottom letterbox */}
         <div style={{
           position:"absolute", bottom:"10%", left:0, right:0, height:"2px",
-          background:"rgba(255,255,255,0.07)", zIndex:21, pointerEvents:"none",
+          background:"rgba(212,175,55,0.15)", zIndex:21, pointerEvents:"none",
         }}>
           <motion.div
-            animate={{ width:`${Math.min((elapsed/TOTAL_SEC)*100,100)}%` }}
+            animate={{ width:`${Math.min((elapsed / TOTAL_SEC) * 100, 100)}%` }}
             transition={{ duration:0.4, ease:"linear" }}
-            style={{ height:"100%", background:GOLD_DIM, transformOrigin:"left" }}
+            style={{
+              height:"100%",
+              background:`linear-gradient(to right, ${G2}, ${G1})`,
+              transformOrigin:"left",
+            }}
           />
         </div>
 
         <Grain/>
         <Letterbox/>
 
-        {/* Skip — top-right, inside letterbox */}
+        {/* Skip — gold italic, inside top letterbox */}
         <motion.button
           initial={{ opacity:0 }} animate={{ opacity:0.40 }}
           whileHover={{ opacity:1 }}
@@ -489,24 +493,22 @@ export function CinematicIntro({ onComplete }: Props) {
           style={{
             position:"absolute", top:"4.5%", right:"20px", zIndex:25,
             background:"transparent",
-            border:`1px solid ${GOLD_DIM}`,
-            borderRadius:"2px", padding:"4px 14px",
+            border:`1px solid ${G3}`,
+            borderRadius:"2px", padding:"4px 16px",
             fontFamily:"'Playfair Display',serif", fontStyle:"italic",
-            fontSize:"12px", color:WHITE_DIM,
+            fontSize:"13px", color:G2,
             cursor:"pointer",
           }}
         >Skip ›</motion.button>
 
-        {/* Timecode */}
+        {/* Timecode — dim gold */}
         <div style={{
           position:"absolute", top:"5.5%", left:"22px", zIndex:25,
-          fontFamily:"'Playfair Display',serif", fontStyle:"italic",
-          fontSize:"11px", color:"rgba(255,255,255,0.22)",
+          ...LABEL, fontSize:"11px", color:"rgba(212,175,55,0.28)",
           fontVariantNumeric:"tabular-nums",
         }}>
-          {String(Math.floor(elapsed/60)).padStart(2,"0")}:{String(elapsed%60).padStart(2,"0")}
+          {String(Math.floor(elapsed / 60)).padStart(2,"0")}:{String(elapsed % 60).padStart(2,"0")}
         </div>
-
       </motion.div>
     </>
   );
