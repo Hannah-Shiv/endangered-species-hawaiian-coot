@@ -326,16 +326,16 @@ export function RadialLanding({ onSelect, exiting }: Props) {
         </div>
         <div style={{ position:"relative", display:"inline-block" }}>
           <div style={{
-            fontFamily:"'Playfair Display',serif", fontStyle:"italic", fontWeight:700,
-            fontSize:"clamp(30px,3.5vw,52px)", color:"#fff", lineHeight:1.02,
-            textShadow:"0 2px 30px rgba(0,0,0,0.9), 0 0 60px rgba(34,197,94,0.22)",
-          }}>Save Our<br/>Wildlife</div>
+            fontFamily:"'Great Vibes', cursive",
+            fontSize:"clamp(42px,5vw,72px)", color:"#fff", lineHeight:1.05,
+            textShadow:"0 2px 30px rgba(0,0,0,0.9), 0 0 60px rgba(34,197,94,0.28)",
+          }}>Save Our Wildlife</div>
           <span style={{
-            position:"absolute", top:-8, right:-26, fontSize:"26px", opacity:0.85,
+            position:"absolute", top:-4, right:-22, fontSize:"22px", opacity:0.85,
             filter:"drop-shadow(0 0 10px rgba(255,100,150,0.60))", pointerEvents:"none",
           }}>🌺</span>
         </div>
-        <div style={{ display:"flex", alignItems:"center", gap:"8px", marginTop:"10px" }}>
+        <div style={{ display:"flex", alignItems:"center", gap:"8px", marginTop:"8px" }}>
           <span style={{ fontSize:"16px", filter:"drop-shadow(0 0 5px rgba(34,197,94,0.85))" }}>🌿</span>
           <div style={{ fontFamily:"'Josefin Sans',sans-serif", fontSize:"clamp(12px,1.15vw,16px)",
             fontWeight:700, letterSpacing:"0.28em", color:"rgba(34,197,94,0.95)", textTransform:"uppercase" }}>
@@ -343,38 +343,90 @@ export function RadialLanding({ onSelect, exiting }: Props) {
           </div>
           <span style={{ fontSize:"14px", filter:"drop-shadow(0 0 4px rgba(34,197,94,0.7))", opacity:0.80 }}>🌿</span>
         </div>
-        <div style={{ width:"85%", height:"1px", marginTop:"11px",
+        <div style={{ width:"85%", height:"1px", marginTop:"10px",
           background:"linear-gradient(to right, rgba(34,197,94,0.60), rgba(0,218,195,0.30), transparent)" }}/>
-      </motion.div>
-
-      {/* ── BOTTOM-LEFT: Quote + Bird portrait ────────────────────────────────── */}
-      <motion.div {...panelAnim(-1, 0.18)} style={{
-        position:"absolute", left:"14px", bottom:"4%",
-        zIndex:6, width:`calc(50% - ${R + CZ/2 + 26}px)`,
-        display:"flex", flexDirection:"column", gap:"12px",
-      }}>
-        {/* Quote card */}
+        {/* Quote card — moved here, below the title */}
         <div style={{
+          marginTop:"13px",
           background:"#030f08",
           border:"1px solid rgba(34,197,94,0.28)",
           borderLeft:"3px solid rgba(34,197,94,0.85)",
           borderRadius:"0 10px 10px 0",
-          padding:"15px 16px 13px",
+          padding:"13px 15px 11px",
           position:"relative", overflow:"hidden",
         }}>
-          <div style={{ position:"absolute", top:0, left:0, width:"90px", height:"90px",
+          <div style={{ position:"absolute", top:0, left:0, width:"80px", height:"80px",
             background:"radial-gradient(ellipse, rgba(34,197,94,0.15) 0%, transparent 70%)", pointerEvents:"none" }}/>
-          <div style={{ position:"absolute", right:-12, bottom:-18, fontSize:"90px", opacity:0.04,
-            transform:"rotate(-15deg)", pointerEvents:"none" }}>🌺</div>
-          <div style={{ fontFamily:"'Playfair Display',serif", fontSize:"clamp(26px,2.6vw,38px)",
-            color:"rgba(34,197,94,0.65)", lineHeight:1, marginBottom:"8px" }}>❝</div>
-          <div style={{ fontFamily:"'Playfair Display',serif", fontSize:"clamp(12px,1.08vw,16px)",
-            fontStyle:"italic", color:"rgba(255,255,255,0.92)", lineHeight:1.80 }}>
-            We don't inherit the Earth from our ancestors. We borrow it from our children.
+          <div style={{ fontFamily:"'Playfair Display',serif", fontSize:"clamp(22px,2.2vw,32px)",
+            color:"rgba(34,197,94,0.65)", lineHeight:1, marginBottom:"6px" }}>❝</div>
+          <div style={{ fontFamily:"'Playfair Display',serif", fontSize:"clamp(11px,1.0vw,15px)",
+            fontStyle:"italic", color:"rgba(255,255,255,0.92)", lineHeight:1.75 }}>
+            We don&apos;t inherit the Earth from our ancestors. We borrow it from our children.
           </div>
           <div style={{ fontFamily:"'Josefin Sans',sans-serif", fontSize:"9px",
             color:"rgba(34,197,94,0.60)", letterSpacing:"0.20em",
-            textTransform:"uppercase", marginTop:"11px" }}>— Antoine de Saint-Exupéry</div>
+            textTransform:"uppercase", marginTop:"9px" }}>— Antoine de Saint-Exupéry</div>
+        </div>
+      </motion.div>
+
+      {/* ── BOTTOM-LEFT: Explore / Learn / Protect ───────────────────────────── */}
+      <motion.div {...panelAnim(-1, 0.18)} style={{
+        position:"absolute", left:"14px", bottom:"4%",
+        zIndex:6, width:`calc(50% - ${R + CZ/2 + 26}px)`,
+      }}>
+        <div style={{
+          background:"#020810",
+          border:"1px solid rgba(255,255,255,0.12)",
+          borderRadius:"12px",
+          padding:"14px 15px",
+          position:"relative", overflow:"hidden",
+        }}>
+          {/* rainbow top accent */}
+          <div style={{
+            position:"absolute", top:0, left:0, right:0, height:"2px",
+            background:"linear-gradient(to right, rgba(34,197,94,0.75), rgba(20,184,166,0.75), rgba(249,115,22,0.75))",
+          }}/>
+          {/* three rows */}
+          <div style={{ display:"flex", flexDirection:"column", gap:"7px" }}>
+            {([
+              { word:"Explore.", color:"#22c55e", glow:"rgba(34,197,94,0.65)", icon:"🔭",
+                desc:"Discover the world of \u02BBalae ke\u02BBoke\u02BBo",  rgb:"34,197,94" },
+              { word:"Learn.",   color:"#14b8a6", glow:"rgba(20,184,166,0.55)", icon:"📖",
+                desc:"Understand, connect & be inspired",                    rgb:"20,184,166" },
+              { word:"Protect.", color:"#f97316", glow:"rgba(249,115,22,0.60)", icon:"❤️",
+                desc:"Take action & make a difference",                      rgb:"249,115,22" },
+            ] as { word:string; color:string; glow:string; icon:string; desc:string; rgb:string }[])
+            .map(({ word, color, glow, icon, desc, rgb })=>(
+              <div key={word} style={{
+                display:"flex", alignItems:"center", gap:"10px",
+                padding:"9px 11px", borderRadius:"9px",
+                background:`linear-gradient(135deg, rgba(${rgb},0.10), rgba(${rgb},0.03))`,
+                border:`1px solid rgba(${rgb},0.22)`,
+                cursor:"pointer",
+                transition:"border-color 0.18s",
+              }}>
+                <div style={{
+                  width:34, height:34, borderRadius:"50%", flexShrink:0,
+                  background:`rgba(${rgb},0.14)`, border:`1px solid rgba(${rgb},0.40)`,
+                  display:"flex", alignItems:"center", justifyContent:"center", fontSize:"16px",
+                  filter:`drop-shadow(0 0 6px rgba(${rgb},0.5))`,
+                }}>{icon}</div>
+                <div style={{ flex:1, minWidth:0 }}>
+                  <div style={{
+                    fontFamily:"'Playfair Display',serif", fontStyle:"italic", fontWeight:700,
+                    fontSize:"clamp(14px,1.45vw,20px)",
+                    color, textShadow:`0 0 20px ${glow}`, lineHeight:1.15,
+                  }}>{word}</div>
+                  <div style={{
+                    fontFamily:"'Josefin Sans',sans-serif", fontSize:"8px",
+                    color:"rgba(255,255,255,0.45)", letterSpacing:"0.04em", marginTop:"2px",
+                  }}>{desc}</div>
+                </div>
+                <span style={{ color, fontSize:"16px", opacity:0.70, flexShrink:0,
+                  filter:`drop-shadow(0 0 4px ${glow})` }}>→</span>
+              </div>
+            ))}
+          </div>
         </div>
       </motion.div>
 
@@ -619,27 +671,40 @@ export function RadialLanding({ onSelect, exiting }: Props) {
             ))}
 
             {/* Glow halos (blurred under islands) */}
-            <ellipse cx="38" cy="42" rx="14" ry="13" fill="#44bb00" filter="url(#iblur)" opacity="0.6"/>
-            <ellipse cx="100" cy="60" rx="14" ry="9" fill="#44bb00" filter="url(#iblur)" opacity="0.5"/>
-            <ellipse cx="140" cy="54" rx="14" ry="6" fill="#44bb00" filter="url(#iblur)" opacity="0.4"/>
-            <ellipse cx="175" cy="65" rx="18" ry="13" fill="#44bb00" filter="url(#iblur)" opacity="0.55"/>
-            <ellipse cx="248" cy="93" rx="38" ry="30" fill="#55cc00" filter="url(#iblur)" opacity="0.70"/>
+            <ellipse cx="38" cy="43" rx="15" ry="13" fill="#44bb00" filter="url(#iblur)" opacity="0.60"/>
+            <ellipse cx="100" cy="61" rx="14" ry="9"  fill="#44bb00" filter="url(#iblur)" opacity="0.50"/>
+            <ellipse cx="141" cy="53" rx="16" ry="7"  fill="#44bb00" filter="url(#iblur)" opacity="0.40"/>
+            <ellipse cx="180" cy="65" rx="22" ry="13" fill="#44bb00" filter="url(#iblur)" opacity="0.55"/>
+            <ellipse cx="248" cy="95" rx="40" ry="32" fill="#55cc00" filter="url(#iblur)" opacity="0.70"/>
 
-            {/* Ni'ihau (small) */}
-            <ellipse cx="14" cy="38" rx="5" ry="6" fill="url(#ig2)"/>
+            {/* Ni'ihau — small teardrop */}
+            <path d="M 10,34 C 12,30 17,31 19,35 C 20,39 17,45 13,45 C 10,45 8,41 10,34 Z"
+              fill="url(#ig2)"/>
 
-            {/* Kaua'i */}
-            <ellipse cx="38" cy="42" rx="14" ry="12" fill="url(#ig2)"/>
-            {/* O'ahu */}
-            <ellipse cx="100" cy="60" rx="13" ry="8" fill="url(#ig2)"/>
-            {/* Moloka'i */}
-            <ellipse cx="140" cy="53" rx="14" ry="5" fill="url(#ig2)"/>
-            {/* Maui */}
-            <ellipse cx="174" cy="65" rx="17" ry="12" fill="url(#ig2)"/>
-            {/* Lana'i (tiny) */}
-            <ellipse cx="163" cy="75" rx="6" ry="4" fill="url(#ig2)" opacity="0.85"/>
-            {/* Hawai'i (Big Island — dominant) */}
-            <ellipse cx="248" cy="93" rx="38" ry="30" fill="url(#ig2)"/>
+            {/* Kaua'i — roughly circular with irregular coast */}
+            <path d="M 26,38 C 29,29 43,27 52,33 C 58,38 58,48 53,54 C 47,59 31,58 26,52 C 22,46 23,43 26,38 Z"
+              fill="url(#ig2)"/>
+
+            {/* O'ahu — elongated NW-SE */}
+            <path d="M 88,54 C 92,46 104,47 112,53 C 118,57 117,66 112,70 C 106,74 91,72 88,66 C 85,61 86,58 88,54 Z"
+              fill="url(#ig2)"/>
+
+            {/* Moloka'i — long thin bar */}
+            <path d="M 124,50 C 127,44 143,43 157,48 C 161,51 160,58 156,60 C 142,63 127,61 124,56 C 122,53 122,52 124,50 Z"
+              fill="url(#ig2)"/>
+
+            {/* Lana'i — small rounded triangle */}
+            <path d="M 157,72 C 160,67 168,67 171,72 C 173,76 170,82 165,82 C 160,82 156,78 157,72 Z"
+              fill="url(#ig2)" opacity="0.90"/>
+
+            {/* Maui — two-lobed: West Maui + East Maui (valley isle shape) */}
+            <path d="M 162,58 C 164,51 175,50 181,57 C 184,62 183,71 178,75 C 172,78 163,76 161,68 C 159,63 160,60 162,58 Z"
+              fill="url(#ig2)"/>
+            <path d="M 181,57 C 184,51 194,53 200,60 C 203,66 201,76 195,79 C 188,81 181,75 181,68 C 180,63 180,60 181,57 Z"
+              fill="url(#ig2)"/>
+            {/* Hawai'i — Big Island, dominant pentagonal shape */}
+            <path d="M 218,70 C 232,63 256,62 270,72 C 281,80 287,96 283,112 C 278,124 260,128 242,122 C 226,116 212,102 212,87 C 212,77 215,74 218,70 Z"
+              fill="url(#ig2)"/>
 
             {/* Label connector dots */}
             <circle cx="38" cy="42" r="1.5" fill="white" opacity="0.9"/>
@@ -667,79 +732,24 @@ export function RadialLanding({ onSelect, exiting }: Props) {
           {/* description */}
           <div style={{
             fontFamily:"'Playfair Display',serif", fontStyle:"italic",
-            fontSize:"11px", color:"rgba(255,255,255,0.82)", lineHeight:1.68,
+            fontSize:"14px", color:"rgba(255,255,255,0.88)", lineHeight:1.65,
             marginBottom:"11px",
           }}>
             Found only in Hawai{"\u02BB"}i — native to freshwater wetlands, taro fields &amp; coastal ponds.
           </div>
           {/* island tags */}
-          <div style={{ display:"flex", gap:"5px", flexWrap:"wrap" }}>
+          <div style={{ display:"flex", gap:"6px", flexWrap:"wrap" }}>
             {["\u02BBOahu","Maui","\u02BBKauai","Moloka\u02BBi","Hawai\u02BBi"].map(island=>(
               <span key={island} style={{
-                fontFamily:"'Josefin Sans',sans-serif", fontSize:"8px", fontWeight:600,
-                letterSpacing:"0.06em", color:"rgba(255,255,255,0.80)",
-                background:"rgba(0,218,195,0.06)", border:"1px solid rgba(0,218,195,0.35)",
-                borderRadius:"99px", padding:"3px 9px",
+                fontFamily:"'Josefin Sans',sans-serif", fontSize:"11px", fontWeight:600,
+                letterSpacing:"0.06em", color:"rgba(255,255,255,0.88)",
+                background:"rgba(0,218,195,0.09)", border:"1px solid rgba(0,218,195,0.45)",
+                borderRadius:"99px", padding:"4px 11px",
               }}>{island}</span>
             ))}
           </div>
         </div>
 
-        {/* Explore / Learn / Protect CTA */}
-        <div style={{
-          background:"#020810",
-          border:"1px solid rgba(255,255,255,0.12)",
-          borderRadius:"12px",
-          padding:"14px 15px",
-          position:"relative", overflow:"hidden",
-        }}>
-          {/* rainbow top accent */}
-          <div style={{
-            position:"absolute", top:0, left:0, right:0, height:"2px",
-            background:"linear-gradient(to right, rgba(34,197,94,0.75), rgba(20,184,166,0.75), rgba(249,115,22,0.75))",
-          }}/>
-          {/* three rows */}
-          <div style={{ display:"flex", flexDirection:"column", gap:"7px" }}>
-            {([
-              { word:"Explore.", color:"#22c55e", glow:"rgba(34,197,94,0.65)", icon:"🔭",
-                desc:"Discover the world of \u02BBalae ke\u02BBoke\u02BBo",  rgb:"34,197,94" },
-              { word:"Learn.",   color:"#14b8a6", glow:"rgba(20,184,166,0.55)", icon:"📖",
-                desc:"Understand, connect & be inspired",                    rgb:"20,184,166" },
-              { word:"Protect.", color:"#f97316", glow:"rgba(249,115,22,0.60)", icon:"❤️",
-                desc:"Take action & make a difference",                      rgb:"249,115,22" },
-            ] as { word:string; color:string; glow:string; icon:string; desc:string; rgb:string }[])
-            .map(({ word, color, glow, icon, desc, rgb })=>(
-              <div key={word} style={{
-                display:"flex", alignItems:"center", gap:"10px",
-                padding:"9px 11px", borderRadius:"9px",
-                background:`linear-gradient(135deg, rgba(${rgb},0.10), rgba(${rgb},0.03))`,
-                border:`1px solid rgba(${rgb},0.22)`,
-                cursor:"pointer",
-                transition:"border-color 0.18s",
-              }}>
-                <div style={{
-                  width:34, height:34, borderRadius:"50%", flexShrink:0,
-                  background:`rgba(${rgb},0.14)`, border:`1px solid rgba(${rgb},0.40)`,
-                  display:"flex", alignItems:"center", justifyContent:"center", fontSize:"16px",
-                  filter:`drop-shadow(0 0 6px rgba(${rgb},0.5))`,
-                }}>{icon}</div>
-                <div style={{ flex:1, minWidth:0 }}>
-                  <div style={{
-                    fontFamily:"'Playfair Display',serif", fontStyle:"italic", fontWeight:700,
-                    fontSize:"clamp(14px,1.45vw,20px)",
-                    color, textShadow:`0 0 20px ${glow}`, lineHeight:1.15,
-                  }}>{word}</div>
-                  <div style={{
-                    fontFamily:"'Josefin Sans',sans-serif", fontSize:"8px",
-                    color:"rgba(255,255,255,0.45)", letterSpacing:"0.04em", marginTop:"2px",
-                  }}>{desc}</div>
-                </div>
-                <span style={{ color, fontSize:"16px", opacity:0.70, flexShrink:0,
-                  filter:`drop-shadow(0 0 4px ${glow})` }}>→</span>
-              </div>
-            ))}
-          </div>
-        </div>
       </motion.div>
 
 
