@@ -52,18 +52,17 @@ function CinematicSplash({ onStart }: { onStart: () => void }) {
         }}
       />
 
-      {/* ── Only a gentle left panel + bottom strip — no corner darkening ── */}
-      {/* Left translucent panel for text legibility without blocking the bird */}
+      {/* ── Left panel for identity text legibility ── */}
       <div style={{
         position: "absolute", top: 0, left: 0, bottom: 0,
-        width: "46%", pointerEvents: "none",
-        background: "linear-gradient(to right, rgba(0,0,0,0.52) 0%, rgba(0,0,0,0.38) 60%, transparent 100%)",
+        width: "48%", pointerEvents: "none",
+        background: "linear-gradient(to right, rgba(0,0,0,0.50) 0%, rgba(0,0,0,0.32) 65%, transparent 100%)",
       }}/>
-      {/* Thin bottom strip for the CTA line */}
+      {/* Right panel for CTA text legibility */}
       <div style={{
-        position: "absolute", left: 0, right: 0, bottom: 0,
-        height: "18%", pointerEvents: "none",
-        background: "linear-gradient(to top, rgba(0,0,0,0.68) 0%, transparent 100%)",
+        position: "absolute", top: 0, right: 0, bottom: 0,
+        width: "36%", pointerEvents: "none",
+        background: "linear-gradient(to left, rgba(0,0,0,0.52) 0%, rgba(0,0,0,0.30) 65%, transparent 100%)",
       }}/>
 
       {/* ── Subtle gold shimmer on the water ── */}
@@ -78,15 +77,16 @@ function CinematicSplash({ onStart }: { onStart: () => void }) {
 
       {/* ══════════════════════════════════════════════════
           LEFT COLUMN — identity text (clear water zone)
+          Nudged up: top 43% instead of 50%
       ══════════════════════════════════════════════════ */}
       <div style={{
         position: "absolute",
-        top: "50%", left: "5%",
+        top: "43%", left: "5%",
         transform: "translateY(-50%)",
         display: "flex", flexDirection: "column",
         alignItems: "flex-start",
-        gap: "clamp(8px, 1.4vh, 18px)",
-        maxWidth: "38%",
+        gap: "clamp(6px, 1.2vh, 16px)",
+        maxWidth: "40%",
       }}>
 
         {/* Hi, I am */}
@@ -113,13 +113,14 @@ function CinematicSplash({ onStart }: { onStart: () => void }) {
           }}
         >Hawaiian Coot</motion.p>
 
-        {/* an endangered species */}
+        {/* an endangered species — larger, vivid red */}
         <motion.p
           initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 1.6, delay: 1.55, ease: EASE_IN }}
           style={{
-            fontFamily: GV, fontSize: "clamp(20px, 2.6vw, 38px)",
-            color: "rgba(255,205,90,0.82)", textShadow: DS,
+            fontFamily: GV, fontSize: "clamp(26px, 3.4vw, 50px)",
+            color: "#FF3B3B",
+            textShadow: "0 0 28px rgba(255,60,60,0.55), " + DS,
             margin: 0, lineHeight: 1.1,
           }}
         >an endangered species</motion.p>
@@ -132,53 +133,99 @@ function CinematicSplash({ onStart }: { onStart: () => void }) {
             height: "1px", width: "clamp(70px, 10vw, 140px)",
             background: `linear-gradient(to right, ${G2} 0%, rgba(255,224,96,0.3) 100%)`,
             transformOrigin: "left",
-            marginTop: "4px",
+            marginTop: "2px",
           }}
         />
 
-        {/* Want to fly with me and explore? — all Great Vibes, "fly" underlined */}
+        {/* Want to fly with me and explore?
+            – entire line in Great Vibes, bigger, glowing
+            – "fly" has an animated SVG brush-stroke underline */}
         <motion.p
           initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 1.8, delay: 2.4, ease: EASE_IN }}
           style={{
             fontFamily: GV,
-            fontSize: "clamp(26px, 3.4vw, 52px)",
-            color: "rgba(255,235,160,0.92)", textShadow: DS,
-            margin: 0, lineHeight: 1.3,
+            fontSize: "clamp(30px, 4vw, 62px)",
+            color: "rgba(255,240,170,0.96)", textShadow: DS,
+            margin: 0, lineHeight: 1.4,
           }}
         >
           Want to{" "}
-          <span style={{
-            color: G2,
-            textDecoration: "underline",
-            textDecorationColor: G2,
-            textUnderlineOffset: "5px",
-            textDecorationThickness: "1.5px",
-            textShadow: "0 0 32px rgba(255,224,96,0.65), " + DS,
-          }}>fly</span>
+          {/* "fly" with animated pen-stroke underline */}
+          <motion.span
+            animate={{ textShadow: [
+              "0 0 18px rgba(255,224,96,0.4), " + DS,
+              "0 0 52px rgba(255,224,96,0.95), " + DS,
+              "0 0 18px rgba(255,224,96,0.4), " + DS,
+            ]}}
+            transition={{ duration: 2.6, delay: 3.0, repeat: Infinity, ease: "easeInOut" }}
+            style={{
+              color: G2,
+              position: "relative",
+              display: "inline-block",
+            }}
+          >
+            fly
+            {/* SVG pen-stroke underline */}
+            <svg
+              style={{
+                position: "absolute",
+                bottom: "-0.12em",
+                left: "-8%",
+                width: "116%",
+                height: "0.32em",
+                overflow: "visible",
+                pointerEvents: "none",
+              }}
+              viewBox="0 0 120 14"
+              preserveAspectRatio="none"
+            >
+              <motion.path
+                d="M 3 10 C 12 5, 28 13, 46 8 C 62 3, 80 12, 98 7 C 108 4, 115 9, 118 7"
+                stroke="#FFE060"
+                strokeWidth="2.8"
+                fill="none"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                initial={{ pathLength: 0, opacity: 0 }}
+                animate={{ pathLength: 1, opacity: 1 }}
+                transition={{ duration: 1.1, delay: 2.9, ease: "easeOut" }}
+              />
+              {/* Second thinner, offset stroke for "ink" feel */}
+              <motion.path
+                d="M 5 11.5 C 20 8, 42 14, 65 9.5 C 85 5, 100 11, 116 8.5"
+                stroke="rgba(255,200,60,0.45)"
+                strokeWidth="1.2"
+                fill="none"
+                strokeLinecap="round"
+                initial={{ pathLength: 0, opacity: 0 }}
+                animate={{ pathLength: 1, opacity: 1 }}
+                transition={{ duration: 1.4, delay: 3.1, ease: "easeOut" }}
+              />
+            </svg>
+          </motion.span>
           {" "}with me and explore?
         </motion.p>
 
       </div>
 
       {/* ══════════════════════════════════════════════════
-          BOTTOM CTA — centred, over the thin dark strip
+          RIGHT-SIDE CTA — stacked, right panel zone
       ══════════════════════════════════════════════════ */}
       <div style={{
         position: "absolute",
-        bottom: "clamp(22px, 4vh, 48px)",
-        left: 0, right: 0,
-        display: "flex", alignItems: "baseline",
-        justifyContent: "center",
-        gap: "0.3em", flexWrap: "wrap",
-        padding: "0 5%",
+        bottom: "clamp(40px, 10vh, 110px)",
+        right: "4%",
+        display: "flex", flexDirection: "column",
+        alignItems: "flex-end",
+        gap: "0.2em",
       }}>
-        {/* "Come on ..." — static */}
+        {/* "Come on …" — static */}
         <motion.span
-          initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+          initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 1.4, delay: 3.2, ease: EASE_IN }}
           style={{
-            fontFamily: GV, fontSize: "clamp(22px, 2.8vw, 42px)",
+            fontFamily: GV, fontSize: "clamp(20px, 2.6vw, 38px)",
             color: "rgba(255,228,120,0.85)", textShadow: DS,
           }}
         >Come on …</motion.span>
@@ -186,21 +233,21 @@ function CinematicSplash({ onStart }: { onStart: () => void }) {
         {/* "click anywhere" — pulses */}
         <motion.span
           initial={{ opacity: 0 }}
-          animate={{ opacity: [0, 1, 0.3, 1] }}
+          animate={{ opacity: [0, 1, 0.25, 1] }}
           transition={{ duration: 2.0, delay: 3.9, repeat: Infinity, repeatType: "loop" }}
           style={{
-            fontFamily: GV, fontSize: "clamp(26px, 3.4vw, 52px)",
+            fontFamily: GV, fontSize: "clamp(24px, 3.2vw, 50px)",
             color: G2,
-            textShadow: "0 0 36px rgba(255,224,96,0.70), " + DS,
+            textShadow: "0 0 40px rgba(255,224,96,0.80), " + DS,
           }}
         >click anywhere</motion.span>
 
         {/* "… let's fly together" — static */}
         <motion.span
-          initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+          initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 1.4, delay: 3.2, ease: EASE_IN }}
           style={{
-            fontFamily: GV, fontSize: "clamp(22px, 2.8vw, 42px)",
+            fontFamily: GV, fontSize: "clamp(20px, 2.6vw, 38px)",
             color: "rgba(255,228,120,0.85)", textShadow: DS,
           }}
         >… let's fly together</motion.span>
