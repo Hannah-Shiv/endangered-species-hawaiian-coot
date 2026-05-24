@@ -14,7 +14,7 @@ import birdCallSrc from "@assets/XC342210_-_Hawaiian_Coot_-_Fulica_alai_17796387
 // ─── Config ───────────────────────────────────────────────────────────────────
 const VIDEO_ID        = "AWpvNtoG5nU";
 const START_SEC       = 2244;
-const TOTAL_SEC       = 62;
+const TOTAL_SEC       = 76;
 const BIRD_CALL_START = 10;
 const BIRD_CALL_VOL   = 0.42;
 
@@ -41,7 +41,7 @@ const CARD_MOTION = {
   exit:       { opacity: 0 },
   transition: {
     opacity: { duration: FADE_DUR, ease: EASE_IN },
-    exit:    { duration: 1.20,     ease: EASE_OUT },
+    exit:    { duration: 0.90,     ease: EASE_OUT },
   },
 } as const;
 
@@ -241,7 +241,7 @@ const TEAM = [
   { name: "Baram Oustad",     role: "Student Researcher" },
   { name: "Calliandra Harris", role: "Science Teacher"   },
 ];
-const PER_PERSON = 2500; // ms each person is visible
+const PER_PERSON = 3800; // ms each person is visible (1.6s fade-in + ~1.3s hold + 0.9s fade-out)
 
 function TeamSequence() {
   const [idx, setIdx] = useState(0);
@@ -271,7 +271,7 @@ const CARDS: Card[] = [
   { kind:"nature", in:19, out:26, top:"Freshwater Wetland",  sub:"Hawai\u02BBi · Protected Ecosystem"  },
   { kind:"nature", in:28, out:36, top:"Hawaiian Coot",       sub:"\u02BBalae ke\u02BBoke\u02BBo  ·  Fulica alai" },
   { kind:"school", in:38, out:50 },
-  { kind:"team",   in:52, out:62 },
+  { kind:"team",   in:52, out:73 },
 ];
 
 // ─── Film grain ───────────────────────────────────────────────────────────────
