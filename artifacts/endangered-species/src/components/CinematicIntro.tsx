@@ -511,6 +511,29 @@ export function CinematicIntro({ onComplete }: Props) {
     return () => window.removeEventListener('resize', h);
   }, []);
 
+  // null = loading, true = playing fine, false = failed → show gradient fallback
+  const [videoOk, setVideoOk] = useState<boolean | null>(null);
+  useEffect(() => {
+    // Give the video 9 seconds to report ready; if silent → assume failed
+    const timer = setTimeout(() => setVideoOk(v => v === null ? false : v), 9000);
+    const onMsg = (e: MessageEvent) => {
+      try {
+        const d = typeof e.data === 'string' ? JSON.parse(e.data) : e.data;
+        if (!d) return;
+        // YouTube sends these when playback is working
+        if (d.event === 'onReady' || d.event === 'onStateChange' ||
+            (d.event === 'infoDelivery' && d.info?.playerState !== undefined)) {
+          setVideoOk(true); clearTimeout(timer);
+        }
+        if (d.event === 'onError') {
+          setVideoOk(false); clearTimeout(timer);
+        }
+      } catch { /* non-JSON messages from other iframes — ignore */ }
+    };
+    window.addEventListener('message', onMsg);
+    return () => { clearTimeout(timer); window.removeEventListener('message', onMsg); };
+  }, []);
+
   const finish = useCallback(() => {
     if (closing) return;
     setClosing(true);
@@ -522,11 +545,12 @@ export function CinematicIntro({ onComplete }: Props) {
   const activeCard = CARDS.find(c => elapsed >= c.in && elapsed < c.out) ?? null;
   const fadingOut  = elapsed >= TOTAL_SEC - 3;
 
+  const origin = encodeURIComponent(window.location.origin);
   const embedSrc =
     `https://www.youtube.com/embed/${VIDEO_ID}` +
     `?autoplay=1&mute=1&controls=0&showinfo=0&rel=0` +
     `&modestbranding=1&iv_load_policy=3&disablekb=1&playsinline=1` +
-    `&start=${START_SEC}&enablejsapi=0`;
+    `&start=${START_SEC}&enablejsapi=1&origin=${origin}`;
 
   return (
     <IsMobileCtx.Provider value={isMobile}>
@@ -537,19 +561,36 @@ export function CinematicIntro({ onComplete }: Props) {
         transition={{ duration: 1.0, ease: "easeInOut" }}
         style={{ position:"fixed", inset:0, zIndex:9990, background:"#000", overflow:"hidden" }}
       >
-        {/* YouTube — top-cropped to bury YouTube ad overlays */}
-        <iframe
-          src={embedSrc}
-          allow="autoplay; fullscreen; encrypted-media"
-          allowFullScreen
-          style={{
-            position:"absolute",
-            top:"-12%", left:"-2%",
-            width:"104%", height:"124%",
-            border:"none", pointerEvents:"none",
-          }}
-          title="Hawaiian Islands aerial footage"
-        />
+        {/* YouTube — show iframe while loading/working; swap for gradient if it fails */}
+        {videoOk !== false ? (
+          <iframe
+            src={embedSrc}
+            allow="autoplay; fullscreen; encrypted-media"
+            allowFullScreen
+            style={{
+              position:"absolute",
+              top:"-12%", left:"-2%",
+              width:"104%", height:"124%",
+              border:"none", pointerEvents:"none",
+            }}
+            title="Hawaiian Islands aerial footage"
+          />
+        ) : (
+          /* Cinematic dark-ocean gradient — text cards look equally stunning over this */
+          <div style={{
+            position:"absolute", inset:0,
+            background:"radial-gradient(ellipse 120% 80% at 60% 55%, #0a1f14 0%, #051018 40%, #030810 100%)",
+          }}>
+            {/* Soft atmospheric shimmer */}
+            <div style={{
+              position:"absolute", inset:0,
+              background:[
+                "radial-gradient(ellipse 55% 40% at 68% 48%, rgba(0,90,60,0.28) 0%, transparent 65%)",
+                "radial-gradient(ellipse 40% 30% at 30% 70%, rgba(0,40,80,0.18) 0%, transparent 60%)",
+              ].join(","),
+            }}/>
+          </div>
+        )}
 
         {/* Solid black top bar — covers burned-in "Nature Relaxation Films" title */}
         <div style={{
