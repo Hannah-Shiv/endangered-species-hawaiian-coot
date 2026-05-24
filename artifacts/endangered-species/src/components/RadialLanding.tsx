@@ -7,7 +7,7 @@
  *  - Right panel: Quick Facts, Where It Lives, Explore/Learn/Protect
  *  - Bottom bar: SCROLL OR CLICK TO EXPLORE
  */
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import bgPhoto    from "../assets/bg-photo.png";
 import birdImg    from "../assets/bird-transparent.png";
@@ -83,8 +83,113 @@ interface Props {
   exiting: boolean;
 }
 
+// ─── Mobile layout — scrollable 2-col grid ───────────────────────────────────
+function MobileRadialLanding({ onSelect, exiting }: Props) {
+  return (
+    <div style={{ position:"fixed", inset:0, zIndex:8000, background:"#030810", overflowY:"auto" }}>
+
+      {/* Ambient glows */}
+      <div style={{
+        position:"fixed", inset:0, pointerEvents:"none", zIndex:0,
+        background:[
+          "radial-gradient(ellipse 60% 40% at 15% 10%, rgba(0,180,140,0.10) 0%, transparent 70%)",
+          "radial-gradient(ellipse 60% 40% at 85% 10%, rgba(34,100,180,0.09) 0%, transparent 70%)",
+          "radial-gradient(ellipse 50% 35% at 15% 90%, rgba(60,20,120,0.09) 0%, transparent 70%)",
+          "radial-gradient(ellipse 50% 35% at 85% 90%, rgba(20,80,60,0.08) 0%, transparent 70%)",
+        ].join(","),
+      }}/>
+
+      {/* Header — bird photo + species name */}
+      <div style={{ textAlign:"center", padding:"32px 20px 18px", position:"relative", zIndex:2 }}>
+        <div style={{
+          width:118, height:118, borderRadius:"50%", overflow:"hidden",
+          margin:"0 auto 14px",
+          boxShadow:"0 0 0 2px rgba(0,238,212,0.65), 0 0 28px rgba(0,238,212,0.22)",
+        }}>
+          <img src={bgPhoto} alt="Hawaiian Coot"
+            style={{ width:"100%", height:"100%", objectFit:"cover", objectPosition:"50% 42%" }}/>
+        </div>
+        <div style={{
+          fontFamily:"'Josefin Sans',sans-serif", fontSize:22, fontWeight:900,
+          letterSpacing:"0.06em", color:"#fff", textTransform:"uppercase",
+          textShadow:"0 2px 24px rgba(0,0,0,0.90)",
+        }}>{"\u02BBAlae Ke\u02BBoke\u02BBo"}</div>
+        <div style={{
+          fontFamily:"'Josefin Sans',sans-serif", fontSize:11, fontWeight:700,
+          letterSpacing:"0.28em", color:"rgba(0,218,195,0.90)",
+          textTransform:"uppercase", marginTop:5,
+        }}>Hawaiian Coot</div>
+        <div style={{ display:"flex", alignItems:"center", justifyContent:"center", gap:10, marginTop:7 }}>
+          <div style={{ width:36, height:1, background:"rgba(212,175,55,0.50)" }}/>
+          <div style={{ fontFamily:"'Playfair Display',serif", fontStyle:"italic", fontSize:11, color:"rgba(255,255,255,0.60)" }}>
+            Fulica alai
+          </div>
+          <div style={{ width:36, height:1, background:"rgba(212,175,55,0.50)" }}/>
+        </div>
+        <div style={{
+          fontFamily:"'Josefin Sans',sans-serif", fontSize:10, fontWeight:700,
+          letterSpacing:"0.26em", color:"#f97316", textTransform:"uppercase", marginTop:7,
+          textShadow:"0 0 14px rgba(249,115,22,0.80)",
+        }}>⚠ Endangered</div>
+      </div>
+
+      {/* Topic grid */}
+      <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:10, padding:"0 14px 24px", position:"relative", zIndex:2 }}>
+        {ITEMS.map((item) => (
+          <motion.div
+            key={item.key}
+            whileTap={{ scale:0.95 }}
+            onClick={() => !exiting && onSelect(item.key, item.group)}
+            style={{
+              background:"rgba(2,8,20,0.88)",
+              border:`1px solid ${item.color}40`,
+              borderRadius:10, padding:"14px 12px",
+              cursor:"pointer", position:"relative", overflow:"hidden",
+              WebkitTapHighlightColor:"transparent",
+            }}
+          >
+            <div style={{
+              position:"absolute", top:0, left:0, right:0, height:2,
+              background:`linear-gradient(to right, ${item.color}99, ${item.color}22)`,
+            }}/>
+            <div style={{ fontSize:24, marginBottom:6, filter:`drop-shadow(0 0 5px ${item.color}88)` }}>{item.icon}</div>
+            <div style={{
+              fontFamily:"'Josefin Sans',sans-serif", fontSize:8, fontWeight:700,
+              letterSpacing:"0.22em", color:item.color, marginBottom:3,
+            }}>{item.num}</div>
+            <div style={{
+              fontFamily:"'Josefin Sans',sans-serif", fontSize:11, fontWeight:700,
+              letterSpacing:"0.04em", color:"#fff", lineHeight:1.3, whiteSpace:"pre-line",
+            }}>{item.title}</div>
+            <div style={{
+              fontFamily:"'Playfair Display',serif", fontStyle:"italic",
+              fontSize:9, color:"rgba(255,255,255,0.52)", marginTop:5, lineHeight:1.5,
+            }}>{item.desc.replace('\n',' ')}</div>
+          </motion.div>
+        ))}
+      </div>
+
+      <div style={{
+        textAlign:"center", padding:"4px 20px 36px",
+        fontFamily:"'Josefin Sans',sans-serif", fontSize:9, fontWeight:700,
+        letterSpacing:"0.28em", color:"rgba(0,218,195,0.55)", textTransform:"uppercase",
+        position:"relative", zIndex:2,
+      }}>Tap any card to explore</div>
+    </div>
+  );
+}
+
 export function RadialLanding({ onSelect, exiting }: Props) {
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768);
   const vh = useRef(window.innerHeight).current;
+
+  useEffect(() => {
+    const h = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', h);
+    return () => window.removeEventListener('resize', h);
+  }, []);
+
+  if (isMobile) return <MobileRadialLanding onSelect={onSelect} exiting={exiting}/>;
 
   const panelAnim = (dir: 1 | -1, delay = 0.1) => ({
     initial: { opacity: 0, x: dir * 50 },

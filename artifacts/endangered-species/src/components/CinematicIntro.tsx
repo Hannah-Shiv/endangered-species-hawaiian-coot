@@ -7,7 +7,7 @@
  * Names cycle one at a time. No boxes.
  */
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState, useCallback, useContext, createContext } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import birdCallSrc from "@assets/XC342210_-_Hawaiian_Coot_-_Fulica_alai_1779638749861.mp3";
 import bgMusicSrc  from "@assets/World-Ambient-Background_1779644360925.m4a";
@@ -55,6 +55,18 @@ const BLOCK: React.CSSProperties = {
   maxWidth:      "clamp(320px, 52%, 720px)",
 };
 
+const MOBILE_BLOCK: React.CSSProperties = {
+  position:      "absolute",
+  left:          "5%",
+  right:         "5%",
+  bottom:        "17%",
+  textAlign:     "center",
+  zIndex:        15,
+  pointerEvents: "none",
+};
+
+const IsMobileCtx = createContext(false);
+
 // ─── CSS ─────────────────────────────────────────────────────────────────────
 const STYLES = `
   @keyframes ci-grain {
@@ -69,15 +81,16 @@ const STYLES = `
 
 // ─── Thin gold rule ───────────────────────────────────────────────────────────
 function Rule() {
+  const mob = useContext(IsMobileCtx);
   return (
     <motion.div
       initial={{ scaleX: 0 }} animate={{ scaleX: 1 }}
       transition={{ duration: 0.75, delay: 0.55, ease: EASE_IN }}
       style={{
-        height: "1.5px", width: "90px", marginLeft: "auto",
-        marginTop: "16px", marginBottom: "16px",
+        height: "1.5px", width: "90px",
+        margin: mob ? "16px auto" : "16px 0 16px auto",
         background: `linear-gradient(to left, transparent, ${G2} 40%, ${G1})`,
-        transformOrigin: "right",
+        transformOrigin: mob ? "center" : "right",
       }}
     />
   );
@@ -116,8 +129,9 @@ const LABEL: React.CSSProperties = {
 
 // ─── 1. Nature caption (lower-right) ─────────────────────────────────────────
 function NatureCaption({ top, sub }: { top: string; sub: string }) {
+  const mob = useContext(IsMobileCtx);
   return (
-    <motion.div {...CARD_MOTION} style={BLOCK}>
+    <motion.div {...CARD_MOTION} style={mob ? MOBILE_BLOCK : BLOCK}>
       <motion.div
         initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -10, transition: { duration: FADE_OUT, ease: [0.4,0,1,1] } }}
@@ -139,6 +153,7 @@ function NatureCaption({ top, sub }: { top: string; sub: string }) {
 
 // ─── 2. Center quote ──────────────────────────────────────────────────────────
 function CenterQuote({ quote }: { quote: string }) {
+  const mob = useContext(IsMobileCtx);
   const lines = quote.split("\n");
   return (
     <motion.div
@@ -146,8 +161,11 @@ function CenterQuote({ quote }: { quote: string }) {
       style={{
         position: "absolute", inset: 0, zIndex: 15, pointerEvents: "none",
         display: "flex", flexDirection: "column",
-        alignItems: "flex-end", justifyContent: "center",
-        paddingRight: "7%",
+        alignItems: mob ? "center" : "flex-end",
+        justifyContent: mob ? "flex-end" : "center",
+        paddingRight: mob ? 0 : "7%",
+        paddingBottom: mob ? "18%" : 0,
+        textAlign: mob ? "center" as const : "right" as const,
       }}
     >
       {lines.map((line, i) => (
@@ -174,8 +192,9 @@ function CenterQuote({ quote }: { quote: string }) {
 
 // ─── 3. Project / school text ─────────────────────────────────────────────────
 function SchoolText() {
+  const mob = useContext(IsMobileCtx);
   return (
-    <motion.div {...CARD_MOTION} style={BLOCK}>
+    <motion.div {...CARD_MOTION} style={mob ? MOBILE_BLOCK : BLOCK}>
       <motion.div
         initial={{ opacity: 0 }} animate={{ opacity: 1 }}
         exit={{ opacity: 0, transition: { duration: FADE_OUT, ease: [0.4,0,1,1] } }}
@@ -204,13 +223,14 @@ function SchoolText() {
 
 // ─── 4. Individual name reveal ────────────────────────────────────────────────
 function NameReveal({ name, role }: { name: string; role: string }) {
+  const mob = useContext(IsMobileCtx);
   return (
     <motion.div
       key={name}
       initial={{ opacity: 0 }} animate={{ opacity: 1 }}
       exit={{ opacity: 0, transition: { duration: FADE_OUT, ease: [0.4,0,1,1] } }}
       transition={{ duration: FADE_DUR, ease: EASE_IN }}
-      style={BLOCK}
+      style={mob ? MOBILE_BLOCK : BLOCK}
     >
       <motion.div
         initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
@@ -287,8 +307,9 @@ function Grain() {
 
 // ─── Teacher dedication card ──────────────────────────────────────────────────
 function TeacherCard() {
+  const mob = useContext(IsMobileCtx);
   return (
-    <motion.div {...CARD_MOTION} style={BLOCK}>
+    <motion.div {...CARD_MOTION} style={mob ? MOBILE_BLOCK : BLOCK}>
       <motion.div
         initial={{ opacity:0, y:10 }} animate={{ opacity:1, y:0 }}
         exit={{ opacity:0, transition:{ duration:FADE_OUT, ease:[0.4,0,1,1] } }}
@@ -483,6 +504,12 @@ export function CinematicIntro({ onComplete }: Props) {
   const [closing, setClosing] = useState(false);
   useBgMusic(closing);
   const birdAudio = useBirdCall(elapsed);
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth < 768);
+  useEffect(() => {
+    const h = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', h);
+    return () => window.removeEventListener('resize', h);
+  }, []);
 
   const finish = useCallback(() => {
     if (closing) return;
@@ -498,11 +525,11 @@ export function CinematicIntro({ onComplete }: Props) {
   const embedSrc =
     `https://www.youtube.com/embed/${VIDEO_ID}` +
     `?autoplay=1&mute=1&controls=0&showinfo=0&rel=0` +
-    `&modestbranding=1&iv_load_policy=3&disablekb=1` +
+    `&modestbranding=1&iv_load_policy=3&disablekb=1&playsinline=1` +
     `&start=${START_SEC}&enablejsapi=0`;
 
   return (
-    <>
+    <IsMobileCtx.Provider value={isMobile}>
       <style>{STYLES}</style>
 
       <motion.div
@@ -513,7 +540,7 @@ export function CinematicIntro({ onComplete }: Props) {
         {/* YouTube — top-cropped to bury YouTube ad overlays */}
         <iframe
           src={embedSrc}
-          allow="autoplay; fullscreen"
+          allow="autoplay; fullscreen; encrypted-media"
           allowFullScreen
           style={{
             position:"absolute",
@@ -624,7 +651,7 @@ export function CinematicIntro({ onComplete }: Props) {
         <motion.button
           initial={{ opacity:0 }} animate={{ opacity:0.90 }}
           whileHover={{ opacity:1, scale:1.05 }}
-          transition={{ delay:2.5, duration:0.7 }}
+          transition={{ delay:1.0, duration:0.7 }}
           onClick={finish}
           style={{
             position:"absolute", top:"5%", right:"28px", zIndex:25,
@@ -649,6 +676,6 @@ export function CinematicIntro({ onComplete }: Props) {
           {String(Math.floor(elapsed / 60)).padStart(2,"0")}:{String(elapsed % 60).padStart(2,"0")}
         </div>
       </motion.div>
-    </>
+    </IsMobileCtx.Provider>
   );
 }
