@@ -259,7 +259,8 @@ export function RadialLanding({ onSelect, exiting }: Props) {
         zIndex:1,
       }}>
         <img src={centerImg} alt="'Alae Ke'oke'o — Hawaiian Coot" style={{
-          width:"100%", height:"100%",
+          width:"112%", height:"112%",
+          marginLeft:"-6%", marginTop:"-6%",
           objectFit:"cover", objectPosition:"50% 50%",
         }}/>
       </div>
