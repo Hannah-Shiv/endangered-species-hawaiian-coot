@@ -99,7 +99,7 @@ export function RadialLanding({ onSelect, exiting }: Props) {
       {/* ── BACKGROUND: real wetland + bird photo ── */}
       <img src={bgPhoto} alt="" style={{
         position:"absolute", inset:0, width:"100%", height:"100%",
-        objectFit:"cover", objectPosition:"center 35%",
+        objectFit:"cover", objectPosition:"center 20%",
         filter:"brightness(0.80) contrast(1.05) saturate(1.08)",
       }}/>
 
