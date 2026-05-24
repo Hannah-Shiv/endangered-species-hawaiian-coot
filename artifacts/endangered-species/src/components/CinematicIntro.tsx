@@ -368,19 +368,11 @@ function BirdCallBadge() {
       transition={{ duration: 0.8 }}
       style={{
         position:"absolute", right:"7%", bottom:"2%", zIndex:15,
-        display:"flex", flexDirection:"column", alignItems:"flex-end",
-        gap:"10px", pointerEvents:"none",
+        display:"flex", flexDirection:"row", alignItems:"center",
+        gap:"12px", pointerEvents:"none",
       }}
     >
-      {/* Label */}
-      <span style={{
-        ...LABEL,
-        fontSize:"clamp(18px, 1.8vw, 26px)",
-        letterSpacing:"0.10em",
-        color: G2,
-      }}>🎵 Hawaiian Coot call</span>
-
-      {/* Waveform bars */}
+      {/* Waveform bars — left side */}
       <div style={{ display:"flex", alignItems:"flex-end", gap:"4px", height:"52px" }}>
         {bars.map((h, i) => (
           <motion.div key={i}
@@ -402,6 +394,14 @@ function BirdCallBadge() {
           />
         ))}
       </div>
+
+      {/* Label — same line as bars */}
+      <span style={{
+        ...LABEL,
+        fontSize:"clamp(18px, 1.8vw, 26px)",
+        letterSpacing:"0.10em",
+        color: G2,
+      }}>🎵 Hawaiian Coot call</span>
     </motion.div>
   );
 }
@@ -511,27 +511,17 @@ export function CinematicIntro({ onComplete }: Props) {
     return () => window.removeEventListener('resize', h);
   }, []);
 
-  // null = loading, true = playing fine, false = failed → show gradient fallback
+  // null = checking, true = YouTube reachable → show iframe, false = blocked → keep gradient
   const [videoOk, setVideoOk] = useState<boolean | null>(null);
   useEffect(() => {
-    // Give the video 9 seconds to report ready; if silent → assume failed
-    const timer = setTimeout(() => setVideoOk(v => v === null ? false : v), 9000);
-    const onMsg = (e: MessageEvent) => {
-      try {
-        const d = typeof e.data === 'string' ? JSON.parse(e.data) : e.data;
-        if (!d) return;
-        // YouTube sends these when playback is working
-        if (d.event === 'onReady' || d.event === 'onStateChange' ||
-            (d.event === 'infoDelivery' && d.info?.playerState !== undefined)) {
-          setVideoOk(true); clearTimeout(timer);
-        }
-        if (d.event === 'onError') {
-          setVideoOk(false); clearTimeout(timer);
-        }
-      } catch { /* non-JSON messages from other iframes — ignore */ }
-    };
-    window.addEventListener('message', onMsg);
-    return () => { clearTimeout(timer); window.removeEventListener('message', onMsg); };
+    // Probe YouTube reachability by loading the video thumbnail.
+    // Far more reliable than postMessage which breaks in nested-iframe envs.
+    const img = new Image();
+    const timer = setTimeout(() => setVideoOk(false), 4000);
+    img.onload  = () => { clearTimeout(timer); setVideoOk(true);  };
+    img.onerror = () => { clearTimeout(timer); setVideoOk(false); };
+    img.src = `https://i.ytimg.com/vi/${VIDEO_ID}/hqdefault.jpg`;
+    return () => { clearTimeout(timer); img.src = ''; };
   }, []);
 
   const finish = useCallback(() => {
