@@ -1,4 +1,5 @@
 import { useState, useCallback } from "react";
+import cootPhoto from "@assets/image_1779576726784.png";
 import { LandingHero } from "@/components/LandingHero";
 import { DomeNav } from "@/components/DomeNav";
 import { RadialLanding } from "@/components/RadialLanding";
@@ -29,53 +30,149 @@ function CinematicSplash({ onStart }: { onStart: () => void }) {
       key="splash"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 1.2 }}
+      exit={{ opacity: 0, transition: { duration: 0.7 } }}
+      transition={{ duration: 1.4 }}
       onClick={onStart}
       style={{
         position: "fixed", inset: 0, zIndex: 9990,
-        background: "#000", cursor: "pointer",
+        background: "#020608", cursor: "pointer",
         display: "flex", flexDirection: "column",
         alignItems: "center", justifyContent: "center",
+        overflow: "hidden",
       }}
     >
-      {/* Species name */}
+      {/* Atmospheric radial glow behind the bird */}
+      <div style={{
+        position: "absolute",
+        top: "50%", left: "50%",
+        transform: "translate(-50%, -52%)",
+        width: "clamp(440px, 62vw, 820px)",
+        height: "clamp(440px, 62vw, 820px)",
+        borderRadius: "50%",
+        background: "radial-gradient(ellipse at center, rgba(255,224,96,0.09) 0%, rgba(255,200,64,0.04) 40%, transparent 72%)",
+        pointerEvents: "none",
+      }}/>
+
+      {/* ── Hawaiian Coot title ── */}
       <motion.div
-        initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1.8, delay: 0.4, ease: EASE_IN }}
+        initial={{ opacity: 0, y: -18 }} animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 2.0, delay: 0.3, ease: EASE_IN }}
         style={{
           fontFamily: "'Playfair Display', serif",
           fontStyle: "italic", fontWeight: 300,
-          fontSize: "clamp(48px, 7.5vw, 108px)",
-          color: G2, letterSpacing: "0.09em",
+          fontSize: "clamp(28px, 3.8vw, 54px)",
+          color: G2, letterSpacing: "0.18em",
           textShadow: SHADOW,
+          marginBottom: "clamp(14px, 2.2vh, 28px)",
         }}
       >Hawaiian Coot</motion.div>
 
-      {/* Gold rule */}
+      {/* ── Bird image — gently floating ── */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.93 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 2.2, delay: 0.5, ease: EASE_IN }}
+        style={{ position: "relative" }}
+      >
+        {/* Soft gold reflection under the bird */}
+        <div style={{
+          position: "absolute", bottom: "-18px", left: "50%",
+          transform: "translateX(-50%)",
+          width: "70%", height: "28px",
+          background: "radial-gradient(ellipse, rgba(255,224,96,0.18) 0%, transparent 70%)",
+          filter: "blur(6px)",
+          pointerEvents: "none",
+        }}/>
+
+        <motion.img
+          src={cootPhoto as string}
+          alt="Hawaiian Coot"
+          animate={{ y: [0, -12, 0] }}
+          transition={{ duration: 5.0, repeat: Infinity, ease: "easeInOut" }}
+          style={{
+            width: "clamp(180px, 24vw, 360px)",
+            height: "clamp(180px, 24vw, 360px)",
+            borderRadius: "50%",
+            objectFit: "cover",
+            objectPosition: "center 30%",
+            boxShadow: [
+              "0 0 0 1.5px rgba(255,224,96,0.25)",
+              "0 0 56px 16px rgba(255,200,64,0.10)",
+              "0 8px 80px rgba(0,0,0,0.88)",
+            ].join(", "),
+            display: "block",
+          }}
+        />
+      </motion.div>
+
+      {/* ── Gold rule ── */}
       <motion.div
         initial={{ scaleX: 0 }} animate={{ scaleX: 1 }}
-        transition={{ duration: 1.0, delay: 1.0, ease: EASE_IN }}
+        transition={{ duration: 1.1, delay: 1.2, ease: EASE_IN }}
         style={{
-          height: "1px", width: "80px",
-          background: G2, margin: "28px auto",
+          height: "1px", width: "clamp(60px, 8vw, 100px)",
+          background: `linear-gradient(to right, transparent, ${G2}, transparent)`,
+          margin: "clamp(18px, 2.8vh, 32px) auto",
           transformOrigin: "center",
         }}
       />
 
-      {/* Pulsing "tap to begin" */}
+      {/* ── "tap anywhere to fly with me over Hawaii" ── */}
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: [0, 0.55, 0.28, 0.55] }}
-        transition={{ duration: 2.4, delay: 1.6, repeat: Infinity, repeatType: "reverse" }}
+        initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1.8, delay: 1.5, ease: EASE_IN }}
         style={{
-          fontFamily: "'Playfair Display', serif",
-          fontStyle: "italic", fontWeight: 300,
-          fontSize: "clamp(13px, 1.3vw, 17px)",
-          color: G2, letterSpacing: "0.22em",
+          display: "flex", alignItems: "baseline",
+          gap: "0.22em", flexWrap: "wrap", justifyContent: "center",
           textShadow: SHADOW,
         }}
-      >tap anywhere to begin</motion.div>
+      >
+        {/* "tap anywhere to " */}
+        <span style={{
+          fontFamily: "'Playfair Display', serif",
+          fontStyle: "italic", fontWeight: 300,
+          fontSize: "clamp(14px, 1.6vw, 22px)",
+          color: "rgba(255,224,96,0.72)",
+          letterSpacing: "0.06em",
+        }}>tap anywhere to</span>
+
+        {/* "fly" — Great Vibes calligraphic script */}
+        <span style={{
+          fontFamily: "'Great Vibes', cursive",
+          fontSize: "clamp(38px, 5.2vw, 74px)",
+          color: G2,
+          letterSpacing: "0.02em",
+          lineHeight: 1,
+          textShadow: [
+            "0 0 32px rgba(255,224,96,0.55)",
+            "0 2px 60px rgba(0,0,0,0.95)",
+          ].join(", "),
+        }}>fly</span>
+
+        {/* "with me over Hawaii" */}
+        <span style={{
+          fontFamily: "'Playfair Display', serif",
+          fontStyle: "italic", fontWeight: 300,
+          fontSize: "clamp(14px, 1.6vw, 22px)",
+          color: "rgba(255,224,96,0.72)",
+          letterSpacing: "0.06em",
+        }}>with me over Hawaii</span>
+      </motion.div>
+
+      {/* Pulsing arrow hint */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: [0, 0.35, 0, 0.35] }}
+        transition={{ duration: 2.8, delay: 2.6, repeat: Infinity }}
+        style={{
+          marginTop: "clamp(18px, 2.8vh, 32px)",
+          fontFamily: "'Playfair Display', serif",
+          fontStyle: "italic",
+          fontSize: "clamp(11px, 1.1vw, 14px)",
+          color: "rgba(255,224,96,0.40)",
+          letterSpacing: "0.28em",
+        }}
+      >· · ·</motion.div>
     </motion.div>
   );
 }
@@ -151,7 +248,7 @@ export default function Home() {
 
       {/* RadialLanding — shown on first visit, collapses into DomeNav */}
       <AnimatePresence>
-        {mode === "landing" && (
+        {phase === "home" && mode === "landing" && (
           <RadialLanding
             key="radial-landing"
             onSelect={handleLandingSelect}
