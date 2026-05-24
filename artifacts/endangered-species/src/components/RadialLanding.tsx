@@ -355,10 +355,9 @@ export function RadialLanding({ onSelect, exiting }: Props) {
       }}>
         {/* Quote card */}
         <div style={{
-          background:"linear-gradient(135deg, rgba(0,28,18,0.94) 0%, rgba(0,12,8,0.96) 100%)",
-          backdropFilter:"blur(20px)",
-          border:"1px solid rgba(34,197,94,0.22)",
-          borderLeft:"3px solid rgba(34,197,94,0.78)",
+          background:"#030f08",
+          border:"1px solid rgba(34,197,94,0.28)",
+          borderLeft:"3px solid rgba(34,197,94,0.85)",
           borderRadius:"0 10px 10px 0",
           padding:"15px 16px 13px",
           position:"relative", overflow:"hidden",
@@ -413,13 +412,12 @@ export function RadialLanding({ onSelect, exiting }: Props) {
 
         {/* Quick Facts — Option 2 style */}
         <div style={{
-          background:"linear-gradient(160deg, rgba(0,8,24,0.96) 0%, rgba(0,14,30,0.93) 100%)",
-          backdropFilter:"blur(22px)",
-          border:"1.5px solid rgba(0,218,195,0.45)",
+          background:"#020810",
+          border:"1.5px solid rgba(0,218,195,0.55)",
           borderRadius:"14px",
           padding:"16px 16px 14px",
           position:"relative", overflow:"hidden",
-          boxShadow:"0 0 0 1px rgba(0,218,195,0.10), 0 0 32px rgba(0,218,195,0.12), inset 0 0 40px rgba(0,218,195,0.03)",
+          boxShadow:"0 0 28px rgba(0,218,195,0.14)",
         }}>
           {/* teal top glow bar */}
           <div style={{
@@ -580,9 +578,8 @@ export function RadialLanding({ onSelect, exiting }: Props) {
 
         {/* Where It Lives */}
         <div style={{
-          background:"linear-gradient(135deg, rgba(0,22,38,0.94) 0%, rgba(0,14,28,0.92) 100%)",
-          backdropFilter:"blur(20px)",
-          border:"1px solid rgba(0,218,195,0.30)",
+          background:"#020c16",
+          border:"1px solid rgba(0,218,195,0.40)",
           borderRadius:"12px",
           padding:"14px 15px",
           position:"relative", overflow:"hidden",
@@ -590,94 +587,112 @@ export function RadialLanding({ onSelect, exiting }: Props) {
           {/* top accent line */}
           <div style={{
             position:"absolute", top:0, left:0, right:0, height:"2px",
-            background:"linear-gradient(to right, transparent, rgba(0,218,195,0.80), transparent)",
+            background:"linear-gradient(to right, transparent, rgba(0,218,195,0.90), transparent)",
           }}/>
           {/* header */}
-          <div style={{ display:"flex", alignItems:"center", gap:"8px", marginBottom:"9px" }}>
-            <span style={{ fontSize:"12px", filter:"drop-shadow(0 0 5px rgba(0,218,195,0.7))" }}>📍</span>
+          <div style={{ display:"flex", alignItems:"center", gap:"7px", marginBottom:"10px" }}>
+            <span style={{ fontSize:"13px", filter:"drop-shadow(0 0 6px rgba(0,218,195,0.9))" }}>📍</span>
             <div style={{
               fontFamily:"'Josefin Sans',sans-serif", fontSize:"9px", fontWeight:700,
-              letterSpacing:"0.28em", color:"rgba(0,218,195,0.92)", textTransform:"uppercase",
+              letterSpacing:"0.28em", color:"rgba(0,218,195,1.0)", textTransform:"uppercase",
             }}>Where It Lives</div>
           </div>
           {/* title */}
-          <div style={{ marginBottom:"9px" }}>
-            <div style={{ fontFamily:"'Josefin Sans',sans-serif", fontSize:"13px", fontWeight:700,
-              color:"#fff", letterSpacing:"0.06em" }}>Hawaiian Islands</div>
-            <div style={{ fontFamily:"'Josefin Sans',sans-serif", fontSize:"8px",
-              color:"rgba(0,218,195,0.60)", letterSpacing:"0.10em", marginTop:"2px" }}>
-              Pacific Ocean · USA
+          <div style={{ marginBottom:"10px" }}>
+            <div style={{ fontFamily:"'Josefin Sans',sans-serif", fontSize:"14px", fontWeight:700,
+              color:"#ffffff", letterSpacing:"0.05em" }}>Hawaiian Islands</div>
+            <div style={{ fontFamily:"'Josefin Sans',sans-serif", fontSize:"9px", fontWeight:600,
+              color:"rgba(0,218,195,0.85)", letterSpacing:"0.06em", marginTop:"3px" }}>
+              Pacific Ocean &nbsp;•&nbsp; USA
             </div>
           </div>
 
-          {/* ── SVG Hawaii Archipelago Map ── */}
-          <div style={{
-            background:"rgba(0,25,45,0.75)", backdropFilter:"blur(6px)",
-            border:"1px solid rgba(0,218,195,0.18)", borderRadius:"9px",
-            padding:"9px 7px 6px", marginBottom:"10px", position:"relative", overflow:"hidden",
-          }}>
-            <svg viewBox="0 0 260 92" style={{ width:"100%", display:"block" }}>
-              <defs>
-                <pattern id="hgrid" width="20" height="20" patternUnits="userSpaceOnUse">
-                  <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(0,218,195,0.06)" strokeWidth="0.5"/>
-                </pattern>
-                <radialGradient id="isleGlow" cx="50%" cy="50%" r="50%">
-                  <stop offset="0%" stopColor="rgba(0,218,195,0.55)"/>
-                  <stop offset="100%" stopColor="rgba(0,218,195,0.18)"/>
-                </radialGradient>
-              </defs>
-              <rect width="260" height="92" fill="url(#hgrid)"/>
-              {/* Ocean atmosphere */}
-              <ellipse cx="130" cy="55" rx="125" ry="40" fill="rgba(0,80,130,0.07)"/>
-              {/* Island chain connector */}
-              <line x1="18" y1="34" x2="228" y2="68" stroke="rgba(0,218,195,0.10)" strokeWidth="1" strokeDasharray="4,3"/>
+          {/* ── SVG Hawaii Archipelago Map (matching reference) ── */}
+          <svg viewBox="0 0 290 130" style={{ width:"100%", display:"block", marginBottom:"10px" }}>
+            <defs>
+              {/* Island green gradient */}
+              <radialGradient id="ig2" cx="38%" cy="32%" r="65%">
+                <stop offset="0%" stopColor="#d4ff00"/>
+                <stop offset="45%" stopColor="#55cc00"/>
+                <stop offset="100%" stopColor="#1a5500"/>
+              </radialGradient>
+              {/* Glow filter */}
+              <filter id="iglow" x="-60%" y="-60%" width="220%" height="220%">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur"/>
+                <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+              </filter>
+              <filter id="iblur" x="-80%" y="-80%" width="260%" height="260%">
+                <feGaussianBlur stdDeviation="7"/>
+              </filter>
+            </defs>
 
-              {/* Ni'ihau */}
-              <ellipse cx="12" cy="30" rx="5" ry="6.5" fill="rgba(0,218,195,0.28)" stroke="rgba(0,218,195,0.55)" strokeWidth="0.7"/>
+            {/* Dark ocean background */}
+            <rect width="290" height="130" fill="#040e1a"/>
 
-              {/* Kaua'i */}
-              <ellipse cx="30" cy="34" rx="13" ry="11.5" fill="url(#isleGlow)" stroke="rgba(0,238,212,0.80)" strokeWidth="1"/>
-              <circle cx="30" cy="34" r="2.5" fill="rgba(0,255,220,0.95)" filter="url(#dot-glow)"/>
-              <circle cx="30" cy="34" r="6" fill="none" stroke="rgba(0,218,195,0.35)" strokeWidth="0.7"/>
+            {/* Stars */}
+            {([
+              [14,8],[45,5],[72,12],[110,4],[155,9],[200,6],[255,11],[275,4],
+              [8,25],[60,30],[92,18],[140,22],[185,15],[240,20],[280,18],
+              [25,50],[55,45],[88,55],[130,42],[170,48],[225,38],[265,44],
+              [10,70],[40,65],[78,75],[120,68],[165,72],[210,62],[260,70],
+              [30,95],[65,88],[105,98],[148,90],[190,95],[235,85],[275,92],
+              [20,115],[50,108],[90,118],[135,110],[178,116],[222,108],[268,115],
+            ] as [number,number][]).map(([x,y],i)=>(
+              <circle key={i} cx={x} cy={y} r={i%3===0?0.9:0.6}
+                fill="white" opacity={0.3+Math.random()*0.4}/>
+            ))}
 
-              {/* O'ahu */}
-              <ellipse cx="80" cy="45" rx="18" ry="11.5" fill="url(#isleGlow)" stroke="rgba(0,238,212,0.80)" strokeWidth="1"/>
-              <circle cx="80" cy="45" r="2.8" fill="rgba(0,255,220,0.95)"/>
-              <circle cx="80" cy="45" r="7" fill="none" stroke="rgba(0,218,195,0.30)" strokeWidth="0.7"/>
+            {/* Glow halos (blurred under islands) */}
+            <ellipse cx="38" cy="42" rx="14" ry="13" fill="#44bb00" filter="url(#iblur)" opacity="0.6"/>
+            <ellipse cx="100" cy="60" rx="14" ry="9" fill="#44bb00" filter="url(#iblur)" opacity="0.5"/>
+            <ellipse cx="140" cy="54" rx="14" ry="6" fill="#44bb00" filter="url(#iblur)" opacity="0.4"/>
+            <ellipse cx="175" cy="65" rx="18" ry="13" fill="#44bb00" filter="url(#iblur)" opacity="0.55"/>
+            <ellipse cx="248" cy="93" rx="38" ry="30" fill="#55cc00" filter="url(#iblur)" opacity="0.70"/>
 
-              {/* Moloka'i */}
-              <ellipse cx="115" cy="46" rx="14" ry="6.5" fill="url(#isleGlow)" stroke="rgba(0,218,195,0.65)" strokeWidth="0.8"/>
+            {/* Ni'ihau (small) */}
+            <ellipse cx="14" cy="38" rx="5" ry="6" fill="url(#ig2)"/>
 
-              {/* Maui */}
-              <ellipse cx="146" cy="53" rx="18" ry="12" fill="url(#isleGlow)" stroke="rgba(0,238,212,0.80)" strokeWidth="1"/>
-              <circle cx="146" cy="53" r="2.5" fill="rgba(0,255,220,0.95)"/>
+            {/* Kaua'i */}
+            <ellipse cx="38" cy="42" rx="14" ry="12" fill="url(#ig2)"/>
+            {/* O'ahu */}
+            <ellipse cx="100" cy="60" rx="13" ry="8" fill="url(#ig2)"/>
+            {/* Moloka'i */}
+            <ellipse cx="140" cy="53" rx="14" ry="5" fill="url(#ig2)"/>
+            {/* Maui */}
+            <ellipse cx="174" cy="65" rx="17" ry="12" fill="url(#ig2)"/>
+            {/* Lana'i (tiny) */}
+            <ellipse cx="163" cy="75" rx="6" ry="4" fill="url(#ig2)" opacity="0.85"/>
+            {/* Hawai'i (Big Island — dominant) */}
+            <ellipse cx="248" cy="93" rx="38" ry="30" fill="url(#ig2)"/>
 
-              {/* Hawai'i (Big Island) */}
-              <ellipse cx="213" cy="67" rx="31" ry="23" fill="url(#isleGlow)" stroke="rgba(0,238,212,0.85)" strokeWidth="1.2"/>
-              <circle cx="213" cy="67" r="3.2" fill="rgba(0,255,220,1)" filter="url(#dot-glow)"/>
-              <circle cx="213" cy="67" r="9" fill="none" stroke="rgba(0,218,195,0.28)" strokeWidth="0.7"/>
+            {/* Label connector dots */}
+            <circle cx="38" cy="42" r="1.5" fill="white" opacity="0.9"/>
+            <circle cx="140" cy="53" r="1.5" fill="white" opacity="0.9"/>
+            <circle cx="174" cy="65" r="1.5" fill="white" opacity="0.9"/>
+            <circle cx="248" cy="93" r="1.8" fill="white" opacity="0.9"/>
 
-              {/* Island labels */}
-              <text x="30" y="50" textAnchor="middle" fontFamily="sans-serif" fontSize="5.5" fontWeight="700"
-                fill="rgba(0,218,195,0.80)" letterSpacing="0.5">KAUA'I</text>
-              <text x="80" y="61" textAnchor="middle" fontFamily="sans-serif" fontSize="5.5" fontWeight="700"
-                fill="rgba(0,218,195,0.80)" letterSpacing="0.5">O'AHU</text>
-              <text x="146" y="69" textAnchor="middle" fontFamily="sans-serif" fontSize="5.5" fontWeight="700"
-                fill="rgba(0,218,195,0.80)" letterSpacing="0.5">MAUI</text>
-              <text x="213" y="82" textAnchor="middle" fontFamily="sans-serif" fontSize="5.5" fontWeight="700"
-                fill="rgba(0,218,195,0.80)" letterSpacing="0.5">HAWAI'I</text>
+            {/* Dotted label lines */}
+            <line x1="38" y1="40" x2="55" y2="14" stroke="white" strokeWidth="0.8" strokeDasharray="2,2" opacity="0.45"/>
+            <line x1="140" y1="51" x2="148" y2="18" stroke="white" strokeWidth="0.8" strokeDasharray="2,2" opacity="0.45"/>
+            <line x1="174" y1="63" x2="195" y2="20" stroke="white" strokeWidth="0.8" strokeDasharray="2,2" opacity="0.45"/>
+            <line x1="248" y1="91" x2="260" y2="120" stroke="white" strokeWidth="0.8" strokeDasharray="2,2" opacity="0.45"/>
 
-              {/* Pacific label */}
-              <text x="130" y="89" textAnchor="middle" fontFamily="sans-serif" fontSize="5" fontWeight="400"
-                fill="rgba(255,255,255,0.22)" letterSpacing="2">PACIFIC OCEAN</text>
-            </svg>
-          </div>
+            {/* Labels */}
+            <text x="55" y="12" fontFamily="sans-serif" fontSize="7.5" fontWeight="600"
+              fill="rgba(255,255,255,0.90)" letterSpacing="0.3">Kaua{"\u02BB"}i</text>
+            <text x="143" y="16" fontFamily="sans-serif" fontSize="7.5" fontWeight="600"
+              fill="rgba(255,255,255,0.90)" letterSpacing="0.3">Moloka{"\u02BB"}i</text>
+            <text x="190" y="18" fontFamily="sans-serif" fontSize="7.5" fontWeight="600"
+              fill="rgba(255,255,255,0.90)" letterSpacing="0.3">Maui</text>
+            <text x="255" y="127" fontFamily="sans-serif" fontSize="7.5" fontWeight="600"
+              fill="rgba(255,255,255,0.90)" letterSpacing="0.3">Hawai{"\u02BB"}i</text>
+          </svg>
 
           {/* description */}
           <div style={{
             fontFamily:"'Playfair Display',serif", fontStyle:"italic",
-            fontSize:"10.5px", color:"rgba(255,255,255,0.72)", lineHeight:1.70,
-            marginBottom:"10px",
+            fontSize:"11px", color:"rgba(255,255,255,0.82)", lineHeight:1.68,
+            marginBottom:"11px",
           }}>
             Found only in Hawai{"\u02BB"}i — native to freshwater wetlands, taro fields &amp; coastal ponds.
           </div>
@@ -685,10 +700,10 @@ export function RadialLanding({ onSelect, exiting }: Props) {
           <div style={{ display:"flex", gap:"5px", flexWrap:"wrap" }}>
             {["\u02BBOahu","Maui","\u02BBKauai","Moloka\u02BBi","Hawai\u02BBi"].map(island=>(
               <span key={island} style={{
-                fontFamily:"'Josefin Sans',sans-serif", fontSize:"7.5px", fontWeight:700,
-                letterSpacing:"0.06em", color:"rgba(0,218,195,0.85)",
-                background:"rgba(0,218,195,0.10)", border:"1px solid rgba(0,218,195,0.28)",
-                borderRadius:"99px", padding:"2px 8px",
+                fontFamily:"'Josefin Sans',sans-serif", fontSize:"8px", fontWeight:600,
+                letterSpacing:"0.06em", color:"rgba(255,255,255,0.80)",
+                background:"rgba(0,218,195,0.06)", border:"1px solid rgba(0,218,195,0.35)",
+                borderRadius:"99px", padding:"3px 9px",
               }}>{island}</span>
             ))}
           </div>
@@ -696,11 +711,10 @@ export function RadialLanding({ onSelect, exiting }: Props) {
 
         {/* Explore / Learn / Protect CTA */}
         <div style={{
-          background:"linear-gradient(135deg, rgba(0,12,26,0.90) 0%, rgba(5,15,32,0.88) 100%)",
-          backdropFilter:"blur(18px)",
-          border:"1px solid rgba(255,255,255,0.08)",
+          background:"#020810",
+          border:"1px solid rgba(255,255,255,0.12)",
           borderRadius:"12px",
-          padding:"17px 18px",
+          padding:"14px 15px",
           position:"relative", overflow:"hidden",
         }}>
           {/* rainbow top accent */}
