@@ -11,6 +11,7 @@ import { useRef, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import bgPhoto    from "../assets/bg-photo.png";
 import birdImg    from "../assets/bird-transparent.png";
+import whereItLivesImg from "@assets/image_1779661049779.png";
 import circle01 from "../assets/circles/circle01.png";
 import circle02 from "../assets/circles/circle02.png";
 import circle03 from "../assets/circles/circle03.png";
@@ -684,150 +685,22 @@ export function RadialLanding({ onSelect, exiting }: Props) {
         display:"flex", flexDirection:"column", gap:"10px",
       }}>
 
-        {/* Where It Lives */}
+        {/* Where It Lives — full image panel */}
         <div style={{
-          background:"#020c16",
-          border:"1px solid rgba(0,218,195,0.40)",
+          border:"1px solid rgba(0,218,195,0.45)",
           borderRadius:"12px",
-          padding:"14px 15px",
-          position:"relative", overflow:"hidden",
+          overflow:"hidden",
+          position:"relative",
         }}>
-          {/* top accent line */}
-          <div style={{
-            position:"absolute", top:0, left:0, right:0, height:"2px",
-            background:"linear-gradient(to right, transparent, rgba(0,218,195,0.90), transparent)",
-          }}/>
-          {/* header */}
-          <div style={{ display:"flex", alignItems:"center", gap:"8px", marginBottom:"11px" }}>
-            <span style={{ fontSize:"15px", filter:"drop-shadow(0 0 6px rgba(0,218,195,0.9))" }}>📍</span>
-            <div style={{
-              fontFamily:"'Josefin Sans',sans-serif", fontSize:"13px", fontWeight:700,
-              letterSpacing:"0.22em", color:"rgba(0,218,195,1.0)", textTransform:"uppercase",
-            }}>Where It Lives</div>
-          </div>
-          {/* title */}
-          <div style={{ marginBottom:"11px" }}>
-            <div style={{ fontFamily:"'Josefin Sans',sans-serif", fontSize:"16px", fontWeight:700,
-              color:"#ffffff", letterSpacing:"0.05em" }}>Hawaiian Islands</div>
-            <div style={{ fontFamily:"'Josefin Sans',sans-serif", fontSize:"12px", fontWeight:600,
-              color:"rgba(0,218,195,0.90)", letterSpacing:"0.06em", marginTop:"4px" }}>
-              Pacific Ocean &nbsp;•&nbsp; USA
-            </div>
-          </div>
-
-          {/* ── SVG Hawaii Archipelago Map (matching reference) ── */}
-          <svg viewBox="0 0 290 130" style={{ width:"100%", display:"block", marginBottom:"10px" }}>
-            <defs>
-              {/* Island green gradient */}
-              <radialGradient id="ig2" cx="38%" cy="32%" r="65%">
-                <stop offset="0%" stopColor="#d4ff00"/>
-                <stop offset="45%" stopColor="#55cc00"/>
-                <stop offset="100%" stopColor="#1a5500"/>
-              </radialGradient>
-              {/* Glow filter */}
-              <filter id="iglow" x="-60%" y="-60%" width="220%" height="220%">
-                <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur"/>
-                <feComposite in="SourceGraphic" in2="blur" operator="over"/>
-              </filter>
-              <filter id="iblur" x="-80%" y="-80%" width="260%" height="260%">
-                <feGaussianBlur stdDeviation="7"/>
-              </filter>
-            </defs>
-
-            {/* Dark ocean background */}
-            <rect width="290" height="130" fill="#040e1a"/>
-
-            {/* Stars */}
-            {([
-              [14,8],[45,5],[72,12],[110,4],[155,9],[200,6],[255,11],[275,4],
-              [8,25],[60,30],[92,18],[140,22],[185,15],[240,20],[280,18],
-              [25,50],[55,45],[88,55],[130,42],[170,48],[225,38],[265,44],
-              [10,70],[40,65],[78,75],[120,68],[165,72],[210,62],[260,70],
-              [30,95],[65,88],[105,98],[148,90],[190,95],[235,85],[275,92],
-              [20,115],[50,108],[90,118],[135,110],[178,116],[222,108],[268,115],
-            ] as [number,number][]).map(([x,y],i)=>(
-              <circle key={i} cx={x} cy={y} r={i%3===0?0.9:0.6}
-                fill="white" opacity={0.3+Math.random()*0.4}/>
-            ))}
-
-            {/* Glow halos (blurred under islands) */}
-            <ellipse cx="38" cy="43" rx="15" ry="13" fill="#44bb00" filter="url(#iblur)" opacity="0.60"/>
-            <ellipse cx="100" cy="61" rx="14" ry="9"  fill="#44bb00" filter="url(#iblur)" opacity="0.50"/>
-            <ellipse cx="141" cy="53" rx="16" ry="7"  fill="#44bb00" filter="url(#iblur)" opacity="0.40"/>
-            <ellipse cx="180" cy="65" rx="22" ry="13" fill="#44bb00" filter="url(#iblur)" opacity="0.55"/>
-            <ellipse cx="248" cy="95" rx="40" ry="32" fill="#55cc00" filter="url(#iblur)" opacity="0.70"/>
-
-            {/* Ni'ihau — small teardrop */}
-            <path d="M 10,34 C 12,30 17,31 19,35 C 20,39 17,45 13,45 C 10,45 8,41 10,34 Z"
-              fill="url(#ig2)"/>
-
-            {/* Kaua'i — roughly circular with irregular coast */}
-            <path d="M 26,38 C 29,29 43,27 52,33 C 58,38 58,48 53,54 C 47,59 31,58 26,52 C 22,46 23,43 26,38 Z"
-              fill="url(#ig2)"/>
-
-            {/* O'ahu — elongated NW-SE */}
-            <path d="M 88,54 C 92,46 104,47 112,53 C 118,57 117,66 112,70 C 106,74 91,72 88,66 C 85,61 86,58 88,54 Z"
-              fill="url(#ig2)"/>
-
-            {/* Moloka'i — long thin bar */}
-            <path d="M 124,50 C 127,44 143,43 157,48 C 161,51 160,58 156,60 C 142,63 127,61 124,56 C 122,53 122,52 124,50 Z"
-              fill="url(#ig2)"/>
-
-            {/* Lana'i — small rounded triangle */}
-            <path d="M 157,72 C 160,67 168,67 171,72 C 173,76 170,82 165,82 C 160,82 156,78 157,72 Z"
-              fill="url(#ig2)" opacity="0.90"/>
-
-            {/* Maui — two-lobed: West Maui + East Maui (valley isle shape) */}
-            <path d="M 162,58 C 164,51 175,50 181,57 C 184,62 183,71 178,75 C 172,78 163,76 161,68 C 159,63 160,60 162,58 Z"
-              fill="url(#ig2)"/>
-            <path d="M 181,57 C 184,51 194,53 200,60 C 203,66 201,76 195,79 C 188,81 181,75 181,68 C 180,63 180,60 181,57 Z"
-              fill="url(#ig2)"/>
-            {/* Hawai'i — Big Island, dominant pentagonal shape */}
-            <path d="M 218,70 C 232,63 256,62 270,72 C 281,80 287,96 283,112 C 278,124 260,128 242,122 C 226,116 212,102 212,87 C 212,77 215,74 218,70 Z"
-              fill="url(#ig2)"/>
-
-            {/* Label connector dots */}
-            <circle cx="38" cy="42" r="1.5" fill="white" opacity="0.9"/>
-            <circle cx="140" cy="53" r="1.5" fill="white" opacity="0.9"/>
-            <circle cx="174" cy="65" r="1.5" fill="white" opacity="0.9"/>
-            <circle cx="248" cy="93" r="1.8" fill="white" opacity="0.9"/>
-
-            {/* Dotted label lines */}
-            <line x1="38" y1="40" x2="55" y2="14" stroke="white" strokeWidth="0.8" strokeDasharray="2,2" opacity="0.45"/>
-            <line x1="140" y1="51" x2="148" y2="18" stroke="white" strokeWidth="0.8" strokeDasharray="2,2" opacity="0.45"/>
-            <line x1="174" y1="63" x2="195" y2="20" stroke="white" strokeWidth="0.8" strokeDasharray="2,2" opacity="0.45"/>
-            <line x1="248" y1="91" x2="260" y2="120" stroke="white" strokeWidth="0.8" strokeDasharray="2,2" opacity="0.45"/>
-
-            {/* Labels */}
-            <text x="55" y="12" fontFamily="sans-serif" fontSize="7.5" fontWeight="600"
-              fill="rgba(255,255,255,0.90)" letterSpacing="0.3">Kaua{"\u02BB"}i</text>
-            <text x="143" y="16" fontFamily="sans-serif" fontSize="7.5" fontWeight="600"
-              fill="rgba(255,255,255,0.90)" letterSpacing="0.3">Moloka{"\u02BB"}i</text>
-            <text x="190" y="18" fontFamily="sans-serif" fontSize="7.5" fontWeight="600"
-              fill="rgba(255,255,255,0.90)" letterSpacing="0.3">Maui</text>
-            <text x="255" y="127" fontFamily="sans-serif" fontSize="7.5" fontWeight="600"
-              fill="rgba(255,255,255,0.90)" letterSpacing="0.3">Hawai{"\u02BB"}i</text>
-          </svg>
-
-          {/* description */}
-          <div style={{
-            fontFamily:"'Playfair Display',serif", fontStyle:"italic",
-            fontSize:"14px", color:"rgba(255,255,255,0.88)", lineHeight:1.65,
-            marginBottom:"11px",
-          }}>
-            Found only in Hawai{"\u02BB"}i — native to freshwater wetlands, taro fields &amp; coastal ponds.
-          </div>
-          {/* island tags */}
-          <div style={{ display:"flex", gap:"6px", flexWrap:"wrap" }}>
-            {["\u02BBOahu","Maui","\u02BBKauai","Moloka\u02BBi","Hawai\u02BBi"].map(island=>(
-              <span key={island} style={{
-                fontFamily:"'Josefin Sans',sans-serif", fontSize:"11px", fontWeight:600,
-                letterSpacing:"0.06em", color:"rgba(255,255,255,0.88)",
-                background:"rgba(0,218,195,0.09)", border:"1px solid rgba(0,218,195,0.45)",
-                borderRadius:"99px", padding:"4px 11px",
-              }}>{island}</span>
-            ))}
-          </div>
+          <img
+            src={whereItLivesImg}
+            alt="Where the Hawaiian Coot Lives"
+            style={{
+              width:"100%", display:"block",
+              borderRadius:"11px",
+              objectFit:"cover",
+            }}
+          />
         </div>
 
       </motion.div>
