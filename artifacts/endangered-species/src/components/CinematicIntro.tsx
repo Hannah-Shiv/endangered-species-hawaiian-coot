@@ -296,23 +296,47 @@ function Letterbox() {
 
 // ─── Bird call waveform badge ─────────────────────────────────────────────────
 function BirdCallBadge() {
+  const bars = [0.15, 0.40, 0.70, 1.0, 0.80, 0.50, 0.90, 0.60, 0.35, 0.75, 0.45, 0.20];
   return (
     <motion.div
       initial={{ opacity:0 }} animate={{ opacity:1 }} exit={{ opacity:0 }}
       transition={{ duration: 0.8 }}
       style={{
         position:"absolute", right:"7%", bottom:"13%", zIndex:15,
-        display:"flex", alignItems:"center", gap:"5px", pointerEvents:"none",
+        display:"flex", flexDirection:"column", alignItems:"flex-end",
+        gap:"10px", pointerEvents:"none",
       }}
     >
-      {[0, 0.14, 0.32, 0.14, 0].map((h, i) => (
-        <motion.div key={i}
-          animate={{ scaleY: [1, 1 + h * 5, 1] }}
-          transition={{ duration:0.65, delay:i*0.09, repeat:Infinity, repeatType:"mirror" }}
-          style={{ width:"2.5px", height:"11px", borderRadius:"2px", background:G3, transformOrigin:"bottom" }}
-        />
-      ))}
-      <span style={{ ...LABEL, fontSize:"clamp(10px,0.9vw,13px)", marginLeft:"5px" }}>Hawaiian Coot call</span>
+      {/* Label */}
+      <span style={{
+        ...LABEL,
+        fontSize:"clamp(18px, 1.8vw, 26px)",
+        letterSpacing:"0.10em",
+        color: G2,
+      }}>🎵 Hawaiian Coot call</span>
+
+      {/* Waveform bars */}
+      <div style={{ display:"flex", alignItems:"flex-end", gap:"4px", height:"52px" }}>
+        {bars.map((h, i) => (
+          <motion.div key={i}
+            animate={{ scaleY: [0.3, h, 0.3] }}
+            transition={{
+              duration: 0.55 + h * 0.4,
+              delay: i * 0.07,
+              repeat: Infinity,
+              repeatType: "mirror",
+              ease: "easeInOut",
+            }}
+            style={{
+              width: "5px",
+              height: `${Math.round(h * 50)}px`,
+              borderRadius: "3px",
+              background: `linear-gradient(to top, ${G3}, ${G2})`,
+              transformOrigin: "bottom",
+            }}
+          />
+        ))}
+      </div>
     </motion.div>
   );
 }
