@@ -132,35 +132,33 @@ export function RadialLanding({ onSelect, exiting }: Props) {
         }}
         viewBox="-1 -1 2 2"
       >
-        {/* Dark backdrop discs — thin halo to block photo bleedthrough at circle edges */}
-        {ITEMS.map((_,i)=>{
-          const {x,y}=pos(i);
-          return <circle key={`bg-${i}`} cx={x} cy={y} r={CZ/2+2} fill="rgba(2,5,20,0.95)"/>;
-        })}
+        {/* ── OUTER connecting ring at circle-center radius ── */}
+        {/* Wide glow layer */}
+        <circle r={R} fill="none" stroke="rgba(0,240,215,0.12)" strokeWidth="22"/>
+        {/* Main ring line */}
+        <circle r={R} fill="none" stroke="rgba(0,240,215,0.60)" strokeWidth="1.8"/>
 
-        {/* Outer subtle connecting line */}
-        <circle r={R} fill="none" stroke="rgba(0,230,210,0.28)" strokeWidth="1.5" strokeDasharray="5 14"/>
+        {/* ── INNER cyan glow ring ── */}
+        {/* Outer glow */}
+        <circle r={R-52} fill="none" stroke="rgba(0,230,205,0.15)" strokeWidth="18"/>
+        {/* Main line */}
+        <circle r={R-52} fill="none" stroke="rgba(0,235,210,0.72)" strokeWidth="2.2"/>
+        {/* Bright inner highlight */}
+        <circle r={R-52} fill="none" stroke="rgba(180,255,245,0.30)" strokeWidth="0.8"/>
 
-        {/* Main inner glowing dashed ring */}
-        <circle r={R-20} fill="none" stroke="rgba(0,230,205,0.78)" strokeWidth="2.5" strokeDasharray="8 12"/>
-        {/* Soft glow spread */}
-        <circle r={R-20} fill="none" stroke="rgba(0,230,205,0.16)" strokeWidth="16" strokeDasharray="8 12"/>
-        {/* Inner concentric ring */}
-        <circle r={R-64} fill="none" stroke="rgba(0,210,185,0.20)" strokeWidth="1.5" strokeDasharray="4 10"/>
-
-        {/* Colored glow dots at each circle position — match circle colors */}
+        {/* ── Colored glow dots at each circle position ── */}
         {ITEMS.map((item,i)=>{
           const {x,y}=pos(i);
           return (
             <g key={`dot-${i}`}>
-              {/* Outer color glow */}
-              <circle cx={x} cy={y} r="13" fill={`${item.color}28`}/>
-              {/* Mid glow ring */}
-              <circle cx={x} cy={y} r="7.5" fill={`${item.color}70`}/>
-              {/* Bright center */}
-              <circle cx={x} cy={y} r="3.5" fill={item.color}/>
+              {/* Large outer glow */}
+              <circle cx={x} cy={y} r="16"  fill={`${item.color}22`}/>
+              {/* Mid glow */}
+              <circle cx={x} cy={y} r="9"   fill={`${item.color}65`}/>
+              {/* Solid core */}
+              <circle cx={x} cy={y} r="4.5" fill={item.color}/>
               {/* White hot center */}
-              <circle cx={x} cy={y} r="1.5" fill="rgba(255,255,255,0.95)"/>
+              <circle cx={x} cy={y} r="2"   fill="rgba(255,255,255,0.96)"/>
             </g>
           );
         })}
@@ -385,15 +383,14 @@ export function RadialLanding({ onSelect, exiting }: Props) {
             }}
             onClick={() => !exiting && onSelect(item.key, item.group)}
           >
-            {/* Pre-rendered circle PNG from sprite sheet */}
+            {/* Pre-rendered circle PNG — transparent corners, glow from the PNG itself */}
             <img
               src={CIRCLE_IMGS[i]}
               alt={item.key}
               style={{
                 width:"100%", height:"100%",
                 objectFit:"contain", display:"block",
-                borderRadius:"50%",
-                filter:`drop-shadow(0 0 10px ${item.color}cc) drop-shadow(0 0 24px ${item.color}88)`,
+                filter:`drop-shadow(0 0 8px ${item.color}99)`,
               }}
             />
           </motion.div>
