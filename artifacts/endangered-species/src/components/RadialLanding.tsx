@@ -26,8 +26,8 @@ const CIRCLE_IMGS = [circle01, circle02, circle03, circle04, circle05,
                      circle06, circle07, circle08, circle09, circle10];
 
 // ─── Geometry ──────────────────────────────────────────────────────────────
-const CZ = 155;   // circle diameter px
-const R  = 285;   // ring radius px
+const CZ = 172;   // circle diameter px
+const R  = 308;   // ring radius px — gap = 2×308×sin18°−172 = 22px ✓
 
 // ─── Data ───────────────────────────────────────────────────────────────────
 const ITEMS = [
@@ -96,35 +96,31 @@ export function RadialLanding({ onSelect, exiting }: Props) {
   return (
     <div style={{ position:"fixed", inset:0, zIndex:8000, overflow:"hidden" }}>
 
-      {/* ── BACKGROUND: real wetland + bird photo ──
-           height > 100% so the cover image shows a wider vertical slice
-           (bird appears smaller), top negative shifts the slice upward    */}
-      <img src={bgPhoto} alt="" style={{
+      {/* ── SOLID DARK BACKGROUND ── */}
+      <div style={{ position:"absolute", inset:0, background:"#030810" }}/>
+
+      {/* ── CIRCULAR PHOTO WINDOW — bird centred inside inner ring ── */}
+      <div style={{
         position:"absolute",
-        left:0, right:0,
-        top:"-28%",
-        width:"100%",
-        height:"155%",
-        objectFit:"cover", objectPosition:"50% 55%",
-        filter:"brightness(0.80) contrast(1.05) saturate(1.08)",
-      }}/>
+        left:"50%", top:"50%",
+        transform:"translate(-50%, -50%)",
+        width:`${(R-40)*2}px`, height:`${(R-40)*2}px`,
+        borderRadius:"50%",
+        overflow:"hidden",
+        zIndex:1,
+        boxShadow:"0 0 0 2px rgba(0,238,212,0.55), 0 0 50px rgba(0,238,212,0.25), 0 0 100px rgba(0,200,180,0.12)",
+      }}>
+        <img src={bgPhoto} alt="" style={{
+          width:"100%", height:"100%",
+          objectFit:"cover", objectPosition:"50% 42%",
+          filter:"brightness(0.92) contrast(1.08) saturate(1.12)",
+        }}/>
+      </div>
 
-      {/* Dark overlay: top (sky) — heavy so panels stay readable */}
+      {/* Subtle edge vignette so side-panel text stays readable */}
       <div style={{
         position:"absolute", inset:0, pointerEvents:"none",
-        background:"linear-gradient(to bottom, rgba(1,5,20,0.82) 0%, rgba(2,8,28,0.55) 18%, rgba(3,10,30,0.18) 42%, transparent 60%, rgba(1,4,16,0.30) 85%, rgba(1,3,12,0.62) 100%)",
-      }}/>
-
-      {/* Dark vignette: left side for Save Our Wildlife panel */}
-      <div style={{
-        position:"absolute", inset:0, pointerEvents:"none",
-        background:"linear-gradient(to right, rgba(1,4,18,0.88) 0%, rgba(1,4,18,0.65) 8%, rgba(1,4,18,0.20) 18%, transparent 28%)",
-      }}/>
-
-      {/* Dark vignette: right side for info panels */}
-      <div style={{
-        position:"absolute", inset:0, pointerEvents:"none",
-        background:"linear-gradient(to left, rgba(1,4,18,0.88) 0%, rgba(1,4,18,0.65) 8%, rgba(1,4,18,0.20) 18%, transparent 28%)",
+        background:"radial-gradient(ellipse 78% 85% at 50% 50%, transparent 45%, rgba(3,8,16,0.75) 80%, rgba(2,6,14,0.95) 100%)",
       }}/>
 
       {/* ── DECORATIVE RING ─────────────────────────────────────────────────── */}
@@ -145,13 +141,13 @@ export function RadialLanding({ onSelect, exiting }: Props) {
         {/* Main ring line */}
         <circle r={R} fill="none" stroke="rgba(0,240,215,0.60)" strokeWidth="1.8"/>
 
-        {/* ── INNER cyan glow ring — no dots, sits inside the circle arrangement ── */}
+        {/* ── INNER cyan glow ring — traces the circular photo window edge ── */}
         {/* Outer glow halo */}
-        <circle r={R-58} fill="none" stroke="rgba(0,230,205,0.14)" strokeWidth="22"/>
+        <circle r={R-40} fill="none" stroke="rgba(0,230,205,0.16)" strokeWidth="26"/>
         {/* Main bright line */}
-        <circle r={R-58} fill="none" stroke="rgba(0,238,212,0.80)" strokeWidth="2.4"/>
+        <circle r={R-40} fill="none" stroke="rgba(0,238,212,0.85)" strokeWidth="2.6"/>
         {/* Inner bright specular */}
-        <circle r={R-58} fill="none" stroke="rgba(200,255,248,0.35)" strokeWidth="0.9"/>
+        <circle r={R-40} fill="none" stroke="rgba(200,255,248,0.40)" strokeWidth="1.0"/>
 
         {/* ── 20 rainbow dots evenly around the outer ring ── */}
         {Array.from({length:20},(_,i)=>{
