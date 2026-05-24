@@ -2,6 +2,7 @@ import { useState, useCallback } from "react";
 import { LandingHero } from "@/components/LandingHero";
 import { DomeNav } from "@/components/DomeNav";
 import { RadialLanding } from "@/components/RadialLanding";
+import { CinematicIntro } from "@/components/CinematicIntro";
 import { MeetSpecies } from "@/components/sections/MeetSpecies";
 import { Habitat } from "@/components/sections/Habitat";
 import { FoodWeb } from "@/components/sections/FoodWeb";
@@ -37,6 +38,7 @@ function renderSection(section: string | null) {
 type Mode = "landing" | "nav";
 
 export default function Home() {
+  const [showIntro,     setShowIntro]     = useState(true);
   const [mode,          setMode]          = useState<Mode>("landing");
   const [exiting,       setExiting]       = useState(false);
   const [autoGroup,     setAutoGroup]     = useState<string | null>(null);
@@ -58,6 +60,13 @@ export default function Home() {
 
   return (
     <main style={{ position:"relative", minHeight:"100vh", overflow:"hidden" }}>
+
+      {/* Cinematic intro — shown on first visit only */}
+      <AnimatePresence>
+        {showIntro && (
+          <CinematicIntro key="intro" onComplete={() => setShowIntro(false)} />
+        )}
+      </AnimatePresence>
 
       {/* Hero background — only shown in nav mode (RadialLanding has its own bg) */}
       {mode === "nav" && <LandingHero />}
