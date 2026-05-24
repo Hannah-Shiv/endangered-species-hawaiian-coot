@@ -382,55 +382,70 @@ export function RadialLanding({ onSelect, exiting }: Props) {
           left:0, right:0,
           top:"54%",
           zIndex:5, textAlign:"center", pointerEvents:"none",
-          whiteSpace:"nowrap",
         }}
       >
-        {/* Main Hawaiian name */}
+        {/* ── HAWAIIAN COOT with flanking teal rules ── */}
+        <div style={{
+          display:"flex", alignItems:"center", justifyContent:"center", gap:"12px",
+        }}>
+          <div style={{ width:"52px", height:"1.5px",
+            background:"linear-gradient(to right, transparent, rgba(0,218,195,0.85))" }}/>
+          <div style={{
+            fontFamily:"'Josefin Sans',sans-serif",
+            fontSize:"clamp(9px,1.0vw,13px)", fontWeight:700,
+            letterSpacing:"0.38em", color:"rgba(0,218,195,1.0)",
+            textTransform:"uppercase",
+            textShadow:"0 0 18px rgba(0,218,195,0.80), 0 1px 6px rgba(0,0,0,0.9)",
+          }}>Hawaiian Coot</div>
+          <div style={{ width:"52px", height:"1.5px",
+            background:"linear-gradient(to left, transparent, rgba(0,218,195,0.85))" }}/>
+        </div>
+
+        {/* ── Main name ── */}
         <div style={{
           fontFamily:"'Josefin Sans',sans-serif",
-          fontSize:"clamp(24px,3.1vw,42px)", fontWeight:900,
-          letterSpacing:"0.06em", color:"#fff",
+          fontSize:"clamp(28px,3.5vw,50px)", fontWeight:900,
+          letterSpacing:"0.08em", color:"#ffffff",
           textTransform:"uppercase", lineHeight:1.0,
-          textShadow:"0 2px 32px rgba(0,0,0,0.95), 0 0 60px rgba(0,0,0,0.85)",
+          marginTop:"5px",
+          textShadow:"0 0 40px rgba(255,255,255,0.25), 0 2px 24px rgba(0,0,0,0.95)",
         }}>
           {"\u02BBAlae Ke\u02BBoke\u02BBo"}
         </div>
 
-        {/* HAWAIIAN COOT */}
+        {/* ── Leaf separator ── */}
         <div style={{
-          fontFamily:"'Josefin Sans',sans-serif",
-          fontSize:"clamp(10px,1.15vw,15px)", fontWeight:700,
-          letterSpacing:"0.36em", color:"rgba(0,218,195,0.95)",
-          textTransform:"uppercase", marginTop:"7px",
-          textShadow:"0 1px 12px rgba(0,0,0,0.9)",
-        }}>
-          Hawaiian Coot
-        </div>
+          fontSize:"clamp(12px,1.4vw,18px)", marginTop:"7px",
+          filter:"drop-shadow(0 0 8px rgba(34,197,94,0.85))",
+          lineHeight:1,
+        }}>🌿</div>
 
-        {/* — Fulica alai — with decorative rules */}
+        {/* ── Fulica alai ── */}
         <div style={{
-          display:"flex", alignItems:"center", justifyContent:"center",
-          gap:"10px", marginTop:"7px",
+          fontFamily:"'Playfair Display',serif",
+          fontSize:"clamp(11px,1.15vw,16px)",
+          fontStyle:"italic", color:"rgba(255,255,255,0.80)",
+          marginTop:"5px",
+          textShadow:"0 1px 10px rgba(0,0,0,0.95)",
+          letterSpacing:"0.04em",
+        }}>Fulica alai</div>
+
+        {/* ── ENDANGERED with flanking amber rules ── */}
+        <div style={{
+          display:"flex", alignItems:"center", justifyContent:"center", gap:"12px",
+          marginTop:"7px",
         }}>
-          <div style={{ width:"55px", height:"1px", background:"rgba(212,175,55,0.60)" }}/>
+          <div style={{ width:"40px", height:"1.5px",
+            background:"linear-gradient(to right, transparent, rgba(249,115,22,0.85))" }}/>
           <div style={{
-            fontFamily:"'Playfair Display',serif",
-            fontSize:"clamp(10px,1.05vw,14px)",
-            fontStyle:"italic", color:"rgba(255,255,255,0.68)",
-            textShadow:"0 1px 8px rgba(0,0,0,0.9)",
-          }}>Fulica alai</div>
-          <div style={{ width:"55px", height:"1px", background:"rgba(212,175,55,0.60)" }}/>
-        </div>
-
-        {/* ENDANGERED */}
-        <div style={{
-          fontFamily:"'Josefin Sans',sans-serif",
-          fontSize:"clamp(10px,1.05vw,14px)", fontWeight:700,
-          letterSpacing:"0.36em", color:"#f97316",
-          textTransform:"uppercase", marginTop:"7px",
-          textShadow:"0 0 18px rgba(249,115,22,0.90), 0 1px 8px rgba(0,0,0,0.9)",
-        }}>
-          Endangered
+            fontFamily:"'Josefin Sans',sans-serif",
+            fontSize:"clamp(9px,1.0vw,13px)", fontWeight:800,
+            letterSpacing:"0.38em", color:"#f97316",
+            textTransform:"uppercase",
+            textShadow:"0 0 22px rgba(249,115,22,0.95), 0 1px 8px rgba(0,0,0,0.9)",
+          }}>Endangered</div>
+          <div style={{ width:"40px", height:"1.5px",
+            background:"linear-gradient(to left, transparent, rgba(249,115,22,0.85))" }}/>
         </div>
       </motion.div>
 
