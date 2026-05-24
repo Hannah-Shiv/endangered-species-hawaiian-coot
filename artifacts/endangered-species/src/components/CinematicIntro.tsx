@@ -15,7 +15,7 @@ import bgMusicSrc  from "@assets/World-Ambient-Background_1779644360925.m4a";
 // ─── Config ───────────────────────────────────────────────────────────────────
 const VIDEO_ID        = "AWpvNtoG5nU";
 const START_SEC       = 2244;
-const TOTAL_SEC       = 76;
+const TOTAL_SEC       = 82;
 const BIRD_CALL_START = 10;
 const BIRD_CALL_VOL   = 0.42;
 
@@ -233,12 +233,11 @@ function NameReveal({ name, role }: { name: string; role: string }) {
 
 // ─── Team sequence — one person at a time ────────────────────────────────────
 const TEAM = [
-  { name: "Hannah Shiv",       role: "Student Researcher"                    },
-  { name: "Chloe Pan",         role: "Student Researcher"                    },
-  { name: "Bahram Ostad",      role: "Student Researcher"                    },
-  { name: "Calliandra Harris", role: "Dedicated to our Best Science Teacher" },
+  { name: "Hannah Shiv",  role: "Student Researcher" },
+  { name: "Chloe Pan",    role: "Student Researcher" },
+  { name: "Bahram Ostad", role: "Student Researcher" },
 ];
-const PER_PERSON = 6800; // ms each person — 4 people fit in 47→76 window (4×6.8=27.2s)
+const PER_PERSON = 5000; // ms — 3 students × 5s = 15s fits neatly in 47→62
 
 function TeamSequence() {
   const [idx, setIdx] = useState(0);
@@ -257,18 +256,20 @@ function TeamSequence() {
 
 // ─── Caption schedule ─────────────────────────────────────────────────────────
 type Card =
-  | { kind: "nature"; in: number; out: number; top: string; sub: string }
-  | { kind: "quote";  in: number; out: number; quote: string }
-  | { kind: "school"; in: number; out: number }
-  | { kind: "team";   in: number; out: number };
+  | { kind: "nature";  in: number; out: number; top: string; sub: string }
+  | { kind: "quote";   in: number; out: number; quote: string }
+  | { kind: "school";  in: number; out: number }
+  | { kind: "team";    in: number; out: number }
+  | { kind: "teacher"; in: number; out: number };
 
 const CARDS: Card[] = [
-  { kind:"nature", in:0,  out:7,  top:"Hawaiian Islands",    sub:"Pacific Ocean · Aerial View"          },
-  { kind:"quote",  in:9,  out:17, quote:"Every Wetland\nTells a Story"                                  },
-  { kind:"nature", in:19, out:26, top:"Freshwater Wetland",  sub:"Hawai\u02BBi · Protected Ecosystem"  },
-  { kind:"nature", in:28, out:36, top:"Hawaiian Coot",       sub:"\u02BBalae ke\u02BBoke\u02BBo  ·  Fulica alai" },
-  { kind:"school", in:38, out:46 },
-  { kind:"team",   in:47, out:76 },
+  { kind:"nature",  in:0,  out:7,  top:"Hawaiian Islands",   sub:"Pacific Ocean · Aerial View"         },
+  { kind:"quote",   in:9,  out:17, quote:"Every Wetland\nTells a Story"                                 },
+  { kind:"nature",  in:19, out:26, top:"Freshwater Wetland", sub:"Hawai\u02BBi · Protected Ecosystem" },
+  { kind:"nature",  in:28, out:36, top:"Hawaiian Coot",      sub:"\u02BBalae ke\u02BBoke\u02BBo  ·  Fulica alai" },
+  { kind:"school",  in:38, out:46 },
+  { kind:"team",    in:47, out:62 },   // 3 students × 5s = 15s
+  { kind:"teacher", in:63, out:82 },   // Calliandra — 19s dedicated, fades from t=79
 ];
 
 // ─── Film grain ───────────────────────────────────────────────────────────────
@@ -284,12 +285,55 @@ function Grain() {
   );
 }
 
+// ─── Teacher dedication card ──────────────────────────────────────────────────
+function TeacherCard() {
+  return (
+    <motion.div {...CARD_MOTION} style={BLOCK}>
+      <motion.div
+        initial={{ opacity:0, y:10 }} animate={{ opacity:1, y:0 }}
+        exit={{ opacity:0, transition:{ duration:FADE_OUT, ease:[0.4,0,1,1] } }}
+        transition={{ duration:FADE_DUR, delay:0.2, ease:EASE_IN }}
+        style={{ ...LABEL, fontSize:"clamp(14px,1.4vw,20px)", letterSpacing:"0.18em", color:G3 }}
+      >✦ &nbsp; dedicated to &nbsp; ✦</motion.div>
+
+      <motion.div
+        initial={{ opacity:0, y:20 }} animate={{ opacity:1, y:0 }}
+        exit={{ opacity:0, y:-8, transition:{ duration:FADE_OUT, ease:[0.4,0,1,1] } }}
+        transition={{ duration:FADE_DUR, delay:0.7, ease:EASE_IN }}
+        style={{
+          ...BIG,
+          fontSize:"clamp(42px,6.2vw,90px)",
+          color:"#FFD080",
+          textShadow:"0 0 70px rgba(255,200,80,0.60), "+S,
+          marginTop:"10px",
+        }}
+      >Calliandra Harris</motion.div>
+
+      <Rule/>
+
+      <motion.div
+        initial={{ opacity:0 }} animate={{ opacity:1 }}
+        exit={{ opacity:0, transition:{ duration:FADE_OUT, ease:[0.4,0,1,1] } }}
+        transition={{ duration:FADE_DUR, delay:1.4, ease:EASE_IN }}
+        style={{ ...SUB, fontSize:"clamp(20px,2.4vw,34px)", color:"rgba(255,220,140,0.90)" }}
+      >our Best Science Teacher</motion.div>
+
+      <motion.div
+        initial={{ opacity:0 }} animate={{ opacity:1 }}
+        exit={{ opacity:0, transition:{ duration:FADE_OUT, ease:[0.4,0,1,1] } }}
+        transition={{ duration:FADE_DUR, delay:2.2, ease:EASE_IN }}
+        style={{ ...LABEL, fontSize:"clamp(13px,1.3vw,18px)", color:G3, marginTop:"14px", letterSpacing:"0.12em" }}
+      >Cooper Middle School</motion.div>
+    </motion.div>
+  );
+}
+
 // ─── Letterbox bars ───────────────────────────────────────────────────────────
 function Letterbox() {
   return (
     <>
-      <div style={{ position:"absolute", top:0, left:0, right:0, height:"16%", background:"#000", zIndex:20, pointerEvents:"none" }}/>
-      <div style={{ position:"absolute", bottom:0, left:0, right:0, height:"10%", background:"#000", zIndex:20, pointerEvents:"none" }}/>
+      <div style={{ position:"absolute", top:0, left:0, right:0, height:"4%", background:"#000", zIndex:20, pointerEvents:"none" }}/>
+      <div style={{ position:"absolute", bottom:0, left:0, right:0, height:"4%", background:"#000", zIndex:20, pointerEvents:"none" }}/>
     </>
   );
 }
@@ -302,7 +346,7 @@ function BirdCallBadge() {
       initial={{ opacity:0 }} animate={{ opacity:1 }} exit={{ opacity:0 }}
       transition={{ duration: 0.8 }}
       style={{
-        position:"absolute", right:"7%", bottom:"13%", zIndex:15,
+        position:"absolute", right:"7%", bottom:"7%", zIndex:15,
         display:"flex", flexDirection:"column", alignItems:"flex-end",
         gap:"10px", pointerEvents:"none",
       }}
@@ -473,26 +517,14 @@ export function CinematicIntro({ onComplete }: Props) {
           allowFullScreen
           style={{
             position:"absolute",
-            top:"-22%", left:"-2%",
-            width:"104%", height:"144%",
+            top:"-12%", left:"-2%",
+            width:"104%", height:"124%",
             border:"none", pointerEvents:"none",
           }}
           title="Hawaiian Islands aerial footage"
         />
 
-        {/* Seamless dark patch — blends with letterbox, hides YouTube branding */}
-        <div style={{
-          position:"absolute", left:0, bottom:"10%",
-          width:"340px", height:"72px",
-          background:"linear-gradient(to right, #000 0%, #000 52%, transparent 100%)",
-          zIndex:19, pointerEvents:"none",
-        }}/>
-        <div style={{
-          position:"absolute", left:0, bottom:"10%",
-          width:"340px", height:"72px",
-          background:"linear-gradient(to top, #000 0%, #000 35%, transparent 100%)",
-          zIndex:19, pointerEvents:"none",
-        }}/>
+        {/* No branding patch needed — iframe overflow already clips YouTube UI */}
 
         {/* Gradient vignette — right side darker so gold text pops */}
         <div style={{
@@ -536,10 +568,11 @@ export function CinematicIntro({ onComplete }: Props) {
         <AnimatePresence mode="wait">
           {activeCard && !fadingOut && (() => {
             switch (activeCard.kind) {
-              case "nature": return <NatureCaption key={activeCard.in} top={activeCard.top} sub={activeCard.sub}/>;
-              case "quote":  return <CenterQuote   key={activeCard.in} quote={activeCard.quote}/>;
-              case "school": return <SchoolText    key="school"/>;
-              case "team":   return <TeamSequence  key="team"/>;
+              case "nature":  return <NatureCaption key={activeCard.in} top={activeCard.top} sub={activeCard.sub}/>;
+              case "quote":   return <CenterQuote   key={activeCard.in} quote={activeCard.quote}/>;
+              case "school":  return <SchoolText    key="school"/>;
+              case "team":    return <TeamSequence  key="team"/>;
+              case "teacher": return <TeacherCard   key="teacher"/>;
             }
           })()}
         </AnimatePresence>
@@ -551,7 +584,7 @@ export function CinematicIntro({ onComplete }: Props) {
 
         {/* Gold progress bar inside bottom letterbox */}
         <div style={{
-          position:"absolute", bottom:"10%", left:0, right:0, height:"2px",
+          position:"absolute", bottom:"4%", left:0, right:0, height:"2px",
           background:"rgba(212,175,55,0.15)", zIndex:21, pointerEvents:"none",
         }}>
           <motion.div
@@ -575,7 +608,7 @@ export function CinematicIntro({ onComplete }: Props) {
           transition={{ delay:2.5, duration:0.7 }}
           onClick={finish}
           style={{
-            position:"absolute", top:"4.5%", right:"20px", zIndex:25,
+            position:"absolute", top:"0.8%", right:"20px", zIndex:25,
             background:"transparent",
             border:`1px solid ${G3}`,
             borderRadius:"2px", padding:"4px 16px",
@@ -587,7 +620,7 @@ export function CinematicIntro({ onComplete }: Props) {
 
         {/* Timecode — dim gold */}
         <div style={{
-          position:"absolute", top:"5.5%", left:"22px", zIndex:25,
+          position:"absolute", top:"0.8%", left:"22px", zIndex:25,
           ...LABEL, fontSize:"11px", color:"rgba(212,175,55,0.28)",
           fontVariantNumeric:"tabular-nums",
         }}>
