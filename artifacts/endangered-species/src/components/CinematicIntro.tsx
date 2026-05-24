@@ -23,8 +23,7 @@ const G1 = "#FFFBE8";                    // near-white gold — titles
 const G2 = "#FFE060";                    // vivid bright gold — subtitles
 const G3 = "#FFC840";                    // warm bright gold — labels
 
-// Gradient applied to big title text
-const TITLE_GRAD = `linear-gradient(140deg, ${G1} 0%, ${G2} 45%, #FFD740 80%, ${G1} 100%)`;
+// (gradient removed — BIG now uses solid uniform gold)
 
 // Heavy text-shadow keeps every size legible on bright video
 const S = "0 2px 48px rgba(0,0,0,0.99), 0 0 90px rgba(0,0,0,0.97), 0 4px 18px rgba(0,0,0,0.94)";
@@ -87,16 +86,14 @@ function Rule() {
 
 // ─── Shared text styles ───────────────────────────────────────────────────────
 const BIG: React.CSSProperties = {
-  fontFamily: "'Playfair Display', serif",
-  fontStyle:  "italic",
-  fontWeight: 700,
-  fontSize:   "clamp(36px, 5.0vw, 72px)",
-  lineHeight: 1.10,
-  background: TITLE_GRAD,
-  WebkitBackgroundClip: "text",
-  WebkitTextFillColor:  "transparent",
-  backgroundClip:       "text",
-  filter:     "drop-shadow(0 3px 40px rgba(0,0,0,0.99))",
+  fontFamily:    "'Playfair Display', serif",
+  fontStyle:     "italic",
+  fontWeight:    300,                  // thin, elegant
+  fontSize:      "clamp(36px, 5.0vw, 72px)",
+  lineHeight:    1.10,
+  letterSpacing: "0.07em",            // airy spacing
+  color:         G2,                  // uniform solid gold throughout
+  textShadow:    S,
 };
 
 const SUB: React.CSSProperties = {
@@ -428,15 +425,17 @@ export function CinematicIntro({ onComplete }: Props) {
               initial={{ opacity:0, y:16 }} animate={{ opacity:1, y:0 }}
               transition={{ duration:1.6, delay:0.5, ease:EASE_IN }}
               style={{
-                position:"absolute", left:"50%", top:"50%",
-                transform:"translate(-50%,-50%)",
-                textAlign:"center", width:"90%",
+                position:"absolute",
+                left:0, right:0, top:"50%",
+                transform:"translateY(-50%)",
+                textAlign:"center",
+                padding:"0 8%",
               }}
             >
-              <div style={{ ...BIG, fontSize:"clamp(40px,5.8vw,82px)" }}>Hawaiian Coot</div>
+              <div style={{ ...BIG, fontSize:"clamp(40px,5.8vw,82px)", letterSpacing:"0.10em" }}>Hawaiian Coot</div>
               <div style={{
                 height:"1.5px", width:"90px", margin:"18px auto",
-                background:`linear-gradient(to right, transparent, ${G2} 35%, ${G1}, ${G2} 65%, transparent)`,
+                background:`linear-gradient(to right, transparent, ${G2}, transparent)`,
               }}/>
               <div style={{ ...SUB, fontSize:"clamp(22px,2.6vw,38px)" }}>{"\u02BBalae ke\u02BBoke\u02BBo"} · Fulica alai</div>
             </motion.div>
