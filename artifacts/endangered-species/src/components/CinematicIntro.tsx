@@ -235,10 +235,10 @@ function NameReveal({ name, role }: { name: string; role: string }) {
 const TEAM = [
   { name: "Hannah Shiv",       role: "Student Researcher"                    },
   { name: "Chloe Pan",         role: "Student Researcher"                    },
-  { name: "Baram Oustad",      role: "Student Researcher"                    },
+  { name: "Bahram Ostad",      role: "Student Researcher"                    },
   { name: "Calliandra Harris", role: "Dedicated to our Best Science Teacher" },
 ];
-const PER_PERSON = 7800; // ms each person is visible (4.0s fade-in + ~0.6s hold + 3.2s fade-out)
+const PER_PERSON = 6800; // ms each person — 4 people fit in 47→76 window (4×6.8=27.2s)
 
 function TeamSequence() {
   const [idx, setIdx] = useState(0);
@@ -267,8 +267,8 @@ const CARDS: Card[] = [
   { kind:"quote",  in:9,  out:17, quote:"Every Wetland\nTells a Story"                                  },
   { kind:"nature", in:19, out:26, top:"Freshwater Wetland",  sub:"Hawai\u02BBi · Protected Ecosystem"  },
   { kind:"nature", in:28, out:36, top:"Hawaiian Coot",       sub:"\u02BBalae ke\u02BBoke\u02BBo  ·  Fulica alai" },
-  { kind:"school", in:38, out:45 },
-  { kind:"team",   in:52, out:73 },
+  { kind:"school", in:38, out:46 },
+  { kind:"team",   in:47, out:76 },
 ];
 
 // ─── Film grain ───────────────────────────────────────────────────────────────
@@ -456,11 +456,17 @@ export function CinematicIntro({ onComplete }: Props) {
           title="Hawaiian Islands aerial footage"
         />
 
-        {/* Organic dark fade over bottom-left YouTube branding — no sharp box */}
+        {/* Seamless dark patch — blends with letterbox, hides YouTube branding */}
         <div style={{
           position:"absolute", left:0, bottom:"10%",
-          width:"320px", height:"80px",
-          background:"radial-gradient(ellipse at 0% 100%, rgba(0,0,0,0.96) 0%, rgba(0,0,0,0.78) 38%, transparent 100%)",
+          width:"340px", height:"72px",
+          background:"linear-gradient(to right, #000 0%, #000 52%, transparent 100%)",
+          zIndex:19, pointerEvents:"none",
+        }}/>
+        <div style={{
+          position:"absolute", left:0, bottom:"10%",
+          width:"340px", height:"72px",
+          background:"linear-gradient(to top, #000 0%, #000 35%, transparent 100%)",
           zIndex:19, pointerEvents:"none",
         }}/>
 
