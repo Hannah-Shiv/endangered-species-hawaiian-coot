@@ -26,8 +26,8 @@ const CIRCLE_IMGS = [circle01, circle02, circle03, circle04, circle05,
                      circle06, circle07, circle08, circle09, circle10];
 
 // ─── Geometry ──────────────────────────────────────────────────────────────
-const CZ = 130;   // circle diameter px
-const R  = 258;   // ring radius px
+const CZ = 155;   // circle diameter px
+const R  = 285;   // ring radius px
 
 // ─── Data ───────────────────────────────────────────────────────────────────
 const ITEMS = [
@@ -99,11 +99,11 @@ export function RadialLanding({ onSelect, exiting }: Props) {
       {/* ── BACKGROUND: real wetland + bird photo ── */}
       <img src={bgPhoto} alt="" style={{
         position:"absolute",
-        left:0, right:0,
-        top:"-30%",          /* shift image up so bird body is at viewport center */
-        width:"100%",
-        height:"130%",       /* extend height to compensate for upward offset  */
-        objectFit:"cover", objectPosition:"center 50%",
+        left:"-25%", right:"-25%",
+        top:"-42%",
+        width:"150%",
+        height:"155%",       /* larger element = bird appears ~33% smaller */
+        objectFit:"cover", objectPosition:"center 48%",
         filter:"brightness(0.80) contrast(1.05) saturate(1.08)",
       }}/>
 
@@ -145,11 +145,11 @@ export function RadialLanding({ onSelect, exiting }: Props) {
 
         {/* ── INNER cyan glow ring — no dots, sits inside the circle arrangement ── */}
         {/* Outer glow halo */}
-        <circle r={R-96} fill="none" stroke="rgba(0,230,205,0.14)" strokeWidth="22"/>
+        <circle r={R-58} fill="none" stroke="rgba(0,230,205,0.14)" strokeWidth="22"/>
         {/* Main bright line */}
-        <circle r={R-96} fill="none" stroke="rgba(0,238,212,0.80)" strokeWidth="2.4"/>
+        <circle r={R-58} fill="none" stroke="rgba(0,238,212,0.80)" strokeWidth="2.4"/>
         {/* Inner bright specular */}
-        <circle r={R-96} fill="none" stroke="rgba(200,255,248,0.35)" strokeWidth="0.9"/>
+        <circle r={R-58} fill="none" stroke="rgba(200,255,248,0.35)" strokeWidth="0.9"/>
 
         {/* ── 20 rainbow dots evenly around the outer ring ── */}
         {Array.from({length:20},(_,i)=>{
