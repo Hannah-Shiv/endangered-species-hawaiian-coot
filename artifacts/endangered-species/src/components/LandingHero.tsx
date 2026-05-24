@@ -1,225 +1,163 @@
-import { useEffect, useRef, useState } from "react";
+/**
+ * LandingHero — always-visible hero background with title content.
+ * No "Enter" button; the DomeNav hamburger at top is the entry point.
+ * Uses the Hawaiian sunset landscape photo as background.
+ */
+import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
-import heroBg from "@assets/image_1779576726784.png";
+import heroBg from "@assets/image_1779593793890.png";
 
-function HeroSignalArcs() {
-  const svgRef = useRef<SVGSVGElement>(null);
-  const [arcs, setArcs] = useState<Array<{d: string; opacity: number; dots: Array<{cx: number; cy: number; delay: number}>}>>([]);
-
-  useEffect(() => {
-    const W = window.innerWidth;
-    const H = window.innerHeight;
-    const cx = W / 2;
-    const cy = H / 2;
-
-    function qb(t: number, x0: number, y0: number, cpx: number, cpy: number, x1: number, y1: number) {
-      const m = 1 - t;
-      return { x: m*m*x0 + 2*m*t*cpx + t*t*x1, y: m*m*y0 + 2*m*t*cpy + t*t*y1 };
-    }
-
-    const newArcs: typeof arcs = [];
-
-    function addArc(ox: number, oy: number, cpx: number, cpy: number, ex: number, ey: number, opacity: number, dotTs: [number, number][]) {
-      const dots = dotTs.map(([t, delay]) => {
-        const pt = qb(t, ox, oy, cpx, cpy, ex, ey);
-        return { cx: pt.x, cy: pt.y, delay };
-      });
-      newArcs.push({ d: "M "+ox+","+oy+" Q "+cpx+","+cpy+" "+ex+","+ey, opacity, dots });
-    }
-
-    const lx = cx - 40, ly = cy;
-    addArc(lx,ly, lx*0.5,ly-50,    20,cy-100,  0.12, [[0.3,0],[0.65,0.5]]);
-    addArc(lx,ly, lx*0.3,ly,         0,cy,       0.12, [[0.28,0.1],[0.6,0.5],[0.88,0.9]]);
-    addArc(lx,ly, lx*0.4,ly+50,    20,cy+100,  0.12, [[0.32,0.3],[0.68,0.8]]);
-    addArc(lx,ly, lx*0.2,ly-100,     0,0,        0.12, [[0.4,0.4],[0.76,0.9]]);
-
-    const rx = cx + 40, ry = cy;
-    const rw = W - rx;
-    addArc(rx,ry, rx+rw*0.5,ry-50,  W-20,cy-100, 0.12, [[0.3,0.1],[0.65,0.6]]);
-    addArc(rx,ry, rx+rw*0.3,ry,       W,cy,        0.12, [[0.28,0.2],[0.6,0.6],[0.88,1.0]]);
-    addArc(rx,ry, rx+rw*0.4,ry+50,  W-20,cy+100, 0.12, [[0.32,0.4],[0.68,0.9]]);
-    addArc(rx,ry, rx+rw*0.2,ry-100,   W,0,         0.12, [[0.4,0.5],[0.76,1.0]]);
-
-    setArcs(newArcs);
-  }, []);
-
-  return (
-    <svg
-      ref={svgRef}
-      className="absolute inset-0 w-full h-full pointer-events-none"
-      aria-hidden="true"
-    >
-      <defs>
-        <filter id="hero-dot-glow" x="-100%" y="-100%" width="300%" height="300%">
-          <feGaussianBlur in="SourceGraphic" stdDeviation="3.5" result="blur"/>
-          <feMerge>
-            <feMergeNode in="blur"/>
-            <feMergeNode in="SourceGraphic"/>
-          </feMerge>
-        </filter>
-      </defs>
-      {arcs.map((arc, i) => (
-        <g key={i}>
-          <path d={arc.d} stroke={"rgba(212,175,55,"+arc.opacity+")"} strokeWidth="1.2" fill="none"/>
-          {arc.dots.map((dot, j) => (
-            <circle
-              key={j}
-              cx={dot.cx}
-              cy={dot.cy}
-              r="3"
-              fill="rgba(255,185,45,0.9)"
-              filter="url(#hero-dot-glow)"
-              style={{
-                animation: "dotPulse 2.4s ease-in-out infinite",
-                animationDelay: dot.delay + "s"
-              }}
-            />
-          ))}
-        </g>
-      ))}
-    </svg>
-  );
-}
-
-export function LandingHero({ onEnter }: { onEnter: () => void }) {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const titleRef = useRef<HTMLHeadingElement>(null);
+export function LandingHero() {
+  const titleRef    = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLHeadingElement>(null);
-  const tagRef = useRef<HTMLParagraphElement>(null);
-  const topTagRef = useRef<HTMLDivElement>(null);
-  const buttonRef = useRef<HTMLDivElement>(null);
+  const tagRef      = useRef<HTMLParagraphElement>(null);
+  const topTagRef   = useRef<HTMLDivElement>(null);
+  const ctaRef      = useRef<HTMLDivElement>(null);
+  const canvasRef   = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
-    // Particle system
+    // Floating particle system
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    let width = canvas.width = window.innerWidth;
-    let height = canvas.height = window.innerHeight;
+    let width = (canvas.width = window.innerWidth);
+    let height = (canvas.height = window.innerHeight);
 
-    const particles: { x: number; y: number; r: number; vx: number; vy: number; alpha: number }[] = [];
-    for (let i = 0; i < 200; i++) {
-      particles.push({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        r: Math.random() * 2 + 0.5,
-        vx: (Math.random() - 0.5) * 0.5,
-        vy: (Math.random() - 0.5) * 0.5,
-        alpha: Math.random() * 0.5 + 0.1
-      });
-    }
+    const particles = Array.from({ length: 120 }, () => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      r: Math.random() * 1.8 + 0.4,
+      vx: (Math.random() - 0.5) * 0.35,
+      vy: (Math.random() - 0.5) * 0.35,
+      alpha: Math.random() * 0.4 + 0.08,
+    }));
 
-    let animationFrameId: number;
+    let rafId: number;
     const render = () => {
       ctx.clearRect(0, 0, width, height);
       particles.forEach(p => {
-        p.x += p.vx;
-        p.y += p.vy;
-        if (p.x < 0) p.x = width;
-        if (p.x > width) p.x = 0;
-        if (p.y < 0) p.y = height;
-        if (p.y > height) p.y = 0;
-
+        p.x = (p.x + p.vx + width)  % width;
+        p.y = (p.y + p.vy + height) % height;
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(100, 220, 200, ${p.alpha})`;
+        ctx.fillStyle = `rgba(34,197,94,${p.alpha})`;
         ctx.fill();
       });
-      animationFrameId = requestAnimationFrame(render);
+      rafId = requestAnimationFrame(render);
     };
     render();
 
-    const handleResize = () => {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
-    };
-    window.addEventListener("resize", handleResize);
+    const onResize = () => { width = canvas.width = window.innerWidth; height = canvas.height = window.innerHeight; };
+    window.addEventListener("resize", onResize);
 
-    // GSAP entrance
-    const tl = gsap.timeline();
-    tl.fromTo(containerRef.current, { opacity: 0 }, { opacity: 1, duration: 2, ease: "power2.inOut" })
-      .fromTo(topTagRef.current, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 1, ease: "power2.out" }, "-=1")
-      .fromTo(titleRef.current, { y: 50, opacity: 0 }, { y: 0, opacity: 1, duration: 1.5, ease: "power3.out" }, "-=0.8")
-      .fromTo(subtitleRef.current, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 1, ease: "power2.out" }, "-=0.5")
-      .fromTo(tagRef.current, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 1, ease: "power2.out" }, "-=0.5")
-      .fromTo(buttonRef.current, { scale: 0.9, opacity: 0 }, { scale: 1, opacity: 1, duration: 1, ease: "back.out(1.7)" }, "-=0.2");
+    // GSAP entrance — staggered fade-in
+    const tl = gsap.timeline({ delay: 0.3 });
+    tl.fromTo(topTagRef.current,   { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.9, ease: "power2.out" })
+      .fromTo(titleRef.current,    { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 1.2, ease: "power3.out" }, "-=0.5")
+      .fromTo(subtitleRef.current, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.9, ease: "power2.out" }, "-=0.6")
+      .fromTo(tagRef.current,      { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.9, ease: "power2.out" }, "-=0.5")
+      .fromTo(ctaRef.current,      { scale: 0.92, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.8, ease: "back.out(1.7)" }, "-=0.3");
 
-    return () => {
-      cancelAnimationFrame(animationFrameId);
-      window.removeEventListener("resize", handleResize);
-    };
+    return () => { cancelAnimationFrame(rafId); window.removeEventListener("resize", onResize); };
   }, []);
 
   return (
-    <div ref={containerRef} className="relative w-full h-screen overflow-hidden bg-background">
+    <div className="relative w-full h-screen overflow-hidden bg-background">
+      {/* Background photo */}
       <img
         src={heroBg}
         alt=""
         className="absolute inset-0 w-full h-full object-cover object-center"
-        style={{ filter: "brightness(1.15) saturate(1.4) contrast(1.05)" }}
+        style={{ filter: "brightness(0.92) saturate(1.3) contrast(1.05)" }}
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-black/5 via-transparent to-background/85" />
+      {/* Gradient overlay — darkens bottom so text is readable */}
+      <div className="absolute inset-0"
+        style={{ background: "linear-gradient(to bottom, rgba(3,5,14,0.35) 0%, rgba(3,5,14,0.05) 35%, rgba(3,5,14,0.6) 75%, rgba(3,5,14,0.92) 100%)" }}
+      />
+      {/* Particle canvas */}
       <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none" />
-      <HeroSignalArcs />
-      
-      <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-4">
-        
-        <div 
+
+      {/* Hero text — positioned in the lower half so it's below the dome nav */}
+      <div className="relative z-10 flex flex-col justify-end h-full pb-16 px-8 md:px-16 max-w-2xl">
+
+        <div
           ref={topTagRef}
-          style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: "0.875rem", letterSpacing: "0.3em", color: "rgba(212,175,55,1)", textShadow: "0 0 10px rgba(212,175,55,0.5)" }}
-          className="mb-6 uppercase font-bold"
+          style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: "0.75rem", letterSpacing: "0.3em", color: "rgba(212,175,55,0.9)", textShadow: "0 0 10px rgba(212,175,55,0.4)" }}
+          className="mb-4 uppercase font-bold"
         >
-          ◆ VULNERABLE SPECIES ◆
+          ◆ WELCOME TO THE WORLD OF ◆
         </div>
 
-        <h1 
-          ref={titleRef} 
-          className="text-6xl md:text-8xl lg:text-9xl font-black text-foreground mb-6 drop-shadow-2xl uppercase"
-          style={{ fontFamily: "'Josefin Sans', sans-serif", letterSpacing: "0.15em" }}
+        <h1
+          ref={titleRef}
+          style={{ fontFamily: "'Josefin Sans', sans-serif", letterSpacing: "0.06em", color: "#ffffff", textShadow: "0 2px 20px rgba(0,0,0,0.8), 0 0 40px rgba(34,197,94,0.2)" }}
+          className="text-5xl md:text-7xl lg:text-8xl font-black uppercase mb-2 leading-none"
         >
-          HAWAIIAN COOT
+          'Alae ke'oke'o
         </h1>
-        
-        <h2 
-          ref={subtitleRef} 
-          className="text-lg md:text-2xl mb-4 italic"
-          style={{ fontFamily: "'Playfair Display', serif", color: "rgba(212,175,55,0.75)" }}
+
+        <h2
+          ref={subtitleRef}
+          style={{ fontFamily: "'Josefin Sans', sans-serif", letterSpacing: "0.22em", color: "rgba(212,175,55,0.85)" }}
+          className="text-base md:text-xl font-bold uppercase mb-3 tracking-widest"
         >
-          Fulica alai  •  Alae keokeeo
+          Hawaiian Coot &nbsp;·&nbsp; <em style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", letterSpacing: "0.05em", color: "rgba(212,175,55,0.65)", fontWeight: 400 }}>Fulica alai</em>
         </h2>
-        
-        <p ref={tagRef} className="text-lg md:text-2xl text-foreground/80 font-light mb-12 max-w-2xl" style={{ fontFamily: "'Playfair Display', serif" }}>
-          Hawaii's Vulnerable Waterbird — Fighting to Survive in Shrinking Wetlands
+
+        <p
+          ref={tagRef}
+          style={{ fontFamily: "'Playfair Display', serif", color: "rgba(255,255,255,0.82)", textShadow: "0 1px 8px rgba(0,0,0,0.6)" }}
+          className="text-base md:text-lg italic mb-8 leading-relaxed max-w-lg"
+        >
+          Guardian of Hawai'i's wetlands — explore the story of an endangered native bird and the fragile ecosystem that depends on it.
         </p>
-        
-        <div ref={buttonRef}>
-          <button 
-            onClick={onEnter}
-            data-testid="button-enter-exhibit"
-            className="group relative overflow-hidden text-lg px-8 py-4 rounded-full transition-all duration-300 hover:shadow-[0_0_30px_rgba(212,175,55,0.5)] cursor-pointer"
-            style={{ 
-              background: "rgba(193,18,31,0.85)", 
-              border: "2px solid rgba(212,175,55,0.6)", 
-              color: "rgba(212,175,55,1)", 
-              fontFamily: "'Josefin Sans', sans-serif", 
-              letterSpacing: "0.12em", 
-              textTransform: "uppercase" 
-            }}
-            onMouseOver={(e) => {
-              e.currentTarget.style.background = "rgba(212,175,55,1)";
-              e.currentTarget.style.color = "rgba(5,8,22,1)";
-            }}
-            onMouseOut={(e) => {
-              e.currentTarget.style.background = "rgba(193,18,31,0.85)";
-              e.currentTarget.style.color = "rgba(212,175,55,1)";
+
+        <div ref={ctaRef}>
+          <div
+            style={{
+              display: "inline-flex", alignItems: "center", gap: "8px",
+              fontFamily: "'Josefin Sans', sans-serif", fontSize: "13px", fontWeight: 700,
+              letterSpacing: "0.18em", textTransform: "uppercase",
+              color: "rgba(34,197,94,0.9)",
+              borderBottom: "1px solid rgba(34,197,94,0.4)",
+              paddingBottom: "3px",
             }}
           >
-            <span className="relative z-10 font-bold tracking-wider">Enter the Exhibit</span>
-          </button>
+            <span style={{ fontSize: "18px" }}>☰</span>
+            Click the menu above to explore
+          </div>
         </div>
+      </div>
+
+      {/* Quick facts panel — bottom right */}
+      <div
+        className="absolute bottom-8 right-8 z-10 hidden md:block"
+        style={{
+          background: "rgba(4,7,18,0.82)",
+          border: "1px solid rgba(34,197,94,0.25)",
+          borderRadius: "8px",
+          padding: "16px 20px",
+          minWidth: "200px",
+          backdropFilter: "blur(8px)",
+        }}
+      >
+        <div style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: "10px", fontWeight: 700, letterSpacing: "0.2em", color: "rgba(212,175,55,0.7)", marginBottom: "10px", textTransform: "uppercase" }}>
+          Quick Facts
+        </div>
+        {[
+          { icon: "🔴", label: "Status", value: "Vulnerable" },
+          { icon: "🐦", label: "Population", value: "~2,500–3,500" },
+          { icon: "🏝", label: "Habitat", value: "Hawaiian Wetlands" },
+          { icon: "⏱", label: "Lifespan", value: "10–15 years" },
+        ].map(f => (
+          <div key={f.label} style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "6px" }}>
+            <span style={{ fontSize: "12px" }}>{f.icon}</span>
+            <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: "10px", color: "rgba(255,255,255,0.55)", letterSpacing: "0.08em", textTransform: "uppercase", marginRight: "4px" }}>{f.label}:</span>
+            <span style={{ fontFamily: "'Playfair Display', serif", fontSize: "12px", color: "rgba(255,255,255,0.85)" }}>{f.value}</span>
+          </div>
+        ))}
       </div>
     </div>
   );
