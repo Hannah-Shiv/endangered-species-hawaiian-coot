@@ -9,7 +9,8 @@
  */
 import { useRef } from "react";
 import { motion } from "framer-motion";
-import bgPhoto from "../assets/bg-photo.png";
+import bgPhoto    from "../assets/bg-photo.png";
+import birdImg    from "../assets/bird-transparent.png";
 import circle01 from "../assets/circles/circle01.png";
 import circle02 from "../assets/circles/circle02.png";
 import circle03 from "../assets/circles/circle03.png";
@@ -138,13 +139,13 @@ export function RadialLanding({ onSelect, exiting }: Props) {
         {/* Main ring line */}
         <circle r={R} fill="none" stroke="rgba(0,240,215,0.60)" strokeWidth="1.8"/>
 
-        {/* ── INNER cyan glow ring ── */}
-        {/* Outer glow */}
-        <circle r={R-52} fill="none" stroke="rgba(0,230,205,0.15)" strokeWidth="18"/>
-        {/* Main line */}
-        <circle r={R-52} fill="none" stroke="rgba(0,235,210,0.72)" strokeWidth="2.2"/>
-        {/* Bright inner highlight */}
-        <circle r={R-52} fill="none" stroke="rgba(180,255,245,0.30)" strokeWidth="0.8"/>
+        {/* ── INNER cyan glow ring — no dots, sits inside the circle arrangement ── */}
+        {/* Outer glow halo */}
+        <circle r={R-96} fill="none" stroke="rgba(0,230,205,0.14)" strokeWidth="22"/>
+        {/* Main bright line */}
+        <circle r={R-96} fill="none" stroke="rgba(0,238,212,0.80)" strokeWidth="2.4"/>
+        {/* Inner bright specular */}
+        <circle r={R-96} fill="none" stroke="rgba(200,255,248,0.35)" strokeWidth="0.9"/>
 
         {/* ── Colored glow dots at each circle position ── */}
         {ITEMS.map((item,i)=>{
@@ -292,17 +293,38 @@ export function RadialLanding({ onSelect, exiting }: Props) {
         </div>
       </motion.div>
 
-      {/* ── CENTER: floating species name ───────────────────────────────────── */}
+      {/* ── BIRD OVERLAY — large, centered in the ring area ───────────────── */}
+      <motion.img
+        src={birdImg}
+        alt="Hawaiian Coot"
+        initial={{ opacity:0 }}
+        animate={exiting
+          ? { opacity:0, transition:{ duration:0.3 } }
+          : { opacity:1, transition:{ duration:1.0, delay:0.25 } }
+        }
+        style={{
+          position:"absolute",
+          left:"50%", bottom:"8%",
+          transform:"translateX(-50%)",
+          height:"62%",
+          objectFit:"contain",
+          zIndex:3,
+          pointerEvents:"none",
+          filter:"brightness(1.05) contrast(1.1) drop-shadow(0 8px 40px rgba(0,0,0,0.7))",
+        }}
+      />
+
+      {/* ── CENTER: floating species name — below the bird's body ───────────── */}
       <motion.div
         initial={{ opacity:0, y:12 }}
         animate={exiting
           ? { opacity:0, scale:0.9, transition:{ duration:0.3 } }
-          : { opacity:1, y:0, transition:{ duration:0.9, delay:0.35, ease:[0.16,1,0.3,1] as const } }
+          : { opacity:1, y:0, transition:{ duration:0.9, delay:0.4, ease:[0.16,1,0.3,1] as const } }
         }
         style={{
           position:"absolute",
           left:0, right:0,
-          top:"50%", transform:"translateY(-46%)",
+          top:"54%",
           zIndex:5, textAlign:"center", pointerEvents:"none",
           whiteSpace:"nowrap",
         }}
@@ -310,10 +332,10 @@ export function RadialLanding({ onSelect, exiting }: Props) {
         {/* Main Hawaiian name */}
         <div style={{
           fontFamily:"'Josefin Sans',sans-serif",
-          fontSize:"clamp(22px,2.95vw,38px)", fontWeight:900,
-          letterSpacing:"0.08em", color:"#fff",
+          fontSize:"clamp(24px,3.1vw,42px)", fontWeight:900,
+          letterSpacing:"0.06em", color:"#fff",
           textTransform:"uppercase", lineHeight:1.0,
-          textShadow:"0 2px 40px rgba(0,0,0,0.95), 0 0 80px rgba(0,0,0,0.85)",
+          textShadow:"0 2px 32px rgba(0,0,0,0.95), 0 0 60px rgba(0,0,0,0.85)",
         }}>
           {"\u02BBAlae Ke\u02BBoke\u02BBo"}
         </div>
@@ -321,36 +343,36 @@ export function RadialLanding({ onSelect, exiting }: Props) {
         {/* HAWAIIAN COOT */}
         <div style={{
           fontFamily:"'Josefin Sans',sans-serif",
-          fontSize:"clamp(10px,1.1vw,15px)", fontWeight:700,
-          letterSpacing:"0.3em", color:"rgba(0,210,185,0.92)",
-          textTransform:"uppercase", marginTop:"6px",
-          textShadow:"0 1px 12px rgba(0,0,0,0.85)",
+          fontSize:"clamp(10px,1.15vw,15px)", fontWeight:700,
+          letterSpacing:"0.36em", color:"rgba(0,218,195,0.95)",
+          textTransform:"uppercase", marginTop:"7px",
+          textShadow:"0 1px 12px rgba(0,0,0,0.9)",
         }}>
           Hawaiian Coot
         </div>
 
-        {/* — Fulica alai — with rules */}
+        {/* — Fulica alai — with decorative rules */}
         <div style={{
           display:"flex", alignItems:"center", justifyContent:"center",
-          gap:"8px", marginTop:"6px",
+          gap:"10px", marginTop:"7px",
         }}>
-          <div style={{ width:"60px", height:"1px", background:"rgba(212,175,55,0.50)" }}/>
+          <div style={{ width:"55px", height:"1px", background:"rgba(212,175,55,0.60)" }}/>
           <div style={{
             fontFamily:"'Playfair Display',serif",
-            fontSize:"clamp(10px,1.0vw,13px)",
-            fontStyle:"italic", color:"rgba(255,255,255,0.60)",
-            textShadow:"0 1px 8px rgba(0,0,0,0.85)",
+            fontSize:"clamp(10px,1.05vw,14px)",
+            fontStyle:"italic", color:"rgba(255,255,255,0.68)",
+            textShadow:"0 1px 8px rgba(0,0,0,0.9)",
           }}>Fulica alai</div>
-          <div style={{ width:"60px", height:"1px", background:"rgba(212,175,55,0.50)" }}/>
+          <div style={{ width:"55px", height:"1px", background:"rgba(212,175,55,0.60)" }}/>
         </div>
 
         {/* ENDANGERED */}
         <div style={{
           fontFamily:"'Josefin Sans',sans-serif",
-          fontSize:"clamp(10px,1.0vw,13px)", fontWeight:700,
-          letterSpacing:"0.3em", color:"#f97316",
-          textTransform:"uppercase", marginTop:"6px",
-          textShadow:"0 0 16px rgba(249,115,22,0.85), 0 1px 8px rgba(0,0,0,0.85)",
+          fontSize:"clamp(10px,1.05vw,14px)", fontWeight:700,
+          letterSpacing:"0.36em", color:"#f97316",
+          textTransform:"uppercase", marginTop:"7px",
+          textShadow:"0 0 18px rgba(249,115,22,0.90), 0 1px 8px rgba(0,0,0,0.9)",
         }}>
           Endangered
         </div>
