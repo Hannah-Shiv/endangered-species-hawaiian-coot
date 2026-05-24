@@ -30,7 +30,7 @@ const CIRCLE_IMGS = [circle01, circle02, circle03, circle04, circle05,
                      circle06, circle07, circle08, circle09, circle10];
 
 // ─── Geometry ──────────────────────────────────────────────────────────────
-const CZ = 192;   // circle diameter px
+const CZ = 212;   // circle diameter px
 const R  = 330;   // ring radius px — gap = 2×330×sin18°−192 ≈ 12px ✓
 
 // ─── Data ───────────────────────────────────────────────────────────────────
