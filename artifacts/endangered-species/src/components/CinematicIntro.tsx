@@ -346,7 +346,7 @@ function BirdCallBadge() {
       initial={{ opacity:0 }} animate={{ opacity:1 }} exit={{ opacity:0 }}
       transition={{ duration: 0.8 }}
       style={{
-        position:"absolute", right:"7%", bottom:"7%", zIndex:15,
+        position:"absolute", right:"7%", bottom:"2%", zIndex:15,
         display:"flex", flexDirection:"column", alignItems:"flex-end",
         gap:"10px", pointerEvents:"none",
       }}
@@ -620,20 +620,23 @@ export function CinematicIntro({ onComplete }: Props) {
         <Grain/>
         <Letterbox/>
 
-        {/* Skip — gold italic, inside top letterbox */}
+        {/* Skip — gold italic, inside top black bar */}
         <motion.button
-          initial={{ opacity:0 }} animate={{ opacity:0.40 }}
-          whileHover={{ opacity:1 }}
+          initial={{ opacity:0 }} animate={{ opacity:0.90 }}
+          whileHover={{ opacity:1, scale:1.05 }}
           transition={{ delay:2.5, duration:0.7 }}
           onClick={finish}
           style={{
-            position:"absolute", top:"0.8%", right:"20px", zIndex:25,
+            position:"absolute", top:"5%", right:"28px", zIndex:25,
+            transform:"translateY(-50%)",
             background:"transparent",
-            border:`1px solid ${G3}`,
-            borderRadius:"2px", padding:"4px 16px",
+            border:`1.5px solid ${G2}`,
+            borderRadius:"3px", padding:"5px 22px",
             fontFamily:"'Playfair Display',serif", fontStyle:"italic",
-            fontSize:"13px", color:G2,
+            fontSize:"clamp(16px,1.6vw,22px)", color:G1,
             cursor:"pointer",
+            letterSpacing:"0.06em",
+            textShadow:`0 0 18px ${G2}`,
           }}
         >Skip ›</motion.button>
 
