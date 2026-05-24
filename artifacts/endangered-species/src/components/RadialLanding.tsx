@@ -99,6 +99,45 @@ export function RadialLanding({ onSelect, exiting }: Props) {
       {/* ── SOLID DARK BACKGROUND ── */}
       <div style={{ position:"absolute", inset:0, background:"#030810" }}/>
 
+      {/* ── AMBIENT CORNER GLOWS ── */}
+      <div style={{
+        position:"absolute", inset:0, pointerEvents:"none",
+        background:[
+          "radial-gradient(ellipse 38% 32% at 5% 8%,  rgba(0,180,140,0.11) 0%, transparent 70%)",
+          "radial-gradient(ellipse 38% 32% at 95% 8%,  rgba(34,100,180,0.10) 0%, transparent 70%)",
+          "radial-gradient(ellipse 34% 28% at 5% 92%, rgba(60,20,120,0.10) 0%, transparent 70%)",
+          "radial-gradient(ellipse 34% 28% at 95% 92%, rgba(20,80,60,0.09) 0%, transparent 70%)",
+        ].join(","),
+      }}/>
+
+      {/* ── STAR FIELD — scattered sparkles in the dark corners ── */}
+      <svg style={{ position:"absolute", inset:0, width:"100%", height:"100%", pointerEvents:"none", zIndex:0 }}
+           viewBox="0 0 1280 720" preserveAspectRatio="xMidYMid slice">
+        {([
+          [52,32,1.2,1],[138,58,0.8,0.7],[215,90,1.5,1],[75,142,1.0,0.8],[168,38,0.9,0.6],
+          [295,78,1.3,1],[356,146,0.7,0.5],[246,168,1.0,0.75],[92,190,1.4,1],[324,52,0.9,0.65],
+          [28,270,1.1,0.8],[48,354,0.8,0.6],[175,310,0.7,0.5],[62,460,1.2,0.9],[88,532,0.8,0.6],
+          [52,618,1.0,0.75],[128,688,1.3,1],[198,650,0.9,0.7],[320,706,0.8,0.55],
+          [958,42,1.2,1],[1035,70,0.9,0.7],[1110,36,1.5,1],[1184,94,0.8,0.6],[970,150,1.3,0.9],
+          [1058,126,0.9,0.65],[1148,56,1.1,0.8],[1222,140,0.7,0.5],[1078,170,1.4,1],
+          [1228,44,0.9,0.7],[1248,255,1.0,0.8],[1238,336,0.8,0.6],[1188,450,1.1,0.8],
+          [1225,534,0.8,0.6],[1144,614,1.4,1],[1200,684,1.0,0.75],[958,690,1.1,0.8],
+          [420,24,0.8,0.55],[860,18,0.9,0.6],[540,708,0.7,0.5],[740,712,0.8,0.55],
+        ] as [number,number,number,number][]).map(([x,y,r,o],i)=>(
+          <g key={i} opacity={o}>
+            <circle cx={x} cy={y} r={r*2.5} fill="white" opacity={0.12}/>
+            <circle cx={x} cy={y} r={r}     fill="white" opacity={0.95}/>
+            {r>1.1 && <>
+              <line x1={x-r*2.5} y1={y} x2={x+r*2.5} y2={y} stroke="white" strokeWidth="0.5" opacity={0.6}/>
+              <line x1={x} y1={y-r*2.5} x2={x} y2={y+r*2.5} stroke="white" strokeWidth="0.5" opacity={0.6}/>
+            </>}
+          </g>
+        ))}
+      </svg>
+
+      {/* placeholder closer so next element parses */}
+      <div style={{ display:"none" }}/>
+
       {/* ── CIRCULAR PHOTO WINDOW — bird centred inside inner ring ── */}
       <div style={{
         position:"absolute",
@@ -174,43 +213,67 @@ export function RadialLanding({ onSelect, exiting }: Props) {
         zIndex:6, width:`calc(50% - ${R + CZ/2 + 22}px)`,
         display:"flex", flexDirection:"column", gap:"14px",
       }}>
-        {/* SAVE OUR WILDLIFE */}
-        <div>
+        {/* SAVE OUR WILDLIFE — cursive */}
+        <div style={{ position:"relative" }}>
+          {/* decorative accent */}
           <div style={{
-            fontFamily:"'Josefin Sans',sans-serif",
-            fontSize:"clamp(20px,2.5vw,38px)", fontWeight:900,
-            letterSpacing:"0.03em", textTransform:"uppercase",
-            color:"#fff", lineHeight:1.04,
-            textShadow:"0 2px 24px rgba(0,0,0,0.75)",
+            display:"flex", alignItems:"center", gap:"8px", marginBottom:"8px",
           }}>
-            Save Our<br/>Wildlife&nbsp;🌿
+            <div style={{ width:"18px", height:"1px", background:"rgba(34,197,94,0.6)" }}/>
+            <span style={{
+              fontFamily:"'Josefin Sans',sans-serif", fontSize:"8px", fontWeight:700,
+              letterSpacing:"0.32em", color:"rgba(34,197,94,0.75)", textTransform:"uppercase",
+            }}>Conservation</span>
           </div>
           <div style={{
-            fontFamily:"'Josefin Sans',sans-serif",
-            fontSize:"clamp(7px,0.75vw,10.5px)", fontWeight:700,
-            letterSpacing:"0.34em", color:"rgba(34,197,94,0.88)",
-            textTransform:"uppercase", marginTop:"6px",
-          }}>Every Species Matters</div>
-          <div style={{ display:"flex", alignItems:"center", gap:"8px", marginTop:"10px" }}>
-            <span style={{ fontSize:"12px", color:"rgba(34,197,94,0.5)" }}>✦</span>
-            <div style={{ flex:1, height:"1px", background:"linear-gradient(to right,rgba(34,197,94,0.55),transparent)" }}/>
+            fontFamily:"'Playfair Display',serif",
+            fontStyle:"italic", fontWeight:700,
+            fontSize:"clamp(22px,2.7vw,40px)",
+            color:"#fff", lineHeight:1.08,
+            textShadow:"0 2px 30px rgba(0,0,0,0.8), 0 0 50px rgba(34,197,94,0.18)",
+          }}>
+            Save Our<br/>Wildlife
           </div>
+          <div style={{
+            display:"flex", alignItems:"center", gap:"7px", marginTop:"8px",
+          }}>
+            <span style={{ fontSize:"14px", filter:"drop-shadow(0 0 5px rgba(34,197,94,0.8))" }}>🌿</span>
+            <div style={{
+              fontFamily:"'Josefin Sans',sans-serif", fontSize:"clamp(6.5px,0.72vw,9.5px)",
+              fontWeight:700, letterSpacing:"0.36em", color:"rgba(34,197,94,0.88)",
+              textTransform:"uppercase",
+            }}>Every Species Matters</div>
+          </div>
+          <div style={{
+            width:"100%", height:"1px", marginTop:"10px",
+            background:"linear-gradient(to right, rgba(34,197,94,0.50), rgba(0,218,195,0.25), transparent)",
+          }}/>
         </div>
 
-        {/* Quote */}
-        <div style={{ paddingLeft:"2px" }}>
+        {/* Quote — styled block */}
+        <div style={{
+          background:"rgba(34,197,94,0.06)",
+          border:"1px solid rgba(34,197,94,0.18)",
+          borderLeft:"3px solid rgba(34,197,94,0.60)",
+          borderRadius:"0 8px 8px 0",
+          padding:"12px 14px",
+        }}>
           <div style={{
-            fontFamily:"'Playfair Display',serif", fontSize:"clamp(20px,2.0vw,30px)",
-            color:"rgba(34,197,94,0.65)", lineHeight:1, marginBottom:"8px",
+            fontFamily:"'Playfair Display',serif", fontSize:"clamp(18px,1.8vw,26px)",
+            color:"rgba(34,197,94,0.55)", lineHeight:1, marginBottom:"7px",
           }}>❝</div>
           <div style={{
             fontFamily:"'Playfair Display',serif",
-            fontSize:"clamp(10.5px,0.97vw,14.5px)", fontStyle:"italic",
-            color:"rgba(255,255,255,0.80)", lineHeight:1.7,
+            fontSize:"clamp(10px,0.94vw,13.5px)", fontStyle:"italic",
+            color:"rgba(255,255,255,0.82)", lineHeight:1.75,
           }}>
-            We don't inherit<br/>the Earth from our<br/>ancestors. We borrow<br/>it from our children.
+            We don't inherit the Earth from our ancestors. We borrow it from our children.
           </div>
-          <div style={{ width:"30px", height:"2px", background:"rgba(34,197,94,0.55)", marginTop:"10px" }}/>
+          <div style={{
+            fontFamily:"'Josefin Sans',sans-serif", fontSize:"8.5px",
+            color:"rgba(34,197,94,0.50)", letterSpacing:"0.20em",
+            textTransform:"uppercase", marginTop:"9px",
+          }}>— Antoine de Saint-Exupéry</div>
         </div>
       </motion.div>
 
@@ -254,45 +317,121 @@ export function RadialLanding({ onSelect, exiting }: Props) {
 
         {/* Where It Lives */}
         <div style={{
-          background:"rgba(2,5,18,0.82)", backdropFilter:"blur(18px)",
-          border:"1px solid rgba(255,255,255,0.10)", borderRadius:"10px",
-          padding:"14px 16px",
+          background:"linear-gradient(135deg, rgba(0,22,38,0.92) 0%, rgba(0,14,28,0.90) 100%)",
+          backdropFilter:"blur(20px)",
+          border:"1px solid rgba(0,218,195,0.28)",
+          borderRadius:"12px",
+          padding:"15px 17px",
+          position:"relative", overflow:"hidden",
         }}>
+          {/* top accent line */}
           <div style={{
-            fontFamily:"'Josefin Sans',sans-serif", fontSize:"9px", fontWeight:700,
-            letterSpacing:"0.26em", color:"rgba(212,175,55,0.85)",
-            textTransform:"uppercase", marginBottom:"9px",
-          }}>Where It Lives</div>
-          <div style={{ fontSize:"24px", marginBottom:"7px", opacity:0.55 }}>🗺️</div>
-          <div style={{ fontSize:"11px", color:"rgba(255,255,255,0.55)", marginBottom:"6px" }}>🏝 Hawaii Islands</div>
+            position:"absolute", top:0, left:0, right:0, height:"2px",
+            background:"linear-gradient(to right, transparent, rgba(0,218,195,0.75), transparent)",
+          }}/>
+          {/* header */}
           <div style={{
-            fontFamily:"'Playfair Display',serif", fontSize:"11.5px",
-            color:"rgba(255,255,255,0.78)", lineHeight:1.65,
+            display:"flex", alignItems:"center", gap:"8px", marginBottom:"12px",
           }}>
-            Found only in the Hawaiian Islands<br/>
-            Native to freshwater wetlands<br/>across the islands.
+            <span style={{ fontSize:"13px", filter:"drop-shadow(0 0 5px rgba(0,218,195,0.7))" }}>📍</span>
+            <div style={{
+              fontFamily:"'Josefin Sans',sans-serif", fontSize:"9px", fontWeight:700,
+              letterSpacing:"0.28em", color:"rgba(0,218,195,0.90)", textTransform:"uppercase",
+            }}>Where It Lives</div>
+          </div>
+          {/* location row */}
+          <div style={{ display:"flex", alignItems:"center", gap:"10px", marginBottom:"10px" }}>
+            <div style={{
+              width:"34px", height:"34px", borderRadius:"50%", flexShrink:0,
+              background:"linear-gradient(135deg, rgba(0,218,195,0.18), rgba(34,197,94,0.12))",
+              border:"1px solid rgba(0,218,195,0.35)",
+              display:"flex", alignItems:"center", justifyContent:"center", fontSize:"17px",
+            }}>🏝</div>
+            <div>
+              <div style={{
+                fontFamily:"'Josefin Sans',sans-serif", fontSize:"11.5px", fontWeight:700,
+                color:"#fff", letterSpacing:"0.07em",
+              }}>Hawaiian Islands</div>
+              <div style={{
+                fontFamily:"'Josefin Sans',sans-serif", fontSize:"8.5px",
+                color:"rgba(0,218,195,0.60)", letterSpacing:"0.08em", marginTop:"2px",
+              }}>Pacific Ocean · USA</div>
+            </div>
+          </div>
+          {/* description */}
+          <div style={{
+            fontFamily:"'Playfair Display',serif", fontStyle:"italic",
+            fontSize:"11px", color:"rgba(255,255,255,0.72)", lineHeight:1.75,
+            marginBottom:"11px",
+          }}>
+            Found only in Hawai{"\u02BB"}i — native to freshwater wetlands, taro fields &amp; coastal ponds.
+          </div>
+          {/* island tags */}
+          <div style={{ display:"flex", gap:"5px", flexWrap:"wrap" }}>
+            {["\u02BBOahu","Maui","\u02BBKauai","Moloka\u02BBi","Hawai\u02BBi"].map(island=>(
+              <span key={island} style={{
+                fontFamily:"'Josefin Sans',sans-serif", fontSize:"8px", fontWeight:700,
+                letterSpacing:"0.06em", color:"rgba(0,218,195,0.82)",
+                background:"rgba(0,218,195,0.10)", border:"1px solid rgba(0,218,195,0.25)",
+                borderRadius:"99px", padding:"2px 9px",
+              }}>{island}</span>
+            ))}
           </div>
         </div>
 
-        {/* Explore / CTA */}
-        <div>
+        {/* Explore / Learn / Protect CTA */}
+        <div style={{
+          background:"linear-gradient(135deg, rgba(0,12,26,0.90) 0%, rgba(5,15,32,0.88) 100%)",
+          backdropFilter:"blur(18px)",
+          border:"1px solid rgba(255,255,255,0.08)",
+          borderRadius:"12px",
+          padding:"17px 18px",
+          position:"relative", overflow:"hidden",
+        }}>
+          {/* rainbow top accent */}
           <div style={{
-            fontFamily:"'Playfair Display',serif",
-            fontSize:"clamp(18px,1.85vw,28px)", fontWeight:700, lineHeight:1.35,
-          }}>
-            <span style={{ color:"#22c55e", textShadow:"0 0 20px rgba(34,197,94,0.65)" }}>Explore.</span><br/>
-            <span style={{ color:"#14b8a6", textShadow:"0 0 20px rgba(20,184,166,0.55)" }}>Learn.</span>{" "}
-            <span style={{ fontSize:"0.68em" }}>🌿</span><br/>
-            <span style={{ color:"#f97316", textShadow:"0 0 20px rgba(249,115,22,0.55)" }}>Protect.</span>
+            position:"absolute", top:0, left:0, right:0, height:"2px",
+            background:"linear-gradient(to right, rgba(34,197,94,0.75), rgba(20,184,166,0.75), rgba(249,115,22,0.75))",
+          }}/>
+          {/* three rows */}
+          <div style={{ display:"flex", flexDirection:"column", gap:"6px", marginBottom:"13px" }}>
+            {([
+              { word:"Explore.", color:"#22c55e", glow:"rgba(34,197,94,0.65)", icon:"🔭" },
+              { word:"Learn.",   color:"#14b8a6", glow:"rgba(20,184,166,0.55)",  icon:"📖" },
+              { word:"Protect.", color:"#f97316", glow:"rgba(249,115,22,0.60)",  icon:"🛡️" },
+            ] as { word:string; color:string; glow:string; icon:string }[]).map(({ word, color, glow, icon })=>(
+              <div key={word} style={{
+                display:"flex", alignItems:"center", gap:"10px",
+                padding:"5px 8px", borderRadius:"7px",
+                background:`rgba(${color==='#22c55e'?'34,197,94':color==='#14b8a6'?'20,184,166':'249,115,22'},0.07)`,
+              }}>
+                <span style={{ fontSize:"15px", flexShrink:0, filter:`drop-shadow(0 0 5px ${glow})` }}>{icon}</span>
+                <span style={{
+                  fontFamily:"'Playfair Display',serif", fontStyle:"italic", fontWeight:700,
+                  fontSize:"clamp(15px,1.55vw,22px)",
+                  color, textShadow:`0 0 22px ${glow}`,
+                  lineHeight:1.2,
+                }}>{word}</span>
+              </div>
+            ))}
           </div>
+          {/* tagline */}
           <div style={{
-            fontFamily:"'Josefin Sans',sans-serif", fontSize:"10px",
-            color:"rgba(255,255,255,0.5)", letterSpacing:"0.04em",
-            marginTop:"9px", lineHeight:1.6,
+            fontFamily:"'Josefin Sans',sans-serif", fontSize:"9.5px",
+            color:"rgba(255,255,255,0.45)", letterSpacing:"0.05em", lineHeight:1.65,
           }}>
-            Click any section to explore<br/>the world of the {"\u02BBalae ke\u02BBoke\u02BBo"}.
+            Click any circle to explore<br/>the world of the {"\u02BBalae ke\u02BBoke\u02BBo"}.
           </div>
-          <div style={{ color:"rgba(249,115,22,0.75)", fontSize:"14px", marginTop:"7px" }}>→</div>
+          {/* footer rule + arrow */}
+          <div style={{
+            display:"flex", alignItems:"center", gap:"8px", marginTop:"11px",
+          }}>
+            <div style={{
+              flex:1, height:"1px",
+              background:"linear-gradient(to right, rgba(249,115,22,0.45), transparent)",
+            }}/>
+            <span style={{ color:"rgba(249,115,22,0.80)", fontSize:"15px", lineHeight:1 }}>→</span>
+          </div>
         </div>
       </motion.div>
 
