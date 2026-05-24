@@ -28,6 +28,7 @@ if (!basePath) {
 
 export default defineConfig({
   base: basePath,
+  assetsInclude: ["**/*.m4a"],
   plugins: [
     react(),
     tailwindcss(),

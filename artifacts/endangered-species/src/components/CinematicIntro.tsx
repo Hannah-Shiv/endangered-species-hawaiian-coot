@@ -10,6 +10,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import birdCallSrc from "@assets/XC342210_-_Hawaiian_Coot_-_Fulica_alai_1779638749861.mp3";
+import bgMusicSrc  from "@assets/World-Ambient-Background_1779644360925.m4a";
 
 // ─── Config ───────────────────────────────────────────────────────────────────
 const VIDEO_ID        = "AWpvNtoG5nU";
@@ -356,13 +357,65 @@ function useBirdCall(elapsed: number) {
   return playing;
 }
 
+// ─── Background music — plays from the first frame, fades out on close ───────
+const BG_MUSIC_VOL = 0.32;
+
+function useBgMusic(closing: boolean) {
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  // Start on mount
+  useEffect(() => {
+    const audio = new Audio(bgMusicSrc as string);
+    audio.loop   = true;
+    audio.volume = 0;
+    audioRef.current = audio;
+
+    const tryPlay = () => {
+      audio.play().then(() => {
+        // Gentle 3-second fade-in so it doesn't startle
+        const start = Date.now();
+        const ramp = () => {
+          const t = (Date.now() - start) / 3000;
+          audio.volume = Math.min(BG_MUSIC_VOL * t, BG_MUSIC_VOL);
+          if (t < 1) requestAnimationFrame(ramp);
+        };
+        requestAnimationFrame(ramp);
+      }).catch(() => {
+        // Autoplay blocked — try again on first user interaction
+        const resume = () => { tryPlay(); document.removeEventListener("click", resume); document.removeEventListener("keydown", resume); };
+        document.addEventListener("click",   resume, { once: true });
+        document.addEventListener("keydown", resume, { once: true });
+      });
+    };
+
+    tryPlay();
+    return () => { audio.pause(); audioRef.current = null; };
+  }, []); // eslint-disable-line
+
+  // Fade out when closing
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!closing || !audio) return;
+    const start   = Date.now();
+    const startVol = audio.volume;
+    const ramp = () => {
+      const t = (Date.now() - start) / 1000;
+      audio.volume = Math.max(startVol * (1 - t), 0);
+      if (t < 1) requestAnimationFrame(ramp);
+      else audio.pause();
+    };
+    requestAnimationFrame(ramp);
+  }, [closing]);
+}
+
 // ─── Main component ───────────────────────────────────────────────────────────
 interface Props { onComplete: () => void }
 
 export function CinematicIntro({ onComplete }: Props) {
   const elapsed   = useElapsed();
-  const birdAudio = useBirdCall(elapsed);
   const [closing, setClosing] = useState(false);
+  useBgMusic(closing);
+  const birdAudio = useBirdCall(elapsed);
 
   const finish = useCallback(() => {
     if (closing) return;
