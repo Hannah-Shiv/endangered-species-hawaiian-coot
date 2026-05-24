@@ -30,7 +30,8 @@ const G3 = "#FFC840";                    // warm bright gold — labels
 const S = "0 2px 48px rgba(0,0,0,0.99), 0 0 90px rgba(0,0,0,0.97), 0 4px 18px rgba(0,0,0,0.94)";
 
 // ─── Shared animation config — slow, cinematic fades ─────────────────────────
-const FADE_DUR  = 1.60;   // seconds — fade IN
+const FADE_DUR  = 2.50;   // seconds — fade IN
+const FADE_OUT  = 1.80;   // seconds — fade OUT
 const EASE_IN   = [0.16, 1, 0.3, 1] as const;
 const EASE_OUT  = [0.4,  0, 1,   1] as const;
 
@@ -38,11 +39,8 @@ const EASE_OUT  = [0.4,  0, 1,   1] as const;
 const CARD_MOTION = {
   initial:    { opacity: 0 },
   animate:    { opacity: 1 },
-  exit:       { opacity: 0 },
-  transition: {
-    opacity: { duration: FADE_DUR, ease: EASE_IN },
-    exit:    { duration: 0.90,     ease: EASE_OUT },
-  },
+  exit:       { opacity: 0, transition: { duration: FADE_OUT, ease: [0.4, 0, 1, 1] } },
+  transition: { duration: FADE_DUR, ease: EASE_IN },
 } as const;
 
 // ─── Layout anchor — center-right, over the water ────────────────────────────
@@ -122,7 +120,7 @@ function NatureCaption({ top, sub }: { top: string; sub: string }) {
     <motion.div {...CARD_MOTION} style={BLOCK}>
       <motion.div
         initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -10 }}
+        exit={{ opacity: 0, y: -10, transition: { duration: FADE_OUT, ease: [0.4,0,1,1] } }}
         transition={{ duration: FADE_DUR, ease: EASE_IN }}
         style={BIG}
       >{top}</motion.div>
@@ -131,8 +129,8 @@ function NatureCaption({ top, sub }: { top: string; sub: string }) {
 
       <motion.div
         initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: FADE_DUR, delay: 0.35, ease: EASE_IN }}
+        exit={{ opacity: 0, transition: { duration: FADE_OUT, ease: [0.4,0,1,1] } }}
+        transition={{ duration: FADE_DUR, delay: 0.55, ease: EASE_IN }}
         style={SUB}
       >{sub}</motion.div>
     </motion.div>
@@ -155,15 +153,15 @@ function CenterQuote({ quote }: { quote: string }) {
       {lines.map((line, i) => (
         <motion.div key={i}
           initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: FADE_DUR, delay: 0.18 * i, ease: EASE_IN }}
+          exit={{ opacity: 0, transition: { duration: FADE_OUT, ease: [0.4,0,1,1] } }}
+          transition={{ duration: FADE_DUR, delay: 0.28 * i, ease: EASE_IN }}
           style={{ ...BIG, fontSize: "clamp(38px, 5.5vw, 78px)" }}
         >{line}</motion.div>
       ))}
       <motion.div
         initial={{ scaleX: 0 }} animate={{ scaleX: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.80, delay: 0.60, ease: EASE_IN }}
+        exit={{ opacity: 0, transition: { duration: FADE_OUT, ease: [0.4,0,1,1] } }}
+        transition={{ duration: 1.2, delay: 0.80, ease: EASE_IN }}
         style={{
           height: "1.5px", width: "100px", marginLeft: "auto", marginTop: "18px",
           background: `linear-gradient(to left, transparent, ${G2} 35%, ${G1})`,
@@ -179,15 +177,16 @@ function SchoolText() {
   return (
     <motion.div {...CARD_MOTION} style={BLOCK}>
       <motion.div
-        initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-        transition={{ duration: FADE_DUR, delay: 0.20 }}
+        initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+        exit={{ opacity: 0, transition: { duration: FADE_OUT, ease: [0.4,0,1,1] } }}
+        transition={{ duration: FADE_DUR, delay: 0.25 }}
         style={SUB}
       >A Science Project</motion.div>
 
       <motion.div
         initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -10 }}
-        transition={{ duration: FADE_DUR, delay: 0.50, ease: EASE_IN }}
+        exit={{ opacity: 0, y: -10, transition: { duration: FADE_OUT, ease: [0.4,0,1,1] } }}
+        transition={{ duration: FADE_DUR, delay: 0.65, ease: EASE_IN }}
         style={{ ...BIG, fontSize: "clamp(42px, 6.0vw, 86px)", lineHeight: 1.06 }}
       >Endangered<br/>Species</motion.div>
 
@@ -195,8 +194,8 @@ function SchoolText() {
 
       <motion.div
         initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: FADE_DUR, delay: 1.00, ease: EASE_IN }}
+        exit={{ opacity: 0, transition: { duration: FADE_OUT, ease: [0.4,0,1,1] } }}
+        transition={{ duration: FADE_DUR, delay: 1.30, ease: EASE_IN }}
         style={{ ...BIG, fontSize: "clamp(26px, 3.2vw, 46px)" }}
       >Cooper Middle School</motion.div>
     </motion.div>
@@ -209,21 +208,21 @@ function NameReveal({ name, role }: { name: string; role: string }) {
     <motion.div
       key={name}
       initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
+      exit={{ opacity: 0, transition: { duration: FADE_OUT, ease: [0.4,0,1,1] } }}
       transition={{ duration: FADE_DUR, ease: EASE_IN }}
       style={BLOCK}
     >
       <motion.div
         initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: FADE_DUR, delay: 0.22, ease: EASE_IN }}
+        exit={{ opacity: 0, transition: { duration: FADE_OUT, ease: [0.4,0,1,1] } }}
+        transition={{ duration: FADE_DUR, delay: 0.30, ease: EASE_IN }}
         style={SUB}
       >{role}</motion.div>
 
       <motion.div
         initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: FADE_DUR, delay: 0.44, ease: EASE_IN }}
+        exit={{ opacity: 0, transition: { duration: FADE_OUT, ease: [0.4,0,1,1] } }}
+        transition={{ duration: FADE_DUR, delay: 0.60, ease: EASE_IN }}
         style={BIG}
       >{name}</motion.div>
 
@@ -234,12 +233,12 @@ function NameReveal({ name, role }: { name: string; role: string }) {
 
 // ─── Team sequence — one person at a time ────────────────────────────────────
 const TEAM = [
-  { name: "Hannah Shiv",      role: "Student Researcher" },
-  { name: "Chloe Pan",        role: "Student Researcher" },
-  { name: "Baram Oustad",     role: "Student Researcher" },
-  { name: "Calliandra Harris", role: "Science Teacher"   },
+  { name: "Hannah Shiv",       role: "Student Researcher"                    },
+  { name: "Chloe Pan",         role: "Student Researcher"                    },
+  { name: "Baram Oustad",      role: "Student Researcher"                    },
+  { name: "Calliandra Harris", role: "Dedicated to our Best Science Teacher" },
 ];
-const PER_PERSON = 3800; // ms each person is visible (1.6s fade-in + ~1.3s hold + 0.9s fade-out)
+const PER_PERSON = 5200; // ms each person is visible (2.5s fade-in + ~0.9s hold + 1.8s fade-out)
 
 function TeamSequence() {
   const [idx, setIdx] = useState(0);
@@ -456,6 +455,13 @@ export function CinematicIntro({ onComplete }: Props) {
           }}
           title="Hawaiian Islands aerial footage"
         />
+
+        {/* Black mask over bottom-left to hide YouTube watermark/branding */}
+        <div style={{
+          position:"absolute", left:0, bottom:"10%",
+          width:"260px", height:"56px",
+          background:"#000", zIndex:19, pointerEvents:"none",
+        }}/>
 
         {/* Gradient vignette — right side darker so gold text pops */}
         <div style={{

@@ -17,6 +17,69 @@ import { ExtinctionRisk } from "@/components/sections/ExtinctionRisk";
 import { Sources } from "@/components/sections/Sources";
 import { motion, AnimatePresence } from "framer-motion";
 
+// ─── Gold palette (mirrored from CinematicIntro for consistency) ──────────────
+const G2 = "#FFE060";
+const SHADOW = "0 2px 48px rgba(0,0,0,0.99), 0 0 90px rgba(0,0,0,0.97)";
+const EASE_IN = [0.16, 1, 0.3, 1] as const;
+
+// ─── Splash screen — captures the user gesture so audio can autoplay ──────────
+function CinematicSplash({ onStart }: { onStart: () => void }) {
+  return (
+    <motion.div
+      key="splash"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 1.2 }}
+      onClick={onStart}
+      style={{
+        position: "fixed", inset: 0, zIndex: 9990,
+        background: "#000", cursor: "pointer",
+        display: "flex", flexDirection: "column",
+        alignItems: "center", justifyContent: "center",
+      }}
+    >
+      {/* Species name */}
+      <motion.div
+        initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1.8, delay: 0.4, ease: EASE_IN }}
+        style={{
+          fontFamily: "'Playfair Display', serif",
+          fontStyle: "italic", fontWeight: 300,
+          fontSize: "clamp(48px, 7.5vw, 108px)",
+          color: G2, letterSpacing: "0.09em",
+          textShadow: SHADOW,
+        }}
+      >Hawaiian Coot</motion.div>
+
+      {/* Gold rule */}
+      <motion.div
+        initial={{ scaleX: 0 }} animate={{ scaleX: 1 }}
+        transition={{ duration: 1.0, delay: 1.0, ease: EASE_IN }}
+        style={{
+          height: "1px", width: "80px",
+          background: G2, margin: "28px auto",
+          transformOrigin: "center",
+        }}
+      />
+
+      {/* Pulsing "tap to begin" */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: [0, 0.55, 0.28, 0.55] }}
+        transition={{ duration: 2.4, delay: 1.6, repeat: Infinity, repeatType: "reverse" }}
+        style={{
+          fontFamily: "'Playfair Display', serif",
+          fontStyle: "italic", fontWeight: 300,
+          fontSize: "clamp(13px, 1.3vw, 17px)",
+          color: G2, letterSpacing: "0.22em",
+          textShadow: SHADOW,
+        }}
+      >tap anywhere to begin</motion.div>
+    </motion.div>
+  );
+}
+
 function renderSection(section: string | null) {
   switch (section) {
     case "Meet the Species":         return <MeetSpecies />;
@@ -37,8 +100,10 @@ function renderSection(section: string | null) {
 
 type Mode = "landing" | "nav";
 
+type Phase = "splash" | "intro" | "home";
+
 export default function Home() {
-  const [showIntro,     setShowIntro]     = useState(true);
+  const [phase,         setPhase]         = useState<Phase>("splash");
   const [mode,          setMode]          = useState<Mode>("landing");
   const [exiting,       setExiting]       = useState(false);
   const [autoGroup,     setAutoGroup]     = useState<string | null>(null);
@@ -61,10 +126,13 @@ export default function Home() {
   return (
     <main style={{ position:"relative", minHeight:"100vh", overflow:"hidden" }}>
 
-      {/* Cinematic intro — shown on first visit only */}
-      <AnimatePresence>
-        {showIntro && (
-          <CinematicIntro key="intro" onComplete={() => setShowIntro(false)} />
+      {/* Splash → intro → home flow */}
+      <AnimatePresence mode="wait">
+        {phase === "splash" && (
+          <CinematicSplash key="splash" onStart={() => setPhase("intro")} />
+        )}
+        {phase === "intro" && (
+          <CinematicIntro key="intro" onComplete={() => setPhase("home")} />
         )}
       </AnimatePresence>
 
