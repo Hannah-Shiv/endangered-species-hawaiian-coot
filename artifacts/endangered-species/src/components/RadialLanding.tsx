@@ -102,10 +102,10 @@ export function RadialLanding({ onSelect, exiting }: Props) {
       <img src={bgPhoto} alt="" style={{
         position:"absolute",
         left:0, right:0,
-        top:"-18%",
+        top:"-28%",
         width:"100%",
-        height:"145%",
-        objectFit:"cover", objectPosition:"50% 60%",
+        height:"155%",
+        objectFit:"cover", objectPosition:"50% 55%",
         filter:"brightness(0.80) contrast(1.05) saturate(1.08)",
       }}/>
 
