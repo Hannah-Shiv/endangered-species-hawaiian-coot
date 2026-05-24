@@ -62,8 +62,15 @@ export function FoodWeb() {
   return (
     <div className="w-full min-h-screen pt-24 pb-12 px-6 md:px-12 bg-background overflow-hidden flex flex-col">
       <div className="text-center mb-8 relative z-10">
-        <h1 className="text-5xl font-serif text-primary mb-2">Wetland Food Web</h1>
-        <p className="text-muted-foreground">Hover over organisms to see energy flow.</p>
+        <div style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: "0.8rem", letterSpacing: "0.2em", color: "rgba(212,175,55,1)" }} className="mb-4 font-bold uppercase">
+          ◆ SECTION 03 ◆
+        </div>
+        <h1 className="text-5xl uppercase mb-2" style={{ fontFamily: "'Josefin Sans', sans-serif", letterSpacing: "0.1em", color: "rgba(212,175,55,1)" }}>
+          Wetland Food Web
+        </h1>
+        <p className="text-lg" style={{ fontFamily: "'Playfair Display', serif", color: "rgba(255,255,255,0.7)" }}>
+          Hover over organisms to see energy flow.
+        </p>
       </div>
 
       <div className="flex-1 relative w-full max-w-5xl mx-auto">
@@ -83,15 +90,15 @@ export function FoodWeb() {
                   y1={`${sourceNode.y}%`}
                   x2={`${targetNode.x}%`}
                   y2={`${targetNode.y}%`}
-                  stroke={isHovered ? "hsl(var(--accent))" : "hsl(var(--border))"}
-                  strokeWidth={isHovered ? 3 : 1}
-                  opacity={isFaded ? 0.1 : (isHovered ? 1 : 0.4)}
+                  stroke={isHovered ? "rgba(212,175,55,1)" : "rgba(212,175,55,0.2)"}
+                  strokeWidth={isHovered ? 2 : 1}
+                  opacity={isFaded ? 0.05 : (isHovered ? 1 : 0.4)}
                   initial={{ pathLength: 0 }}
                   animate={{ pathLength: 1 }}
                   transition={{ duration: 1, delay: i * 0.05 }}
                 />
                 {isHovered && (
-                  <circle r="4" fill="hsl(var(--accent))">
+                  <circle r="4" fill="rgba(193,18,31,1)">
                     <animateMotion 
                       dur="2s" 
                       repeatCount="indefinite" 
@@ -109,27 +116,58 @@ export function FoodWeb() {
           const isActive = activeNodes.has(node.id);
           const isFaded = hoveredNode && !isActive;
 
+          // Color scheme logic mapping to red/gold
+          let borderC = "rgba(212,175,55,0.5)";
+          let bgC = "rgba(5,8,22,0.9)";
+          let textC = "rgba(212,175,55,1)";
+          let sizeClass = "w-20 h-20";
+
+          if (node.type === 'apex') {
+            borderC = "rgba(193,18,31,0.8)";
+            bgC = "rgba(193,18,31,0.2)";
+            sizeClass = "w-24 h-24 md:w-32 md:h-32";
+          } else if (node.type === 'prey') {
+            borderC = "rgba(212,175,55,0.3)";
+            bgC = "rgba(3,5,14,0.95)";
+            sizeClass = "w-20 h-20 md:w-24 md:h-24";
+          } else if (node.type === 'producer') {
+            borderC = "rgba(212,175,55,0.4)";
+            bgC = "rgba(212,175,55,0.1)";
+            sizeClass = "w-24 h-24";
+          } else if (node.type === 'competitor' || node.type === 'scavenger') {
+            borderC = "rgba(193,18,31,0.4)";
+            bgC = "rgba(3,5,14,0.95)";
+            textC = "rgba(255,255,255,0.8)";
+            sizeClass = node.type === 'scavenger' ? "w-16 h-16" : "w-20 h-20";
+          } else if (node.type === 'decomposer') {
+            borderC = "rgba(212,175,55,0.2)";
+            bgC = "rgba(3,5,14,0.95)";
+            textC = "rgba(255,255,255,0.6)";
+            sizeClass = "w-16 h-16";
+          }
+
           return (
             <div
               key={node.id}
               className={`absolute transform -translate-x-1/2 -translate-y-1/2 transition-all duration-300 ${isFaded ? 'opacity-20 scale-95' : 'opacity-100 scale-100'}`}
-              style={{ left: `${node.x}%`, top: `${node.y}%` }}
+              style={{ left: `${node.x}%`, top: `${node.y}%`, zIndex: isActive ? 10 : 1 }}
               onMouseEnter={() => setHoveredNode(node.id)}
               onMouseLeave={() => setHoveredNode(null)}
             >
               <div 
                 className={`
-                  p-4 rounded-full border-2 backdrop-blur-md flex flex-col items-center justify-center text-center cursor-pointer shadow-lg
-                  ${node.type === 'apex' ? 'w-24 h-24 md:w-32 md:h-32 border-primary bg-primary/20 text-primary-foreground' : ''}
-                  ${node.type === 'prey' ? 'w-20 h-20 md:w-24 md:h-24 border-green-500/50 bg-green-500/10 text-foreground' : ''}
-                  ${node.type === 'competitor' ? 'w-20 h-20 border-red-500/50 bg-red-500/10 text-foreground' : ''}
-                  ${node.type === 'scavenger' ? 'w-16 h-16 border-orange-500/50 bg-orange-500/10 text-foreground' : ''}
-                  ${node.type === 'producer' ? 'w-24 h-24 border-emerald-500/50 bg-emerald-500/10 text-foreground' : ''}
-                  ${node.type === 'decomposer' ? 'w-16 h-16 border-purple-500/50 bg-purple-500/10 text-foreground' : ''}
-                  hover:scale-110 hover:shadow-[0_0_20px_rgba(var(--accent),0.4)] hover:border-accent hover:bg-accent/20 transition-all duration-300
+                  p-2 rounded-full border-2 backdrop-blur flex flex-col items-center justify-center text-center cursor-pointer shadow-lg
+                  ${sizeClass}
+                  transition-all duration-300
                 `}
+                style={{
+                  background: isActive && hoveredNode ? "rgba(193,18,31,0.9)" : bgC,
+                  borderColor: isActive && hoveredNode ? "rgba(212,175,55,1)" : borderC,
+                  color: isActive && hoveredNode ? "#fff" : textC,
+                  fontFamily: "'Josefin Sans', sans-serif"
+                }}
               >
-                <span className="text-xs md:text-sm font-semibold">{node.label}</span>
+                <span className="text-xs md:text-sm font-bold uppercase tracking-wider">{node.label}</span>
               </div>
             </div>
           );

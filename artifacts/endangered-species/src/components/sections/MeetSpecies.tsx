@@ -19,8 +19,15 @@ export function MeetSpecies() {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <h1 className="text-5xl font-serif text-primary mb-6">Meet the Species</h1>
-          <h2 className="text-2xl font-serif text-muted-foreground mb-8 italic">Fulica alai</h2>
+          <div style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: "0.8rem", letterSpacing: "0.2em", color: "rgba(212,175,55,1)" }} className="mb-4 font-bold uppercase">
+            ◆ SECTION 01 ◆
+          </div>
+          <h1 className="text-5xl uppercase mb-6" style={{ fontFamily: "'Josefin Sans', sans-serif", letterSpacing: "0.1em", color: "rgba(212,175,55,1)" }}>
+            Meet the Species
+          </h1>
+          <h2 className="text-2xl mb-8 italic" style={{ fontFamily: "'Playfair Display', serif", color: "rgba(212,175,55,0.75)" }}>
+            Fulica alai
+          </h2>
           
           <div className="space-y-4 mb-12">
             {facts.map((fact, idx) => (
@@ -30,21 +37,26 @@ export function MeetSpecies() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: idx * 0.1 + 0.5 }}
               >
-                <Card className="bg-card/50 border-primary/20 hover:border-primary/50 transition-colors">
+                <Card 
+                  className="transition-colors border-0"
+                  style={{ background: "rgba(3,5,14,0.95)", borderLeft: "4px solid rgba(193,18,31,0.8)" }}
+                >
                   <CardContent className="p-4 flex items-start gap-4">
-                    <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary shrink-0">
+                    <div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 font-bold" style={{ background: "rgba(212,175,55,0.2)", color: "rgba(212,175,55,1)", fontFamily: "'Josefin Sans', sans-serif" }}>
                       {idx + 1}
                     </div>
-                    <p className="text-foreground/90">{fact}</p>
+                    <p className="text-foreground/90 text-lg leading-relaxed" style={{ fontFamily: "'Playfair Display', serif" }}>{fact}</p>
                   </CardContent>
                 </Card>
               </motion.div>
             ))}
           </div>
 
-          <div className="bg-card/30 p-6 rounded-lg border border-border">
-            <h3 className="text-xl font-medium mb-4 text-accent">Scientific Classification</h3>
-            <p className="text-sm text-muted-foreground leading-relaxed">
+          <div className="p-6 rounded-lg border" style={{ background: "rgba(3,5,14,0.95)", borderColor: "rgba(212,175,55,0.3)" }}>
+            <h3 className="text-xl font-bold uppercase mb-4" style={{ fontFamily: "'Josefin Sans', sans-serif", color: "rgba(212,175,55,1)", letterSpacing: "0.1em" }}>
+              Scientific Classification
+            </h3>
+            <p className="text-lg leading-relaxed" style={{ fontFamily: "'Playfair Display', serif", color: "rgba(255,255,255,0.7)" }}>
               Kingdom: Animalia<br/>
               Phylum: Chordata<br/>
               Class: Aves<br/>
@@ -60,27 +72,27 @@ export function MeetSpecies() {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1, delay: 0.3 }}
-          className="relative"
+          className="relative mt-16 lg:mt-0"
         >
-          <div className="aspect-square rounded-2xl overflow-hidden border-2 border-primary/30 shadow-2xl relative">
+          <div className="aspect-square rounded-2xl overflow-hidden border-2 shadow-2xl relative" style={{ borderColor: "rgba(193,18,31,0.5)" }}>
             <img src={portraitImg} alt="Hawaiian Coot Portrait" className="w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent flex flex-col justify-end p-8">
+            <div className="absolute inset-0 bg-gradient-to-t from-background/95 to-transparent flex flex-col justify-end p-8">
               <div className="grid grid-cols-2 gap-4 text-center">
-                <div className="bg-black/50 backdrop-blur p-4 rounded-lg">
-                  <div className="text-3xl font-bold text-primary">~3,500</div>
-                  <div className="text-xs text-muted-foreground uppercase tracking-wider">Wild Population</div>
+                <div className="p-4 rounded-lg border" style={{ background: "rgba(3,5,14,0.85)", borderColor: "rgba(212,175,55,0.2)" }}>
+                  <div className="text-3xl font-bold" style={{ color: "rgba(193,18,31,1)" }}>~3,500</div>
+                  <div className="text-xs uppercase tracking-wider mt-1" style={{ color: "rgba(212,175,55,0.8)", fontFamily: "'Josefin Sans', sans-serif" }}>Wild Population</div>
                 </div>
-                <div className="bg-black/50 backdrop-blur p-4 rounded-lg">
-                  <div className="text-3xl font-bold text-accent">1</div>
-                  <div className="text-xs text-muted-foreground uppercase tracking-wider">Endemic Chain</div>
+                <div className="p-4 rounded-lg border" style={{ background: "rgba(3,5,14,0.85)", borderColor: "rgba(212,175,55,0.2)" }}>
+                  <div className="text-3xl font-bold" style={{ color: "rgba(212,175,55,1)" }}>1</div>
+                  <div className="text-xs uppercase tracking-wider mt-1" style={{ color: "rgba(212,175,55,0.8)", fontFamily: "'Josefin Sans', sans-serif" }}>Endemic Chain</div>
                 </div>
-                <div className="bg-black/50 backdrop-blur p-4 rounded-lg">
-                  <div className="text-2xl font-bold text-primary">0-1.2k m</div>
-                  <div className="text-xs text-muted-foreground uppercase tracking-wider">Elevation Range</div>
+                <div className="p-4 rounded-lg border" style={{ background: "rgba(3,5,14,0.85)", borderColor: "rgba(212,175,55,0.2)" }}>
+                  <div className="text-2xl font-bold" style={{ color: "rgba(193,18,31,1)" }}>0-1.2k m</div>
+                  <div className="text-xs uppercase tracking-wider mt-1" style={{ color: "rgba(212,175,55,0.8)", fontFamily: "'Josefin Sans', sans-serif" }}>Elevation Range</div>
                 </div>
-                <div className="bg-black/50 backdrop-blur p-4 rounded-lg">
-                  <div className="text-3xl font-bold text-accent">390-650</div>
-                  <div className="text-xs text-muted-foreground uppercase tracking-wider">g Weight</div>
+                <div className="p-4 rounded-lg border" style={{ background: "rgba(3,5,14,0.85)", borderColor: "rgba(212,175,55,0.2)" }}>
+                  <div className="text-3xl font-bold" style={{ color: "rgba(212,175,55,1)" }}>390-650</div>
+                  <div className="text-xs uppercase tracking-wider mt-1" style={{ color: "rgba(212,175,55,0.8)", fontFamily: "'Josefin Sans', sans-serif" }}>g Weight</div>
                 </div>
               </div>
             </div>
