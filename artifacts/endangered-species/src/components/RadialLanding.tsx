@@ -12,7 +12,7 @@ import { motion } from "framer-motion";
 import bgPhoto    from "../assets/bg-photo.png";
 import birdImg    from "../assets/bird-transparent.png";
 import whereItLivesImg from "@assets/image_1779661049779.png";
-import centerImg       from "@assets/image_1779664253807.png";
+import centerImg       from "@assets/image_1779664835983.png";
 import explorePanelImg from "@assets/image_1779661407544.png";
 import quickFactsImg   from "@assets/image_1779661714544.png";
 import topLeftImg      from "@assets/image_1779662050427.png";
@@ -254,7 +254,7 @@ export function RadialLanding({ onSelect, exiting }: Props) {
         left:"50%", top:"50%",
         transform:"translate(-50%, -50%)",
         width:`${(R-85)*2}px`, height:`${(R-85)*2}px`,
-        borderRadius:"16px",
+        borderRadius:"50%",
         overflow:"hidden",
         zIndex:1,
       }}>
