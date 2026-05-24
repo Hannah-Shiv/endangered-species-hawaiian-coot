@@ -317,10 +317,10 @@ export function RadialLanding({ onSelect, exiting }: Props) {
         position:"absolute", left:"14px", top:"5%",
         zIndex:6, width:`calc(50% - ${R + CZ/2 + 26}px)`,
       }}>
-        <div style={{ display:"flex", alignItems:"center", gap:"7px", marginBottom:"7px" }}>
-          <div style={{ width:"16px", height:"1px", background:"rgba(34,197,94,0.6)" }}/>
-          <span style={{ fontFamily:"'Josefin Sans',sans-serif", fontSize:"8px", fontWeight:700,
-            letterSpacing:"0.32em", color:"rgba(34,197,94,0.80)", textTransform:"uppercase" }}>
+        <div style={{ display:"flex", alignItems:"center", gap:"8px", marginBottom:"9px" }}>
+          <div style={{ width:"18px", height:"1px", background:"rgba(34,197,94,0.6)" }}/>
+          <span style={{ fontFamily:"'Josefin Sans',sans-serif", fontSize:"12px", fontWeight:700,
+            letterSpacing:"0.28em", color:"rgba(34,197,94,0.90)", textTransform:"uppercase" }}>
             Conservation Project
           </span>
         </div>
@@ -336,12 +336,12 @@ export function RadialLanding({ onSelect, exiting }: Props) {
           }}>🌺</span>
         </div>
         <div style={{ display:"flex", alignItems:"center", gap:"8px", marginTop:"10px" }}>
-          <span style={{ fontSize:"15px", filter:"drop-shadow(0 0 5px rgba(34,197,94,0.85))" }}>🌿</span>
-          <div style={{ fontFamily:"'Josefin Sans',sans-serif", fontSize:"clamp(9px,0.90vw,12px)",
-            fontWeight:700, letterSpacing:"0.34em", color:"rgba(34,197,94,0.95)", textTransform:"uppercase" }}>
+          <span style={{ fontSize:"16px", filter:"drop-shadow(0 0 5px rgba(34,197,94,0.85))" }}>🌿</span>
+          <div style={{ fontFamily:"'Josefin Sans',sans-serif", fontSize:"clamp(12px,1.15vw,16px)",
+            fontWeight:700, letterSpacing:"0.28em", color:"rgba(34,197,94,0.95)", textTransform:"uppercase" }}>
             Every Species Matters
           </div>
-          <span style={{ fontSize:"13px", filter:"drop-shadow(0 0 4px rgba(34,197,94,0.7))", opacity:0.75 }}>🌿</span>
+          <span style={{ fontSize:"14px", filter:"drop-shadow(0 0 4px rgba(34,197,94,0.7))", opacity:0.80 }}>🌿</span>
         </div>
         <div style={{ width:"85%", height:"1px", marginTop:"11px",
           background:"linear-gradient(to right, rgba(34,197,94,0.60), rgba(0,218,195,0.30), transparent)" }}/>
@@ -375,30 +375,6 @@ export function RadialLanding({ onSelect, exiting }: Props) {
           <div style={{ fontFamily:"'Josefin Sans',sans-serif", fontSize:"9px",
             color:"rgba(34,197,94,0.60)", letterSpacing:"0.20em",
             textTransform:"uppercase", marginTop:"11px" }}>— Antoine de Saint-Exupéry</div>
-        </div>
-        {/* Bird portrait */}
-        <div style={{ display:"flex", alignItems:"center", gap:"13px" }}>
-          <div style={{
-            width:"clamp(76px,8.5vw,114px)", height:"clamp(76px,8.5vw,114px)",
-            borderRadius:"50%", overflow:"hidden", flexShrink:0,
-            border:"2px solid rgba(0,218,195,0.55)",
-            boxShadow:"0 0 0 1px rgba(0,218,195,0.20), 0 0 22px rgba(0,218,195,0.22), 0 0 52px rgba(34,197,94,0.14)",
-          }}>
-            <img src={bgPhoto} alt="Hawaiian Coot" style={{
-              width:"100%", height:"100%", objectFit:"cover", objectPosition:"50% 32%",
-              filter:"brightness(0.96) contrast(1.06) saturate(1.12)",
-            }}/>
-          </div>
-          <div>
-            <div style={{ fontFamily:"'Playfair Display',serif", fontStyle:"italic",
-              fontSize:"clamp(10px,0.92vw,13px)", color:"rgba(255,255,255,0.55)", lineHeight:1.5 }}>
-              Fulica alai
-            </div>
-            <div style={{ fontFamily:"'Josefin Sans',sans-serif", fontSize:"8.5px", fontWeight:700,
-              letterSpacing:"0.18em", color:"rgba(0,218,195,0.70)", textTransform:"uppercase", marginTop:"4px" }}>
-              Pacific Waterbird
-            </div>
-          </div>
         </div>
       </motion.div>
 
@@ -438,8 +414,8 @@ export function RadialLanding({ onSelect, exiting }: Props) {
             <div style={{ display:"flex", alignItems:"center", gap:"8px" }}>
               <span style={{ fontSize:"12px", filter:"drop-shadow(0 0 6px rgba(0,218,195,0.9))" }}>🌿</span>
               <span style={{
-                fontFamily:"'Josefin Sans',sans-serif", fontSize:"9px", fontWeight:700,
-                letterSpacing:"0.32em", color:"rgba(0,218,195,1.0)", textTransform:"uppercase",
+                fontFamily:"'Josefin Sans',sans-serif", fontSize:"13px", fontWeight:700,
+                letterSpacing:"0.26em", color:"rgba(0,218,195,1.0)", textTransform:"uppercase",
               }}>Quick Facts</span>
             </div>
             <span style={{ fontSize:"11px", opacity:0.60, filter:"drop-shadow(0 0 4px rgba(0,218,195,0.6))" }}>🌿</span>
@@ -526,8 +502,8 @@ export function RadialLanding({ onSelect, exiting }: Props) {
                 {/* label + value */}
                 <div style={{ flex:1, minWidth:0, padding:"0 10px" }}>
                   <div style={{
-                    fontFamily:"'Josefin Sans',sans-serif", fontSize:"10px", fontWeight:600,
-                    letterSpacing:"0.10em", color:"rgba(255,255,255,0.65)",
+                    fontFamily:"'Josefin Sans',sans-serif", fontSize:"13px", fontWeight:600,
+                    letterSpacing:"0.08em", color:"rgba(255,255,255,0.72)",
                     marginBottom:"4px",
                   }}>{label}</div>
                   <div style={{
@@ -590,19 +566,19 @@ export function RadialLanding({ onSelect, exiting }: Props) {
             background:"linear-gradient(to right, transparent, rgba(0,218,195,0.90), transparent)",
           }}/>
           {/* header */}
-          <div style={{ display:"flex", alignItems:"center", gap:"7px", marginBottom:"10px" }}>
-            <span style={{ fontSize:"13px", filter:"drop-shadow(0 0 6px rgba(0,218,195,0.9))" }}>📍</span>
+          <div style={{ display:"flex", alignItems:"center", gap:"8px", marginBottom:"11px" }}>
+            <span style={{ fontSize:"15px", filter:"drop-shadow(0 0 6px rgba(0,218,195,0.9))" }}>📍</span>
             <div style={{
-              fontFamily:"'Josefin Sans',sans-serif", fontSize:"9px", fontWeight:700,
-              letterSpacing:"0.28em", color:"rgba(0,218,195,1.0)", textTransform:"uppercase",
+              fontFamily:"'Josefin Sans',sans-serif", fontSize:"13px", fontWeight:700,
+              letterSpacing:"0.22em", color:"rgba(0,218,195,1.0)", textTransform:"uppercase",
             }}>Where It Lives</div>
           </div>
           {/* title */}
-          <div style={{ marginBottom:"10px" }}>
-            <div style={{ fontFamily:"'Josefin Sans',sans-serif", fontSize:"14px", fontWeight:700,
+          <div style={{ marginBottom:"11px" }}>
+            <div style={{ fontFamily:"'Josefin Sans',sans-serif", fontSize:"16px", fontWeight:700,
               color:"#ffffff", letterSpacing:"0.05em" }}>Hawaiian Islands</div>
-            <div style={{ fontFamily:"'Josefin Sans',sans-serif", fontSize:"9px", fontWeight:600,
-              color:"rgba(0,218,195,0.85)", letterSpacing:"0.06em", marginTop:"3px" }}>
+            <div style={{ fontFamily:"'Josefin Sans',sans-serif", fontSize:"12px", fontWeight:600,
+              color:"rgba(0,218,195,0.90)", letterSpacing:"0.06em", marginTop:"4px" }}>
               Pacific Ocean &nbsp;•&nbsp; USA
             </div>
           </div>
@@ -872,32 +848,6 @@ export function RadialLanding({ onSelect, exiting }: Props) {
         );
       })}
 
-      {/* ── BOTTOM BAR: SCROLL OR CLICK TO EXPLORE ──────────────────────────── */}
-      <motion.div
-        initial={{ opacity:0, y:16 }}
-        animate={exiting
-          ? { opacity:0, y:16, transition:{ duration:0.22 } }
-          : { opacity:1, y:0,  transition:{ duration:0.6, delay:0.55 } }
-        }
-        style={{
-          position:"absolute", bottom:"16px", left:"50%",
-          transform:"translateX(-50%)", zIndex:7,
-          textAlign:"center", pointerEvents:"none", userSelect:"none",
-          display:"flex", flexDirection:"column", alignItems:"center", gap:"5px",
-        }}
-      >
-        <div style={{
-          fontFamily:"'Josefin Sans',sans-serif", fontSize:"11px", fontWeight:700,
-          letterSpacing:"0.32em", color:"rgba(0,218,195,0.88)",
-          textTransform:"uppercase",
-          display:"flex", alignItems:"center", gap:"14px",
-        }}>
-          <span style={{ opacity:0.55, fontSize:"13px" }}>❮❮</span>
-          Scroll or Click to Explore
-          <span style={{ opacity:0.55, fontSize:"13px" }}>❯❯</span>
-        </div>
-        <div style={{ fontSize:"18px", color:"rgba(0,218,195,0.55)", lineHeight:1 }}>🖱</div>
-      </motion.div>
 
     </div>
   );
