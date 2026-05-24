@@ -511,21 +511,35 @@ export function CinematicIntro({ onComplete }: Props) {
     return () => window.removeEventListener('resize', h);
   }, []);
 
-  // null = checking, true = youtube.com reachable → show iframe, false = blocked → keep gradient
+  // null = detecting  true = video playing → fade gradient out  false = error → keep gradient
   const [videoOk, setVideoOk] = useState<boolean | null>(null);
   useEffect(() => {
-    // Probe youtube.com via its oEmbed endpoint (CORS-enabled, same domain as the embed player).
-    // i.ytimg.com thumbnails can load even when the embed player is blocked, so we probe
-    // youtube.com directly — if this fetch fails, the iframe won't work either.
-    const controller = new AbortController();
-    const timer = setTimeout(() => { controller.abort(); setVideoOk(false); }, 5000);
-    fetch(
-      `https://www.youtube.com/oembed?url=https%3A%2F%2Fyoutu.be%2F${VIDEO_ID}&format=json`,
-      { signal: controller.signal },
-    )
-      .then(r => { clearTimeout(timer); setVideoOk(r.ok); })
-      .catch(() => { clearTimeout(timer); setVideoOk(false); });
-    return () => { clearTimeout(timer); controller.abort(); };
+    // Gradient always covers the iframe; we only reveal video when confirmed working.
+    // Two probes run in parallel:
+    //   1. no-cors fetch to youtube-nocookie.com — bypasses CORS, tests true reachability.
+    //      Sets videoOk=true if site is reachable (overrideable by onError below).
+    //   2. YouTube Player API postMessage — definitive: onReady/onStateChange = playing,
+    //      onError = failed (e.g. geo-block, embed restriction). onError always wins.
+    const timer = setTimeout(() => setVideoOk(v => v === null ? false : v), 8000);
+    const ctrl = new AbortController();
+
+    fetch('https://www.youtube-nocookie.com/', { mode: 'no-cors', signal: ctrl.signal })
+      .then(() => setVideoOk(v => v === false ? false : true))
+      .catch(() => {});
+
+    const onMsg = (e: MessageEvent) => {
+      try {
+        const d = typeof e.data === 'string' ? JSON.parse(e.data) : e.data;
+        if (!d) return;
+        if (d.event === 'onReady' || d.event === 'onStateChange' ||
+            (d.event === 'infoDelivery' && d.info?.playerState !== undefined)) {
+          setVideoOk(true); clearTimeout(timer);
+        }
+        if (d.event === 'onError') { setVideoOk(false); clearTimeout(timer); }
+      } catch { /* non-JSON from other iframes — ignore */ }
+    };
+    window.addEventListener('message', onMsg);
+    return () => { clearTimeout(timer); ctrl.abort(); window.removeEventListener('message', onMsg); };
   }, []);
 
   const finish = useCallback(() => {
@@ -555,9 +569,29 @@ export function CinematicIntro({ onComplete }: Props) {
         transition={{ duration: 1.0, ease: "easeInOut" }}
         style={{ position:"fixed", inset:0, zIndex:9990, background:"#000", overflow:"hidden" }}
       >
-        {/* Cinematic gradient — always rendered behind the iframe so :( face is NEVER visible */}
+        {/* YouTube iframe — z-index 1, BELOW the gradient shield */}
+        <iframe
+          src={embedSrc}
+          allow="autoplay; fullscreen; encrypted-media"
+          allowFullScreen
+          style={{
+            position:"absolute",
+            top:"-12%", left:"-2%",
+            width:"104%", height:"124%",
+            border:"none", pointerEvents:"none",
+            zIndex: 1,
+          }}
+          title="Hawaiian Islands aerial footage"
+        />
+
+        {/* Cinematic gradient — z-index 2, ON TOP of iframe.
+            Fades out only when video is confirmed playing → :( face is never visible.
+            Fast snap-back if onError fires mid-fade. */}
         <div style={{
-          position:"absolute", inset:0,
+          position:"absolute", inset:0, zIndex: 2,
+          pointerEvents:"none",
+          opacity: videoOk === true ? 0 : 1,
+          transition: videoOk === true ? "opacity 2s ease" : "opacity 0.4s ease",
           background:"radial-gradient(ellipse 120% 80% at 60% 55%, #0a1f14 0%, #051018 40%, #030810 100%)",
         }}>
           <div style={{
@@ -568,23 +602,6 @@ export function CinematicIntro({ onComplete }: Props) {
             ].join(","),
           }}/>
         </div>
-
-        {/* YouTube iframe — invisible until YouTube confirms it is actually PLAYING.
-            This means the :( face can never be seen — it only fades in when video works. */}
-        <iframe
-          src={embedSrc}
-          allow="autoplay; fullscreen; encrypted-media"
-          allowFullScreen
-          style={{
-            position:"absolute",
-            top:"-12%", left:"-2%",
-            width:"104%", height:"124%",
-            border:"none", pointerEvents:"none",
-            opacity: videoOk === true ? 1 : 0,
-            transition: "opacity 2s ease",
-          }}
-          title="Hawaiian Islands aerial footage"
-        />
 
         {/* Solid black top bar — covers burned-in "Nature Relaxation Films" title */}
         <div style={{
