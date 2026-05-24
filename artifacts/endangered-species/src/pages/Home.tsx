@@ -25,10 +25,9 @@ const EASE_IN = [0.16, 1, 0.3, 1] as const;
 
 // ─── Splash screen — full-screen bird, captures gesture so audio can autoplay ──
 function CinematicSplash({ onStart }: { onStart: () => void }) {
-  const PF = "'Playfair Display', serif";
   const GV = "'Great Vibes', cursive";
-  const DS = "0 2px 24px rgba(0,0,0,0.98), 0 0 60px rgba(0,0,0,0.95), 0 1px 8px rgba(0,0,0,0.90)";
-  const DS2 = "0 0 40px rgba(255,224,96,0.6), 0 2px 24px rgba(0,0,0,0.98)";
+  // Deep text-shadow so gold reads over bright water
+  const DS = "0 2px 18px rgba(0,0,0,0.97), 0 0 48px rgba(0,0,0,0.92), 0 1px 6px rgba(0,0,0,0.88)";
 
   return (
     <motion.div
@@ -38,156 +37,175 @@ function CinematicSplash({ onStart }: { onStart: () => void }) {
       exit={{ opacity: 0, transition: { duration: 0.8 } }}
       transition={{ duration: 1.8 }}
       onClick={onStart}
-      style={{
-        position: "fixed", inset: 0, zIndex: 9990,
-        cursor: "pointer", overflow: "hidden",
-      }}
+      style={{ position: "fixed", inset: 0, zIndex: 9990, cursor: "pointer", overflow: "hidden" }}
     >
-      {/* ── Full-screen bird photo ── */}
-      <motion.img
+      {/* ── Full-screen bird photo — no zoom so the entire bird stays visible ── */}
+      <img
         src={cootPhoto as string}
         alt="Hawaiian Coot"
-        animate={{ scale: [1, 1.04, 1] }}
-        transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
         style={{
           position: "absolute", inset: 0,
           width: "100%", height: "100%",
-          objectFit: "cover", objectPosition: "center 45%",
-          transformOrigin: "center",
+          objectFit: "cover",
+          // push right so the bird (right half of photo) is centred; water fills left
+          objectPosition: "70% 58%",
         }}
       />
 
-      {/* ── Dark cinematic overlays for depth + text readability ── */}
-      {/* Top vignette */}
+      {/* ── Only a gentle left panel + bottom strip — no corner darkening ── */}
+      {/* Left translucent panel for text legibility without blocking the bird */}
       <div style={{
-        position: "absolute", inset: 0, pointerEvents: "none",
-        background: "linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.08) 30%, rgba(0,0,0,0.10) 55%, rgba(0,0,0,0.82) 78%, rgba(0,0,0,0.97) 100%)",
+        position: "absolute", top: 0, left: 0, bottom: 0,
+        width: "46%", pointerEvents: "none",
+        background: "linear-gradient(to right, rgba(0,0,0,0.52) 0%, rgba(0,0,0,0.38) 60%, transparent 100%)",
       }}/>
-      {/* Side vignettes */}
+      {/* Thin bottom strip for the CTA line */}
       <div style={{
-        position: "absolute", inset: 0, pointerEvents: "none",
-        background: "linear-gradient(to right, rgba(0,0,0,0.40) 0%, transparent 25%, transparent 75%, rgba(0,0,0,0.40) 100%)",
+        position: "absolute", left: 0, right: 0, bottom: 0,
+        height: "18%", pointerEvents: "none",
+        background: "linear-gradient(to top, rgba(0,0,0,0.68) 0%, transparent 100%)",
       }}/>
 
-      {/* ── Subtle gold shimmer ripple over the water ── */}
+      {/* ── Subtle gold shimmer on the water ── */}
       <motion.div
-        animate={{ opacity: [0.0, 0.06, 0.0] }}
-        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+        animate={{ opacity: [0, 0.07, 0] }}
+        transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
         style={{
           position: "absolute", inset: 0, pointerEvents: "none",
-          background: "radial-gradient(ellipse 60% 30% at 52% 58%, rgba(255,218,60,0.18) 0%, transparent 70%)",
+          background: "radial-gradient(ellipse 55% 25% at 45% 62%, rgba(255,218,60,0.22) 0%, transparent 70%)",
         }}
       />
 
-      {/* ── Text block — lower center ── */}
+      {/* ══════════════════════════════════════════════════
+          LEFT COLUMN — identity text (clear water zone)
+      ══════════════════════════════════════════════════ */}
       <div style={{
         position: "absolute",
-        bottom: "clamp(40px, 8vh, 90px)",
-        left: 0, right: 0,
+        top: "50%", left: "5%",
+        transform: "translateY(-50%)",
         display: "flex", flexDirection: "column",
-        alignItems: "center",
-        gap: "clamp(10px, 1.8vh, 20px)",
-        padding: "0 6%",
+        alignItems: "flex-start",
+        gap: "clamp(8px, 1.4vh, 18px)",
+        maxWidth: "38%",
       }}>
 
-        {/* Greeting line */}
+        {/* Hi, I am */}
         <motion.p
-          initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.6, delay: 0.6, ease: EASE_IN }}
+          initial={{ opacity: 0, x: -24 }} animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 1.6, delay: 0.5, ease: EASE_IN }}
           style={{
-            fontFamily: PF, fontStyle: "italic", fontWeight: 300,
-            fontSize: "clamp(18px, 2.2vw, 32px)",
-            color: "rgba(255,235,160,0.88)",
-            letterSpacing: "0.04em", lineHeight: 1.3,
-            textShadow: DS, margin: 0, textAlign: "center",
+            fontFamily: GV, fontSize: "clamp(28px, 3.6vw, 52px)",
+            color: "rgba(255,235,160,0.90)", textShadow: DS,
+            margin: 0, lineHeight: 1.1,
           }}
         >Hi, I am</motion.p>
 
-        {/* "Hawaiian Coot" — large, proud */}
+        {/* Hawaiian Coot — large gold */}
         <motion.p
-          initial={{ opacity: 0, y: 26 }} animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, x: -28 }} animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 1.8, delay: 1.0, ease: EASE_IN }}
           style={{
-            fontFamily: PF, fontStyle: "italic", fontWeight: 400,
-            fontSize: "clamp(38px, 6.5vw, 96px)",
-            color: G2, letterSpacing: "0.08em", lineHeight: 1.0,
-            textShadow: "0 0 60px rgba(255,224,96,0.45), " + DS,
-            margin: 0, textAlign: "center",
+            fontFamily: GV,
+            fontSize: "clamp(46px, 7vw, 108px)",
+            color: G2, lineHeight: 1.0,
+            textShadow: "0 0 55px rgba(255,224,96,0.50), " + DS,
+            margin: 0,
           }}
         >Hawaiian Coot</motion.p>
 
-        {/* Species badge */}
+        {/* an endangered species */}
         <motion.p
-          initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.6, delay: 1.5, ease: EASE_IN }}
+          initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 1.6, delay: 1.55, ease: EASE_IN }}
           style={{
-            fontFamily: PF, fontStyle: "italic", fontWeight: 300,
-            fontSize: "clamp(14px, 1.6vw, 22px)",
-            color: "rgba(255,200,80,0.75)", letterSpacing: "0.14em",
-            textShadow: DS, margin: 0, textAlign: "center",
+            fontFamily: GV, fontSize: "clamp(20px, 2.6vw, 38px)",
+            color: "rgba(255,205,90,0.82)", textShadow: DS,
+            margin: 0, lineHeight: 1.1,
           }}
         >an endangered species</motion.p>
 
-        {/* Thin gold rule */}
+        {/* Gold rule */}
         <motion.div
           initial={{ scaleX: 0 }} animate={{ scaleX: 1 }}
-          transition={{ duration: 1.0, delay: 2.0, ease: EASE_IN }}
+          transition={{ duration: 1.0, delay: 2.1, ease: EASE_IN }}
           style={{
-            height: "1px",
-            width: "clamp(80px, 12vw, 160px)",
-            background: `linear-gradient(to right, transparent, ${G2} 30%, ${G2} 70%, transparent)`,
-            transformOrigin: "center",
+            height: "1px", width: "clamp(70px, 10vw, 140px)",
+            background: `linear-gradient(to right, ${G2} 0%, rgba(255,224,96,0.3) 100%)`,
+            transformOrigin: "left",
+            marginTop: "4px",
           }}
         />
 
-        {/* "Want to fly with me and explore?" */}
-        <motion.div
-          initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.8, delay: 2.3, ease: EASE_IN }}
+        {/* Want to fly with me and explore? — all Great Vibes, "fly" underlined */}
+        <motion.p
+          initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 1.8, delay: 2.4, ease: EASE_IN }}
           style={{
-            display: "flex", alignItems: "baseline",
-            flexWrap: "wrap", justifyContent: "center",
-            gap: "0 0.25em",
+            fontFamily: GV,
+            fontSize: "clamp(26px, 3.4vw, 52px)",
+            color: "rgba(255,235,160,0.92)", textShadow: DS,
+            margin: 0, lineHeight: 1.3,
           }}
         >
-          <span style={{ fontFamily: PF, fontStyle: "italic", fontWeight: 300, fontSize: "clamp(15px, 1.8vw, 26px)", color: "rgba(255,235,160,0.85)", textShadow: DS }}>
-            Want to
-          </span>
-          <span style={{ fontFamily: GV, fontSize: "clamp(44px, 6vw, 84px)", color: G2, lineHeight: 1, textShadow: DS2 }}>
-            fly
-          </span>
-          <span style={{ fontFamily: PF, fontStyle: "italic", fontWeight: 300, fontSize: "clamp(15px, 1.8vw, 26px)", color: "rgba(255,235,160,0.85)", textShadow: DS }}>
-            with me and explore?
-          </span>
-        </motion.div>
-
-        {/* "Come on...let's go..." */}
-        <motion.p
-          initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.6, delay: 3.0, ease: EASE_IN }}
-          style={{
-            fontFamily: PF, fontStyle: "italic", fontWeight: 300,
-            fontSize: "clamp(16px, 1.9vw, 28px)",
-            color: "rgba(255,218,100,0.80)", letterSpacing: "0.05em",
-            textShadow: DS, margin: 0, textAlign: "center",
-          }}
-        >Come on… let's go…</motion.p>
-
-        {/* Pulsing CTA */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: [0, 0.6, 0.22, 0.6] }}
-          transition={{ duration: 2.2, delay: 3.8, repeat: Infinity, repeatType: "loop" }}
-          style={{
-            fontFamily: PF, fontStyle: "italic", fontWeight: 300,
-            fontSize: "clamp(11px, 1.2vw, 16px)",
-            color: "rgba(255,224,96,0.55)",
-            letterSpacing: "0.30em",
-            textShadow: DS, margin: 0, textAlign: "center",
-          }}
-        >· · · click anywhere · · ·</motion.p>
+          Want to{" "}
+          <span style={{
+            color: G2,
+            textDecoration: "underline",
+            textDecorationColor: G2,
+            textUnderlineOffset: "5px",
+            textDecorationThickness: "1.5px",
+            textShadow: "0 0 32px rgba(255,224,96,0.65), " + DS,
+          }}>fly</span>
+          {" "}with me and explore?
+        </motion.p>
 
       </div>
+
+      {/* ══════════════════════════════════════════════════
+          BOTTOM CTA — centred, over the thin dark strip
+      ══════════════════════════════════════════════════ */}
+      <div style={{
+        position: "absolute",
+        bottom: "clamp(22px, 4vh, 48px)",
+        left: 0, right: 0,
+        display: "flex", alignItems: "baseline",
+        justifyContent: "center",
+        gap: "0.3em", flexWrap: "wrap",
+        padding: "0 5%",
+      }}>
+        {/* "Come on ..." — static */}
+        <motion.span
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+          transition={{ duration: 1.4, delay: 3.2, ease: EASE_IN }}
+          style={{
+            fontFamily: GV, fontSize: "clamp(22px, 2.8vw, 42px)",
+            color: "rgba(255,228,120,0.85)", textShadow: DS,
+          }}
+        >Come on …</motion.span>
+
+        {/* "click anywhere" — pulses */}
+        <motion.span
+          initial={{ opacity: 0 }}
+          animate={{ opacity: [0, 1, 0.3, 1] }}
+          transition={{ duration: 2.0, delay: 3.9, repeat: Infinity, repeatType: "loop" }}
+          style={{
+            fontFamily: GV, fontSize: "clamp(26px, 3.4vw, 52px)",
+            color: G2,
+            textShadow: "0 0 36px rgba(255,224,96,0.70), " + DS,
+          }}
+        >click anywhere</motion.span>
+
+        {/* "… let's fly together" — static */}
+        <motion.span
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+          transition={{ duration: 1.4, delay: 3.2, ease: EASE_IN }}
+          style={{
+            fontFamily: GV, fontSize: "clamp(22px, 2.8vw, 42px)",
+            color: "rgba(255,228,120,0.85)", textShadow: DS,
+          }}
+        >… let's fly together</motion.span>
+      </div>
+
     </motion.div>
   );
 }
