@@ -18,20 +18,19 @@ const TOTAL_SEC       = 62;
 const BIRD_CALL_START = 10;
 const BIRD_CALL_VOL   = 0.42;
 
-// ─── Gold palette ─────────────────────────────────────────────────────────────
-// Three tones for visual hierarchy — all unmistakably gold.
-const G1 = "#FFF0A0";                    // brightest — large titles
-const G2 = "#D4AF37";                    // classic gold — subtitles & rules
-const G3 = "rgba(212,175,55,0.62)";      // soft gold — small labels
+// ─── Gold palette — all fully bright, no dimming ─────────────────────────────
+const G1 = "#FFFBE8";                    // near-white gold — titles
+const G2 = "#FFE060";                    // vivid bright gold — subtitles
+const G3 = "#FFC840";                    // warm bright gold — labels
 
 // Gradient applied to big title text
-const TITLE_GRAD = `linear-gradient(140deg, ${G1} 0%, ${G2} 45%, #E8C84A 80%, ${G1} 100%)`;
+const TITLE_GRAD = `linear-gradient(140deg, ${G1} 0%, ${G2} 45%, #FFD740 80%, ${G1} 100%)`;
 
 // Heavy text-shadow keeps every size legible on bright video
 const S = "0 2px 48px rgba(0,0,0,0.99), 0 0 90px rgba(0,0,0,0.97), 0 4px 18px rgba(0,0,0,0.94)";
 
-// ─── Shared animation config ──────────────────────────────────────────────────
-const FADE_DUR  = 0.90;   // seconds
+// ─── Shared animation config — slow, cinematic fades ─────────────────────────
+const FADE_DUR  = 1.60;   // seconds — fade IN
 const EASE_IN   = [0.16, 1, 0.3, 1] as const;
 const EASE_OUT  = [0.4,  0, 1,   1] as const;
 
@@ -42,7 +41,7 @@ const CARD_MOTION = {
   exit:       { opacity: 0 },
   transition: {
     opacity: { duration: FADE_DUR, ease: EASE_IN },
-    exit:    { duration: 0.70,     ease: EASE_OUT },
+    exit:    { duration: 1.20,     ease: EASE_OUT },
   },
 } as const;
 
@@ -184,13 +183,13 @@ function SchoolText() {
       <motion.div
         initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
         transition={{ duration: FADE_DUR, delay: 0.20 }}
-        style={LABEL}
+        style={SUB}
       >A Science Project</motion.div>
 
       <motion.div
         initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -10 }}
-        transition={{ duration: FADE_DUR, delay: 0.38, ease: EASE_IN }}
+        transition={{ duration: FADE_DUR, delay: 0.50, ease: EASE_IN }}
         style={{ ...BIG, fontSize: "clamp(42px, 6.0vw, 86px)", lineHeight: 1.06 }}
       >Endangered<br/>Species</motion.div>
 
@@ -199,15 +198,9 @@ function SchoolText() {
       <motion.div
         initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0 }}
-        transition={{ duration: FADE_DUR, delay: 0.80, ease: EASE_IN }}
-        style={SUB}
+        transition={{ duration: FADE_DUR, delay: 1.00, ease: EASE_IN }}
+        style={{ ...BIG, fontSize: "clamp(26px, 3.2vw, 46px)" }}
       >Cooper Middle School</motion.div>
-
-      <motion.div
-        initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-        transition={{ duration: FADE_DUR, delay: 1.05 }}
-        style={{ ...LABEL, marginTop: "8px" }}
-      >Science · 2026</motion.div>
     </motion.div>
   );
 }
@@ -217,21 +210,22 @@ function NameReveal({ name, role }: { name: string; role: string }) {
   return (
     <motion.div
       key={name}
-      initial={{ opacity: 0, x: 22 }} animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: -18 }}
+      initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
       transition={{ duration: FADE_DUR, ease: EASE_IN }}
       style={BLOCK}
     >
       <motion.div
-        initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-        transition={{ duration: 0.65, delay: 0.25 }}
-        style={LABEL}
+        initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: FADE_DUR, delay: 0.22, ease: EASE_IN }}
+        style={SUB}
       >{role}</motion.div>
 
       <motion.div
-        initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -8 }}
-        transition={{ duration: FADE_DUR, delay: 0.18, ease: EASE_IN }}
+        initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: FADE_DUR, delay: 0.44, ease: EASE_IN }}
         style={BIG}
       >{name}</motion.div>
 
@@ -431,19 +425,20 @@ export function CinematicIntro({ onComplete }: Props) {
         >
           {fadingOut && (
             <motion.div
-              initial={{ opacity:0, x:20 }} animate={{ opacity:1, x:0 }}
-              transition={{ duration:1.0, delay:0.5, ease:EASE_IN }}
+              initial={{ opacity:0, y:16 }} animate={{ opacity:1, y:0 }}
+              transition={{ duration:1.6, delay:0.5, ease:EASE_IN }}
               style={{
-                position:"absolute", right:"7%", top:"50%", transform:"translateY(-50%)",
-                textAlign:"right",
+                position:"absolute", left:"50%", top:"50%",
+                transform:"translate(-50%,-50%)",
+                textAlign:"center", width:"90%",
               }}
             >
-              <div style={{ ...BIG, fontSize:"clamp(36px,5.0vw,70px)" }}>Hawaiian Coot</div>
-              <div style={{ ...SUB, marginTop:"14px" }}>{"\u02BBalae ke\u02BBoke\u02BBo"} · Fulica alai</div>
+              <div style={{ ...BIG, fontSize:"clamp(40px,5.8vw,82px)" }}>Hawaiian Coot</div>
               <div style={{
-                height:"1.5px", width:"90px", marginLeft:"auto", marginTop:"16px",
-                background:`linear-gradient(to left, transparent, ${G2} 35%, ${G1})`,
+                height:"1.5px", width:"90px", margin:"18px auto",
+                background:`linear-gradient(to right, transparent, ${G2} 35%, ${G1}, ${G2} 65%, transparent)`,
               }}/>
+              <div style={{ ...SUB, fontSize:"clamp(22px,2.6vw,38px)" }}>{"\u02BBalae ke\u02BBoke\u02BBo"} · Fulica alai</div>
             </motion.div>
           )}
         </motion.div>
