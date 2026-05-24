@@ -312,79 +312,78 @@ export function RadialLanding({ onSelect, exiting }: Props) {
         })}
       </motion.svg>
 
-      {/* ── LEFT PANEL ───────────────────────────────────────────────────────── */}
+      {/* ── TOP-LEFT: Save Our Wildlife ───────────────────────────────────────── */}
       <motion.div {...panelAnim(-1, 0.1)} style={{
-        position:"absolute", left:"18px", top:"9%",
-        zIndex:6, width:`calc(50% - ${R + CZ/2 + 22}px)`,
-        display:"flex", flexDirection:"column", gap:"14px",
+        position:"absolute", left:"14px", top:"5%",
+        zIndex:6, width:`calc(50% - ${R + CZ/2 + 26}px)`,
       }}>
-        {/* SAVE OUR WILDLIFE */}
-        <div style={{ position:"relative" }}>
-          <div style={{ display:"flex", alignItems:"center", gap:"7px", marginBottom:"8px" }}>
-            <div style={{ width:"16px", height:"1px", background:"rgba(34,197,94,0.6)" }}/>
-            <span style={{ fontFamily:"'Josefin Sans',sans-serif", fontSize:"7.5px", fontWeight:700,
-              letterSpacing:"0.34em", color:"rgba(34,197,94,0.75)", textTransform:"uppercase" }}>
-              Conservation Project
-            </span>
-          </div>
-          <div style={{ position:"relative", display:"inline-block" }}>
-            <div style={{
-              fontFamily:"'Playfair Display',serif", fontStyle:"italic", fontWeight:700,
-              fontSize:"clamp(26px,3.1vw,46px)", color:"#fff", lineHeight:1.04,
-              textShadow:"0 2px 30px rgba(0,0,0,0.9), 0 0 55px rgba(34,197,94,0.22)",
-            }}>Save Our<br/>Wildlife</div>
-            {/* Hibiscus accent */}
-            <span style={{
-              position:"absolute", top:-6, right:-22, fontSize:"22px", opacity:0.80,
-              filter:"drop-shadow(0 0 8px rgba(255,100,150,0.55))", pointerEvents:"none",
-            }}>🌺</span>
-          </div>
-          <div style={{ display:"flex", alignItems:"center", gap:"8px", marginTop:"9px" }}>
-            <span style={{ fontSize:"14px", filter:"drop-shadow(0 0 5px rgba(34,197,94,0.8))" }}>🌿</span>
-            <div style={{ fontFamily:"'Josefin Sans',sans-serif", fontSize:"clamp(8px,0.82vw,10.5px)",
-              fontWeight:700, letterSpacing:"0.36em", color:"rgba(34,197,94,0.90)", textTransform:"uppercase" }}>
-              Every Species Matters
-            </div>
-            <span style={{ fontSize:"12px", filter:"drop-shadow(0 0 4px rgba(34,197,94,0.7))", opacity:0.7 }}>🌿</span>
-          </div>
-          <div style={{ width:"100%", height:"1px", marginTop:"10px",
-            background:"linear-gradient(to right, rgba(34,197,94,0.55), rgba(0,218,195,0.28), transparent)" }}/>
+        <div style={{ display:"flex", alignItems:"center", gap:"7px", marginBottom:"7px" }}>
+          <div style={{ width:"16px", height:"1px", background:"rgba(34,197,94,0.6)" }}/>
+          <span style={{ fontFamily:"'Josefin Sans',sans-serif", fontSize:"8px", fontWeight:700,
+            letterSpacing:"0.32em", color:"rgba(34,197,94,0.80)", textTransform:"uppercase" }}>
+            Conservation Project
+          </span>
         </div>
+        <div style={{ position:"relative", display:"inline-block" }}>
+          <div style={{
+            fontFamily:"'Playfair Display',serif", fontStyle:"italic", fontWeight:700,
+            fontSize:"clamp(30px,3.5vw,52px)", color:"#fff", lineHeight:1.02,
+            textShadow:"0 2px 30px rgba(0,0,0,0.9), 0 0 60px rgba(34,197,94,0.22)",
+          }}>Save Our<br/>Wildlife</div>
+          <span style={{
+            position:"absolute", top:-8, right:-26, fontSize:"26px", opacity:0.85,
+            filter:"drop-shadow(0 0 10px rgba(255,100,150,0.60))", pointerEvents:"none",
+          }}>🌺</span>
+        </div>
+        <div style={{ display:"flex", alignItems:"center", gap:"8px", marginTop:"10px" }}>
+          <span style={{ fontSize:"15px", filter:"drop-shadow(0 0 5px rgba(34,197,94,0.85))" }}>🌿</span>
+          <div style={{ fontFamily:"'Josefin Sans',sans-serif", fontSize:"clamp(9px,0.90vw,12px)",
+            fontWeight:700, letterSpacing:"0.34em", color:"rgba(34,197,94,0.95)", textTransform:"uppercase" }}>
+            Every Species Matters
+          </div>
+          <span style={{ fontSize:"13px", filter:"drop-shadow(0 0 4px rgba(34,197,94,0.7))", opacity:0.75 }}>🌿</span>
+        </div>
+        <div style={{ width:"85%", height:"1px", marginTop:"11px",
+          background:"linear-gradient(to right, rgba(34,197,94,0.60), rgba(0,218,195,0.30), transparent)" }}/>
+      </motion.div>
 
-        {/* Quote — rich glassmorphic card */}
+      {/* ── BOTTOM-LEFT: Quote + Bird portrait ────────────────────────────────── */}
+      <motion.div {...panelAnim(-1, 0.18)} style={{
+        position:"absolute", left:"14px", bottom:"4%",
+        zIndex:6, width:`calc(50% - ${R + CZ/2 + 26}px)`,
+        display:"flex", flexDirection:"column", gap:"12px",
+      }}>
+        {/* Quote card */}
         <div style={{
-          background:"linear-gradient(135deg, rgba(0,28,18,0.92) 0%, rgba(0,12,8,0.94) 100%)",
-          backdropFilter:"blur(18px)",
+          background:"linear-gradient(135deg, rgba(0,28,18,0.94) 0%, rgba(0,12,8,0.96) 100%)",
+          backdropFilter:"blur(20px)",
           border:"1px solid rgba(34,197,94,0.22)",
-          borderLeft:"3px solid rgba(34,197,94,0.72)",
+          borderLeft:"3px solid rgba(34,197,94,0.78)",
           borderRadius:"0 10px 10px 0",
-          padding:"16px 16px 14px",
+          padding:"15px 16px 13px",
           position:"relative", overflow:"hidden",
         }}>
-          {/* corner glow */}
           <div style={{ position:"absolute", top:0, left:0, width:"90px", height:"90px",
-            background:"radial-gradient(ellipse, rgba(34,197,94,0.14) 0%, transparent 70%)", pointerEvents:"none" }}/>
-          {/* hibiscus watermark */}
-          <div style={{ position:"absolute", right:-12, bottom:-18, fontSize:"88px", opacity:0.04,
+            background:"radial-gradient(ellipse, rgba(34,197,94,0.15) 0%, transparent 70%)", pointerEvents:"none" }}/>
+          <div style={{ position:"absolute", right:-12, bottom:-18, fontSize:"90px", opacity:0.04,
             transform:"rotate(-15deg)", pointerEvents:"none" }}>🌺</div>
-          <div style={{ fontFamily:"'Playfair Display',serif", fontSize:"clamp(24px,2.5vw,36px)",
-            color:"rgba(34,197,94,0.62)", lineHeight:1, marginBottom:"9px" }}>❝</div>
-          <div style={{ fontFamily:"'Playfair Display',serif", fontSize:"clamp(11px,1.0vw,15px)",
-            fontStyle:"italic", color:"rgba(255,255,255,0.90)", lineHeight:1.82 }}>
+          <div style={{ fontFamily:"'Playfair Display',serif", fontSize:"clamp(26px,2.6vw,38px)",
+            color:"rgba(34,197,94,0.65)", lineHeight:1, marginBottom:"8px" }}>❝</div>
+          <div style={{ fontFamily:"'Playfair Display',serif", fontSize:"clamp(12px,1.08vw,16px)",
+            fontStyle:"italic", color:"rgba(255,255,255,0.92)", lineHeight:1.80 }}>
             We don't inherit the Earth from our ancestors. We borrow it from our children.
           </div>
-          <div style={{ fontFamily:"'Josefin Sans',sans-serif", fontSize:"8.5px",
-            color:"rgba(34,197,94,0.58)", letterSpacing:"0.22em",
+          <div style={{ fontFamily:"'Josefin Sans',sans-serif", fontSize:"9px",
+            color:"rgba(34,197,94,0.60)", letterSpacing:"0.20em",
             textTransform:"uppercase", marginTop:"11px" }}>— Antoine de Saint-Exupéry</div>
         </div>
-
-        {/* Hawaiian Coot mini portrait */}
-        <div style={{ display:"flex", alignItems:"center", gap:"12px", marginTop:"2px" }}>
+        {/* Bird portrait */}
+        <div style={{ display:"flex", alignItems:"center", gap:"13px" }}>
           <div style={{
-            width:"clamp(72px,8vw,110px)", height:"clamp(72px,8vw,110px)",
+            width:"clamp(76px,8.5vw,114px)", height:"clamp(76px,8.5vw,114px)",
             borderRadius:"50%", overflow:"hidden", flexShrink:0,
-            border:"2px solid rgba(0,218,195,0.50)",
-            boxShadow:"0 0 0 1px rgba(0,218,195,0.18), 0 0 20px rgba(0,218,195,0.20), 0 0 48px rgba(34,197,94,0.12)",
+            border:"2px solid rgba(0,218,195,0.55)",
+            boxShadow:"0 0 0 1px rgba(0,218,195,0.20), 0 0 22px rgba(0,218,195,0.22), 0 0 52px rgba(34,197,94,0.14)",
           }}>
             <img src={bgPhoto} alt="Hawaiian Coot" style={{
               width:"100%", height:"100%", objectFit:"cover", objectPosition:"50% 32%",
@@ -393,24 +392,23 @@ export function RadialLanding({ onSelect, exiting }: Props) {
           </div>
           <div>
             <div style={{ fontFamily:"'Playfair Display',serif", fontStyle:"italic",
-              fontSize:"clamp(9px,0.85vw,12px)", color:"rgba(255,255,255,0.50)", lineHeight:1.5 }}>
+              fontSize:"clamp(10px,0.92vw,13px)", color:"rgba(255,255,255,0.55)", lineHeight:1.5 }}>
               Fulica alai
             </div>
-            <div style={{ fontFamily:"'Josefin Sans',sans-serif", fontSize:"7.5px", fontWeight:700,
-              letterSpacing:"0.18em", color:"rgba(0,218,195,0.65)", textTransform:"uppercase", marginTop:"3px" }}>
+            <div style={{ fontFamily:"'Josefin Sans',sans-serif", fontSize:"8.5px", fontWeight:700,
+              letterSpacing:"0.18em", color:"rgba(0,218,195,0.70)", textTransform:"uppercase", marginTop:"4px" }}>
               Pacific Waterbird
             </div>
           </div>
         </div>
       </motion.div>
 
-      {/* ── RIGHT PANEL ──────────────────────────────────────────────────────── */}
+      {/* ── TOP-RIGHT: Quick Facts ───────────────────────────────────────────── */}
       <motion.div {...panelAnim(1, 0.14)} style={{
         position:"absolute",
-        left:`calc(50% + ${R + CZ/2 + 22}px)`,
-        top:"7%", zIndex:6,
-        width:`calc(50% - ${R + CZ/2 + 22}px - 18px)`,
-        display:"flex", flexDirection:"column", gap:"11px",
+        right:"14px", top:"3%", zIndex:6,
+        width:`calc(50% - ${R + CZ/2 + 26}px)`,
+        maxHeight:"46%", overflow:"hidden",
       }}>
 
         {/* Quick Facts — Option 2 style */}
@@ -456,11 +454,11 @@ export function RadialLanding({ onSelect, exiting }: Props) {
               rgb:"239,68,68", valueColor:"#ff5555",
               glow:"rgba(239,68,68,0.80)",
               viz: (
-                <svg width="52" height="26" viewBox="0 0 52 26">
-                  <polyline points="0,13 6,13 10,4 14,22 18,13 24,13 28,7 32,19 36,13 42,13 46,7 52,10"
-                    fill="none" stroke="#ff5555" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  <polyline points="0,13 6,13 10,4 14,22 18,13 24,13 28,7 32,19 36,13 42,13 46,7 52,10"
-                    fill="none" stroke="rgba(255,85,85,0.30)" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round"/>
+                <svg width="34" height="34" viewBox="0 0 34 34">
+                  <polyline points="0,17 4,17 7,7 10,27 13,17 17,17 20,10 23,24 26,17 30,17 33,12"
+                    fill="none" stroke="#ff5555" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <polyline points="0,17 4,17 7,7 10,27 13,17 17,17 20,10 23,24 26,17 30,17 33,12"
+                    fill="none" stroke="rgba(255,85,85,0.25)" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               ),
             },
@@ -469,45 +467,46 @@ export function RadialLanding({ onSelect, exiting }: Props) {
               rgb:"167,139,250", valueColor:"#c4b5fd",
               glow:"rgba(124,58,237,0.80)",
               viz: (
-                <svg width="52" height="26" viewBox="0 0 52 26">
-                  {[4,8,6,14,10,18,16].map((h,i)=>(
+                <svg width="34" height="34" viewBox="0 0 34 34">
+                  {[5,9,7,15,11,19,17].map((h,i)=>(
                     <g key={i}>
-                      <rect x={i*7+1} y={26-h} width="5" height={h} fill="#7c3aed" opacity={0.25} rx="1.5"/>
-                      <rect x={i*7+1} y={26-h} width="5" height={Math.max(h-2,1)} fill="#a78bfa" opacity={0.55+i*0.06} rx="1.5"/>
+                      <rect x={i*4.7+1} y={34-h} width="3.8" height={h} fill="#7c3aed" opacity={0.22} rx="1"/>
+                      <rect x={i*4.7+1} y={34-h} width="3.8" height={Math.max(h-2,1)} fill="#a78bfa" opacity={0.55+i*0.07} rx="1"/>
                     </g>
                   ))}
                 </svg>
               ),
             },
             {
-              icon:"🏝️", label:"Habitat", value:"Hawaiian Wetlands",
+              icon:"🏝️", label:"Habitat", value:"Wetlands",
               rgb:"34,197,94", valueColor:"#4ade80",
               glow:"rgba(34,197,94,0.80)",
               viz: (
-                <svg width="52" height="26" viewBox="0 0 52 26">
-                  {[3,8,13,19,25,31,37,43,49].map((x,i)=>(
-                    <line key={i} x1={x} y1={26} x2={x} y2={26-[8,14,10,16,12,18,10,15,9][i]}
+                <svg width="34" height="34" viewBox="0 0 34 34">
+                  {[2,6,10,14,18,22,26,30].map((x,i)=>(
+                    <line key={i} x1={x} y1={34} x2={x} y2={34-[8,14,10,17,12,19,11,15][i]}
                       stroke="#22c55e" strokeWidth="2.5" strokeLinecap="round"
-                      opacity={0.50+i*0.06}/>
+                      opacity={0.50+i*0.07}/>
                   ))}
                 </svg>
               ),
             },
             {
-              icon:"⌛", label:"Lifespan", value:"10–15 years",
+              icon:"⌛", label:"Lifespan", value:"10–15 yrs",
               rgb:"212,175,55", valueColor:"#fbbf24",
               glow:"rgba(212,175,55,0.80)",
               viz: (
-                <svg width="52" height="26" viewBox="0 0 52 26">
-                  {Array.from({length:8}).map((_,i)=>(
-                    <circle key={i} cx={i*7+4} cy={13} r={i<5?4.5:3}
-                      fill={i<5?"#d4af37":"rgba(212,175,55,0.20)"}
-                      opacity={i<5?0.55+i*0.09:0.3}/>
-                  ))}
-                  {Array.from({length:5}).map((_,i)=>(
-                    <circle key={`g${i}`} cx={i*7+4} cy={13} r={4.5}
-                      fill="none" stroke="#fbbf24" strokeWidth="1" opacity={0.70}/>
-                  ))}
+                <svg width="34" height="34" viewBox="0 0 34 34">
+                  <circle cx="17" cy="17" r="13" fill="none" stroke="rgba(212,175,55,0.35)" strokeWidth="1.5"/>
+                  {[0,60,120,180,240,300].map((deg,i)=>{
+                    const r2=deg*Math.PI/180;
+                    return <line key={i} x1={17+9*Math.sin(r2)} y1={17-9*Math.cos(r2)}
+                      x2={17+12*Math.sin(r2)} y2={17-12*Math.cos(r2)}
+                      stroke="#fbbf24" strokeWidth="1.5" strokeLinecap="round" opacity={0.70}/>;
+                  })}
+                  <line x1="17" y1="17" x2="17" y2="7" stroke="#fbbf24" strokeWidth="2" strokeLinecap="round"/>
+                  <line x1="17" y1="17" x2="24" y2="17" stroke="#fbbf24" strokeWidth="1.5" strokeLinecap="round" opacity="0.75"/>
+                  <circle cx="17" cy="17" r="2" fill="#fbbf24"/>
                 </svg>
               ),
             },
@@ -515,33 +514,46 @@ export function RadialLanding({ onSelect, exiting }: Props) {
           .map(({ icon, label, value, rgb, valueColor, glow, viz }, idx, arr) => (
             <div key={label}>
               <div style={{
-                display:"flex", alignItems:"center", gap:"13px", padding:"10px 4px",
+                display:"flex", alignItems:"center", gap:"0", padding:"11px 2px",
               }}>
-                {/* large icon circle */}
+                {/* left icon circle */}
                 <div style={{
-                  width:42, height:42, borderRadius:"50%", flexShrink:0,
-                  background:`radial-gradient(ellipse at 35% 35%, rgba(${rgb},0.28) 0%, rgba(${rgb},0.08) 100%)`,
-                  border:`1.5px solid rgba(${rgb},0.65)`,
-                  display:"flex", alignItems:"center", justifyContent:"center", fontSize:"18px",
-                  boxShadow:`0 0 14px rgba(${rgb},0.35), inset 0 0 10px rgba(${rgb},0.10)`,
+                  width:46, height:46, borderRadius:"50%", flexShrink:0,
+                  background:`radial-gradient(ellipse at 35% 35%, rgba(${rgb},0.32) 0%, rgba(${rgb},0.10) 100%)`,
+                  border:`2px solid rgba(${rgb},0.72)`,
+                  display:"flex", alignItems:"center", justifyContent:"center", fontSize:"20px",
+                  boxShadow:`0 0 16px rgba(${rgb},0.42), inset 0 0 10px rgba(${rgb},0.12)`,
                 }}>{icon}</div>
 
                 {/* label + value */}
-                <div style={{ flex:1, minWidth:0 }}>
+                <div style={{ flex:1, minWidth:0, padding:"0 10px" }}>
                   <div style={{
-                    fontFamily:"'Josefin Sans',sans-serif", fontSize:"7.5px", fontWeight:700,
-                    letterSpacing:"0.26em", color:`rgba(${rgb},0.70)`, textTransform:"uppercase",
+                    fontFamily:"'Josefin Sans',sans-serif", fontSize:"10px", fontWeight:600,
+                    letterSpacing:"0.10em", color:"rgba(255,255,255,0.65)",
                     marginBottom:"4px",
                   }}>{label}</div>
                   <div style={{
-                    fontFamily:"'Josefin Sans',sans-serif", fontSize:"13px", fontWeight:700,
-                    color:valueColor, letterSpacing:"0.02em", lineHeight:1.15,
-                    textShadow:`0 0 18px ${glow}`,
+                    fontFamily:"'Josefin Sans',sans-serif", fontSize:"clamp(14px,1.55vw,19px)", fontWeight:700,
+                    color:valueColor, letterSpacing:"0.01em", lineHeight:1.1,
+                    textShadow:`0 0 20px ${glow}`,
                   }}>{value}</div>
                 </div>
 
-                {/* mini visualization */}
-                <div style={{ flexShrink:0, filter:`drop-shadow(0 0 4px rgba(${rgb},0.45))` }}>
+                {/* dotted connector */}
+                <div style={{
+                  width:"14px", flexShrink:0, height:"1px",
+                  borderTop:`2px dashed rgba(${rgb},0.40)`,
+                }}/>
+
+                {/* right viz circle */}
+                <div style={{
+                  width:46, height:46, borderRadius:"50%", flexShrink:0,
+                  background:`radial-gradient(ellipse at 60% 60%, rgba(${rgb},0.22) 0%, rgba(${rgb},0.06) 100%)`,
+                  border:`2px solid rgba(${rgb},0.55)`,
+                  display:"flex", alignItems:"center", justifyContent:"center",
+                  boxShadow:`0 0 12px rgba(${rgb},0.30)`,
+                  overflow:"hidden",
+                }}>
                   {viz}
                 </div>
               </div>
@@ -549,13 +561,22 @@ export function RadialLanding({ onSelect, exiting }: Props) {
               {/* separator — skip after last */}
               {idx < arr.length - 1 && (
                 <div style={{
-                  height:"1px", margin:"0 4px",
-                  background:`linear-gradient(to right, rgba(${rgb},0.40), rgba(0,218,195,0.15), transparent)`,
+                  height:"1px", margin:"0 6px",
+                  background:`linear-gradient(to right, rgba(${rgb},0.35), rgba(0,218,195,0.18), transparent)`,
                 }}/>
               )}
             </div>
           ))}
         </div>
+      </motion.div>
+
+      {/* ── BOTTOM-RIGHT: Where It Lives + Explore/Learn/Protect ─────────────── */}
+      <motion.div {...panelAnim(1, 0.20)} style={{
+        position:"absolute",
+        right:"14px", top:"51%", zIndex:6,
+        width:`calc(50% - ${R + CZ/2 + 26}px)`,
+        display:"flex", flexDirection:"column", gap:"10px",
+      }}>
 
         {/* Where It Lives */}
         <div style={{
