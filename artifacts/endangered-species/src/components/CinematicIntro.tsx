@@ -295,8 +295,8 @@ function TeacherCard() {
         transition={{ duration:FADE_DUR, delay:0.2, ease:EASE_IN }}
         style={{
           ...LABEL,
-          fontSize:"clamp(14px,1.5vw,22px)",
-          letterSpacing:"0.16em",
+          fontSize:"clamp(18px,2.0vw,30px)",
+          letterSpacing:"0.14em",
           color:G3,
           whiteSpace:"nowrap",
         }}
@@ -308,10 +308,11 @@ function TeacherCard() {
         transition={{ duration:FADE_DUR, delay:0.7, ease:EASE_IN }}
         style={{
           ...BIG,
-          fontSize:"clamp(42px,6.2vw,90px)",
+          fontSize:"clamp(38px,5.0vw,72px)",
           color:"#FFD080",
           textShadow:"0 0 70px rgba(255,200,80,0.60), "+S,
           marginTop:"12px",
+          whiteSpace:"nowrap",
         }}
       >Calliandra Harris</motion.div>
 
@@ -523,18 +524,28 @@ export function CinematicIntro({ onComplete }: Props) {
           title="Hawaiian Islands aerial footage"
         />
 
-        {/* Hard top gradient — covers burned-in "Nature Relaxation Films" title at video top */}
+        {/* Solid black top bar — covers burned-in "Nature Relaxation Films" title */}
         <div style={{
-          position:"absolute", top:0, left:0, right:0, height:"20%",
-          background:"linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.96) 25%, rgba(0,0,0,0.70) 60%, transparent 100%)",
-          zIndex:9, pointerEvents:"none",
+          position:"absolute", top:0, left:0, right:0, height:"16%",
+          background:"#000", zIndex:9, pointerEvents:"none",
+        }}/>
+        {/* Gold line — bottom edge of top bar */}
+        <div style={{
+          position:"absolute", top:"16%", left:0, right:0, height:"2px",
+          background:`linear-gradient(to right, transparent 0%, ${G2} 20%, ${G1} 50%, ${G2} 80%, transparent 100%)`,
+          zIndex:10, pointerEvents:"none",
         }}/>
 
-        {/* Hard bottom gradient — covers burned-in "Nature Relaxation Films" text at video bottom */}
+        {/* Solid black bottom bar — covers burned-in "Nature Relaxation Films" text */}
         <div style={{
-          position:"absolute", bottom:0, left:0, right:0, height:"18%",
-          background:"linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.96) 25%, rgba(0,0,0,0.70) 60%, transparent 100%)",
-          zIndex:9, pointerEvents:"none",
+          position:"absolute", bottom:0, left:0, right:0, height:"14%",
+          background:"#000", zIndex:9, pointerEvents:"none",
+        }}/>
+        {/* Gold line — top edge of bottom bar */}
+        <div style={{
+          position:"absolute", bottom:"14%", left:0, right:0, height:"2px",
+          background:`linear-gradient(to right, transparent 0%, ${G2} 20%, ${G1} 50%, ${G2} 80%, transparent 100%)`,
+          zIndex:10, pointerEvents:"none",
         }}/>
 
         {/* Side vignette — right side darker so gold text pops */}
