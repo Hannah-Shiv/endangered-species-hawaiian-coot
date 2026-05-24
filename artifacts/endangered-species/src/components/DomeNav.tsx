@@ -106,77 +106,34 @@ function arcPos(i: number) {
 const POSITIONS = GROUPS.map((_, i) => arcPos(i));
 
 /**
- * Build the L-connector path (SVG space, origin = hamburger centre).
+ * Unified connector path — works for ALL circles.
  *
- * Route for outer/mid circles (|x| >= 55):
- *   A. circle centre → outer wall x  (horizontal, hidden behind active circle z:10000)
- *   B. outer wall down to rail y      (vertical, fully outside all other circles)
- *   C. rail x across to centre        (horizontal, below all circles)
- *   D. centre down to sub-items top   (vertical drop)
+ * Starts at the circle CENTRE (M x y).  That segment is invisible because the
+ * circle button sits at z:10000 while the connector SVG is at z:9999.  Any
+ * other circles the vertical leg passes through also cover the line naturally.
  *
- * Route for inner circles (|x| < 55, i=2/3):
- *   Same L-shape but shorter horizontal leg since the circle is near centre.
- *   A. circle bottom straight down to rail y
- *   B. horizontal to centre (with rounded corner)
- *   C. drop to sub-items
+ *   M(cx, cy)              ← centre of active circle   [hidden]
+ *   L(cx, RAIL_Y − r)      ← straight down to corner
+ *   Q(cx, RAIL_Y,          ← rounded corner turning toward centre
+ *     cx + sign·r, RAIL_Y)
+ *   L(0, RAIL_Y)           ← sweep to rail centre
+ *   L(0, SUB_SVG)          ← drop to pill top
  *
- * Outer-wall x = cx ± IHLF — this guarantees the DOWN leg never enters any
- * other circle because it runs along the absolute outer edge of the arc.
+ * sign = +1 for left circles (x < 0) so the corner sweeps rightward.
+ * sign = −1 for right circles (x > 0) so the corner sweeps leftward.
  */
 function connectorPath(x: number, y: number): string {
-  const r    = 18;   // corner radius
+  const r    = 18;
   const rail = RAIL_Y;
-  const end  = SUB_SVG;
-
-  if (Math.abs(x) < 55) {
-    // ── Inner circles (i=2, i=3) ─────────────────────────────────────────────
-    // Drop from circle bottom, then a single smooth Q arc curves directly to
-    // the rail centre (no awkward short horizontal rail segment).
-    // Tangent at start = straight down; tangent at end = horizontal → clean arc.
-    const startY = y + IHLF;
-    return [
-      `M ${x} ${startY}`,
-      `L ${x} ${rail - r}`,
-      `Q ${x} ${rail} 0 ${rail}`,
-      `L 0 ${end}`,
-    ].join(" ");
-  }
-
-  // ── Outer / mid circles (i=0, i=1, i=4, i=5) ──────────────────────────────
-  const sign  = x < 0 ? 1 : -1;   // +1=left circle (routes rightward), -1=right
-  const wallX = x - sign * IHLF;   // outer edge of this circle, e.g. i=0: -158-42=-200
+  const sign = x < 0 ? 1 : -1;
 
   return [
-    // A: centre → outer wall (hidden inside active circle)
     `M ${x} ${y}`,
-    `L ${wallX} ${y}`,
-    // B: down outer wall to near rail (note: wall is outside all other circles)
-    `L ${wallX} ${rail - r}`,
-    // C1: rounded corner at bottom-outer
-    `Q ${wallX} ${rail} ${wallX + sign * r} ${rail}`,
-    // C2: horizontal across to near centre
-    `L ${-sign * r} ${rail}`,
-    // D1: rounded corner at bottom-centre
-    `Q 0 ${rail} 0 ${rail + r}`,
-    // D2: drop to sub-items
-    `L 0 ${end}`,
+    `L ${x} ${rail - r}`,
+    `Q ${x} ${rail} ${x + sign * r} ${rail}`,
+    `L 0 ${rail}`,
+    `L 0 ${SUB_SVG}`,
   ].join(" ");
-}
-
-// Approximate path length for the stroke-dasharray draw animation
-function pathLen(x: number, y: number): number {
-  const r = 18;
-  if (Math.abs(x) < 55) {
-    // inner circle: L(down) + Q(arc to centre) + L(drop)
-    const startY = y + IHLF;
-    const arcEst = Math.sqrt(x * x + r * r) * 1.6;
-    return Math.max(0, RAIL_Y - r - startY) + arcEst + (SUB_SVG - RAIL_Y) + 20;
-  }
-  // outer/mid: horizontal exit + vertical wall + horizontal rail + drop
-  const wallX   = Math.abs(x) + IHLF;   // distance from centre to outer wall
-  const vertLen = RAIL_Y - Math.abs(y); // wall height
-  const horizLen = wallX - r;            // rail length
-  return IHLF + Math.max(0, vertLen) + horizLen + (SUB_SVG - RAIL_Y) + r * 4;
 }
 
 // ─── Intelligence Threads ──────────────────────────────────────────────────────
@@ -244,7 +201,6 @@ export function DomeNav({ onSelect, activeSection, onCloseSection }: Props) {
   const ax = activeIdx>=0 ? POSITIONS[activeIdx].x : 0;
   const ay = activeIdx>=0 ? POSITIONS[activeIdx].y : 0;
   const cPath = activeIdx>=0 ? connectorPath(ax, ay) : "";
-  const cLen  = activeIdx>=0 ? pathLen(ax, ay) : 800;
 
   return (
     <>
@@ -314,18 +270,28 @@ export function DomeNav({ onSelect, activeSection, onCloseSection }: Props) {
           </motion.div>
         </button>
 
-        {/* ── L-shaped connector SVG — rendered BELOW circles (z 9999 vs circles z 10000) ── */}
+        {/* ── Connector SVG — z 9999, circles z 10000 render ON TOP naturally ─── */}
+        {/* Animation: new line draws in first (pathLength 0→1, 0.45 s),           */}
+        {/*            then the exiting line erases (pathLength 1→0, 0.35 s delay). */}
         <svg aria-hidden
           style={{position:"absolute",left:`${HALF}px`,top:`${HALF}px`,
                   width:1,height:1,overflow:"visible",pointerEvents:"none",zIndex:9999}}>
-          {activeIdx>=0 && (
-            <path d={cPath}
-              style={{fill:"none",stroke:C.goldLt,strokeWidth:"2.5",strokeLinecap:"round",
-                strokeLinejoin:"round",
-                strokeDasharray:cLen,
-                strokeDashoffset:group?0:cLen,
-                transition:`stroke-dashoffset 0.5s cubic-bezier(0.4,0,0.2,1) 0.05s`}}/>
-          )}
+          <AnimatePresence>
+            {activeIdx >= 0 && (
+              <motion.path
+                key={group}
+                d={cPath}
+                fill="none"
+                stroke={C.goldLt}
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                initial={{ pathLength: 0 }}
+                animate={{ pathLength: 1, transition: { duration: 0.45, ease: [0.4,0,0.2,1] } }}
+                exit={{ pathLength: 0, transition: { duration: 0.35, delay: 0.45, ease: [0.4,0,0.2,1] } }}
+              />
+            )}
+          </AnimatePresence>
         </svg>
 
         {/* ── Main circles — z 10000, render ON TOP of connector line ────────── */}
@@ -405,7 +371,8 @@ export function DomeNav({ onSelect, activeSection, onCloseSection }: Props) {
                         h:{opacity:0,scale:0.6,y:-8},
                         v:{opacity:1,scale:1,y:0,transition:{duration:0.38,ease:[0.16,1,0.3,1]}},
                       }}
-                      style={{marginBottom:j<ag.items.length-1?`${PGAP}px`:0}}>
+                      style={{marginBottom:j<ag.items.length-1?`${PGAP}px`:0,
+                              position:"relative",zIndex:1}}>
                       <button
                         onClick={(e)=>{e.stopPropagation();setOpen(false);setGroup(null);onSelect(sub.key);}}
                         data-testid={`button-nav-sub-${sub.key.toLowerCase().replace(/[^a-z0-9]+/g,"-")}`}
