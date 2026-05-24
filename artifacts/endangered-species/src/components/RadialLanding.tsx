@@ -318,67 +318,89 @@ export function RadialLanding({ onSelect, exiting }: Props) {
         zIndex:6, width:`calc(50% - ${R + CZ/2 + 22}px)`,
         display:"flex", flexDirection:"column", gap:"14px",
       }}>
-        {/* SAVE OUR WILDLIFE — cursive */}
+        {/* SAVE OUR WILDLIFE */}
         <div style={{ position:"relative" }}>
-          {/* decorative accent */}
-          <div style={{
-            display:"flex", alignItems:"center", gap:"8px", marginBottom:"8px",
-          }}>
-            <div style={{ width:"18px", height:"1px", background:"rgba(34,197,94,0.6)" }}/>
-            <span style={{
-              fontFamily:"'Josefin Sans',sans-serif", fontSize:"8px", fontWeight:700,
-              letterSpacing:"0.32em", color:"rgba(34,197,94,0.75)", textTransform:"uppercase",
-            }}>Conservation</span>
+          <div style={{ display:"flex", alignItems:"center", gap:"7px", marginBottom:"8px" }}>
+            <div style={{ width:"16px", height:"1px", background:"rgba(34,197,94,0.6)" }}/>
+            <span style={{ fontFamily:"'Josefin Sans',sans-serif", fontSize:"7.5px", fontWeight:700,
+              letterSpacing:"0.34em", color:"rgba(34,197,94,0.75)", textTransform:"uppercase" }}>
+              Conservation Project
+            </span>
           </div>
-          <div style={{
-            fontFamily:"'Playfair Display',serif",
-            fontStyle:"italic", fontWeight:700,
-            fontSize:"clamp(26px,3.1vw,46px)",
-            color:"#fff", lineHeight:1.05,
-            textShadow:"0 2px 30px rgba(0,0,0,0.8), 0 0 50px rgba(34,197,94,0.18)",
-          }}>
-            Save Our<br/>Wildlife
-          </div>
-          <div style={{
-            display:"flex", alignItems:"center", gap:"7px", marginTop:"9px",
-          }}>
-            <span style={{ fontSize:"15px", filter:"drop-shadow(0 0 5px rgba(34,197,94,0.8))" }}>🌿</span>
+          <div style={{ position:"relative", display:"inline-block" }}>
             <div style={{
-              fontFamily:"'Josefin Sans',sans-serif", fontSize:"clamp(8px,0.82vw,11px)",
-              fontWeight:700, letterSpacing:"0.36em", color:"rgba(34,197,94,0.88)",
-              textTransform:"uppercase",
-            }}>Every Species Matters</div>
+              fontFamily:"'Playfair Display',serif", fontStyle:"italic", fontWeight:700,
+              fontSize:"clamp(26px,3.1vw,46px)", color:"#fff", lineHeight:1.04,
+              textShadow:"0 2px 30px rgba(0,0,0,0.9), 0 0 55px rgba(34,197,94,0.22)",
+            }}>Save Our<br/>Wildlife</div>
+            {/* Hibiscus accent */}
+            <span style={{
+              position:"absolute", top:-6, right:-22, fontSize:"22px", opacity:0.80,
+              filter:"drop-shadow(0 0 8px rgba(255,100,150,0.55))", pointerEvents:"none",
+            }}>🌺</span>
           </div>
-          <div style={{
-            width:"100%", height:"1px", marginTop:"10px",
-            background:"linear-gradient(to right, rgba(34,197,94,0.50), rgba(0,218,195,0.25), transparent)",
-          }}/>
+          <div style={{ display:"flex", alignItems:"center", gap:"8px", marginTop:"9px" }}>
+            <span style={{ fontSize:"14px", filter:"drop-shadow(0 0 5px rgba(34,197,94,0.8))" }}>🌿</span>
+            <div style={{ fontFamily:"'Josefin Sans',sans-serif", fontSize:"clamp(8px,0.82vw,10.5px)",
+              fontWeight:700, letterSpacing:"0.36em", color:"rgba(34,197,94,0.90)", textTransform:"uppercase" }}>
+              Every Species Matters
+            </div>
+            <span style={{ fontSize:"12px", filter:"drop-shadow(0 0 4px rgba(34,197,94,0.7))", opacity:0.7 }}>🌿</span>
+          </div>
+          <div style={{ width:"100%", height:"1px", marginTop:"10px",
+            background:"linear-gradient(to right, rgba(34,197,94,0.55), rgba(0,218,195,0.28), transparent)" }}/>
         </div>
 
-        {/* Quote — styled block */}
+        {/* Quote — rich glassmorphic card */}
         <div style={{
-          background:"rgba(34,197,94,0.06)",
-          border:"1px solid rgba(34,197,94,0.18)",
-          borderLeft:"3px solid rgba(34,197,94,0.60)",
-          borderRadius:"0 8px 8px 0",
-          padding:"12px 14px",
+          background:"linear-gradient(135deg, rgba(0,28,18,0.92) 0%, rgba(0,12,8,0.94) 100%)",
+          backdropFilter:"blur(18px)",
+          border:"1px solid rgba(34,197,94,0.22)",
+          borderLeft:"3px solid rgba(34,197,94,0.72)",
+          borderRadius:"0 10px 10px 0",
+          padding:"16px 16px 14px",
+          position:"relative", overflow:"hidden",
         }}>
-          <div style={{
-            fontFamily:"'Playfair Display',serif", fontSize:"clamp(18px,1.8vw,26px)",
-            color:"rgba(34,197,94,0.55)", lineHeight:1, marginBottom:"7px",
-          }}>❝</div>
-          <div style={{
-            fontFamily:"'Playfair Display',serif",
-            fontSize:"clamp(10px,0.94vw,13.5px)", fontStyle:"italic",
-            color:"rgba(255,255,255,0.82)", lineHeight:1.75,
-          }}>
+          {/* corner glow */}
+          <div style={{ position:"absolute", top:0, left:0, width:"90px", height:"90px",
+            background:"radial-gradient(ellipse, rgba(34,197,94,0.14) 0%, transparent 70%)", pointerEvents:"none" }}/>
+          {/* hibiscus watermark */}
+          <div style={{ position:"absolute", right:-12, bottom:-18, fontSize:"88px", opacity:0.04,
+            transform:"rotate(-15deg)", pointerEvents:"none" }}>🌺</div>
+          <div style={{ fontFamily:"'Playfair Display',serif", fontSize:"clamp(24px,2.5vw,36px)",
+            color:"rgba(34,197,94,0.62)", lineHeight:1, marginBottom:"9px" }}>❝</div>
+          <div style={{ fontFamily:"'Playfair Display',serif", fontSize:"clamp(11px,1.0vw,15px)",
+            fontStyle:"italic", color:"rgba(255,255,255,0.90)", lineHeight:1.82 }}>
             We don't inherit the Earth from our ancestors. We borrow it from our children.
           </div>
+          <div style={{ fontFamily:"'Josefin Sans',sans-serif", fontSize:"8.5px",
+            color:"rgba(34,197,94,0.58)", letterSpacing:"0.22em",
+            textTransform:"uppercase", marginTop:"11px" }}>— Antoine de Saint-Exupéry</div>
+        </div>
+
+        {/* Hawaiian Coot mini portrait */}
+        <div style={{ display:"flex", alignItems:"center", gap:"12px", marginTop:"2px" }}>
           <div style={{
-            fontFamily:"'Josefin Sans',sans-serif", fontSize:"8.5px",
-            color:"rgba(34,197,94,0.50)", letterSpacing:"0.20em",
-            textTransform:"uppercase", marginTop:"9px",
-          }}>— Antoine de Saint-Exupéry</div>
+            width:"clamp(72px,8vw,110px)", height:"clamp(72px,8vw,110px)",
+            borderRadius:"50%", overflow:"hidden", flexShrink:0,
+            border:"2px solid rgba(0,218,195,0.50)",
+            boxShadow:"0 0 0 1px rgba(0,218,195,0.18), 0 0 20px rgba(0,218,195,0.20), 0 0 48px rgba(34,197,94,0.12)",
+          }}>
+            <img src={bgPhoto} alt="Hawaiian Coot" style={{
+              width:"100%", height:"100%", objectFit:"cover", objectPosition:"50% 32%",
+              filter:"brightness(0.96) contrast(1.06) saturate(1.12)",
+            }}/>
+          </div>
+          <div>
+            <div style={{ fontFamily:"'Playfair Display',serif", fontStyle:"italic",
+              fontSize:"clamp(9px,0.85vw,12px)", color:"rgba(255,255,255,0.50)", lineHeight:1.5 }}>
+              Fulica alai
+            </div>
+            <div style={{ fontFamily:"'Josefin Sans',sans-serif", fontSize:"7.5px", fontWeight:700,
+              letterSpacing:"0.18em", color:"rgba(0,218,195,0.65)", textTransform:"uppercase", marginTop:"3px" }}>
+              Pacific Waterbird
+            </div>
+          </div>
         </div>
       </motion.div>
 
@@ -651,43 +673,45 @@ export function RadialLanding({ onSelect, exiting }: Props) {
             background:"linear-gradient(to right, rgba(34,197,94,0.75), rgba(20,184,166,0.75), rgba(249,115,22,0.75))",
           }}/>
           {/* three rows */}
-          <div style={{ display:"flex", flexDirection:"column", gap:"6px", marginBottom:"13px" }}>
+          <div style={{ display:"flex", flexDirection:"column", gap:"7px" }}>
             {([
-              { word:"Explore.", color:"#22c55e", glow:"rgba(34,197,94,0.65)", icon:"🔭" },
-              { word:"Learn.",   color:"#14b8a6", glow:"rgba(20,184,166,0.55)",  icon:"📖" },
-              { word:"Protect.", color:"#f97316", glow:"rgba(249,115,22,0.60)",  icon:"🛡️" },
-            ] as { word:string; color:string; glow:string; icon:string }[]).map(({ word, color, glow, icon })=>(
+              { word:"Explore.", color:"#22c55e", glow:"rgba(34,197,94,0.65)", icon:"🔭",
+                desc:"Discover the world of \u02BBalae ke\u02BBoke\u02BBo",  rgb:"34,197,94" },
+              { word:"Learn.",   color:"#14b8a6", glow:"rgba(20,184,166,0.55)", icon:"📖",
+                desc:"Understand, connect & be inspired",                    rgb:"20,184,166" },
+              { word:"Protect.", color:"#f97316", glow:"rgba(249,115,22,0.60)", icon:"❤️",
+                desc:"Take action & make a difference",                      rgb:"249,115,22" },
+            ] as { word:string; color:string; glow:string; icon:string; desc:string; rgb:string }[])
+            .map(({ word, color, glow, icon, desc, rgb })=>(
               <div key={word} style={{
                 display:"flex", alignItems:"center", gap:"10px",
-                padding:"5px 8px", borderRadius:"7px",
-                background:`rgba(${color==='#22c55e'?'34,197,94':color==='#14b8a6'?'20,184,166':'249,115,22'},0.07)`,
+                padding:"9px 11px", borderRadius:"9px",
+                background:`linear-gradient(135deg, rgba(${rgb},0.10), rgba(${rgb},0.03))`,
+                border:`1px solid rgba(${rgb},0.22)`,
+                cursor:"pointer",
+                transition:"border-color 0.18s",
               }}>
-                <span style={{ fontSize:"15px", flexShrink:0, filter:`drop-shadow(0 0 5px ${glow})` }}>{icon}</span>
-                <span style={{
-                  fontFamily:"'Playfair Display',serif", fontStyle:"italic", fontWeight:700,
-                  fontSize:"clamp(15px,1.55vw,22px)",
-                  color, textShadow:`0 0 22px ${glow}`,
-                  lineHeight:1.2,
-                }}>{word}</span>
+                <div style={{
+                  width:34, height:34, borderRadius:"50%", flexShrink:0,
+                  background:`rgba(${rgb},0.14)`, border:`1px solid rgba(${rgb},0.40)`,
+                  display:"flex", alignItems:"center", justifyContent:"center", fontSize:"16px",
+                  filter:`drop-shadow(0 0 6px rgba(${rgb},0.5))`,
+                }}>{icon}</div>
+                <div style={{ flex:1, minWidth:0 }}>
+                  <div style={{
+                    fontFamily:"'Playfair Display',serif", fontStyle:"italic", fontWeight:700,
+                    fontSize:"clamp(14px,1.45vw,20px)",
+                    color, textShadow:`0 0 20px ${glow}`, lineHeight:1.15,
+                  }}>{word}</div>
+                  <div style={{
+                    fontFamily:"'Josefin Sans',sans-serif", fontSize:"8px",
+                    color:"rgba(255,255,255,0.45)", letterSpacing:"0.04em", marginTop:"2px",
+                  }}>{desc}</div>
+                </div>
+                <span style={{ color, fontSize:"16px", opacity:0.70, flexShrink:0,
+                  filter:`drop-shadow(0 0 4px ${glow})` }}>→</span>
               </div>
             ))}
-          </div>
-          {/* tagline */}
-          <div style={{
-            fontFamily:"'Josefin Sans',sans-serif", fontSize:"9.5px",
-            color:"rgba(255,255,255,0.45)", letterSpacing:"0.05em", lineHeight:1.65,
-          }}>
-            Click any circle to explore<br/>the world of the {"\u02BBalae ke\u02BBoke\u02BBo"}.
-          </div>
-          {/* footer rule + arrow */}
-          <div style={{
-            display:"flex", alignItems:"center", gap:"8px", marginTop:"11px",
-          }}>
-            <div style={{
-              flex:1, height:"1px",
-              background:"linear-gradient(to right, rgba(249,115,22,0.45), transparent)",
-            }}/>
-            <span style={{ color:"rgba(249,115,22,0.80)", fontSize:"15px", lineHeight:1 }}>→</span>
           </div>
         </div>
       </motion.div>
