@@ -13,6 +13,7 @@ import bgPhoto    from "../assets/bg-photo.png";
 import birdImg    from "../assets/bird-transparent.png";
 import whereItLivesImg from "@assets/image_1779661049779.png";
 import explorePanelImg from "@assets/image_1779661407544.png";
+import quickFactsImg   from "@assets/image_1779661714544.png";
 import circle01 from "../assets/circles/circle01.png";
 import circle02 from "../assets/circles/circle02.png";
 import circle03 from "../assets/circles/circle03.png";
@@ -388,165 +389,12 @@ export function RadialLanding({ onSelect, exiting }: Props) {
         position:"absolute",
         right:"14px", top:"3%", zIndex:6,
         width:`calc(50% - ${R + CZ/2 + 26}px)`,
-        maxHeight:"46%", overflow:"hidden",
       }}>
-
-        {/* Quick Facts — Option 2 style */}
-        <div style={{
-          background:"#020810",
-          border:"1.5px solid rgba(0,218,195,0.55)",
-          borderRadius:"14px",
-          padding:"16px 16px 14px",
-          position:"relative", overflow:"hidden",
-          boxShadow:"0 0 28px rgba(0,218,195,0.14)",
-        }}>
-          {/* teal top glow bar */}
-          <div style={{
-            position:"absolute", top:0, left:0, right:0, height:"2px",
-            background:"linear-gradient(to right, rgba(0,218,195,0.90), rgba(34,197,94,0.70), rgba(0,218,195,0.40), transparent)",
-          }}/>
-          {/* ambient corner glow */}
-          <div style={{
-            position:"absolute", top:-20, right:-20, width:"100px", height:"100px",
-            background:"radial-gradient(ellipse, rgba(0,218,195,0.12) 0%, transparent 70%)", pointerEvents:"none",
-          }}/>
-
-          {/* Header */}
-          <div style={{
-            display:"flex", alignItems:"center", justifyContent:"space-between",
-            marginBottom:"14px",
-          }}>
-            <div style={{ display:"flex", alignItems:"center", gap:"8px" }}>
-              <span style={{ fontSize:"12px", filter:"drop-shadow(0 0 6px rgba(0,218,195,0.9))" }}>🌿</span>
-              <span style={{
-                fontFamily:"'Josefin Sans',sans-serif", fontSize:"13px", fontWeight:700,
-                letterSpacing:"0.26em", color:"rgba(0,218,195,1.0)", textTransform:"uppercase",
-              }}>Quick Facts</span>
-            </div>
-            <span style={{ fontSize:"11px", opacity:0.60, filter:"drop-shadow(0 0 4px rgba(0,218,195,0.6))" }}>🌿</span>
-          </div>
-
-          {/* Rows */}
-          {([
-            {
-              icon:"🛡️", label:"Status", value:"Endangered",
-              rgb:"239,68,68", valueColor:"#ff5555",
-              glow:"rgba(239,68,68,0.80)",
-              viz: (
-                <svg width="34" height="34" viewBox="0 0 34 34">
-                  <polyline points="0,17 4,17 7,7 10,27 13,17 17,17 20,10 23,24 26,17 30,17 33,12"
-                    fill="none" stroke="#ff5555" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
-                  <polyline points="0,17 4,17 7,7 10,27 13,17 17,17 20,10 23,24 26,17 30,17 33,12"
-                    fill="none" stroke="rgba(255,85,85,0.25)" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              ),
-            },
-            {
-              icon:"👥", label:"Population", value:"2,500–3,500",
-              rgb:"167,139,250", valueColor:"#c4b5fd",
-              glow:"rgba(124,58,237,0.80)",
-              viz: (
-                <svg width="34" height="34" viewBox="0 0 34 34">
-                  {[5,9,7,15,11,19,17].map((h,i)=>(
-                    <g key={i}>
-                      <rect x={i*4.7+1} y={34-h} width="3.8" height={h} fill="#7c3aed" opacity={0.22} rx="1"/>
-                      <rect x={i*4.7+1} y={34-h} width="3.8" height={Math.max(h-2,1)} fill="#a78bfa" opacity={0.55+i*0.07} rx="1"/>
-                    </g>
-                  ))}
-                </svg>
-              ),
-            },
-            {
-              icon:"🏝️", label:"Habitat", value:"Wetlands",
-              rgb:"34,197,94", valueColor:"#4ade80",
-              glow:"rgba(34,197,94,0.80)",
-              viz: (
-                <svg width="34" height="34" viewBox="0 0 34 34">
-                  {[2,6,10,14,18,22,26,30].map((x,i)=>(
-                    <line key={i} x1={x} y1={34} x2={x} y2={34-[8,14,10,17,12,19,11,15][i]}
-                      stroke="#22c55e" strokeWidth="2.5" strokeLinecap="round"
-                      opacity={0.50+i*0.07}/>
-                  ))}
-                </svg>
-              ),
-            },
-            {
-              icon:"⌛", label:"Lifespan", value:"10–15 yrs",
-              rgb:"212,175,55", valueColor:"#fbbf24",
-              glow:"rgba(212,175,55,0.80)",
-              viz: (
-                <svg width="34" height="34" viewBox="0 0 34 34">
-                  <circle cx="17" cy="17" r="13" fill="none" stroke="rgba(212,175,55,0.35)" strokeWidth="1.5"/>
-                  {[0,60,120,180,240,300].map((deg,i)=>{
-                    const r2=deg*Math.PI/180;
-                    return <line key={i} x1={17+9*Math.sin(r2)} y1={17-9*Math.cos(r2)}
-                      x2={17+12*Math.sin(r2)} y2={17-12*Math.cos(r2)}
-                      stroke="#fbbf24" strokeWidth="1.5" strokeLinecap="round" opacity={0.70}/>;
-                  })}
-                  <line x1="17" y1="17" x2="17" y2="7" stroke="#fbbf24" strokeWidth="2" strokeLinecap="round"/>
-                  <line x1="17" y1="17" x2="24" y2="17" stroke="#fbbf24" strokeWidth="1.5" strokeLinecap="round" opacity="0.75"/>
-                  <circle cx="17" cy="17" r="2" fill="#fbbf24"/>
-                </svg>
-              ),
-            },
-          ] as { icon:string; label:string; value:string; rgb:string; valueColor:string; glow:string; viz:React.ReactNode }[])
-          .map(({ icon, label, value, rgb, valueColor, glow, viz }, idx, arr) => (
-            <div key={label}>
-              <div style={{
-                display:"flex", alignItems:"center", gap:"0", padding:"11px 2px",
-              }}>
-                {/* left icon circle */}
-                <div style={{
-                  width:46, height:46, borderRadius:"50%", flexShrink:0,
-                  background:`radial-gradient(ellipse at 35% 35%, rgba(${rgb},0.32) 0%, rgba(${rgb},0.10) 100%)`,
-                  border:`2px solid rgba(${rgb},0.72)`,
-                  display:"flex", alignItems:"center", justifyContent:"center", fontSize:"20px",
-                  boxShadow:`0 0 16px rgba(${rgb},0.42), inset 0 0 10px rgba(${rgb},0.12)`,
-                }}>{icon}</div>
-
-                {/* label + value */}
-                <div style={{ flex:1, minWidth:0, padding:"0 10px" }}>
-                  <div style={{
-                    fontFamily:"'Josefin Sans',sans-serif", fontSize:"13px", fontWeight:600,
-                    letterSpacing:"0.08em", color:"rgba(255,255,255,0.72)",
-                    marginBottom:"4px",
-                  }}>{label}</div>
-                  <div style={{
-                    fontFamily:"'Josefin Sans',sans-serif", fontSize:"clamp(14px,1.55vw,19px)", fontWeight:700,
-                    color:valueColor, letterSpacing:"0.01em", lineHeight:1.1,
-                    textShadow:`0 0 20px ${glow}`,
-                  }}>{value}</div>
-                </div>
-
-                {/* dotted connector */}
-                <div style={{
-                  width:"14px", flexShrink:0, height:"1px",
-                  borderTop:`2px dashed rgba(${rgb},0.40)`,
-                }}/>
-
-                {/* right viz circle */}
-                <div style={{
-                  width:46, height:46, borderRadius:"50%", flexShrink:0,
-                  background:`radial-gradient(ellipse at 60% 60%, rgba(${rgb},0.22) 0%, rgba(${rgb},0.06) 100%)`,
-                  border:`2px solid rgba(${rgb},0.55)`,
-                  display:"flex", alignItems:"center", justifyContent:"center",
-                  boxShadow:`0 0 12px rgba(${rgb},0.30)`,
-                  overflow:"hidden",
-                }}>
-                  {viz}
-                </div>
-              </div>
-
-              {/* separator — skip after last */}
-              {idx < arr.length - 1 && (
-                <div style={{
-                  height:"1px", margin:"0 6px",
-                  background:`linear-gradient(to right, rgba(${rgb},0.35), rgba(0,218,195,0.18), transparent)`,
-                }}/>
-              )}
-            </div>
-          ))}
-        </div>
+        <img
+          src={quickFactsImg}
+          alt="Quick Facts"
+          style={{ width:"100%", display:"block", borderRadius:"10px" }}
+        />
       </motion.div>
 
       {/* ── BOTTOM-RIGHT: Where It Lives + Explore/Learn/Protect ─────────────── */}
