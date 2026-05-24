@@ -1,16 +1,15 @@
 /**
  * RadialLanding — matches reference image_1779602064562.png exactly:
- *  - Dramatic dark scene background (blue-shifted) + bird overlay
+ *  - Real Hawaiian wetland + bird background photo (bg-photo.png)
  *  - 10 glowing circles arranged radially, NO portrait frame
- *  - Cyan/teal dashed ring
+ *  - Cyan dashed inner ring + colored outer glow dots per circle
  *  - Left panel: SAVE OUR WILDLIFE + quote
  *  - Right panel: Quick Facts, Where It Lives, Explore/Learn/Protect
  *  - Bottom bar: SCROLL OR CLICK TO EXPLORE
  */
 import { useRef } from "react";
 import { motion } from "framer-motion";
-import sceneBg  from "../assets/scene-bg.png";
-import birdImg  from "../assets/bird-transparent.png";
+import bgPhoto from "../assets/bg-photo.png";
 
 // ─── Geometry ──────────────────────────────────────────────────────────────
 const CZ = 130;   // circle diameter px
@@ -83,47 +82,29 @@ export function RadialLanding({ onSelect, exiting }: Props) {
   return (
     <div style={{ position:"fixed", inset:0, zIndex:8000, overflow:"hidden" }}>
 
-      {/* ── BACKGROUND LAYER 1: dramatic scene, blue-shifted, blurred to hide baked text ── */}
-      <img src={sceneBg} alt="" style={{
+      {/* ── BACKGROUND: real wetland + bird photo ── */}
+      <img src={bgPhoto} alt="" style={{
         position:"absolute", inset:0, width:"100%", height:"100%",
-        objectFit:"cover", objectPosition:"30% center",
-        filter:"blur(9px) brightness(0.33) saturate(1.85) hue-rotate(-18deg) contrast(1.1)",
+        objectFit:"cover", objectPosition:"center 35%",
+        filter:"brightness(0.80) contrast(1.05) saturate(1.08)",
       }}/>
 
-      {/* ── BACKGROUND LAYER 2: sky gradient + horizon glow ── */}
+      {/* Dark overlay: top (sky) — heavy so panels stay readable */}
       <div style={{
         position:"absolute", inset:0, pointerEvents:"none",
-        background:"linear-gradient(to bottom, rgba(2,6,32,0.72) 0%, rgba(4,12,42,0.38) 22%, transparent 48%, rgba(2,6,20,0.42) 88%, rgba(1,4,16,0.80) 100%)",
-      }}/>
-      {/* Cover the baked-text area on the left side */}
-      <div style={{
-        position:"absolute", inset:0, pointerEvents:"none",
-        background:"linear-gradient(to right, rgba(2,6,22,0.78) 0%, rgba(2,6,22,0.5) 10%, transparent 22%)",
-      }}/>
-      {/* Warm golden glow at horizon (behind bird — matches reference sunset) */}
-      <div style={{
-        position:"absolute", left:"50%", top:"58%",
-        transform:"translate(-52%,-50%)",
-        width:"560px", height:"360px",
-        background:"radial-gradient(ellipse at center, rgba(255,150,30,0.26) 0%, rgba(255,100,10,0.10) 40%, transparent 72%)",
-        pointerEvents:"none", zIndex:1,
-      }}/>
-      {/* Side vignette for panel contrast */}
-      <div style={{
-        position:"absolute", inset:0, pointerEvents:"none",
-        background:"linear-gradient(to right, transparent 12%, transparent 78%, rgba(2,6,20,0.35) 100%)",
+        background:"linear-gradient(to bottom, rgba(1,5,20,0.82) 0%, rgba(2,8,28,0.55) 18%, rgba(3,10,30,0.18) 42%, transparent 60%, rgba(1,4,16,0.30) 85%, rgba(1,3,12,0.62) 100%)",
       }}/>
 
-      {/* ── BACKGROUND LAYER 3: bird overlay centered ── */}
-      <img src={birdImg} alt="Hawaiian Coot" style={{
-        position:"absolute",
-        bottom:"4%", left:"50%",
-        transform:"translateX(-52%)",
-        height:"66%",
-        objectFit:"contain",
-        zIndex:1,
-        filter:"brightness(1.08) contrast(1.12) drop-shadow(0 0 40px rgba(255,140,20,0.35))",
-        pointerEvents:"none",
+      {/* Dark vignette: left side for Save Our Wildlife panel */}
+      <div style={{
+        position:"absolute", inset:0, pointerEvents:"none",
+        background:"linear-gradient(to right, rgba(1,4,18,0.88) 0%, rgba(1,4,18,0.65) 8%, rgba(1,4,18,0.20) 18%, transparent 28%)",
+      }}/>
+
+      {/* Dark vignette: right side for info panels */}
+      <div style={{
+        position:"absolute", inset:0, pointerEvents:"none",
+        background:"linear-gradient(to left, rgba(1,4,18,0.88) 0%, rgba(1,4,18,0.65) 8%, rgba(1,4,18,0.20) 18%, transparent 28%)",
       }}/>
 
       {/* ── DECORATIVE RING ─────────────────────────────────────────────────── */}
@@ -138,28 +119,35 @@ export function RadialLanding({ onSelect, exiting }: Props) {
         }}
         viewBox="-1 -1 2 2"
       >
-        {/* Hidden backdrop discs (r = CZ/2-2 = fully inside circle divs, provides dark base) */}
+        {/* Dark backdrop discs behind each circle (for contrast against bright photo) */}
         {ITEMS.map((_,i)=>{
           const {x,y}=pos(i);
-          return <circle key={`bg-${i}`} cx={x} cy={y} r={CZ/2-2} fill="rgba(3,6,24,0.96)"/>;
+          return <circle key={`bg-${i}`} cx={x} cy={y} r={CZ/2-1} fill="rgba(2,5,20,0.92)"/>;
         })}
 
-        {/* Main glowing dashed ring */}
-        <circle r={R} fill="none" stroke="rgba(0,230,205,0.82)" strokeWidth="2.8" strokeDasharray="9 13"/>
-        {/* Soft glow spread behind ring */}
-        <circle r={R} fill="none" stroke="rgba(0,230,205,0.20)" strokeWidth="14" strokeDasharray="9 13"/>
-        {/* Inner concentric rings */}
-        <circle r={R-52} fill="none" stroke="rgba(0,210,185,0.22)" strokeWidth="1.5" strokeDasharray="4 10"/>
-        <circle r={145}  fill="none" stroke="rgba(0,200,175,0.12)" strokeWidth="1"   strokeDasharray="3 9"/>
+        {/* Outer subtle connecting line */}
+        <circle r={R} fill="none" stroke="rgba(0,230,210,0.28)" strokeWidth="1.5" strokeDasharray="5 14"/>
 
-        {/* Sparkle node dots at each circle position */}
-        {ITEMS.map((_,i)=>{
+        {/* Main inner glowing dashed ring */}
+        <circle r={R-20} fill="none" stroke="rgba(0,230,205,0.78)" strokeWidth="2.5" strokeDasharray="8 12"/>
+        {/* Soft glow spread */}
+        <circle r={R-20} fill="none" stroke="rgba(0,230,205,0.16)" strokeWidth="16" strokeDasharray="8 12"/>
+        {/* Inner concentric ring */}
+        <circle r={R-64} fill="none" stroke="rgba(0,210,185,0.20)" strokeWidth="1.5" strokeDasharray="4 10"/>
+
+        {/* Colored glow dots at each circle position — match circle colors */}
+        {ITEMS.map((item,i)=>{
           const {x,y}=pos(i);
           return (
             <g key={`dot-${i}`}>
-              <circle cx={x} cy={y} r="11"  fill="rgba(0,210,190,0.12)"/>
-              <circle cx={x} cy={y} r="5.5" fill="rgba(0,225,205,0.70)"/>
-              <circle cx={x} cy={y} r="2.5" fill="rgba(255,255,255,0.95)"/>
+              {/* Outer color glow */}
+              <circle cx={x} cy={y} r="13" fill={`${item.color}28`}/>
+              {/* Mid glow ring */}
+              <circle cx={x} cy={y} r="7.5" fill={`${item.color}70`}/>
+              {/* Bright center */}
+              <circle cx={x} cy={y} r="3.5" fill={item.color}/>
+              {/* White hot center */}
+              <circle cx={x} cy={y} r="1.5" fill="rgba(255,255,255,0.95)"/>
             </g>
           );
         })}
@@ -222,13 +210,13 @@ export function RadialLanding({ onSelect, exiting }: Props) {
 
         {/* Quick Facts */}
         <div style={{
-          background:"rgba(3,6,20,0.82)", backdropFilter:"blur(16px)",
-          border:"1px solid rgba(255,255,255,0.1)", borderRadius:"10px",
+          background:"rgba(2,5,18,0.82)", backdropFilter:"blur(18px)",
+          border:"1px solid rgba(255,255,255,0.10)", borderRadius:"10px",
           padding:"14px 16px",
         }}>
           <div style={{
             fontFamily:"'Josefin Sans',sans-serif", fontSize:"9px", fontWeight:700,
-            letterSpacing:"0.26em", color:"rgba(212,175,55,0.8)",
+            letterSpacing:"0.26em", color:"rgba(212,175,55,0.85)",
             textTransform:"uppercase", marginBottom:"11px",
           }}>Quick Facts</div>
           {[
@@ -251,13 +239,13 @@ export function RadialLanding({ onSelect, exiting }: Props) {
 
         {/* Where It Lives */}
         <div style={{
-          background:"rgba(3,6,20,0.82)", backdropFilter:"blur(16px)",
-          border:"1px solid rgba(255,255,255,0.1)", borderRadius:"10px",
+          background:"rgba(2,5,18,0.82)", backdropFilter:"blur(18px)",
+          border:"1px solid rgba(255,255,255,0.10)", borderRadius:"10px",
           padding:"14px 16px",
         }}>
           <div style={{
             fontFamily:"'Josefin Sans',sans-serif", fontSize:"9px", fontWeight:700,
-            letterSpacing:"0.26em", color:"rgba(212,175,55,0.8)",
+            letterSpacing:"0.26em", color:"rgba(212,175,55,0.85)",
             textTransform:"uppercase", marginBottom:"9px",
           }}>Where It Lives</div>
           <div style={{ fontSize:"24px", marginBottom:"7px", opacity:0.55 }}>🗺️</div>
@@ -277,10 +265,10 @@ export function RadialLanding({ onSelect, exiting }: Props) {
             fontFamily:"'Playfair Display',serif",
             fontSize:"clamp(18px,1.85vw,28px)", fontWeight:700, lineHeight:1.35,
           }}>
-            <span style={{ color:"#22c55e", textShadow:"0 0 20px rgba(34,197,94,0.55)" }}>Explore.</span><br/>
-            <span style={{ color:"#14b8a6", textShadow:"0 0 20px rgba(20,184,166,0.45)" }}>Learn.</span>{" "}
+            <span style={{ color:"#22c55e", textShadow:"0 0 20px rgba(34,197,94,0.65)" }}>Explore.</span><br/>
+            <span style={{ color:"#14b8a6", textShadow:"0 0 20px rgba(20,184,166,0.55)" }}>Learn.</span>{" "}
             <span style={{ fontSize:"0.68em" }}>🌿</span><br/>
-            <span style={{ color:"#f97316", textShadow:"0 0 20px rgba(249,115,22,0.45)" }}>Protect.</span>
+            <span style={{ color:"#f97316", textShadow:"0 0 20px rgba(249,115,22,0.55)" }}>Protect.</span>
           </div>
           <div style={{
             fontFamily:"'Josefin Sans',sans-serif", fontSize:"10px",
@@ -293,7 +281,7 @@ export function RadialLanding({ onSelect, exiting }: Props) {
         </div>
       </motion.div>
 
-      {/* ── CENTER: floating species name (NO portrait frame) ─────────────────── */}
+      {/* ── CENTER: floating species name ───────────────────────────────────── */}
       <motion.div
         initial={{ opacity:0, y:12 }}
         animate={exiting
@@ -308,7 +296,7 @@ export function RadialLanding({ onSelect, exiting }: Props) {
           whiteSpace:"nowrap",
         }}
       >
-        {/* Main Hawaiian name — large bold, single line */}
+        {/* Main Hawaiian name */}
         <div style={{
           fontFamily:"'Josefin Sans',sans-serif",
           fontSize:"clamp(22px,2.95vw,38px)", fontWeight:900,
@@ -335,14 +323,14 @@ export function RadialLanding({ onSelect, exiting }: Props) {
           display:"flex", alignItems:"center", justifyContent:"center",
           gap:"8px", marginTop:"6px",
         }}>
-          <div style={{ flex:1, height:"1px", background:"rgba(212,175,55,0.45)" }}/>
+          <div style={{ width:"60px", height:"1px", background:"rgba(212,175,55,0.50)" }}/>
           <div style={{
             fontFamily:"'Playfair Display',serif",
             fontSize:"clamp(10px,1.0vw,13px)",
-            fontStyle:"italic", color:"rgba(255,255,255,0.55)",
+            fontStyle:"italic", color:"rgba(255,255,255,0.60)",
             textShadow:"0 1px 8px rgba(0,0,0,0.85)",
           }}>Fulica alai</div>
-          <div style={{ flex:1, height:"1px", background:"rgba(212,175,55,0.45)" }}/>
+          <div style={{ width:"60px", height:"1px", background:"rgba(212,175,55,0.50)" }}/>
         </div>
 
         {/* ENDANGERED */}
@@ -351,7 +339,7 @@ export function RadialLanding({ onSelect, exiting }: Props) {
           fontSize:"clamp(10px,1.0vw,13px)", fontWeight:700,
           letterSpacing:"0.3em", color:"#f97316",
           textTransform:"uppercase", marginTop:"6px",
-          textShadow:"0 0 16px rgba(249,115,22,0.8), 0 1px 8px rgba(0,0,0,0.85)",
+          textShadow:"0 0 16px rgba(249,115,22,0.85), 0 1px 8px rgba(0,0,0,0.85)",
         }}>
           Endangered
         </div>
@@ -386,14 +374,14 @@ export function RadialLanding({ onSelect, exiting }: Props) {
           >
             <div style={{
               width:"100%", height:"100%", borderRadius:"50%",
-              background:`radial-gradient(circle at 38% 34%, ${item.color}52, ${item.color}24 48%, rgba(3,6,24,0.97))`,
-              border:`3px solid ${item.color}`,
+              background:`radial-gradient(circle at 38% 34%, ${item.color}55, ${item.color}28 48%, rgba(2,5,20,0.97))`,
+              border:`2.5px solid ${item.color}`,
               boxShadow:[
-                `0 0 0 2px ${item.color}55`,
-                `0 0 20px ${item.color}ee`,
-                `0 0 50px ${item.color}88`,
-                `0 0 90px ${item.color}3a`,
-                `inset 0 0 32px ${item.color}22`,
+                `0 0 0 2px ${item.color}50`,
+                `0 0 18px ${item.color}ee`,
+                `0 0 44px ${item.color}90`,
+                `0 0 80px ${item.color}40`,
+                `inset 0 0 28px ${item.color}20`,
               ].join(","),
               display:"flex", flexDirection:"column",
               alignItems:"center", justifyContent:"center",
@@ -451,7 +439,7 @@ export function RadialLanding({ onSelect, exiting }: Props) {
       >
         <div style={{
           fontFamily:"'Josefin Sans',sans-serif", fontSize:"11px", fontWeight:700,
-          letterSpacing:"0.32em", color:"rgba(0,218,195,0.82)",
+          letterSpacing:"0.32em", color:"rgba(0,218,195,0.88)",
           textTransform:"uppercase",
           display:"flex", alignItems:"center", gap:"14px",
         }}>
@@ -459,7 +447,7 @@ export function RadialLanding({ onSelect, exiting }: Props) {
           Scroll or Click to Explore
           <span style={{ opacity:0.55, fontSize:"13px" }}>❯❯</span>
         </div>
-        <div style={{ fontSize:"18px", color:"rgba(0,218,195,0.5)", lineHeight:1 }}>🖱</div>
+        <div style={{ fontSize:"18px", color:"rgba(0,218,195,0.55)", lineHeight:1 }}>🖱</div>
       </motion.div>
 
     </div>
