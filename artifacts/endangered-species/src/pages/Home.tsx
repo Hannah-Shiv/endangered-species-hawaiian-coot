@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { LandingHero } from "@/components/LandingHero";
 import { DomeNav } from "@/components/DomeNav";
+import { RadialLanding } from "@/components/RadialLanding";
 import { MeetSpecies } from "@/components/sections/MeetSpecies";
 import { Habitat } from "@/components/sections/Habitat";
 import { FoodWeb } from "@/components/sections/FoodWeb";
@@ -33,36 +34,71 @@ function renderSection(section: string | null) {
   }
 }
 
+type Mode = "landing" | "nav";
+
 export default function Home() {
+  const [mode,          setMode]          = useState<Mode>("landing");
+  const [exiting,       setExiting]       = useState(false);
+  const [autoGroup,     setAutoGroup]     = useState<string | null>(null);
   const [activeSection, setActiveSection] = useState<string | null>(null);
 
+  // Called when user clicks a radial landing circle.
+  // 1. Trigger exit animation on the landing (700 ms).
+  // 2. Switch to nav mode — DomeNav mounts and auto-opens the chosen group.
+  const handleLandingSelect = useCallback((
+    _sectionKey: string,
+    groupKey: string,
+  ) => {
+    setExiting(true);
+    setTimeout(() => {
+      setAutoGroup(groupKey);
+      setMode("nav");
+    }, 850);
+  }, []);
+
   return (
-    <main className="relative min-h-screen bg-background text-foreground overflow-hidden">
-      {/* Hero is always the backdrop */}
-      <LandingHero />
+    <main style={{ position:"relative", minHeight:"100vh", overflow:"hidden" }}>
 
-      {/* Dome nav is always fixed at top */}
-      <DomeNav
-        activeSection={activeSection}
-        onSelect={setActiveSection}
-        onCloseSection={() => setActiveSection(null)}
-      />
+      {/* Hero background — only shown in nav mode (RadialLanding has its own bg) */}
+      {mode === "nav" && <LandingHero />}
 
-      {/* Section panels as overlay */}
+      {/* DomeNav — only present after the landing collapse */}
+      {mode === "nav" && (
+        <DomeNav
+          activeSection={activeSection}
+          onSelect={setActiveSection}
+          onCloseSection={() => setActiveSection(null)}
+          autoOpenGroup={autoGroup}
+        />
+      )}
+
+      {/* RadialLanding — shown on first visit, collapses into DomeNav */}
+      <AnimatePresence>
+        {mode === "landing" && (
+          <RadialLanding
+            key="radial-landing"
+            onSelect={handleLandingSelect}
+            exiting={exiting}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Section detail panels — full-screen overlay */}
       <AnimatePresence mode="wait">
         {activeSection && (
           <motion.div
             key={activeSection}
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -16 }}
-            transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed inset-0 z-[9000]"
+            initial={{ opacity:0, y:24 }}
+            animate={{ opacity:1, y:0 }}
+            exit={{ opacity:0, y:-16 }}
+            transition={{ duration:0.45, ease:[0.16,1,0.3,1] }}
+            style={{ position:"fixed", inset:0, zIndex:9000 }}
           >
             {renderSection(activeSection)}
           </motion.div>
         )}
       </AnimatePresence>
+
     </main>
   );
 }

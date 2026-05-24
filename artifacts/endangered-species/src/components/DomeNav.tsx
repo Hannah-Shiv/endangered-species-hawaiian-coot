@@ -35,16 +35,16 @@ interface Group { key: string; num: string; icon: string; label: string[]; items
 const GROUPS: Group[] = [
   { key:"the-species", num:"01", icon:"🐦", label:["THE","SPECIES"],
     items:[{key:"Meet the Species",label:"MEET THE SPECIES",icon:"🐦"},{key:"Evolution",label:"EVOLUTION & CLASS.",icon:"🧬"}] },
-  { key:"habitat",     num:"02", icon:"🌿", label:["HABITAT","& FOOD"],
-    items:[{key:"Habitat & Location",label:"HABITAT & LOCATION",icon:"🗺"},{key:"Food Web",label:"FOOD WEB",icon:"🔗"}] },
+  { key:"habitat",     num:"02", icon:"🗺", label:["HABITAT","& FOOD"],
+    items:[{key:"Habitat & Location",label:"HABITAT & LOCATION",icon:"🗺"},{key:"Food Web",label:"FOOD WEB",icon:"🦋"}] },
   { key:"climate",     num:"03", icon:"🌧", label:["CLIMATE","& CHANGE"],
     items:[{key:"Climate Stressors",label:"CLIMATE STRESSORS",icon:"🌧"},{key:"Patterns of Change",label:"PATTERNS OF CHANGE",icon:"📈"}] },
-  { key:"threats",     num:"04", icon:"⚠",  label:["THREATS","& IMPACT"],
+  { key:"threats",     num:"04", icon:"🏙", label:["THREATS","& IMPACT"],
     items:[{key:"Human Impact",label:"HUMAN IMPACT",icon:"🏙"},{key:"Predators",label:"PREDATORS",icon:"🦅"}] },
   { key:"survival",    num:"05", icon:"🌱", label:["SURVIVAL","& ACTION"],
-    items:[{key:"Adaptations",label:"ADAPTATIONS",icon:"🦶"},{key:"Conservation & Solutions",label:"CONSERVATION",icon:"🌱"}] },
-  { key:"future",      num:"06", icon:"📊", label:["FUTURE","& DATA"],
-    items:[{key:"Extinction Risk",label:"EXTINCTION RISK",icon:"⚠"},{key:"Sources & Citations",label:"SOURCES & CITATIONS",icon:"📚"}] },
+    items:[{key:"Adaptations",label:"ADAPTATIONS",icon:"🌿"},{key:"Conservation & Solutions",label:"CONSERVATION",icon:"🌱"}] },
+  { key:"future",      num:"06", icon:"🛡", label:["FUTURE","& DATA"],
+    items:[{key:"Extinction Risk",label:"EXTINCTION RISK",icon:"🛡"},{key:"Sources & Citations",label:"SOURCES & CITATIONS",icon:"📄"}] },
 ];
 
 // ─── Geometry ──────────────────────────────────────────────────────────────────
@@ -182,9 +182,14 @@ function IntelThreads({ visible }: { visible: boolean }) {
 }
 
 // ─── DomeNav ───────────────────────────────────────────────────────────────────
-interface Props { onSelect:(key:string)=>void; activeSection:string|null; onCloseSection:()=>void; }
+interface Props {
+  onSelect: (key:string) => void;
+  activeSection: string | null;
+  onCloseSection: () => void;
+  autoOpenGroup?: string | null;
+}
 
-export function DomeNav({ onSelect, activeSection, onCloseSection }: Props) {
+export function DomeNav({ onSelect, activeSection, onCloseSection, autoOpenGroup }: Props) {
   const [open,  setOpen]  = useState(false);
   const [group, setGroup] = useState<string|null>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
@@ -196,6 +201,12 @@ export function DomeNav({ onSelect, activeSection, onCloseSection }: Props) {
     return ()=>{document.removeEventListener("click",onOut);document.removeEventListener("keydown",onKey);};
   },[group]);
   useEffect(()=>{if(activeSection){setOpen(false);setGroup(null);}},[activeSection]);
+
+  // Auto-open a group when DomeNav first mounts after landing → nav transition.
+  const autoOpenGroupRef = useRef(autoOpenGroup ?? null);
+  useEffect(()=>{
+    if(autoOpenGroupRef.current){setOpen(true);setGroup(autoOpenGroupRef.current);}
+  },[]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const activeIdx = group ? GROUPS.findIndex(g=>g.key===group) : -1;
   const ax = activeIdx>=0 ? POSITIONS[activeIdx].x : 0;
