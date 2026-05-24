@@ -14,6 +14,7 @@ import birdImg    from "../assets/bird-transparent.png";
 import whereItLivesImg from "@assets/image_1779661049779.png";
 import explorePanelImg from "@assets/image_1779661407544.png";
 import quickFactsImg   from "@assets/image_1779661714544.png";
+import topLeftImg      from "@assets/image_1779662050427.png";
 import circle01 from "../assets/circles/circle01.png";
 import circle02 from "../assets/circles/circle02.png";
 import circle03 from "../assets/circles/circle03.png";
@@ -317,65 +318,20 @@ export function RadialLanding({ onSelect, exiting }: Props) {
 
       {/* ── TOP-LEFT: Save Our Wildlife ───────────────────────────────────────── */}
       <motion.div {...panelAnim(-1, 0.1)} style={{
-        position:"absolute", left:"14px", top:"5%",
+        position:"absolute", left:"14px", top:"3%",
         zIndex:6, width:`calc(50% - ${R + CZ/2 + 26}px)`,
       }}>
-        <div style={{ display:"flex", alignItems:"center", gap:"8px", marginBottom:"9px" }}>
-          <div style={{ width:"18px", height:"1px", background:"rgba(34,197,94,0.6)" }}/>
-          <span style={{ fontFamily:"'Josefin Sans',sans-serif", fontSize:"12px", fontWeight:700,
-            letterSpacing:"0.28em", color:"rgba(34,197,94,0.90)", textTransform:"uppercase" }}>
-            Conservation Project
-          </span>
-        </div>
-        <div style={{ position:"relative", display:"inline-block" }}>
-          <div style={{
-            fontFamily:"'Great Vibes', cursive",
-            fontSize:"clamp(42px,5vw,72px)", color:"#fff", lineHeight:1.05,
-            textShadow:"0 2px 30px rgba(0,0,0,0.9), 0 0 60px rgba(34,197,94,0.28)",
-          }}>Save Our Wildlife</div>
-          <span style={{
-            position:"absolute", top:-4, right:-22, fontSize:"22px", opacity:0.85,
-            filter:"drop-shadow(0 0 10px rgba(255,100,150,0.60))", pointerEvents:"none",
-          }}>🌺</span>
-        </div>
-        <div style={{ display:"flex", alignItems:"center", gap:"8px", marginTop:"8px" }}>
-          <span style={{ fontSize:"16px", filter:"drop-shadow(0 0 5px rgba(34,197,94,0.85))" }}>🌿</span>
-          <div style={{ fontFamily:"'Josefin Sans',sans-serif", fontSize:"clamp(12px,1.15vw,16px)",
-            fontWeight:700, letterSpacing:"0.28em", color:"rgba(34,197,94,0.95)", textTransform:"uppercase" }}>
-            Every Species Matters
-          </div>
-          <span style={{ fontSize:"14px", filter:"drop-shadow(0 0 4px rgba(34,197,94,0.7))", opacity:0.80 }}>🌿</span>
-        </div>
-        <div style={{ width:"85%", height:"1px", marginTop:"10px",
-          background:"linear-gradient(to right, rgba(34,197,94,0.60), rgba(0,218,195,0.30), transparent)" }}/>
-        {/* Quote card — moved here, below the title */}
-        <div style={{
-          marginTop:"13px",
-          background:"#030f08",
-          border:"1px solid rgba(34,197,94,0.28)",
-          borderLeft:"3px solid rgba(34,197,94,0.85)",
-          borderRadius:"0 10px 10px 0",
-          padding:"13px 15px 11px",
-          position:"relative", overflow:"hidden",
-        }}>
-          <div style={{ position:"absolute", top:0, left:0, width:"80px", height:"80px",
-            background:"radial-gradient(ellipse, rgba(34,197,94,0.15) 0%, transparent 70%)", pointerEvents:"none" }}/>
-          <div style={{ fontFamily:"'Playfair Display',serif", fontSize:"clamp(22px,2.2vw,32px)",
-            color:"rgba(34,197,94,0.65)", lineHeight:1, marginBottom:"6px" }}>❝</div>
-          <div style={{ fontFamily:"'Playfair Display',serif", fontSize:"clamp(11px,1.0vw,15px)",
-            fontStyle:"italic", color:"rgba(255,255,255,0.92)", lineHeight:1.75 }}>
-            We don&apos;t inherit the Earth from our ancestors. We borrow it from our children.
-          </div>
-          <div style={{ fontFamily:"'Josefin Sans',sans-serif", fontSize:"9px",
-            color:"rgba(34,197,94,0.60)", letterSpacing:"0.20em",
-            textTransform:"uppercase", marginTop:"9px" }}>— Antoine de Saint-Exupéry</div>
-        </div>
+        <img
+          src={topLeftImg}
+          alt="Save Our Wildlife — Conservation Project"
+          style={{ width:"100%", display:"block", borderRadius:"10px" }}
+        />
       </motion.div>
 
       {/* ── BOTTOM-LEFT: Explore / Learn / Protect — image panel ────────────── */}
       <motion.div {...panelAnim(-1, 0.18)} style={{
         position:"absolute", left:"14px", bottom:"3%",
-        zIndex:6, width:`calc(50% - ${R + CZ/2 + 14}px)`,
+        zIndex:6, width:`calc(50% - ${R + CZ/2 + 26}px)`,
       }}>
         <img
           src={explorePanelImg}
@@ -397,12 +353,11 @@ export function RadialLanding({ onSelect, exiting }: Props) {
         />
       </motion.div>
 
-      {/* ── BOTTOM-RIGHT: Where It Lives + Explore/Learn/Protect ─────────────── */}
+      {/* ── BOTTOM-RIGHT: Where It Lives ─────────────────────────────────────── */}
       <motion.div {...panelAnim(1, 0.20)} style={{
         position:"absolute",
-        right:"14px", top:"51%", zIndex:6,
+        right:"14px", bottom:"3%", zIndex:6,
         width:`calc(50% - ${R + CZ/2 + 26}px)`,
-        display:"flex", flexDirection:"column", gap:"10px",
       }}>
 
         {/* Where It Lives — full image panel (image already has its own border) */}
