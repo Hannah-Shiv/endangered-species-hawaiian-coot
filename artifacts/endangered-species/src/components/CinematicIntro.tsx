@@ -237,7 +237,7 @@ const TEAM = [
   { name: "Chloe Pan",    role: "Student Researcher" },
   { name: "Bahram Ostad", role: "Student Researcher" },
 ];
-const PER_PERSON = 5000; // ms — 3 students × 5s = 15s fits neatly in 47→62
+const PER_PERSON = 5500; // ms — 3 students × 5.5s, mode="sync" so exits/enters overlap
 
 function TeamSequence() {
   const [idx, setIdx] = useState(0);
@@ -248,7 +248,7 @@ function TeamSequence() {
   }, [idx]);
 
   return (
-    <AnimatePresence mode="wait">
+    <AnimatePresence mode="sync">
       <NameReveal key={TEAM[idx].name} name={TEAM[idx].name} role={TEAM[idx].role}/>
     </AnimatePresence>
   );
@@ -268,8 +268,8 @@ const CARDS: Card[] = [
   { kind:"nature",  in:19, out:26, top:"Freshwater Wetland", sub:"Hawai\u02BBi · Protected Ecosystem" },
   { kind:"nature",  in:28, out:36, top:"Hawaiian Coot",      sub:"\u02BBalae ke\u02BBoke\u02BBo  ·  Fulica alai" },
   { kind:"school",  in:38, out:46 },
-  { kind:"team",    in:47, out:62 },   // 3 students × 5s = 15s
-  { kind:"teacher", in:63, out:82 },   // Calliandra — 19s dedicated, fades from t=79
+  { kind:"team",    in:47, out:65 },   // 3 students × 5.5s, sync crossfade
+  { kind:"teacher", in:66, out:82 },   // Calliandra — 16s dedicated, fades from t=79
 ];
 
 // ─── Film grain ───────────────────────────────────────────────────────────────
@@ -293,8 +293,14 @@ function TeacherCard() {
         initial={{ opacity:0, y:10 }} animate={{ opacity:1, y:0 }}
         exit={{ opacity:0, transition:{ duration:FADE_OUT, ease:[0.4,0,1,1] } }}
         transition={{ duration:FADE_DUR, delay:0.2, ease:EASE_IN }}
-        style={{ ...LABEL, fontSize:"clamp(14px,1.4vw,20px)", letterSpacing:"0.18em", color:G3 }}
-      >✦ &nbsp; dedicated to &nbsp; ✦</motion.div>
+        style={{
+          ...LABEL,
+          fontSize:"clamp(14px,1.5vw,22px)",
+          letterSpacing:"0.16em",
+          color:G3,
+          whiteSpace:"nowrap",
+        }}
+      >✦ &nbsp; Dedicated to our Best Science Teacher &nbsp; ✦</motion.div>
 
       <motion.div
         initial={{ opacity:0, y:20 }} animate={{ opacity:1, y:0 }}
@@ -305,7 +311,7 @@ function TeacherCard() {
           fontSize:"clamp(42px,6.2vw,90px)",
           color:"#FFD080",
           textShadow:"0 0 70px rgba(255,200,80,0.60), "+S,
-          marginTop:"10px",
+          marginTop:"12px",
         }}
       >Calliandra Harris</motion.div>
 
@@ -314,15 +320,8 @@ function TeacherCard() {
       <motion.div
         initial={{ opacity:0 }} animate={{ opacity:1 }}
         exit={{ opacity:0, transition:{ duration:FADE_OUT, ease:[0.4,0,1,1] } }}
-        transition={{ duration:FADE_DUR, delay:1.4, ease:EASE_IN }}
-        style={{ ...SUB, fontSize:"clamp(20px,2.4vw,34px)", color:"rgba(255,220,140,0.90)" }}
-      >our Best Science Teacher</motion.div>
-
-      <motion.div
-        initial={{ opacity:0 }} animate={{ opacity:1 }}
-        exit={{ opacity:0, transition:{ duration:FADE_OUT, ease:[0.4,0,1,1] } }}
-        transition={{ duration:FADE_DUR, delay:2.2, ease:EASE_IN }}
-        style={{ ...LABEL, fontSize:"clamp(13px,1.3vw,18px)", color:G3, marginTop:"14px", letterSpacing:"0.12em" }}
+        transition={{ duration:FADE_DUR, delay:1.6, ease:EASE_IN }}
+        style={{ ...LABEL, fontSize:"clamp(13px,1.3vw,18px)", color:G3, marginTop:"10px", letterSpacing:"0.12em" }}
       >Cooper Middle School</motion.div>
     </motion.div>
   );
@@ -524,15 +523,24 @@ export function CinematicIntro({ onComplete }: Props) {
           title="Hawaiian Islands aerial footage"
         />
 
-        {/* No branding patch needed — iframe overflow already clips YouTube UI */}
+        {/* Hard top gradient — covers burned-in "Nature Relaxation Films" title at video top */}
+        <div style={{
+          position:"absolute", top:0, left:0, right:0, height:"20%",
+          background:"linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.96) 25%, rgba(0,0,0,0.70) 60%, transparent 100%)",
+          zIndex:9, pointerEvents:"none",
+        }}/>
 
-        {/* Gradient vignette — right side darker so gold text pops */}
+        {/* Hard bottom gradient — covers burned-in "Nature Relaxation Films" text at video bottom */}
+        <div style={{
+          position:"absolute", bottom:0, left:0, right:0, height:"18%",
+          background:"linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.96) 25%, rgba(0,0,0,0.70) 60%, transparent 100%)",
+          zIndex:9, pointerEvents:"none",
+        }}/>
+
+        {/* Side vignette — right side darker so gold text pops */}
         <div style={{
           position:"absolute", inset:0, pointerEvents:"none", zIndex:5,
-          background:[
-            "linear-gradient(to right, rgba(0,0,0,0.18) 0%, transparent 35%, rgba(0,0,0,0.55) 72%, rgba(0,0,0,0.78) 100%)",
-            "linear-gradient(to bottom, rgba(0,0,0,0.50) 0%, transparent 20%, transparent 76%, rgba(0,0,0,0.60) 100%)",
-          ].join(","),
+          background:"linear-gradient(to right, rgba(0,0,0,0.18) 0%, transparent 35%, rgba(0,0,0,0.55) 72%, rgba(0,0,0,0.78) 100%)",
         }}/>
 
         {/* Fade-to-dark + final species reveal */}
