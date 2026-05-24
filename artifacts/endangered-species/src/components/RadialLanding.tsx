@@ -392,7 +392,7 @@ export function RadialLanding({ onSelect, exiting }: Props) {
             background:"linear-gradient(to right, transparent, rgba(0,218,195,0.85))" }}/>
           <div style={{
             fontFamily:"'Josefin Sans',sans-serif",
-            fontSize:"clamp(9px,1.0vw,13px)", fontWeight:700,
+            fontSize:"clamp(12px,1.3vw,17px)", fontWeight:700,
             letterSpacing:"0.38em", color:"rgba(0,218,195,1.0)",
             textTransform:"uppercase",
             textShadow:"0 0 18px rgba(0,218,195,0.80), 0 1px 6px rgba(0,0,0,0.9)",
@@ -423,7 +423,7 @@ export function RadialLanding({ onSelect, exiting }: Props) {
         {/* ── Fulica alai ── */}
         <div style={{
           fontFamily:"'Playfair Display',serif",
-          fontSize:"clamp(11px,1.15vw,16px)",
+          fontSize:"clamp(14px,1.5vw,20px)",
           fontStyle:"italic", color:"rgba(255,255,255,0.80)",
           marginTop:"5px",
           textShadow:"0 1px 10px rgba(0,0,0,0.95)",
@@ -439,7 +439,7 @@ export function RadialLanding({ onSelect, exiting }: Props) {
             background:"linear-gradient(to right, transparent, rgba(249,115,22,0.85))" }}/>
           <div style={{
             fontFamily:"'Josefin Sans',sans-serif",
-            fontSize:"clamp(9px,1.0vw,13px)", fontWeight:800,
+            fontSize:"clamp(12px,1.3vw,17px)", fontWeight:800,
             letterSpacing:"0.38em", color:"#f97316",
             textTransform:"uppercase",
             textShadow:"0 0 22px rgba(249,115,22,0.95), 0 1px 8px rgba(0,0,0,0.9)",
