@@ -561,36 +561,36 @@ export function CinematicIntro({ onComplete }: Props) {
         transition={{ duration: 1.0, ease: "easeInOut" }}
         style={{ position:"fixed", inset:0, zIndex:9990, background:"#000", overflow:"hidden" }}
       >
-        {/* YouTube — show iframe while loading/working; swap for gradient if it fails */}
-        {videoOk !== false ? (
-          <iframe
-            src={embedSrc}
-            allow="autoplay; fullscreen; encrypted-media"
-            allowFullScreen
-            style={{
-              position:"absolute",
-              top:"-12%", left:"-2%",
-              width:"104%", height:"124%",
-              border:"none", pointerEvents:"none",
-            }}
-            title="Hawaiian Islands aerial footage"
-          />
-        ) : (
-          /* Cinematic dark-ocean gradient — text cards look equally stunning over this */
+        {/* Cinematic gradient — always rendered behind the iframe so :( face is NEVER visible */}
+        <div style={{
+          position:"absolute", inset:0,
+          background:"radial-gradient(ellipse 120% 80% at 60% 55%, #0a1f14 0%, #051018 40%, #030810 100%)",
+        }}>
           <div style={{
             position:"absolute", inset:0,
-            background:"radial-gradient(ellipse 120% 80% at 60% 55%, #0a1f14 0%, #051018 40%, #030810 100%)",
-          }}>
-            {/* Soft atmospheric shimmer */}
-            <div style={{
-              position:"absolute", inset:0,
-              background:[
-                "radial-gradient(ellipse 55% 40% at 68% 48%, rgba(0,90,60,0.28) 0%, transparent 65%)",
-                "radial-gradient(ellipse 40% 30% at 30% 70%, rgba(0,40,80,0.18) 0%, transparent 60%)",
-              ].join(","),
-            }}/>
-          </div>
-        )}
+            background:[
+              "radial-gradient(ellipse 55% 40% at 68% 48%, rgba(0,90,60,0.28) 0%, transparent 65%)",
+              "radial-gradient(ellipse 40% 30% at 30% 70%, rgba(0,40,80,0.18) 0%, transparent 60%)",
+            ].join(","),
+          }}/>
+        </div>
+
+        {/* YouTube iframe — invisible until YouTube confirms it is actually PLAYING.
+            This means the :( face can never be seen — it only fades in when video works. */}
+        <iframe
+          src={embedSrc}
+          allow="autoplay; fullscreen; encrypted-media"
+          allowFullScreen
+          style={{
+            position:"absolute",
+            top:"-12%", left:"-2%",
+            width:"104%", height:"124%",
+            border:"none", pointerEvents:"none",
+            opacity: videoOk === true ? 1 : 0,
+            transition: "opacity 2s ease",
+          }}
+          title="Hawaiian Islands aerial footage"
+        />
 
         {/* Solid black top bar — covers burned-in "Nature Relaxation Films" title */}
         <div style={{
