@@ -12,6 +12,7 @@ import { motion } from "framer-motion";
 import bgPhoto    from "../assets/bg-photo.png";
 import birdImg    from "../assets/bird-transparent.png";
 import whereItLivesImg from "@assets/image_1779661049779.png";
+import centerImg       from "@assets/image_1779664253807.png";
 import explorePanelImg from "@assets/image_1779661407544.png";
 import quickFactsImg   from "@assets/image_1779661714544.png";
 import topLeftImg      from "@assets/image_1779662050427.png";
@@ -247,21 +248,19 @@ export function RadialLanding({ onSelect, exiting }: Props) {
       {/* placeholder closer so next element parses */}
       <div style={{ display:"none" }}/>
 
-      {/* ── CIRCULAR PHOTO WINDOW — bird centred inside inner ring ── */}
+      {/* ── CENTER IMAGE — bird poster with baked-in text ── */}
       <div style={{
         position:"absolute",
         left:"50%", top:"50%",
         transform:"translate(-50%, -50%)",
-        width:`${(R-40)*2}px`, height:`${(R-40)*2}px`,
-        borderRadius:"50%",
+        width:`${(R-85)*2}px`, height:`${(R-85)*2}px`,
+        borderRadius:"16px",
         overflow:"hidden",
         zIndex:1,
-        boxShadow:"0 0 0 2px rgba(0,238,212,0.55), 0 0 50px rgba(0,238,212,0.25), 0 0 100px rgba(0,200,180,0.12)",
       }}>
-        <img src={bgPhoto} alt="" style={{
+        <img src={centerImg} alt="'Alae Ke'oke'o — Hawaiian Coot" style={{
           width:"100%", height:"100%",
-          objectFit:"cover", objectPosition:"50% 42%",
-          filter:"brightness(0.92) contrast(1.08) saturate(1.12)",
+          objectFit:"cover", objectPosition:"50% 50%",
         }}/>
       </div>
 
@@ -370,84 +369,6 @@ export function RadialLanding({ onSelect, exiting }: Props) {
       </motion.div>
 
 
-      {/* ── CENTER: floating species name — below the bird's body ───────────── */}
-      <motion.div
-        initial={{ opacity:0, y:12 }}
-        animate={exiting
-          ? { opacity:0, scale:0.9, transition:{ duration:0.3 } }
-          : { opacity:1, y:0, transition:{ duration:0.9, delay:0.4, ease:[0.16,1,0.3,1] as const } }
-        }
-        style={{
-          position:"absolute",
-          left:0, right:0,
-          top:"54%",
-          zIndex:5, textAlign:"center", pointerEvents:"none",
-        }}
-      >
-        {/* ── HAWAIIAN COOT with flanking teal rules ── */}
-        <div style={{
-          display:"flex", alignItems:"center", justifyContent:"center", gap:"12px",
-        }}>
-          <div style={{ width:"52px", height:"1.5px",
-            background:"linear-gradient(to right, transparent, rgba(0,218,195,0.85))" }}/>
-          <div style={{
-            fontFamily:"'Josefin Sans',sans-serif",
-            fontSize:"clamp(12px,1.3vw,17px)", fontWeight:700,
-            letterSpacing:"0.38em", color:"rgba(0,218,195,1.0)",
-            textTransform:"uppercase",
-            textShadow:"0 0 18px rgba(0,218,195,0.80), 0 1px 6px rgba(0,0,0,0.9)",
-          }}>Hawaiian Coot</div>
-          <div style={{ width:"52px", height:"1.5px",
-            background:"linear-gradient(to left, transparent, rgba(0,218,195,0.85))" }}/>
-        </div>
-
-        {/* ── Main name ── */}
-        <div style={{
-          fontFamily:"'Josefin Sans',sans-serif",
-          fontSize:"clamp(28px,3.5vw,50px)", fontWeight:900,
-          letterSpacing:"0.08em", color:"#ffffff",
-          textTransform:"uppercase", lineHeight:1.0,
-          marginTop:"5px",
-          textShadow:"0 0 40px rgba(255,255,255,0.25), 0 2px 24px rgba(0,0,0,0.95)",
-        }}>
-          {"\u02BBAlae Ke\u02BBoke\u02BBo"}
-        </div>
-
-        {/* ── Leaf separator ── */}
-        <div style={{
-          fontSize:"clamp(12px,1.4vw,18px)", marginTop:"7px",
-          filter:"drop-shadow(0 0 8px rgba(34,197,94,0.85))",
-          lineHeight:1,
-        }}>🌿</div>
-
-        {/* ── Fulica alai ── */}
-        <div style={{
-          fontFamily:"'Playfair Display',serif",
-          fontSize:"clamp(14px,1.5vw,20px)",
-          fontStyle:"italic", color:"rgba(255,255,255,0.80)",
-          marginTop:"5px",
-          textShadow:"0 1px 10px rgba(0,0,0,0.95)",
-          letterSpacing:"0.04em",
-        }}>Fulica alai</div>
-
-        {/* ── ENDANGERED with flanking amber rules ── */}
-        <div style={{
-          display:"flex", alignItems:"center", justifyContent:"center", gap:"12px",
-          marginTop:"7px",
-        }}>
-          <div style={{ width:"40px", height:"1.5px",
-            background:"linear-gradient(to right, transparent, rgba(249,115,22,0.85))" }}/>
-          <div style={{
-            fontFamily:"'Josefin Sans',sans-serif",
-            fontSize:"clamp(12px,1.3vw,17px)", fontWeight:800,
-            letterSpacing:"0.38em", color:"#f97316",
-            textTransform:"uppercase",
-            textShadow:"0 0 22px rgba(249,115,22,0.95), 0 1px 8px rgba(0,0,0,0.9)",
-          }}>Endangered</div>
-          <div style={{ width:"40px", height:"1.5px",
-            background:"linear-gradient(to left, transparent, rgba(249,115,22,0.85))" }}/>
-        </div>
-      </motion.div>
 
       {/* ── 10 RADIAL CIRCLES ───────────────────────────────────────────────── */}
       {ITEMS.map((item, i) => {
