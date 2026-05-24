@@ -367,7 +367,7 @@ function BirdCallBadge() {
       initial={{ opacity:0 }} animate={{ opacity:1 }} exit={{ opacity:0 }}
       transition={{ duration: 0.8 }}
       style={{
-        position:"absolute", right:"7%", bottom:"2%", zIndex:15,
+        position:"absolute", right:"7%", bottom:"9%", zIndex:15,
         display:"flex", flexDirection:"row", alignItems:"center",
         gap:"12px", pointerEvents:"none",
       }}
@@ -511,17 +511,21 @@ export function CinematicIntro({ onComplete }: Props) {
     return () => window.removeEventListener('resize', h);
   }, []);
 
-  // null = checking, true = YouTube reachable → show iframe, false = blocked → keep gradient
+  // null = checking, true = youtube.com reachable → show iframe, false = blocked → keep gradient
   const [videoOk, setVideoOk] = useState<boolean | null>(null);
   useEffect(() => {
-    // Probe YouTube reachability by loading the video thumbnail.
-    // Far more reliable than postMessage which breaks in nested-iframe envs.
-    const img = new Image();
-    const timer = setTimeout(() => setVideoOk(false), 4000);
-    img.onload  = () => { clearTimeout(timer); setVideoOk(true);  };
-    img.onerror = () => { clearTimeout(timer); setVideoOk(false); };
-    img.src = `https://i.ytimg.com/vi/${VIDEO_ID}/hqdefault.jpg`;
-    return () => { clearTimeout(timer); img.src = ''; };
+    // Probe youtube.com via its oEmbed endpoint (CORS-enabled, same domain as the embed player).
+    // i.ytimg.com thumbnails can load even when the embed player is blocked, so we probe
+    // youtube.com directly — if this fetch fails, the iframe won't work either.
+    const controller = new AbortController();
+    const timer = setTimeout(() => { controller.abort(); setVideoOk(false); }, 5000);
+    fetch(
+      `https://www.youtube.com/oembed?url=https%3A%2F%2Fyoutu.be%2F${VIDEO_ID}&format=json`,
+      { signal: controller.signal },
+    )
+      .then(r => { clearTimeout(timer); setVideoOk(r.ok); })
+      .catch(() => { clearTimeout(timer); setVideoOk(false); });
+    return () => { clearTimeout(timer); controller.abort(); };
   }, []);
 
   const finish = useCallback(() => {
@@ -537,7 +541,7 @@ export function CinematicIntro({ onComplete }: Props) {
 
   const origin = encodeURIComponent(window.location.origin);
   const embedSrc =
-    `https://www.youtube.com/embed/${VIDEO_ID}` +
+    `https://www.youtube-nocookie.com/embed/${VIDEO_ID}` +
     `?autoplay=1&mute=1&controls=0&showinfo=0&rel=0` +
     `&modestbranding=1&iv_load_policy=3&disablekb=1&playsinline=1` +
     `&start=${START_SEC}&enablejsapi=1&origin=${origin}`;
