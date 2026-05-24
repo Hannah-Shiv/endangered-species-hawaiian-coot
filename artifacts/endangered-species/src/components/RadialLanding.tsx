@@ -26,8 +26,8 @@ const CIRCLE_IMGS = [circle01, circle02, circle03, circle04, circle05,
                      circle06, circle07, circle08, circle09, circle10];
 
 // ─── Geometry ──────────────────────────────────────────────────────────────
-const CZ = 172;   // circle diameter px
-const R  = 308;   // ring radius px — gap = 2×308×sin18°−172 = 22px ✓
+const CZ = 192;   // circle diameter px
+const R  = 330;   // ring radius px — gap = 2×330×sin18°−192 ≈ 12px ✓
 
 // ─── Data ───────────────────────────────────────────────────────────────────
 const ITEMS = [
@@ -333,18 +333,18 @@ export function RadialLanding({ onSelect, exiting }: Props) {
           <div style={{
             fontFamily:"'Playfair Display',serif",
             fontStyle:"italic", fontWeight:700,
-            fontSize:"clamp(22px,2.7vw,40px)",
-            color:"#fff", lineHeight:1.08,
+            fontSize:"clamp(26px,3.1vw,46px)",
+            color:"#fff", lineHeight:1.05,
             textShadow:"0 2px 30px rgba(0,0,0,0.8), 0 0 50px rgba(34,197,94,0.18)",
           }}>
             Save Our<br/>Wildlife
           </div>
           <div style={{
-            display:"flex", alignItems:"center", gap:"7px", marginTop:"8px",
+            display:"flex", alignItems:"center", gap:"7px", marginTop:"9px",
           }}>
-            <span style={{ fontSize:"14px", filter:"drop-shadow(0 0 5px rgba(34,197,94,0.8))" }}>🌿</span>
+            <span style={{ fontSize:"15px", filter:"drop-shadow(0 0 5px rgba(34,197,94,0.8))" }}>🌿</span>
             <div style={{
-              fontFamily:"'Josefin Sans',sans-serif", fontSize:"clamp(6.5px,0.72vw,9.5px)",
+              fontFamily:"'Josefin Sans',sans-serif", fontSize:"clamp(8px,0.82vw,11px)",
               fontWeight:700, letterSpacing:"0.36em", color:"rgba(34,197,94,0.88)",
               textTransform:"uppercase",
             }}>Every Species Matters</div>
@@ -393,81 +393,233 @@ export function RadialLanding({ onSelect, exiting }: Props) {
 
         {/* Quick Facts */}
         <div style={{
-          background:"rgba(2,5,18,0.82)", backdropFilter:"blur(18px)",
-          border:"1px solid rgba(255,255,255,0.10)", borderRadius:"10px",
-          padding:"14px 16px",
+          background:"rgba(2,5,18,0.88)", backdropFilter:"blur(18px)",
+          border:"1px solid rgba(212,175,55,0.20)", borderRadius:"12px",
+          padding:"14px 15px", position:"relative", overflow:"hidden",
         }}>
+          {/* gold top bar */}
+          <div style={{
+            position:"absolute", top:0, left:0, right:0, height:"2px",
+            background:"linear-gradient(to right, rgba(212,175,55,0.8), rgba(249,115,22,0.5), transparent)",
+          }}/>
           <div style={{
             fontFamily:"'Josefin Sans',sans-serif", fontSize:"9px", fontWeight:700,
-            letterSpacing:"0.26em", color:"rgba(212,175,55,0.85)",
-            textTransform:"uppercase", marginBottom:"11px",
-          }}>Quick Facts</div>
-          {[
-            { icon:"🛡", iconColor:"#f97316", text:"Status: Endangered" },
-            { icon:"👥", iconColor:"#06b6d4", text:"Population: ~2,500\u20133,500" },
-            { icon:"🏔", iconColor:"#22c55e", text:"Habitat: Hawaiian Wetlands" },
-            { icon:"⌛", iconColor:"#d4af37", text:"Lifespan: 10\u201315 years" },
-          ].map(f=>(
-            <div key={f.text} style={{
-              display:"flex", alignItems:"center", gap:"9px", marginBottom:"8px",
+            letterSpacing:"0.30em", color:"rgba(212,175,55,0.90)",
+            textTransform:"uppercase", marginBottom:"12px",
+            display:"flex", alignItems:"center", gap:"7px",
+          }}>
+            <span style={{ fontSize:"11px" }}>⚡</span> Quick Facts
+          </div>
+          <div style={{ display:"flex", flexDirection:"column", gap:"7px" }}>
+
+            {/* Status */}
+            <div style={{
+              background:"linear-gradient(135deg,rgba(249,115,22,0.14),rgba(249,115,22,0.04))",
+              border:"1px solid rgba(249,115,22,0.28)", borderRadius:"9px",
+              padding:"9px 11px", display:"flex", alignItems:"center", gap:"9px",
             }}>
-              <span style={{ fontSize:"14px", filter:`drop-shadow(0 0 4px ${f.iconColor}88)`, flexShrink:0 }}>{f.icon}</span>
-              <span style={{
-                fontFamily:"'Josefin Sans',sans-serif", fontSize:"10.5px",
-                color:"rgba(255,255,255,0.88)", letterSpacing:"0.02em",
-              }}>{f.text}</span>
+              <div style={{
+                width:32, height:32, borderRadius:"50%", flexShrink:0,
+                background:"rgba(249,115,22,0.16)", border:"1px solid rgba(249,115,22,0.45)",
+                display:"flex", alignItems:"center", justifyContent:"center", fontSize:"15px",
+                filter:"drop-shadow(0 0 6px rgba(249,115,22,0.65))",
+              }}>🛡</div>
+              <div style={{ flex:1, minWidth:0 }}>
+                <div style={{ fontFamily:"'Josefin Sans',sans-serif", fontSize:"7px", fontWeight:700,
+                  letterSpacing:"0.22em", color:"rgba(249,115,22,0.65)", textTransform:"uppercase", marginBottom:"2px" }}>Status</div>
+                <div style={{ fontFamily:"'Josefin Sans',sans-serif", fontSize:"12px", fontWeight:700,
+                  color:"#f97316", letterSpacing:"0.03em" }}>Endangered</div>
+              </div>
+              <svg width="38" height="18" viewBox="0 0 38 18" style={{ flexShrink:0 }}>
+                <polyline points="0,9 5,9 8,3 11,15 14,9 19,9 22,5 25,13 28,9 33,9 36,5 38,7"
+                  fill="none" stroke="#f97316" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" opacity="0.85"/>
+              </svg>
             </div>
-          ))}
+
+            {/* Population */}
+            <div style={{
+              background:"linear-gradient(135deg,rgba(124,58,237,0.14),rgba(124,58,237,0.04))",
+              border:"1px solid rgba(124,58,237,0.28)", borderRadius:"9px",
+              padding:"9px 11px", display:"flex", alignItems:"center", gap:"9px",
+            }}>
+              <div style={{
+                width:32, height:32, borderRadius:"50%", flexShrink:0,
+                background:"rgba(124,58,237,0.16)", border:"1px solid rgba(124,58,237,0.45)",
+                display:"flex", alignItems:"center", justifyContent:"center", fontSize:"15px",
+                filter:"drop-shadow(0 0 6px rgba(124,58,237,0.65))",
+              }}>👥</div>
+              <div style={{ flex:1, minWidth:0 }}>
+                <div style={{ fontFamily:"'Josefin Sans',sans-serif", fontSize:"7px", fontWeight:700,
+                  letterSpacing:"0.22em", color:"rgba(124,58,237,0.65)", textTransform:"uppercase", marginBottom:"2px" }}>Population</div>
+                <div style={{ fontFamily:"'Josefin Sans',sans-serif", fontSize:"12px", fontWeight:700,
+                  color:"#a78bfa", letterSpacing:"0.02em" }}>2,500–3,500</div>
+              </div>
+              <svg width="28" height="18" viewBox="0 0 28 18" style={{ flexShrink:0 }}>
+                {[3,6,4,9,7,11,10].map((h,i)=>(
+                  <rect key={i} x={i*4} y={18-h} width="3" height={h}
+                    fill="#7c3aed" opacity={0.35+i*0.09} rx="1"/>
+                ))}
+              </svg>
+            </div>
+
+            {/* Habitat */}
+            <div style={{
+              background:"linear-gradient(135deg,rgba(34,197,94,0.14),rgba(34,197,94,0.04))",
+              border:"1px solid rgba(34,197,94,0.28)", borderRadius:"9px",
+              padding:"9px 11px", display:"flex", alignItems:"center", gap:"9px",
+            }}>
+              <div style={{
+                width:32, height:32, borderRadius:"50%", flexShrink:0,
+                background:"rgba(34,197,94,0.16)", border:"1px solid rgba(34,197,94,0.45)",
+                display:"flex", alignItems:"center", justifyContent:"center", fontSize:"15px",
+                filter:"drop-shadow(0 0 6px rgba(34,197,94,0.65))",
+              }}>🏝</div>
+              <div style={{ flex:1, minWidth:0 }}>
+                <div style={{ fontFamily:"'Josefin Sans',sans-serif", fontSize:"7px", fontWeight:700,
+                  letterSpacing:"0.22em", color:"rgba(34,197,94,0.65)", textTransform:"uppercase", marginBottom:"2px" }}>Habitat</div>
+                <div style={{ fontFamily:"'Josefin Sans',sans-serif", fontSize:"11px", fontWeight:700,
+                  color:"#22c55e", letterSpacing:"0.02em", lineHeight:1.2 }}>Hawaiian Wetlands</div>
+              </div>
+              <svg width="28" height="18" viewBox="0 0 28 18" style={{ flexShrink:0 }}>
+                {[1,5,9,13,17,21,25].map((x,i)=>(
+                  <line key={i} x1={x} y1={18} x2={x} y2={18-(4+[5,8,6,9,7,10,6][i])}
+                    stroke="#22c55e" strokeWidth="2" strokeLinecap="round" opacity="0.75"/>
+                ))}
+              </svg>
+            </div>
+
+            {/* Lifespan */}
+            <div style={{
+              background:"linear-gradient(135deg,rgba(212,175,55,0.14),rgba(212,175,55,0.04))",
+              border:"1px solid rgba(212,175,55,0.28)", borderRadius:"9px",
+              padding:"9px 11px", display:"flex", alignItems:"center", gap:"9px",
+            }}>
+              <div style={{
+                width:32, height:32, borderRadius:"50%", flexShrink:0,
+                background:"rgba(212,175,55,0.16)", border:"1px solid rgba(212,175,55,0.45)",
+                display:"flex", alignItems:"center", justifyContent:"center", fontSize:"15px",
+                filter:"drop-shadow(0 0 6px rgba(212,175,55,0.65))",
+              }}>⌛</div>
+              <div style={{ flex:1, minWidth:0 }}>
+                <div style={{ fontFamily:"'Josefin Sans',sans-serif", fontSize:"7px", fontWeight:700,
+                  letterSpacing:"0.22em", color:"rgba(212,175,55,0.65)", textTransform:"uppercase", marginBottom:"2px" }}>Lifespan</div>
+                <div style={{ fontFamily:"'Josefin Sans',sans-serif", fontSize:"12px", fontWeight:700,
+                  color:"#d4af37", letterSpacing:"0.03em" }}>10–15 years</div>
+              </div>
+              <div style={{ display:"flex", gap:"3px", flexShrink:0, alignItems:"center" }}>
+                {Array.from({length:5}).map((_,i)=>(
+                  <div key={i} style={{
+                    width:6, height:6, borderRadius:"50%",
+                    background: i < 3 ? "#d4af37" : "rgba(212,175,55,0.22)",
+                    boxShadow: i < 3 ? "0 0 5px rgba(212,175,55,0.6)" : "none",
+                  }}/>
+                ))}
+              </div>
+            </div>
+
+          </div>
         </div>
 
         {/* Where It Lives */}
         <div style={{
-          background:"linear-gradient(135deg, rgba(0,22,38,0.92) 0%, rgba(0,14,28,0.90) 100%)",
+          background:"linear-gradient(135deg, rgba(0,22,38,0.94) 0%, rgba(0,14,28,0.92) 100%)",
           backdropFilter:"blur(20px)",
-          border:"1px solid rgba(0,218,195,0.28)",
+          border:"1px solid rgba(0,218,195,0.30)",
           borderRadius:"12px",
-          padding:"15px 17px",
+          padding:"14px 15px",
           position:"relative", overflow:"hidden",
         }}>
           {/* top accent line */}
           <div style={{
             position:"absolute", top:0, left:0, right:0, height:"2px",
-            background:"linear-gradient(to right, transparent, rgba(0,218,195,0.75), transparent)",
+            background:"linear-gradient(to right, transparent, rgba(0,218,195,0.80), transparent)",
           }}/>
           {/* header */}
-          <div style={{
-            display:"flex", alignItems:"center", gap:"8px", marginBottom:"12px",
-          }}>
-            <span style={{ fontSize:"13px", filter:"drop-shadow(0 0 5px rgba(0,218,195,0.7))" }}>📍</span>
+          <div style={{ display:"flex", alignItems:"center", gap:"8px", marginBottom:"9px" }}>
+            <span style={{ fontSize:"12px", filter:"drop-shadow(0 0 5px rgba(0,218,195,0.7))" }}>📍</span>
             <div style={{
               fontFamily:"'Josefin Sans',sans-serif", fontSize:"9px", fontWeight:700,
-              letterSpacing:"0.28em", color:"rgba(0,218,195,0.90)", textTransform:"uppercase",
+              letterSpacing:"0.28em", color:"rgba(0,218,195,0.92)", textTransform:"uppercase",
             }}>Where It Lives</div>
           </div>
-          {/* location row */}
-          <div style={{ display:"flex", alignItems:"center", gap:"10px", marginBottom:"10px" }}>
-            <div style={{
-              width:"34px", height:"34px", borderRadius:"50%", flexShrink:0,
-              background:"linear-gradient(135deg, rgba(0,218,195,0.18), rgba(34,197,94,0.12))",
-              border:"1px solid rgba(0,218,195,0.35)",
-              display:"flex", alignItems:"center", justifyContent:"center", fontSize:"17px",
-            }}>🏝</div>
-            <div>
-              <div style={{
-                fontFamily:"'Josefin Sans',sans-serif", fontSize:"11.5px", fontWeight:700,
-                color:"#fff", letterSpacing:"0.07em",
-              }}>Hawaiian Islands</div>
-              <div style={{
-                fontFamily:"'Josefin Sans',sans-serif", fontSize:"8.5px",
-                color:"rgba(0,218,195,0.60)", letterSpacing:"0.08em", marginTop:"2px",
-              }}>Pacific Ocean · USA</div>
+          {/* title */}
+          <div style={{ marginBottom:"9px" }}>
+            <div style={{ fontFamily:"'Josefin Sans',sans-serif", fontSize:"13px", fontWeight:700,
+              color:"#fff", letterSpacing:"0.06em" }}>Hawaiian Islands</div>
+            <div style={{ fontFamily:"'Josefin Sans',sans-serif", fontSize:"8px",
+              color:"rgba(0,218,195,0.60)", letterSpacing:"0.10em", marginTop:"2px" }}>
+              Pacific Ocean · USA
             </div>
           </div>
+
+          {/* ── SVG Hawaii Archipelago Map ── */}
+          <div style={{
+            background:"rgba(0,25,45,0.75)", backdropFilter:"blur(6px)",
+            border:"1px solid rgba(0,218,195,0.18)", borderRadius:"9px",
+            padding:"9px 7px 6px", marginBottom:"10px", position:"relative", overflow:"hidden",
+          }}>
+            <svg viewBox="0 0 260 92" style={{ width:"100%", display:"block" }}>
+              <defs>
+                <pattern id="hgrid" width="20" height="20" patternUnits="userSpaceOnUse">
+                  <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(0,218,195,0.06)" strokeWidth="0.5"/>
+                </pattern>
+                <radialGradient id="isleGlow" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stopColor="rgba(0,218,195,0.55)"/>
+                  <stop offset="100%" stopColor="rgba(0,218,195,0.18)"/>
+                </radialGradient>
+              </defs>
+              <rect width="260" height="92" fill="url(#hgrid)"/>
+              {/* Ocean atmosphere */}
+              <ellipse cx="130" cy="55" rx="125" ry="40" fill="rgba(0,80,130,0.07)"/>
+              {/* Island chain connector */}
+              <line x1="18" y1="34" x2="228" y2="68" stroke="rgba(0,218,195,0.10)" strokeWidth="1" strokeDasharray="4,3"/>
+
+              {/* Ni'ihau */}
+              <ellipse cx="12" cy="30" rx="5" ry="6.5" fill="rgba(0,218,195,0.28)" stroke="rgba(0,218,195,0.55)" strokeWidth="0.7"/>
+
+              {/* Kaua'i */}
+              <ellipse cx="30" cy="34" rx="13" ry="11.5" fill="url(#isleGlow)" stroke="rgba(0,238,212,0.80)" strokeWidth="1"/>
+              <circle cx="30" cy="34" r="2.5" fill="rgba(0,255,220,0.95)" filter="url(#dot-glow)"/>
+              <circle cx="30" cy="34" r="6" fill="none" stroke="rgba(0,218,195,0.35)" strokeWidth="0.7"/>
+
+              {/* O'ahu */}
+              <ellipse cx="80" cy="45" rx="18" ry="11.5" fill="url(#isleGlow)" stroke="rgba(0,238,212,0.80)" strokeWidth="1"/>
+              <circle cx="80" cy="45" r="2.8" fill="rgba(0,255,220,0.95)"/>
+              <circle cx="80" cy="45" r="7" fill="none" stroke="rgba(0,218,195,0.30)" strokeWidth="0.7"/>
+
+              {/* Moloka'i */}
+              <ellipse cx="115" cy="46" rx="14" ry="6.5" fill="url(#isleGlow)" stroke="rgba(0,218,195,0.65)" strokeWidth="0.8"/>
+
+              {/* Maui */}
+              <ellipse cx="146" cy="53" rx="18" ry="12" fill="url(#isleGlow)" stroke="rgba(0,238,212,0.80)" strokeWidth="1"/>
+              <circle cx="146" cy="53" r="2.5" fill="rgba(0,255,220,0.95)"/>
+
+              {/* Hawai'i (Big Island) */}
+              <ellipse cx="213" cy="67" rx="31" ry="23" fill="url(#isleGlow)" stroke="rgba(0,238,212,0.85)" strokeWidth="1.2"/>
+              <circle cx="213" cy="67" r="3.2" fill="rgba(0,255,220,1)" filter="url(#dot-glow)"/>
+              <circle cx="213" cy="67" r="9" fill="none" stroke="rgba(0,218,195,0.28)" strokeWidth="0.7"/>
+
+              {/* Island labels */}
+              <text x="30" y="50" textAnchor="middle" fontFamily="sans-serif" fontSize="5.5" fontWeight="700"
+                fill="rgba(0,218,195,0.80)" letterSpacing="0.5">KAUA'I</text>
+              <text x="80" y="61" textAnchor="middle" fontFamily="sans-serif" fontSize="5.5" fontWeight="700"
+                fill="rgba(0,218,195,0.80)" letterSpacing="0.5">O'AHU</text>
+              <text x="146" y="69" textAnchor="middle" fontFamily="sans-serif" fontSize="5.5" fontWeight="700"
+                fill="rgba(0,218,195,0.80)" letterSpacing="0.5">MAUI</text>
+              <text x="213" y="82" textAnchor="middle" fontFamily="sans-serif" fontSize="5.5" fontWeight="700"
+                fill="rgba(0,218,195,0.80)" letterSpacing="0.5">HAWAI'I</text>
+
+              {/* Pacific label */}
+              <text x="130" y="89" textAnchor="middle" fontFamily="sans-serif" fontSize="5" fontWeight="400"
+                fill="rgba(255,255,255,0.22)" letterSpacing="2">PACIFIC OCEAN</text>
+            </svg>
+          </div>
+
           {/* description */}
           <div style={{
             fontFamily:"'Playfair Display',serif", fontStyle:"italic",
-            fontSize:"11px", color:"rgba(255,255,255,0.72)", lineHeight:1.75,
-            marginBottom:"11px",
+            fontSize:"10.5px", color:"rgba(255,255,255,0.72)", lineHeight:1.70,
+            marginBottom:"10px",
           }}>
             Found only in Hawai{"\u02BB"}i — native to freshwater wetlands, taro fields &amp; coastal ponds.
           </div>
@@ -475,10 +627,10 @@ export function RadialLanding({ onSelect, exiting }: Props) {
           <div style={{ display:"flex", gap:"5px", flexWrap:"wrap" }}>
             {["\u02BBOahu","Maui","\u02BBKauai","Moloka\u02BBi","Hawai\u02BBi"].map(island=>(
               <span key={island} style={{
-                fontFamily:"'Josefin Sans',sans-serif", fontSize:"8px", fontWeight:700,
-                letterSpacing:"0.06em", color:"rgba(0,218,195,0.82)",
-                background:"rgba(0,218,195,0.10)", border:"1px solid rgba(0,218,195,0.25)",
-                borderRadius:"99px", padding:"2px 9px",
+                fontFamily:"'Josefin Sans',sans-serif", fontSize:"7.5px", fontWeight:700,
+                letterSpacing:"0.06em", color:"rgba(0,218,195,0.85)",
+                background:"rgba(0,218,195,0.10)", border:"1px solid rgba(0,218,195,0.28)",
+                borderRadius:"99px", padding:"2px 8px",
               }}>{island}</span>
             ))}
           </div>
