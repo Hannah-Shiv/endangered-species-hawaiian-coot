@@ -59,17 +59,44 @@ const PW    = 224;
 const PH    = 52;
 const PGAP  = 12;
 
-// The SVG coordinate system has (0,0) at the hamburger center.
-// All (x,y) positions below are in that SVG space.
+// ── Backdrop dimensions ──────────────────────────────────────────────────────
 //
-// Lowest circle bottom:  y = 152 + 42 = 194  (SVG space)
-// Bottom connector rail: y = 208              (below all circles)
-// Sub-items top:         y = 224              (a gap below the rail)
-// Sub-items in wrap:     top = 224 + HALF = 264
+// To get UNIFORM spacing from every circle to the dome boundary, the backdrop
+// must be a perfect circle centred on the hamburger with radius = R+IHLF+GAP.
+//
+//   R + IHLF = 158 + 42 = 200   (farthest point of any circle from hamburger)
+//   GAP      = 20                (desired uniform gap)
+//   DOM_R    = 220               (dome circle radius)
+//
+// CSS makes a perfect semicircle when border-radius == half the element width.
+//   backdrop width  = 2 × DOM_R = 440px
+//   border-radius   = "0 0 220px 220px"
+//
+// The backdrop top aligns exactly with the hamburger top (BACKDROP_TOP = 0)
+// so no dark panel peeks above the button.  Height = HALF + DOM_R puts the
+// dome arc DOM_R below the hamburger centre; circles bottom at ~232 fits
+// inside (232 < 260).
+//
+const DOM_R          = 220;           // dome radius (uniform spacing from all circles)
+const BACKDROP_W     = DOM_R * 2;     // 440px
+const BACKDROP_TOP   = 0;             // px — backdrop top flush with hamburger top
+const BACKDROP_H_SEMI = HALF + DOM_R; // 260 — arc bottom is DOM_R below hamburger centre
 
-const RAIL_Y  = 208;   // horizontal bottom rail for L-connector
-const SUB_SVG = 228;   // sub-items top in SVG space (HALF below = wrap y 268)
-const SUB_Y   = SUB_SVG + HALF; // = 268  — CSS top of sub-item container in wrap space
+// ── Connector geometry (SVG space — origin at hamburger centre) ───────────────
+//
+// The L-connector routes:
+//   1. From active circle centre → OUT to the circle's outer wall (horizontal)
+//   2. DOWN the outer wall to the bottom rail
+//   3. ACROSS the bottom rail to centre-x=0
+//   4. DOWN to sub-items top
+//
+// The first segment (centre→outer-wall) is hidden behind the active circle
+// (circles are z:10000, connector SVG is z:9999).  Every other segment is
+// fully outside all circle areas → the line never crosses any other circle.
+//
+const RAIL_Y  = 210;                   // SVG: horizontal bottom rail (below circle bottoms at 194)
+const SUB_SVG = RAIL_Y + 22;           // SVG: sub-items top (232 = RAIL_Y + 22)
+const SUB_Y   = SUB_SVG + HALF;        // wrap: CSS top of pill container (272)
 
 /** Downward semicircle */
 function arcPos(i: number) {
@@ -79,59 +106,77 @@ function arcPos(i: number) {
 const POSITIONS = GROUPS.map((_, i) => arcPos(i));
 
 /**
- * Build the L-shaped connector path (in SVG space, origin = hamburger center).
+ * Build the L-connector path (SVG space, origin = hamburger centre).
  *
- * Route: circle bottom → straight down → rounded corner → horizontal along bottom
- *        rail → rounded corner → drop to sub-items center.
+ * Route for outer/mid circles (|x| >= 55):
+ *   A. circle centre → outer wall x  (horizontal, hidden behind active circle z:10000)
+ *   B. outer wall down to rail y      (vertical, fully outside all other circles)
+ *   C. rail x across to centre        (horizontal, below all circles)
+ *   D. centre down to sub-items top   (vertical drop)
  *
- * Circles are z-indexed ABOVE the connector SVG, so where the line geometrically
- * passes through a circle's area the circle button is drawn on top — creating the
- * visual impression that the connector routes "around" them.
+ * Route for inner circles (|x| < 55, i=2/3):
+ *   Same L-shape but shorter horizontal leg since the circle is near centre.
+ *   A. circle bottom straight down to rail y
+ *   B. horizontal to centre (with rounded corner)
+ *   C. drop to sub-items
+ *
+ * Outer-wall x = cx ± IHLF — this guarantees the DOWN leg never enters any
+ * other circle because it runs along the absolute outer edge of the arc.
  */
 function connectorPath(x: number, y: number): string {
-  const startY = y + IHLF;
-  const railY  = RAIL_Y;
-  const endY   = SUB_SVG;
-  const r      = 18;
+  const r    = 18;   // corner radius
+  const rail = RAIL_Y;
+  const end  = SUB_SVG;
 
-  // Centre circles (i=2/3 at x≈±49): near-straight drop
   if (Math.abs(x) < 55) {
-    return `M ${x} ${startY} Q ${x} ${railY} 0 ${endY}`;
-  }
-
-  const sign = x < 0 ? 1 : -1;   // +1 → left circle (turns rightward), -1 → right
-
-  // For the deepest circles (y=152), startY=194 may already be past railY-r=190.
-  // Skip the explicit vertical leg in that case — go straight to the corner.
-  const hasTurn = startY < railY - r;
-
-  if (hasTurn) {
+    // ── Inner circles (i=2, i=3) ─────────────────────────────────────────────
+    // Drop from circle bottom, then a single smooth Q arc curves directly to
+    // the rail centre (no awkward short horizontal rail segment).
+    // Tangent at start = straight down; tangent at end = horizontal → clean arc.
+    const startY = y + IHLF;
     return [
       `M ${x} ${startY}`,
-      `L ${x} ${railY - r}`,
-      `Q ${x} ${railY} ${x + sign * r} ${railY}`,
-      `L ${-sign * r} ${railY}`,
-      `Q 0 ${railY} 0 ${railY + r}`,
-      `L 0 ${endY}`,
-    ].join(" ");
-  } else {
-    // Circle bottom is already at/below the turn — shorter path, no upward leg
-    return [
-      `M ${x} ${startY}`,
-      `Q ${x} ${railY} ${x + sign * r} ${railY}`,
-      `L ${-sign * r} ${railY}`,
-      `Q 0 ${railY} 0 ${railY + r}`,
-      `L 0 ${endY}`,
+      `L ${x} ${rail - r}`,
+      `Q ${x} ${rail} 0 ${rail}`,
+      `L 0 ${end}`,
     ].join(" ");
   }
+
+  // ── Outer / mid circles (i=0, i=1, i=4, i=5) ──────────────────────────────
+  const sign  = x < 0 ? 1 : -1;   // +1=left circle (routes rightward), -1=right
+  const wallX = x - sign * IHLF;   // outer edge of this circle, e.g. i=0: -158-42=-200
+
+  return [
+    // A: centre → outer wall (hidden inside active circle)
+    `M ${x} ${y}`,
+    `L ${wallX} ${y}`,
+    // B: down outer wall to near rail (note: wall is outside all other circles)
+    `L ${wallX} ${rail - r}`,
+    // C1: rounded corner at bottom-outer
+    `Q ${wallX} ${rail} ${wallX + sign * r} ${rail}`,
+    // C2: horizontal across to near centre
+    `L ${-sign * r} ${rail}`,
+    // D1: rounded corner at bottom-centre
+    `Q 0 ${rail} 0 ${rail + r}`,
+    // D2: drop to sub-items
+    `L 0 ${end}`,
+  ].join(" ");
 }
 
-// Approximate path length for stroke-dasharray animation
+// Approximate path length for the stroke-dasharray draw animation
 function pathLen(x: number, y: number): number {
-  const startY  = y + IHLF;
-  const vertLen = Math.max(0, RAIL_Y - startY);
-  const horizLen = Math.abs(x);
-  return vertLen + horizLen + (SUB_SVG - RAIL_Y) + 80;
+  const r = 18;
+  if (Math.abs(x) < 55) {
+    // inner circle: L(down) + Q(arc to centre) + L(drop)
+    const startY = y + IHLF;
+    const arcEst = Math.sqrt(x * x + r * r) * 1.6;
+    return Math.max(0, RAIL_Y - r - startY) + arcEst + (SUB_SVG - RAIL_Y) + 20;
+  }
+  // outer/mid: horizontal exit + vertical wall + horizontal rail + drop
+  const wallX   = Math.abs(x) + IHLF;   // distance from centre to outer wall
+  const vertLen = RAIL_Y - Math.abs(y); // wall height
+  const horizLen = wallX - r;            // rail length
+  return IHLF + Math.max(0, vertLen) + horizLen + (SUB_SVG - RAIL_Y) + r * 4;
 }
 
 // ─── Intelligence Threads ──────────────────────────────────────────────────────
@@ -223,24 +268,32 @@ export function DomeNav({ onSelect, activeSection, onCloseSection }: Props) {
       <div ref={wrapRef}
         style={{position:"fixed",top:"10px",left:"50%",transform:"translateX(-50%)",width:`${BTN}px`,zIndex:9999}}>
 
-        {/* ── Dome backdrop: SEMICIRCLE when open, RECTANGLE when group active ── */}
+        {/* ── Dome backdrop ─────────────────────────────────────────────────────
+             SEMICIRCLE when open (no active group):
+               width=440, border-radius="0 0 220px 220px" → perfect semicircle
+               with radius 220 centred exactly on the hamburger; every circle
+               is 20px from the edge (R+IHLF+20 = 200+20 = 220 = DOM_R).
+             RECTANGLE when a group is active:
+               Same width, flat-bottomed with rounded corners (0 0 20px 20px),
+               height grows to contain the sub-item pills.
+        ── */}
         <div style={{
           position:"absolute",
-          width:"520px",
-          left:`${-(520/2)+HALF}px`,
-          top:"-10px",
-          // Height grows to contain sub-items when a group is active
-          height: group ? `${SUB_Y + PH*2 + PGAP + 30}px` : "242px",
+          width:`${BACKDROP_W}px`,                       // 440
+          left:`${HALF - BACKDROP_W/2}px`,               // −180
+          top:`${BACKDROP_TOP}px`,                       // −22
+          height: group
+            ? `${SUB_Y + PH*2 + PGAP + 38 - BACKDROP_TOP}px`  // ~446
+            : `${BACKDROP_H_SEMI}px`,                           // ~282
           background:"rgba(3,6,16,0.94)",
-          // KEY: morph from semicircle to flat-bottomed rectangle
-          borderRadius: group ? "0 0 0 0" : "0 0 260px 260px",
+          borderRadius: group ? "0 0 20px 20px" : `0 0 ${DOM_R}px ${DOM_R}px`,
           borderLeft:`1px solid rgba(34,197,94,0.11)`,
           borderRight:`1px solid rgba(34,197,94,0.11)`,
           borderBottom:`1px solid rgba(34,197,94,0.11)`,
           borderTop:"none",
           pointerEvents:"none", zIndex:-1,
           opacity: open ? 1 : 0,
-          transition:"opacity 0.3s ease, height 0.4s cubic-bezier(0.16,1,0.3,1), border-radius 0.35s ease",
+          transition:"opacity 0.3s ease, height 0.42s cubic-bezier(0.16,1,0.3,1), border-radius 0.38s ease",
         }}/>
 
         {/* ── Hamburger ─────────────────────────────────────────────────────── */}
