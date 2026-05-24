@@ -12,6 +12,7 @@ import { motion } from "framer-motion";
 import bgPhoto    from "../assets/bg-photo.png";
 import birdImg    from "../assets/bird-transparent.png";
 import whereItLivesImg from "@assets/image_1779661049779.png";
+import explorePanelImg from "@assets/image_1779661407544.png";
 import circle01 from "../assets/circles/circle01.png";
 import circle02 from "../assets/circles/circle02.png";
 import circle03 from "../assets/circles/circle03.png";
@@ -370,145 +371,16 @@ export function RadialLanding({ onSelect, exiting }: Props) {
         </div>
       </motion.div>
 
-      {/* ── BOTTOM-LEFT: Explore / Learn / Protect — hexagonal cards ─────────── */}
+      {/* ── BOTTOM-LEFT: Explore / Learn / Protect — image panel ────────────── */}
       <motion.div {...panelAnim(-1, 0.18)} style={{
-        position:"absolute", left:"14px", bottom:"4%",
+        position:"absolute", left:"14px", bottom:"3%",
         zIndex:6, width:`calc(50% - ${R + CZ/2 + 14}px)`,
       }}>
-        <div style={{ display:"flex", gap:"7px" }}>
-          {([
-            {
-              word:"EXPLORE", icon:"🧭", deco:"🌿", color:"#4ade80", rgb:"74,222,128",
-              desc:`Discover the world of \u02BBalae ke\u02BBoke\u02BBo`,
-              scene:(
-                <svg viewBox="0 0 80 52" style={{ width:"100%", display:"block" }}>
-                  <defs>
-                    <radialGradient id="eg" cx="50%" cy="100%" r="70%">
-                      <stop offset="0%" stopColor="#22c55e" stopOpacity="0.40"/>
-                      <stop offset="100%" stopColor="#22c55e" stopOpacity="0"/>
-                    </radialGradient>
-                  </defs>
-                  <rect width="80" height="52" fill="#030c07"/>
-                  <rect y="34" width="80" height="18" fill="url(#eg)"/>
-                  <path d="M8,50 Q5,36 3,28 Q9,36 12,50Z" fill="#14532d"/>
-                  <path d="M8,50 Q12,34 16,28 Q13,37 10,50Z" fill="#22c55e" opacity="0.75"/>
-                  <path d="M22,50 Q18,30 15,22 Q22,33 26,50Z" fill="#14532d"/>
-                  <path d="M22,50 Q26,28 31,23 Q27,34 24,50Z" fill="#22c55e" opacity="0.70"/>
-                  <path d="M40,50 Q36,26 33,19 Q40,30 44,50Z" fill="#14532d"/>
-                  <path d="M40,50 Q44,24 50,20 Q46,32 42,50Z" fill="#22c55e" opacity="0.65"/>
-                  <path d="M58,50 Q55,32 52,25 Q58,34 62,50Z" fill="#14532d"/>
-                  <path d="M58,50 Q62,30 67,26 Q64,36 60,50Z" fill="#22c55e" opacity="0.60"/>
-                  <path d="M72,50 Q70,36 68,30 Q73,37 75,50Z" fill="#14532d" opacity="0.85"/>
-                  <line x1="0" y1="48" x2="80" y2="48" stroke="rgba(74,222,128,0.28)" strokeWidth="0.6"/>
-                </svg>
-              ),
-            },
-            {
-              word:"LEARN", icon:"📖", deco:"🌊", color:"#67e8f9", rgb:"103,232,249",
-              desc:"Understand, connect & be inspired",
-              scene:(
-                <svg viewBox="0 0 80 52" style={{ width:"100%", display:"block" }}>
-                  <defs>
-                    <radialGradient id="wg" cx="50%" cy="80%" r="60%">
-                      <stop offset="0%" stopColor="#0ea5e9" stopOpacity="0.35"/>
-                      <stop offset="100%" stopColor="#0ea5e9" stopOpacity="0"/>
-                    </radialGradient>
-                  </defs>
-                  <rect width="80" height="52" fill="#020a14"/>
-                  <ellipse cx="40" cy="48" rx="40" ry="12" fill="url(#wg)"/>
-                  <ellipse cx="40" cy="40" rx="34" ry="7" fill="none" stroke="rgba(103,232,249,0.18)" strokeWidth="0.9"/>
-                  <ellipse cx="40" cy="40" rx="24" ry="5" fill="none" stroke="rgba(103,232,249,0.26)" strokeWidth="0.9"/>
-                  <ellipse cx="40" cy="40" rx="14" ry="3" fill="none" stroke="rgba(103,232,249,0.36)" strokeWidth="0.9"/>
-                  <ellipse cx="40" cy="40" rx="5"  ry="1.2" fill="none" stroke="rgba(103,232,249,0.50)" strokeWidth="0.9"/>
-                  <path d="M40,33 Q37,28 40,24 Q43,28 40,33Z" fill="rgba(103,232,249,0.80)"/>
-                  <path d="M40,33 Q34,30 33,25 Q38,28 40,33Z" fill="rgba(103,232,249,0.55)"/>
-                  <path d="M40,33 Q46,30 47,25 Q42,28 40,33Z" fill="rgba(103,232,249,0.55)"/>
-                  <path d="M40,33 Q36,37 35,41 Q39,36 40,33Z" fill="rgba(103,232,249,0.35)"/>
-                  <path d="M40,33 Q44,37 45,41 Q41,36 40,33Z" fill="rgba(103,232,249,0.35)"/>
-                  <circle cx="40" cy="33" r="2.2" fill="rgba(103,232,249,0.95)"/>
-                  <line x1="0" y1="46" x2="80" y2="46" stroke="rgba(103,232,249,0.20)" strokeWidth="0.6"/>
-                </svg>
-              ),
-            },
-            {
-              word:"PROTECT", icon:"🛡️", deco:"🌺", color:"#fb923c", rgb:"251,146,60",
-              desc:"Take action & make a difference",
-              scene:(
-                <svg viewBox="0 0 80 52" style={{ width:"100%", display:"block" }}>
-                  <defs>
-                    <radialGradient id="sg" cx="50%" cy="100%" r="75%">
-                      <stop offset="0%" stopColor="#f97316" stopOpacity="0.50"/>
-                      <stop offset="100%" stopColor="#f97316" stopOpacity="0"/>
-                    </radialGradient>
-                  </defs>
-                  <rect width="80" height="52" fill="#0d0400"/>
-                  <rect width="80" height="36" fill="rgba(249,115,22,0.07)"/>
-                  <ellipse cx="40" cy="52" rx="42" ry="16" fill="url(#sg)"/>
-                  <path d="M26,38 Q40,30 54,38" fill="rgba(251,146,60,0.45)"/>
-                  <line x1="0" y1="38" x2="80" y2="38" stroke="rgba(251,146,60,0.32)" strokeWidth="0.7"/>
-                  <path d="M40,50 Q40.5,44 41,36 Q40,30 41,22" stroke="rgba(92,40,0,0.95)" strokeWidth="2.2" fill="none" strokeLinecap="round"/>
-                  <path d="M41,22 Q30,16 24,11" stroke="rgba(70,28,0,0.90)" strokeWidth="1.6" fill="none" strokeLinecap="round"/>
-                  <path d="M41,22 Q52,14 58,11" stroke="rgba(70,28,0,0.90)" strokeWidth="1.6" fill="none" strokeLinecap="round"/>
-                  <path d="M41,24 Q32,18 28,13" stroke="rgba(70,28,0,0.75)" strokeWidth="1.2" fill="none" strokeLinecap="round"/>
-                  <path d="M41,24 Q50,18 55,14" stroke="rgba(70,28,0,0.75)" strokeWidth="1.2" fill="none" strokeLinecap="round"/>
-                  <path d="M41,26 Q28,26 22,24" stroke="rgba(70,28,0,0.60)" strokeWidth="1.0" fill="none" strokeLinecap="round"/>
-                  <circle cx="60" cy="20" r="6" fill="rgba(251,146,60,0.22)"/>
-                  <circle cx="60" cy="20" r="3.5" fill="rgba(251,146,60,0.50)"/>
-                </svg>
-              ),
-            },
-          ] as { word:string; icon:string; deco:string; color:string; rgb:string; desc:string; scene:React.ReactNode }[])
-          .map(({ word, icon, deco, color, rgb, desc, scene }) => {
-            const CLIP = "polygon(14% 0%, 86% 0%, 100% 13%, 100% 100%, 0% 100%, 0% 13%)";
-            return (
-              <div key={word} style={{ flex:1, filter:`drop-shadow(0 0 10px rgba(${rgb},0.55))` }}>
-                {/* Border layer */}
-                <div style={{ clipPath:CLIP, background:`rgba(${rgb},0.55)`, padding:"1.5px" }}>
-                  {/* Inner card */}
-                  <div style={{
-                    clipPath:CLIP,
-                    background:`linear-gradient(180deg, rgba(6,14,28,0.98) 0%, rgba(6,14,28,0.95) 55%, rgba(${rgb},0.10) 100%)`,
-                    display:"flex", flexDirection:"column", alignItems:"center",
-                    height:"178px", overflow:"hidden",
-                  }}>
-                    {/* Icon circle */}
-                    <div style={{
-                      marginTop:"18px",
-                      width:34, height:34, borderRadius:"50%",
-                      background:`rgba(${rgb},0.14)`, border:`1.5px solid rgba(${rgb},0.60)`,
-                      display:"flex", alignItems:"center", justifyContent:"center", fontSize:"15px",
-                      filter:`drop-shadow(0 0 5px rgba(${rgb},0.55))`,
-                    }}>{icon}</div>
-                    {/* Title */}
-                    <div style={{
-                      fontFamily:"'Josefin Sans',sans-serif", fontSize:"9.5px", fontWeight:800,
-                      letterSpacing:"0.18em", color, marginTop:"7px",
-                      textShadow:`0 0 14px rgba(${rgb},0.75)`,
-                    }}>{word}</div>
-                    {/* Deco */}
-                    <div style={{ fontSize:"9px", marginTop:"3px", opacity:0.65,
-                      filter:`drop-shadow(0 0 4px rgba(${rgb},0.60))` }}>{deco}</div>
-                    {/* Description */}
-                    <div style={{
-                      fontFamily:"'Josefin Sans',sans-serif", fontSize:"7.5px", fontWeight:500,
-                      color:"rgba(255,255,255,0.62)", textAlign:"center", lineHeight:1.55,
-                      marginTop:"5px", padding:"0 6px",
-                    }}>{desc}</div>
-                    {/* Nature scene — pushes to bottom */}
-                    <div style={{ flex:1, width:"100%", display:"flex", alignItems:"flex-end" }}>
-                      {scene}
-                    </div>
-                    {/* Bottom glow dot */}
-                    <div style={{
-                      width:7, height:7, borderRadius:"50%", marginBottom:"8px", marginTop:"3px",
-                      background:color, boxShadow:`0 0 8px 2px rgba(${rgb},0.70)`,
-                    }}/>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
+        <img
+          src={explorePanelImg}
+          alt="Explore, Learn, Protect"
+          style={{ width:"100%", display:"block", borderRadius:"10px" }}
+        />
       </motion.div>
 
       {/* ── TOP-RIGHT: Quick Facts ───────────────────────────────────────────── */}
@@ -685,23 +557,12 @@ export function RadialLanding({ onSelect, exiting }: Props) {
         display:"flex", flexDirection:"column", gap:"10px",
       }}>
 
-        {/* Where It Lives — full image panel */}
-        <div style={{
-          border:"1px solid rgba(0,218,195,0.45)",
-          borderRadius:"12px",
-          overflow:"hidden",
-          position:"relative",
-        }}>
-          <img
-            src={whereItLivesImg}
-            alt="Where the Hawaiian Coot Lives"
-            style={{
-              width:"100%", display:"block",
-              borderRadius:"11px",
-              objectFit:"cover",
-            }}
-          />
-        </div>
+        {/* Where It Lives — full image panel (image already has its own border) */}
+        <img
+          src={whereItLivesImg}
+          alt="Where the Hawaiian Coot Lives"
+          style={{ width:"100%", display:"block", borderRadius:"10px" }}
+        />
 
       </motion.div>
 
