@@ -10,6 +10,19 @@
 import { useRef } from "react";
 import { motion } from "framer-motion";
 import bgPhoto from "../assets/bg-photo.png";
+import circle01 from "../assets/circles/circle01.png";
+import circle02 from "../assets/circles/circle02.png";
+import circle03 from "../assets/circles/circle03.png";
+import circle04 from "../assets/circles/circle04.png";
+import circle05 from "../assets/circles/circle05.png";
+import circle06 from "../assets/circles/circle06.png";
+import circle07 from "../assets/circles/circle07.png";
+import circle08 from "../assets/circles/circle08.png";
+import circle09 from "../assets/circles/circle09.png";
+import circle10 from "../assets/circles/circle10.png";
+
+const CIRCLE_IMGS = [circle01, circle02, circle03, circle04, circle05,
+                     circle06, circle07, circle08, circle09, circle10];
 
 // ─── Geometry ──────────────────────────────────────────────────────────────
 const CZ = 130;   // circle diameter px
@@ -119,10 +132,10 @@ export function RadialLanding({ onSelect, exiting }: Props) {
         }}
         viewBox="-1 -1 2 2"
       >
-        {/* Dark backdrop discs behind each circle (for contrast against bright photo) */}
+        {/* Dark backdrop discs — thin halo to block photo bleedthrough at circle edges */}
         {ITEMS.map((_,i)=>{
           const {x,y}=pos(i);
-          return <circle key={`bg-${i}`} cx={x} cy={y} r={CZ/2-1} fill="rgba(2,5,20,0.92)"/>;
+          return <circle key={`bg-${i}`} cx={x} cy={y} r={CZ/2+2} fill="rgba(2,5,20,0.95)"/>;
         })}
 
         {/* Outer subtle connecting line */}
@@ -372,53 +385,17 @@ export function RadialLanding({ onSelect, exiting }: Props) {
             }}
             onClick={() => !exiting && onSelect(item.key, item.group)}
           >
-            <div style={{
-              width:"100%", height:"100%", borderRadius:"50%",
-              background:`radial-gradient(circle at 38% 34%, ${item.color}55, ${item.color}28 48%, rgba(2,5,20,0.97))`,
-              border:`2.5px solid ${item.color}`,
-              boxShadow:[
-                `0 0 0 2px ${item.color}50`,
-                `0 0 18px ${item.color}ee`,
-                `0 0 44px ${item.color}90`,
-                `0 0 80px ${item.color}40`,
-                `inset 0 0 28px ${item.color}20`,
-              ].join(","),
-              display:"flex", flexDirection:"column",
-              alignItems:"center", justifyContent:"center",
-              textAlign:"center", padding:"7px 6px",
-              gap:"1px",
-            }}>
-              {/* Number */}
-              <div style={{
-                fontFamily:"'Josefin Sans',sans-serif",
-                fontSize:"7.5px", fontWeight:700, letterSpacing:"0.12em",
-                color:item.color, lineHeight:1,
-              }}>{item.num}</div>
-
-              {/* Icon */}
-              <div style={{ fontSize:"22px", lineHeight:"1.15", margin:"1px 0" }}>{item.icon}</div>
-
-              {/* Title */}
-              {item.title.split("\n").map((ln,j)=>(
-                <div key={j} style={{
-                  fontFamily:"'Josefin Sans',sans-serif",
-                  fontSize:"7.5px", fontWeight:700, letterSpacing:"0.07em",
-                  color:"#fff", textTransform:"uppercase", lineHeight:1.2,
-                }}>{ln}</div>
-              ))}
-
-              {/* Separator */}
-              <div style={{ width:"24px", height:"1px", background:`${item.color}66`, margin:"2px 0" }}/>
-
-              {/* Description */}
-              {item.desc.split("\n").map((ln,j)=>(
-                <div key={j} style={{
-                  fontFamily:"'Playfair Display',serif",
-                  fontSize:"6.5px", fontStyle:"italic",
-                  color:"rgba(255,255,255,0.62)", lineHeight:1.3,
-                }}>{ln}</div>
-              ))}
-            </div>
+            {/* Pre-rendered circle PNG from sprite sheet */}
+            <img
+              src={CIRCLE_IMGS[i]}
+              alt={item.key}
+              style={{
+                width:"100%", height:"100%",
+                objectFit:"contain", display:"block",
+                borderRadius:"50%",
+                filter:`drop-shadow(0 0 10px ${item.color}cc) drop-shadow(0 0 24px ${item.color}88)`,
+              }}
+            />
           </motion.div>
         );
       })}
