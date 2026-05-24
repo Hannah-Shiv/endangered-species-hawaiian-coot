@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import cootPhoto from "@assets/image_1779649451993.png";
+import cootPhoto from "@assets/image_1779651061989.png";
 import { LandingHero } from "@/components/LandingHero";
 import { DomeNav } from "@/components/DomeNav";
 import { RadialLanding } from "@/components/RadialLanding";
@@ -43,7 +43,7 @@ function CinematicSplash({ onStart }: { onStart: () => void }) {
           position: "absolute", inset: 0,
           width: "100%", height: "100%",
           objectFit: "cover",
-          objectPosition: "55% 72%",
+          objectPosition: "52% 50%",
         }}
       />
 

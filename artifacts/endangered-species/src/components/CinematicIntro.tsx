@@ -30,8 +30,8 @@ const G3 = "#FFC840";                    // warm bright gold — labels
 const S = "0 2px 48px rgba(0,0,0,0.99), 0 0 90px rgba(0,0,0,0.97), 0 4px 18px rgba(0,0,0,0.94)";
 
 // ─── Shared animation config — slow, cinematic fades ─────────────────────────
-const FADE_DUR  = 2.50;   // seconds — fade IN
-const FADE_OUT  = 1.80;   // seconds — fade OUT
+const FADE_DUR  = 4.00;   // seconds — fade IN  (slow, cinematic)
+const FADE_OUT  = 3.20;   // seconds — fade OUT (slow, cinematic)
 const EASE_IN   = [0.16, 1, 0.3, 1] as const;
 const EASE_OUT  = [0.4,  0, 1,   1] as const;
 
@@ -238,7 +238,7 @@ const TEAM = [
   { name: "Baram Oustad",      role: "Student Researcher"                    },
   { name: "Calliandra Harris", role: "Dedicated to our Best Science Teacher" },
 ];
-const PER_PERSON = 5200; // ms each person is visible (2.5s fade-in + ~0.9s hold + 1.8s fade-out)
+const PER_PERSON = 7800; // ms each person is visible (4.0s fade-in + ~0.6s hold + 3.2s fade-out)
 
 function TeamSequence() {
   const [idx, setIdx] = useState(0);
@@ -267,7 +267,7 @@ const CARDS: Card[] = [
   { kind:"quote",  in:9,  out:17, quote:"Every Wetland\nTells a Story"                                  },
   { kind:"nature", in:19, out:26, top:"Freshwater Wetland",  sub:"Hawai\u02BBi · Protected Ecosystem"  },
   { kind:"nature", in:28, out:36, top:"Hawaiian Coot",       sub:"\u02BBalae ke\u02BBoke\u02BBo  ·  Fulica alai" },
-  { kind:"school", in:38, out:50 },
+  { kind:"school", in:38, out:45 },
   { kind:"team",   in:52, out:73 },
 ];
 
@@ -456,11 +456,12 @@ export function CinematicIntro({ onComplete }: Props) {
           title="Hawaiian Islands aerial footage"
         />
 
-        {/* Black mask over bottom-left to hide YouTube watermark/branding */}
+        {/* Organic dark fade over bottom-left YouTube branding — no sharp box */}
         <div style={{
           position:"absolute", left:0, bottom:"10%",
-          width:"260px", height:"56px",
-          background:"#000", zIndex:19, pointerEvents:"none",
+          width:"320px", height:"80px",
+          background:"radial-gradient(ellipse at 0% 100%, rgba(0,0,0,0.96) 0%, rgba(0,0,0,0.78) 38%, transparent 100%)",
+          zIndex:19, pointerEvents:"none",
         }}/>
 
         {/* Gradient vignette — right side darker so gold text pops */}
