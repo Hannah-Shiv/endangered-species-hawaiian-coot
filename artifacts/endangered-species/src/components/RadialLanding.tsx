@@ -96,14 +96,16 @@ export function RadialLanding({ onSelect, exiting }: Props) {
   return (
     <div style={{ position:"fixed", inset:0, zIndex:8000, overflow:"hidden" }}>
 
-      {/* ── BACKGROUND: real wetland + bird photo ── */}
+      {/* ── BACKGROUND: real wetland + bird photo ──
+           height > 100% so the cover image shows a wider vertical slice
+           (bird appears smaller), top negative shifts the slice upward    */}
       <img src={bgPhoto} alt="" style={{
         position:"absolute",
-        left:"-25%", right:"-25%",
-        top:"-42%",
-        width:"150%",
-        height:"155%",       /* larger element = bird appears ~33% smaller */
-        objectFit:"cover", objectPosition:"center 48%",
+        left:0, right:0,
+        top:"-18%",
+        width:"100%",
+        height:"145%",
+        objectFit:"cover", objectPosition:"50% 60%",
         filter:"brightness(0.80) contrast(1.05) saturate(1.08)",
       }}/>
 
