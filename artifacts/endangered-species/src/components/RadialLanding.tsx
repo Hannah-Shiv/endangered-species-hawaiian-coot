@@ -147,19 +147,20 @@ export function RadialLanding({ onSelect, exiting }: Props) {
         {/* Inner bright specular */}
         <circle r={R-96} fill="none" stroke="rgba(200,255,248,0.35)" strokeWidth="0.9"/>
 
-        {/* ── Colored glow dots at each circle position ── */}
-        {ITEMS.map((item,i)=>{
-          const {x,y}=pos(i);
+        {/* ── 20 rainbow dots evenly around the outer ring ── */}
+        {Array.from({length:20},(_,i)=>{
+          const angle = (i / 20) * Math.PI * 2 - Math.PI / 2;
+          const dx = Math.cos(angle) * R;
+          const dy = Math.sin(angle) * R;
+          const hue = (i / 20) * 360;
+          const col = `hsl(${hue},100%,62%)`;
+          const colA = `hsla(${hue},100%,62%,`;
           return (
-            <g key={`dot-${i}`}>
-              {/* Large outer glow */}
-              <circle cx={x} cy={y} r="16"  fill={`${item.color}22`}/>
-              {/* Mid glow */}
-              <circle cx={x} cy={y} r="9"   fill={`${item.color}65`}/>
-              {/* Solid core */}
-              <circle cx={x} cy={y} r="4.5" fill={item.color}/>
-              {/* White hot center */}
-              <circle cx={x} cy={y} r="2"   fill="rgba(255,255,255,0.96)"/>
+            <g key={`rdot-${i}`}>
+              <circle cx={dx} cy={dy} r="18"  fill={`${colA}0.18)`}/>
+              <circle cx={dx} cy={dy} r="10"  fill={`${colA}0.50)`}/>
+              <circle cx={dx} cy={dy} r="5"   fill={col}/>
+              <circle cx={dx} cy={dy} r="2.2" fill="rgba(255,255,255,0.95)"/>
             </g>
           );
         })}
