@@ -294,26 +294,6 @@ export function RadialLanding({ onSelect, exiting }: Props) {
         </div>
       </motion.div>
 
-      {/* ── BIRD OVERLAY — large, centered in the ring area ───────────────── */}
-      <motion.img
-        src={birdImg}
-        alt="Hawaiian Coot"
-        initial={{ opacity:0 }}
-        animate={exiting
-          ? { opacity:0, transition:{ duration:0.3 } }
-          : { opacity:1, transition:{ duration:1.0, delay:0.25 } }
-        }
-        style={{
-          position:"absolute",
-          left:"50%", bottom:"8%",
-          transform:"translateX(-50%)",
-          height:"62%",
-          objectFit:"contain",
-          zIndex:3,
-          pointerEvents:"none",
-          filter:"brightness(1.05) contrast(1.1) drop-shadow(0 8px 40px rgba(0,0,0,0.7))",
-        }}
-      />
 
       {/* ── CENTER: floating species name — below the bird's body ───────────── */}
       <motion.div
