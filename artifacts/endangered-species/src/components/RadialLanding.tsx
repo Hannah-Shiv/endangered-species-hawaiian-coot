@@ -394,6 +394,8 @@ export function RadialLanding({ onSelect, exiting }: Props) {
               top:`calc(50% + ${y - HALF}px)`,
               width:`${CZ}px`, height:`${CZ}px`,
               cursor:"pointer", zIndex:10,
+              borderRadius:"50%",
+              background:`radial-gradient(circle at 42% 38%, ${item.color}55 0%, ${item.color}30 35%, ${item.color}10 60%, transparent 80%)`,
             }}
             onClick={() => !exiting && onSelect(item.key, item.group)}
           >
@@ -404,7 +406,7 @@ export function RadialLanding({ onSelect, exiting }: Props) {
               style={{
                 width:"100%", height:"100%",
                 objectFit:"contain", display:"block",
-                filter:`drop-shadow(0 0 8px ${item.color}99)`,
+                filter:`drop-shadow(0 0 14px ${item.color}cc) drop-shadow(0 0 5px ${item.color}88)`,
               }}
             />
           </motion.div>
