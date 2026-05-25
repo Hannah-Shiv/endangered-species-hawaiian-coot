@@ -217,8 +217,6 @@ export function Evolution() {
   const panelTopCSS = `calc(50vh - ${PANEL_H / 2 - 20}px)`;
 
   // PREV/NEXT bar sits just below the bottom of the ring inside the clock container
-  const navTop = CY + RING_R + NODE_R + 20;   // 300+218+27+20 = 565
-
   return (
     <div style={{
       position: "fixed", inset: 0,
@@ -359,7 +357,7 @@ export function Evolution() {
                   : lit ? `${node.color}28` : "rgba(5,14,31,0.92)",
                 border: `3px solid ${node.color}`,
                 color: isActive ? "#050e1f" : node.color,
-                fontSize: "17px", fontWeight: 800,
+                fontSize: "20px", fontWeight: 800,
                 cursor: "pointer",
                 display: "flex", alignItems: "center", justifyContent: "center",
                 boxShadow: lit
@@ -391,30 +389,28 @@ export function Evolution() {
                 left: x, top: y,
                 transform: labelTX(node.n),
                 pointerEvents: "auto",
-                maxWidth: 104,
+                maxWidth: 112,
                 zIndex: 4,
                 cursor: "pointer",
-                opacity: active && active !== node.n && hovered !== node.n ? 0.35 : 1,
-                transition: "opacity 0.3s",
               }}
             >
               <div style={{
                 color: "#ffffff",
-                fontSize: "14px", fontWeight: 700,
+                fontSize: "16px", fontWeight: 700,
                 lineHeight: 1.3, letterSpacing: "0.2px",
                 textShadow: lit
-                  ? `0 0 12px ${node.color}, 0 0 26px ${node.color}aa`
+                  ? `0 0 14px ${node.color}, 0 0 30px ${node.color}bb`
                   : "none",
                 transition: "text-shadow 0.25s",
               }}>
                 {node.title}
               </div>
               <div style={{
-                color: lit ? node.color : "rgba(255,255,255,0.52)",
-                fontSize: "12px", lineHeight: 1.3, marginTop: 3,
-                fontStyle: "italic", fontWeight: lit ? 600 : 400,
-                textShadow: lit ? `0 0 8px ${node.color}bb` : "none",
-                transition: "color 0.25s, text-shadow 0.25s",
+                color: node.color,
+                fontSize: "14px", lineHeight: 1.3, marginTop: 3,
+                fontStyle: "italic", fontWeight: 600,
+                textShadow: lit ? `0 0 10px ${node.color}cc` : "none",
+                transition: "text-shadow 0.25s",
               }}>
                 {node.era}
               </div>
@@ -422,66 +418,6 @@ export function Evolution() {
           );
         })}
 
-        {/* ── PREV / NEXT — absolutely below the ring, centered ──── */}
-        <AnimatePresence>
-          {curr && (
-            <motion.div
-              key="nav-bar"
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              style={{
-                position: "absolute",
-                top: navTop,
-                left: 0, right: 0,
-                display: "flex",
-                justifyContent: "center",
-                zIndex: 30,
-              }}
-            >
-              <div style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 18,
-                background: "rgba(5,14,31,0.94)",
-                border: `1px solid ${curr.color}55`,
-                borderRadius: 40,
-                padding: "11px 24px",
-              }}>
-                <button onClick={goPrev} style={{
-                  background: "none", border: "none",
-                  color: curr.color, fontSize: "15px", fontWeight: 800,
-                  letterSpacing: "1.5px", cursor: "pointer",
-                  fontFamily: "'Josefin Sans',sans-serif", padding: "2px 6px",
-                }}>← PREV</button>
-
-                <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
-                  {NODES.map(n => (
-                    <button key={n.n} onClick={() => setActive(n.n)} style={{
-                      width: active === n.n ? 22 : 7, height: 7,
-                      borderRadius: 4,
-                      background: active === n.n ? n.color : "rgba(255,255,255,0.22)",
-                      border: "none", cursor: "pointer", padding: 0,
-                      transition: "all 0.28s", flexShrink: 0,
-                    }} />
-                  ))}
-                </div>
-
-                <div style={{ color: "rgba(255,255,255,0.42)", fontSize: "14px", minWidth: 38, textAlign: "center" }}>
-                  {curr.n} / 12
-                </div>
-
-                <button onClick={goNext} style={{
-                  background: "none", border: "none",
-                  color: curr.color, fontSize: "15px", fontWeight: 800,
-                  letterSpacing: "1.5px", cursor: "pointer",
-                  fontFamily: "'Josefin Sans',sans-serif", padding: "2px 6px",
-                }}>NEXT →</button>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </div>
 
       {/* ── LEFT PANEL — Why This Matters ───────────────────────────── */}
@@ -613,6 +549,69 @@ export function Evolution() {
                   <div style={{ color: "rgba(255,255,255,0.92)", fontSize: "16px", lineHeight: 1.65 }}>{d}</div>
                 </motion.div>
               ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ── PREV / NEXT — fixed bottom center, below everything ─────── */}
+      <AnimatePresence>
+        {curr && (
+          <motion.div
+            key="nav-bar"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            style={{
+              position: "fixed",
+              bottom: "18px",
+              left: 0, right: 0,
+              display: "flex",
+              justifyContent: "center",
+              zIndex: 30,
+              pointerEvents: "none",
+            }}
+          >
+            <div style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 18,
+              background: "rgba(5,14,31,0.96)",
+              border: `1px solid ${curr.color}55`,
+              borderRadius: 40,
+              padding: "11px 26px",
+              pointerEvents: "auto",
+            }}>
+              <button onClick={goPrev} style={{
+                background: "none", border: "none",
+                color: curr.color, fontSize: "15px", fontWeight: 800,
+                letterSpacing: "1.5px", cursor: "pointer",
+                fontFamily: "'Josefin Sans',sans-serif", padding: "2px 6px",
+              }}>← PREV</button>
+
+              <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
+                {NODES.map(n => (
+                  <button key={n.n} onClick={() => setActive(n.n)} style={{
+                    width: active === n.n ? 22 : 7, height: 7,
+                    borderRadius: 4,
+                    background: active === n.n ? n.color : "rgba(255,255,255,0.22)",
+                    border: "none", cursor: "pointer", padding: 0,
+                    transition: "all 0.28s", flexShrink: 0,
+                  }} />
+                ))}
+              </div>
+
+              <div style={{ color: "rgba(255,255,255,0.45)", fontSize: "14px", minWidth: 38, textAlign: "center" }}>
+                {curr.n} / 12
+              </div>
+
+              <button onClick={goNext} style={{
+                background: "none", border: "none",
+                color: curr.color, fontSize: "15px", fontWeight: 800,
+                letterSpacing: "1.5px", cursor: "pointer",
+                fontFamily: "'Josefin Sans',sans-serif", padding: "2px 6px",
+              }}>NEXT →</button>
             </div>
           </motion.div>
         )}
