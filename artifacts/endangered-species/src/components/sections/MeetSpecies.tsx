@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import portraitImg from "@/assets/species-portrait.png";
+import sciClassImg from "@assets/image_1779750826452.png";
 
 export function MeetSpecies() {
   const facts = [
@@ -52,20 +53,7 @@ export function MeetSpecies() {
             ))}
           </div>
 
-          <div className="p-6 rounded-lg border" style={{ background: "rgba(3,5,14,0.95)", borderColor: "rgba(212,175,55,0.3)" }}>
-            <h3 className="text-xl font-bold uppercase mb-4" style={{ fontFamily: "'Josefin Sans', sans-serif", color: "rgba(212,175,55,1)", letterSpacing: "0.1em" }}>
-              Scientific Classification
-            </h3>
-            <p className="text-lg leading-relaxed" style={{ fontFamily: "'Playfair Display', serif", color: "rgba(255,255,255,0.7)" }}>
-              Kingdom: Animalia<br/>
-              Phylum: Chordata<br/>
-              Class: Aves<br/>
-              Order: Gruiformes<br/>
-              Family: Rallidae<br/>
-              Genus: Fulica<br/>
-              Species: F. alai
-            </p>
-          </div>
+          <img src={sciClassImg} alt="Scientific Classification" className="w-full rounded-xl" />
         </motion.div>
 
         <motion.div 
