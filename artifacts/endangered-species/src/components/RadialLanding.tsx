@@ -342,7 +342,7 @@ export function RadialLanding({ onSelect, exiting }: Props) {
       <motion.div {...panelAnim(1, 0.14)} style={{
         position:"absolute",
         right:"14px", top:"3%", zIndex:6,
-        width:`calc(50% - ${R + CZ/2 + 26}px)`,
+        width:`calc(50% - ${R + CZ/2 + 56}px)`,
       }}>
         {/* Animated "Quick Facts" title — Orbitron gold, opens from center */}
         <motion.div
@@ -456,7 +456,7 @@ export function RadialLanding({ onSelect, exiting }: Props) {
       <motion.div {...panelAnim(1, 0.20)} style={{
         position:"absolute",
         right:"14px", bottom:"3%", zIndex:6,
-        width:`calc(50% - ${R + CZ/2 + 26}px)`,
+        width:`calc(50% - ${R + CZ/2 - 10}px)`,
       }}>
 
         {/* Where It Lives — full image panel (image already has its own border) */}
