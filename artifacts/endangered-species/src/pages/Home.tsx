@@ -146,7 +146,7 @@ export default function Home() {
           <div style={{
             position:"absolute", inset:0,
             background: mode === "nav"
-              ? "linear-gradient(to bottom, rgba(3,8,16,0.55) 0%, rgba(3,8,16,0.10) 40%, rgba(3,8,16,0.22) 100%)"
+              ? "linear-gradient(to bottom, rgba(3,8,16,0.0) 0%, rgba(3,8,16,0.0) 100%)"
               : "#030810",
             transition:"background 0.9s ease",
           }}/>
