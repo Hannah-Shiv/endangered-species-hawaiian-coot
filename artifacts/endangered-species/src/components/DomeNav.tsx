@@ -330,6 +330,33 @@ export function DomeNav({ onSelect, activeSection, onCloseSection, autoOpenGroup
           </AnimatePresence>
         </svg>
 
+        {/* ── Floating icons — midpoint between each circle and the center ──── */}
+        {GROUPS.map((grp,i)=>{
+          const {x,y}=POSITIONS[i];
+          const ICO=26;
+          const iconLeft=HALF+x/2-ICO/2, iconTop=HALF+y/2-ICO/2;
+          return (
+            <div key={`icon-${grp.key}`} style={{
+              position:"absolute",
+              left:`${iconLeft}px`,top:`${iconTop}px`,
+              width:`${ICO}px`,height:`${ICO}px`,
+              display:"flex",alignItems:"center",justifyContent:"center",
+              fontSize:"18px",lineHeight:1,
+              opacity:open?1:0,
+              transform:open?"scale(1)":"scale(0)",
+              transition:[
+                `opacity 0.32s ease ${open?0.14+i*0.04:0}s`,
+                `transform 0.36s cubic-bezier(0.16,1,0.3,1) ${open?0.14+i*0.04:0}s`,
+              ].join(","),
+              zIndex:10001,
+              pointerEvents:"none",
+              filter:`drop-shadow(0 0 5px ${grp.color}cc)`,
+            }}>
+              {grp.icon}
+            </div>
+          );
+        })}
+
         {/* ── Main circles — z 10000, render ON TOP of connector line ────────── */}
         {GROUPS.map((grp,i)=>{
           const {x,y}=POSITIONS[i];
@@ -360,7 +387,7 @@ export function DomeNav({ onSelect, activeSection, onCloseSection, autoOpenGroup
                     : `radial-gradient(circle at 42% 38%, ${grp.color}33 0%, ${grp.color}18 50%, transparent 80%)`,
                   border:`2.5px solid ${grp.color}`,
                   color:isAct?C.white:C.gold,
-                  fontFamily:"'Josefin Sans',sans-serif",fontSize:"8.5px",fontWeight:700,
+                  fontFamily:"'Josefin Sans',sans-serif",fontSize:"11px",fontWeight:700,
                   letterSpacing:"0.05em",textTransform:"uppercase",
                   display:"flex",flexDirection:"column",alignItems:"center",
                   justifyContent:"center",textAlign:"center",cursor:"pointer",
@@ -373,8 +400,6 @@ export function DomeNav({ onSelect, activeSection, onCloseSection, autoOpenGroup
                 onMouseOver={e=>{if(!isAct){const b=e.currentTarget;b.style.background=`radial-gradient(circle at 42% 38%, ${grp.color}66 0%, ${grp.color}33 50%, transparent 80%)`;b.style.color=C.white;b.style.boxShadow=`0 0 18px ${grp.color}66`;} }}
                 onMouseOut ={e=>{if(!isAct){const b=e.currentTarget;b.style.background=`radial-gradient(circle at 42% 38%, ${grp.color}33 0%, ${grp.color}18 50%, transparent 80%)`;b.style.color=C.gold;b.style.boxShadow=`0 0 10px ${grp.color}33`;}}}
               >
-                <span style={{fontSize:"17px",lineHeight:1,marginBottom:"2px"}}>{grp.icon}</span>
-                <span style={{fontSize:"7px",opacity:0.5,marginBottom:"2px",letterSpacing:"0.07em"}}>{grp.num}</span>
                 {grp.label.map((ln,j)=><span key={j} style={{display:"block"}}>{ln}</span>)}
               </button>
             </div>
