@@ -1,5 +1,6 @@
 import { useState, useCallback } from "react";
 import cootPhoto from "@assets/image_1779651061989.png";
+import navBg from "@assets/image_1779671102911.png";
 import { DomeNav } from "@/components/DomeNav";
 import { RadialLanding } from "@/components/RadialLanding";
 import { CinematicIntro } from "@/components/CinematicIntro";
@@ -121,14 +122,35 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      {/* Persistent dark background for the entire home phase — shown once splash/intro are done.
-          Sits behind both RadialLanding and DomeNav so there's never a white flash or
-          hero overlay bleeding through during the transition. */}
+      {/* Persistent background for the home phase.
+          In landing mode: plain dark so RadialLanding colours pop.
+          In nav mode (no active section): coot photo with dark overlay.
+          In nav mode with section open: photo stays but section panel covers it. */}
       {phase === "home" && (
-        <div style={{
-          position:"fixed", inset:0, zIndex:0,
-          background:"#030810",
-        }}/>
+        <div style={{ position:"fixed", inset:0, zIndex:0, overflow:"hidden" }}>
+          {/* Photo — fades in when nav mode is active */}
+          <img
+            src={navBg as string}
+            alt=""
+            aria-hidden
+            style={{
+              position:"absolute", inset:0,
+              width:"100%", height:"100%",
+              objectFit:"cover",
+              objectPosition:"center 45%",
+              opacity: mode === "nav" ? 1 : 0,
+              transition:"opacity 0.9s ease",
+            }}
+          />
+          {/* Dark overlay — keeps dome readable and adds cinematic depth */}
+          <div style={{
+            position:"absolute", inset:0,
+            background: mode === "nav"
+              ? "linear-gradient(to bottom, rgba(3,8,16,0.72) 0%, rgba(3,8,16,0.45) 50%, rgba(3,8,16,0.68) 100%)"
+              : "#030810",
+            transition:"background 0.9s ease",
+          }}/>
+        </div>
       )}
 
       {/* DomeNav — only present after the landing collapse */}
