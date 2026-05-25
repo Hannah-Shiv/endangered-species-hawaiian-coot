@@ -8,7 +8,7 @@ const CX = CW / 2, CY = CH / 2;     // 300, 300
 const RING_R  = 218;
 const NODE_R  = 27;
 const LABEL_R = 270;
-const CTR_D   = 182;
+const CTR_D   = 252;
 
 const toRad = (d: number) => d * Math.PI / 180;
 
@@ -247,8 +247,8 @@ export function Evolution() {
             strokeDasharray="4 11" />
           {NODES.map(({ n }) => {
             const a  = nodeAngle(n);
-            const x1 = CX + (CTR_D / 2 + 16) * Math.cos(a);
-            const y1 = CY + (CTR_D / 2 + 16) * Math.sin(a);
+            const x1 = CX + (CTR_D / 2 + 8) * Math.cos(a);
+            const y1 = CY + (CTR_D / 2 + 8) * Math.sin(a);
             const x2 = CX + (RING_R - NODE_R - 4) * Math.cos(a);
             const y2 = CY + (RING_R - NODE_R - 4) * Math.sin(a);
             return (
@@ -291,7 +291,7 @@ export function Evolution() {
           <img
             src={cootImg as string}
             alt="Hawaiian Coot"
-            style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 58%", display: "block" }}
+            style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 45%", display: "block", transform: "scale(1.12)", transformOrigin: "center center" }}
           />
         </motion.div>
 
