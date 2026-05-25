@@ -34,7 +34,7 @@ const GROUPS: Group[] = [
     items:[{key:"Meet the Species",label:"MEET THE SPECIES",icon:"🐦"},{key:"Evolution",label:"EVOLUTION & CLASS.",icon:"🧬"}] },
   { key:"habitat",     num:"02", icon:"🗺", color:"#06b6d4", label:["HABITAT","& FOOD"],
     items:[{key:"Habitat & Location",label:"HABITAT & LOCATION",icon:"🗺"},{key:"Food Web",label:"FOOD WEB",icon:"🦋"}] },
-  { key:"climate",     num:"03", icon:"🌧", color:"#0891b2", label:["CLIMATE","CHANGE"],
+  { key:"climate",     num:"03", icon:"🌧", color:"#3b82f6", label:["CLIMATE","CHANGE"],
     items:[{key:"Climate Stressors",label:"CLIMATE STRESSORS",icon:"🌧"},{key:"Patterns of Change",label:"PATTERNS OF CHANGE",icon:"📈"}] },
   { key:"threats",     num:"04", icon:"🏙", color:"#7c3aed", label:["THREATS","& IMPACT"],
     items:[{key:"Human Impact",label:"HUMAN IMPACT",icon:"🏙"},{key:"Predators",label:"PREDATORS",icon:"🦅"}] },
@@ -380,7 +380,8 @@ export function DomeNav({ onSelect, activeSection, onCloseSection, autoOpenGroup
                     : isAct
                       ? `0 0 0 4px rgba(3,6,16,0.6),0 0 22px ${grp.color}cc,0 0 44px ${grp.color}66`
                       : `0 0 14px ${grp.color}88, inset 0 0 12px ${grp.color}22`,
-                  transition:"background 0.2s,box-shadow 0.2s,text-shadow 0.2s",
+                  appearance:"none",WebkitAppearance:"none",
+                  transition:"box-shadow 0.2s,text-shadow 0.2s",
                 }}
               >
                 <span style={{fontSize:"20px",lineHeight:1,marginBottom:"1px"}}>{grp.icon}</span>
