@@ -203,7 +203,9 @@ const NODES = [
 ];
 
 // ─── Component ───────────────────────────────────────────────────────────────
-export function Evolution() {
+interface Props { domeOpen?: boolean }
+
+export function Evolution({ domeOpen = false }: Props) {
   const [active,  setActive]  = useState<number | null>(1);
   const [hovered, setHovered] = useState<number | null>(null);
 
@@ -231,26 +233,39 @@ export function Evolution() {
     }}>
 
       {/* ── Page title ───────────────────────────────────────────────── */}
-      <div style={{
-        position: "fixed",
-        top: "88px",
-        left: 0, right: 0,
-        textAlign: "center",
-        pointerEvents: "none",
-        zIndex: 15,
-      }}>
+      <motion.div
+        animate={{ top: domeOpen ? 450 : 92 }}
+        transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+        style={{
+          position: "fixed",
+          left: 0, right: 0,
+          textAlign: "center",
+          pointerEvents: "none",
+          zIndex: 9001,
+        }}
+      >
         <div style={{
-          color: "#ffffff",
           fontFamily: "'Josefin Sans', sans-serif",
-          fontSize: "13px",
+          fontSize: "0.7rem",
+          letterSpacing: "0.2em",
+          color: "rgba(212,175,55,1)",
           fontWeight: 700,
-          letterSpacing: "5px",
           textTransform: "uppercase",
-          opacity: 0.55,
+          marginBottom: "4px",
+        }}>
+          ◆ SECTION 09 ◆
+        </div>
+        <div style={{
+          fontFamily: "'Josefin Sans', sans-serif",
+          fontSize: "clamp(1.6rem, 3vw, 2.6rem)",
+          fontWeight: 700,
+          letterSpacing: "0.1em",
+          textTransform: "uppercase",
+          color: "rgba(212,175,55,1)",
         }}>
           Evolutionary Journey
         </div>
-      </div>
+      </motion.div>
 
       {/* ── Clock container ──────────────────────────────────────────── */}
       <div style={{

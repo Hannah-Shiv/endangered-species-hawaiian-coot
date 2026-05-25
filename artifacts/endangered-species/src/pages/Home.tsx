@@ -65,7 +65,7 @@ function CinematicSplash({ onStart }: { onStart: () => void }) {
   );
 }
 
-function renderSection(section: string | null) {
+function renderSection(section: string | null, domeOpen = false) {
   switch (section) {
     case "Meet the Species":         return <MeetSpecies />;
     case "Habitat & Location":       return <Habitat />;
@@ -76,7 +76,7 @@ function renderSection(section: string | null) {
     case "Patterns of Change":       return <PatternsOfChange />;
     case "Human Impact":             return <HumanImpact />;
     case "Conservation & Solutions": return <Conservation />;
-    case "Evolution":                return <Evolution />;
+    case "Evolution":                return <Evolution domeOpen={domeOpen} />;
     case "Extinction Risk":          return <ExtinctionRisk />;
     case "Sources & Citations":      return <Sources />;
     default:                         return null;
@@ -193,7 +193,7 @@ export default function Home() {
               overflowY:"auto",
             }}
           >
-            {renderSection(activeSection)}
+            {renderSection(activeSection, domeOpen)}
           </motion.div>
         )}
       </AnimatePresence>
