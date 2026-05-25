@@ -291,7 +291,7 @@ export function Evolution() {
           <img
             src={cootImg as string}
             alt="Hawaiian Coot"
-            style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 45%", display: "block", transform: "scale(1.12)", transformOrigin: "center center" }}
+            style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 45%", display: "block", transform: "scale(1.35)", transformOrigin: "center center" }}
           />
         </motion.div>
 
