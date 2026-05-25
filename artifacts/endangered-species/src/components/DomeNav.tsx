@@ -288,14 +288,14 @@ export function DomeNav({ onSelect, activeSection, onCloseSection, autoOpenGroup
           aria-label={open?"Close navigation":"Open navigation"} aria-expanded={open}
           data-testid="button-dome-hamburger"
           style={{width:`${BTN}px`,height:`${BTN}px`,borderRadius:"50%",background:"#8b0000",
-            border:`3px solid rgba(255,248,220,0.92)`,display:"flex",alignItems:"center",justifyContent:"center",
+            border:`3px solid #FFE87C`,display:"flex",alignItems:"center",justifyContent:"center",
             cursor:"pointer",position:"relative",zIndex:10001,
-            boxShadow:`0 0 0 1px rgba(255,248,220,0.5), 0 0 24px rgba(139,0,0,0.65)`,
+            boxShadow:`0 0 0 1px rgba(255,232,124,0.4), 0 0 24px rgba(139,0,0,0.65)`,
             transition:"box-shadow 0.3s"}}>
           <motion.div animate={{rotate:open?90:0}} transition={{duration:0.35,ease:[0.4,0,0.2,1]}}
             style={{display:"flex",flexDirection:"column",gap:"5px",alignItems:"center"}}>
             {[0,1,2].map(n=>(
-              <span key={n} style={{display:"block",width:"28px",height:"1.5px",borderRadius:"1px",background:"rgba(255,248,220,0.92)"}}/>
+              <span key={n} style={{display:"block",width:"28px",height:"1.5px",borderRadius:"1px",background:"#FFE87C"}}/>
             ))}
           </motion.div>
         </button>
