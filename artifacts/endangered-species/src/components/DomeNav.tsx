@@ -103,29 +103,52 @@ function arcPos(i: number) {
 const POSITIONS = GROUPS.map((_, i) => arcPos(i));
 
 /**
- * Unified connector path — works for ALL circles.
+ * Connector path — starts at the EDGE of the active circle, ends at the top
+ * of the sub-item pill container.
  *
- * Starts at the circle CENTRE (M x y).  That segment is invisible because the
- * circle button sits at z:10000 while the connector SVG is at z:9999.  Any
- * other circles the vertical leg passes through also cover the line naturally.
+ * Outermost circles (i=0, i=5):
+ *   Their y=0 means a straight-down leg would clip through the adjacent circles.
+ *   Instead, exit from the LEFT (i=0) or RIGHT (i=5) edge of the circle and
+ *   route the vertical leg OUTSIDE the entire semicircle before sweeping to
+ *   centre.
  *
- *   M(cx, cy)              ← centre of active circle   [hidden]
- *   L(cx, RAIL_Y − r)      ← straight down to corner
- *   Q(cx, RAIL_Y,          ← rounded corner turning toward centre
- *     cx + sign·r, RAIL_Y)
- *   L(0, RAIL_Y)           ← sweep to rail centre
- *   L(0, SUB_SVG)          ← drop to pill top
- *
- * sign = +1 for left circles (x < 0) so the corner sweeps rightward.
- * sign = −1 for right circles (x > 0) so the corner sweeps leftward.
+ * Inner circles (i=1..4):
+ *   Start at the BOTTOM edge of the circle (x, y + IHLF) and go straight
+ *   down — these legs clear all neighbours.
  */
-function connectorPath(x: number, y: number): string {
+function connectorPath(x: number, y: number, idx: number): string {
   const r    = 18;
   const rail = RAIL_Y;
-  const sign = x < 0 ? 1 : -1;
+  const cr   = IHLF;   // circle radius = 42
 
+  if (idx === 0) {
+    // Leftmost: exit left edge, route outward of all circles, sweep right to centre
+    const sx = x - cr;               // −200
+    return [
+      `M ${sx} ${y}`,
+      `L ${sx} ${rail - r}`,
+      `Q ${sx} ${rail} ${sx + r} ${rail}`,
+      `L 0 ${rail}`,
+      `L 0 ${SUB_SVG}`,
+    ].join(" ");
+  }
+
+  if (idx === GROUPS.length - 1) {
+    // Rightmost: exit right edge, route outward of all circles, sweep left to centre
+    const sx = x + cr;               // +200
+    return [
+      `M ${sx} ${y}`,
+      `L ${sx} ${rail - r}`,
+      `Q ${sx} ${rail} ${sx - r} ${rail}`,
+      `L 0 ${rail}`,
+      `L 0 ${SUB_SVG}`,
+    ].join(" ");
+  }
+
+  // Inner circles: exit from bottom edge, go straight down, sweep to centre
+  const sign = x < 0 ? 1 : -1;
   return [
-    `M ${x} ${y}`,
+    `M ${x} ${y + cr}`,
     `L ${x} ${rail - r}`,
     `Q ${x} ${rail} ${x + sign * r} ${rail}`,
     `L 0 ${rail}`,
@@ -208,7 +231,7 @@ export function DomeNav({ onSelect, activeSection, onCloseSection, autoOpenGroup
   const activeIdx = group ? GROUPS.findIndex(g=>g.key===group) : -1;
   const ax = activeIdx>=0 ? POSITIONS[activeIdx].x : 0;
   const ay = activeIdx>=0 ? POSITIONS[activeIdx].y : 0;
-  const cPath = activeIdx>=0 ? connectorPath(ax, ay) : "";
+  const cPath = activeIdx>=0 ? connectorPath(ax, ay, activeIdx) : "";
 
   return (
     <>
