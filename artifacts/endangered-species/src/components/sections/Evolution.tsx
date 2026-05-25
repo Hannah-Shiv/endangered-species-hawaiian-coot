@@ -3,18 +3,18 @@ import { motion, AnimatePresence } from "framer-motion";
 import cootImg from "@assets/image_1779671102911.png";
 
 // ─── Geometry ────────────────────────────────────────────────────────────────
-const CW = 560, CH = 560;
-const CX = CW / 2, CY = CH / 2;
-const RING_R  = 202;
-const NODE_R  = 22;
-const LABEL_R = 258;
-const CTR_D   = 168;
+// paddingTop:80 on outer flex shifts clock center ~40px below screen mid
+const CW = 520, CH = 520;
+const CX = CW / 2, CY = CH / 2;   // 260, 260
+const RING_R  = 190;
+const NODE_R  = 27;
+const LABEL_R = 244;
+const CTR_D   = 156;
 
 const toRad = (d: number) => d * Math.PI / 180;
 
-function nodeAngle(n: number) {
-  return toRad((n - 1) * 30 - 90);
-}
+// n=12 → 12 o'clock top, n=1 → 1 o'clock, clockwise
+function nodeAngle(n: number) { return toRad(n * 30 - 90); }
 function nodeXY(n: number) {
   const a = nodeAngle(n);
   return { x: CX + RING_R * Math.cos(a), y: CY + RING_R * Math.sin(a) };
@@ -24,19 +24,17 @@ function labelXY(n: number) {
   return { x: CX + LABEL_R * Math.cos(a), y: CY + LABEL_R * Math.sin(a) };
 }
 function labelTX(n: number): string {
-  const a = nodeAngle(n);
-  const cosA = Math.cos(a), sinA = Math.sin(a);
-  const tx = cosA < -0.2 ? "-100%" : Math.abs(cosA) <= 0.2 ? "-50%" : "0";
-  const ty = sinA < -0.15 ? "-100%" : "0";
+  const a  = nodeAngle(n);
+  const cx = Math.cos(a), sy = Math.sin(a);
+  const tx = cx < -0.2 ? "-100%" : Math.abs(cx) <= 0.2 ? "-50%" : "0";
+  const ty = sy < -0.15 ? "-100%" : "0";
   return `translate(${tx},${ty})`;
 }
 
 // ─── Node data ────────────────────────────────────────────────────────────────
 const NODES = [
   {
-    n: 1,
-    title: "Ancient Rail Ancestors",
-    era: "~65 Million Years Ago",
+    n: 1, title: "Ancient Rail Ancestors", era: "~65 Million Years Ago",
     color: "#00e5cc",
     why: [
       "Rail family emerges after the dinosaur extinction — the evolutionary foundation of all modern rails.",
@@ -50,14 +48,12 @@ const NODES = [
     ],
   },
   {
-    n: 2,
-    title: "Wetland Adaptation",
-    era: "~30 Million Years Ago",
+    n: 2, title: "Wetland Adaptation", era: "~30 Million Years Ago",
     color: "#22ddff",
     why: [
       "Adapting to marshes was the critical evolutionary step that defined modern coots.",
       "Lobed feet made coots unique among rails — more aquatic than any relative.",
-      "Wetland specialization created the ecological niche the Hawaiian Coot would inherit.",
+      "Wetland specialization created the niche the Hawaiian Coot would inherit.",
     ],
     details: [
       "Rails begin specializing in shallow freshwater and brackish wetland environments.",
@@ -66,14 +62,12 @@ const NODES = [
     ],
   },
   {
-    n: 3,
-    title: "Pacific Expansion",
-    era: "~10 Million Years Ago",
+    n: 3, title: "Pacific Expansion", era: "~10 Million Years Ago",
     color: "#44bbff",
     why: [
       "The Fulica genus becomes a global success — the most widespread rail lineage on Earth.",
       "Continental distribution proves these birds were built for long-distance dispersal.",
-      "Pacific expansion laid the groundwork for the ultimate oceanic crossing to Hawai'i.",
+      "Pacific expansion laid the groundwork for the oceanic crossing to Hawai'i.",
     ],
     details: [
       "Genus Fulica spreads across the Americas, Europe, Africa, and Australasia.",
@@ -82,9 +76,7 @@ const NODES = [
     ],
   },
   {
-    n: 4,
-    title: "Oceanic Dispersal",
-    era: "~1 Million Years Ago",
+    n: 4, title: "Oceanic Dispersal", era: "~1 Million Years Ago",
     color: "#6699ff",
     why: [
       "One of the most remarkable overwater colonization events in bird evolution history.",
@@ -98,9 +90,7 @@ const NODES = [
     ],
   },
   {
-    n: 5,
-    title: "Arrival in Hawai'i",
-    era: "~500,000 Years Ago",
+    n: 5, title: "Arrival in Hawai'i", era: "~500,000 Years Ago",
     color: "#8866ff",
     why: [
       "Hawaii's rich freshwater wetlands provide a perfect new ecological niche.",
@@ -114,9 +104,7 @@ const NODES = [
     ],
   },
   {
-    n: 6,
-    title: "Island Isolation",
-    era: "~10,000 Years Ago",
+    n: 6, title: "Island Isolation", era: "~10,000 Years Ago",
     color: "#aa44ff",
     why: [
       "Isolation is the engine of speciation — the Hawaiian Coot becomes uniquely Hawaiian.",
@@ -126,32 +114,28 @@ const NODES = [
     details: [
       "Geographic isolation from mainland Fulica populations prevents gene flow.",
       "Natural selection favors traits specific to island wetland conditions.",
-      "The white frontal shield — a key diagnostic feature — increases in size and prominence.",
+      "The white frontal shield — a key diagnostic feature — increases in prominence.",
     ],
   },
   {
-    n: 7,
-    title: "Fulica alai Emerges",
-    era: "Ancient Hawai'i",
+    n: 7, title: "Fulica alai Emerges", era: "Ancient Hawai'i",
     color: "#ff44aa",
     why: [
       "A new endemic species is born — uniquely Hawaiian, found nowhere else on Earth.",
-      "The Hawaiian name 'ʻalae keokeo' (white-fronted mudhen) reflects deep cultural roots.",
+      "The Hawaiian name 'ʻalae keokeo' reflects deep cultural roots in the islands.",
       "Endemism means the world loses something irreplaceable if this species disappears.",
     ],
     details: [
-      "Fulica alai is distinguished from American Coot (F. americana) by its larger white frontal shield.",
-      "Some individuals show red-tipped shields — a color polymorphism unique to the Hawaiian population.",
+      "Fulica alai is distinguished from American Coot by its larger white frontal shield.",
+      "Some individuals show red-tipped shields — a color polymorphism unique to Hawaii.",
       "The species appears in Hawaiian oral tradition and mythology (moʻolelo).",
     ],
   },
   {
-    n: 8,
-    title: "Native Wetland Ecosystem",
-    era: "Pre-human Hawai'i",
+    n: 8, title: "Native Wetland Ecosystem", era: "Pre-human Hawai'i",
     color: "#ff6644",
     why: [
-      "Thriving coot numbers reflect the health of intact Hawaiian wetland ecosystems.",
+      "Thriving numbers reflect the health of intact Hawaiian wetland ecosystems.",
       "Balance between species created a resilient, interconnected food web.",
       "Understanding pre-human abundance sets realistic recovery targets for today.",
     ],
@@ -162,46 +146,40 @@ const NODES = [
     ],
   },
   {
-    n: 9,
-    title: "Human Settlement Impact",
-    era: "1700s – 1900s",
+    n: 9, title: "Human Settlement Impact", era: "1700s – 1900s",
     color: "#ffaa22",
     why: [
       "Human arrival transformed every Hawaiian ecosystem — wetlands suffered most.",
       "Introduced predators changed the survival calculus of ground-nesting birds overnight.",
-      "Understanding this impact drives modern conservation strategy and priorities.",
+      "Understanding this impact drives modern conservation strategy.",
     ],
     details: [
       "Western settlement brings large-scale wetland drainage for agriculture and development.",
       "Introduced predators — rats, mongooses, cats, and dogs — devastate ground-nesting birds.",
-      "Market hunting and the feather trade reduce populations further through the late 1800s.",
+      "Market hunting and the feather trade reduce populations through the late 1800s.",
     ],
   },
   {
-    n: 10,
-    title: "Near Extinction",
-    era: "1970s",
+    n: 10, title: "Near Extinction", era: "1970s",
     color: "#ffcc00",
     why: [
       "Fewer than 1,000 birds — a grim milestone that triggered federal protection.",
-      "Near-extinction creates genetic bottlenecks that affect populations for generations.",
-      "This crisis proved that endemic island birds cannot recover without human intervention.",
+      "Near-extinction creates genetic bottlenecks affecting populations for generations.",
+      "This crisis proved endemic island birds cannot recover without human intervention.",
     ],
     details: [
       "Hawaiian Coot populations drop to fewer than 1,000 individuals by the early 1970s.",
       "Listed as Endangered under the U.S. Endangered Species Act in 1970.",
-      "Combined pressures of wetland loss, introduced predators, and low genetic diversity compound the crisis.",
+      "Wetland loss, introduced predators, and low genetic diversity compound the crisis.",
     ],
   },
   {
-    n: 11,
-    title: "Conservation Efforts",
-    era: "1980s – Present",
+    n: 11, title: "Conservation Efforts", era: "1980s – Present",
     color: "#88dd00",
     why: [
       "Recovery proves that dedicated conservation action can reverse extinction trajectories.",
       "Wetland refuges demonstrate that habitat restoration delivers measurable results.",
-      "The coot's comeback became a model for Hawaiian waterbird conservation programs.",
+      "The coot's comeback became a model for Hawaiian waterbird conservation.",
     ],
     details: [
       "James Campbell and Keālia Pond National Wildlife Refuges established as critical habitat.",
@@ -210,9 +188,7 @@ const NODES = [
     ],
   },
   {
-    n: 12,
-    title: "Hope for the Future",
-    era: "Today & Beyond",
+    n: 12, title: "Hope for the Future", era: "Today & Beyond",
     color: "#22ee88",
     why: [
       "Current populations exceed 2,000 birds — a genuine conservation success story.",
@@ -229,11 +205,15 @@ const NODES = [
 
 // ─── Component ───────────────────────────────────────────────────────────────
 export function Evolution() {
-  const [active, setActive] = useState<number | null>(null);
+  const [active, setActive] = useState<number | null>(1);
 
   const curr = active !== null ? NODES[active - 1] : null;
-  const goPrev = () => setActive(a => a == null ? null : a === 1 ? 12 : a - 1);
-  const goNext = () => setActive(a => a == null ? null : a === 12 ? 1 : a + 1);
+  const goPrev = () => setActive(a => a == null ? 1 : a === 1 ? 12 : a - 1);
+  const goNext = () => setActive(a => a == null ? 1 : a === 12 ? 1 : a + 1);
+
+  // Panels: height 430px, centered at (50vh + ~40px) to match clock center
+  const PANEL_H = 430;
+  const panelTopCSS = `calc(50vh - ${PANEL_H / 2 - 40}px)`;  // 50vh - 175px
 
   return (
     <div style={{
@@ -242,44 +222,19 @@ export function Evolution() {
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
+      paddingTop: "80px",      // pushes clock centre ~40px below screen mid → clears DomeNav
+      boxSizing: "border-box",
       overflow: "hidden",
       fontFamily: "'Josefin Sans', sans-serif",
     }}>
 
-      {/* ── Page header ─────────────────────────────────────────────── */}
+      {/* ── Clock container ──────────────────────────────────────────── */}
       <div style={{
-        position: "absolute", top: 16, left: 0, right: 0,
-        textAlign: "center", pointerEvents: "none", zIndex: 5,
+        position: "relative",
+        width: CW, height: CH,
+        flexShrink: 0,
+        overflow: "visible",   // labels can extend outside the box
       }}>
-        <div style={{ color: "rgba(0,229,204,0.6)", fontSize: "9.5px", letterSpacing: "4px", textTransform: "uppercase" }}>
-          Hawaiian Coot · Fulica alai
-        </div>
-        <div style={{ color: "#fff", fontFamily: "'Playfair Display', serif", fontSize: "17px", marginTop: 3 }}>
-          Evolutionary Journey
-        </div>
-        <AnimatePresence mode="wait">
-          {!active ? (
-            <motion.div
-              key="hint"
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-              style={{ color: "rgba(255,255,255,0.32)", fontSize: "9.5px", letterSpacing: "2px", marginTop: 4 }}
-            >
-              Select any milestone to explore its story
-            </motion.div>
-          ) : (
-            <motion.div
-              key="active-title"
-              initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
-              style={{ color: curr!.color, fontSize: "11px", letterSpacing: "1.5px", marginTop: 4, fontWeight: 700 }}
-            >
-              {curr!.title.toUpperCase()}
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-
-      {/* ── Clock container ─────────────────────────────────────────── */}
-      <div style={{ position: "relative", width: CW, height: CH, flexShrink: 0 }}>
 
         {/* SVG rings + spokes */}
         <svg
@@ -291,23 +246,23 @@ export function Evolution() {
             stroke="rgba(0,229,204,0.09)" strokeWidth={1.5} fill="none" />
           {/* Dashed main ring */}
           <circle cx={CX} cy={CY} r={RING_R}
-            stroke="rgba(0,229,204,0.30)" strokeWidth={1} fill="none"
-            strokeDasharray="3 9" />
+            stroke="rgba(0,229,204,0.28)" strokeWidth={1} fill="none"
+            strokeDasharray="3 10" />
           {/* Inner ring around medallion */}
           <circle cx={CX} cy={CY} r={CTR_D / 2 + 14}
-            stroke="rgba(0,229,204,0.22)" strokeWidth={1} fill="none" />
+            stroke="rgba(0,229,204,0.20)" strokeWidth={1} fill="none" />
           {/* Spokes */}
           {NODES.map(({ n }) => {
-            const a = nodeAngle(n);
+            const a  = nodeAngle(n);
             const x1 = CX + (CTR_D / 2 + 16) * Math.cos(a);
             const y1 = CY + (CTR_D / 2 + 16) * Math.sin(a);
             const x2 = CX + (RING_R - NODE_R - 3) * Math.cos(a);
             const y2 = CY + (RING_R - NODE_R - 3) * Math.sin(a);
             return (
               <line key={n} x1={x1} y1={y1} x2={x2} y2={y2}
-                stroke={active === n ? `${NODES[n-1].color}55` : "rgba(0,229,204,0.13)"}
-                strokeWidth={active === n ? 1.5 : 1}
-                style={{ transition: "stroke 0.3s" }}
+                stroke={active === n ? `${NODES[n-1].color}66` : "rgba(0,229,204,0.12)"}
+                strokeWidth={active === n ? 2 : 1}
+                style={{ transition: "stroke 0.3s, stroke-width 0.3s" }}
               />
             );
           })}
@@ -318,8 +273,8 @@ export function Evolution() {
               <circle cx={p.x} cy={p.y} r={NODE_R + 9}
                 fill="none"
                 stroke={NODES[active - 1].color}
-                strokeWidth={1.5}
-                strokeOpacity={0.35}
+                strokeWidth={2}
+                strokeOpacity={0.45}
               />
             );
           })()}
@@ -329,9 +284,9 @@ export function Evolution() {
         <motion.div
           animate={{
             boxShadow: [
-              "0 0 24px rgba(0,229,204,0.40), 0 0 56px rgba(0,229,204,0.14)",
-              "0 0 38px rgba(0,229,204,0.60), 0 0 80px rgba(0,229,204,0.22)",
-              "0 0 24px rgba(0,229,204,0.40), 0 0 56px rgba(0,229,204,0.14)",
+              "0 0 22px rgba(0,229,204,0.38), 0 0 52px rgba(0,229,204,0.12)",
+              "0 0 36px rgba(0,229,204,0.58), 0 0 76px rgba(0,229,204,0.20)",
+              "0 0 22px rgba(0,229,204,0.38), 0 0 52px rgba(0,229,204,0.12)",
             ],
           }}
           transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
@@ -341,92 +296,95 @@ export function Evolution() {
             width: CTR_D, height: CTR_D,
             borderRadius: "50%",
             overflow: "hidden",
-            border: "2.5px solid rgba(0,229,204,0.50)",
+            border: "2.5px solid rgba(0,229,204,0.48)",
           }}
         >
           <img
             src={cootImg as string}
             alt="Hawaiian Coot"
-            style={{
-              width: "100%", height: "100%",
-              objectFit: "cover", objectPosition: "center 58%",
-            }}
+            style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 58%" }}
           />
-          {/* Overlay */}
+          {/* Semi-transparent overlay with idle title */}
           <div style={{
             position: "absolute", inset: 0,
-            background: "rgba(3,8,16,0.35)",
+            background: "rgba(3,8,16,0.40)",
             display: "flex", flexDirection: "column",
             alignItems: "center", justifyContent: "center",
           }}>
             <AnimatePresence mode="wait">
-              {active ? (
-                <motion.div
-                  key={`ctr-${active}`}
-                  initial={{ opacity: 0, scale: 0.7 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.7 }}
-                  transition={{ duration: 0.25 }}
-                  style={{
-                    color: curr!.color,
-                    fontSize: "32px", fontWeight: 700,
-                    textShadow: `0 0 24px ${curr!.color}`,
-                  }}
+              {!active ? (
+                <motion.div key="idle"
+                  initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                  style={{ textAlign: "center", padding: "0 10px" }}
                 >
-                  {active}
+                  <div style={{ color: "#00e5cc", fontSize: "9px", letterSpacing: "3px", textTransform: "uppercase" }}>Evolutionary</div>
+                  <div style={{ color: "#fff", fontFamily: "'Playfair Display',serif", fontSize: "13px", marginTop: 3 }}>Journey</div>
                 </motion.div>
               ) : (
-                <motion.div
-                  key="ctr-idle"
-                  initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                  style={{ textAlign: "center" }}
+                <motion.div key={`node-${active}`}
+                  initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }}
+                  transition={{ duration: 0.22 }}
+                  style={{
+                    width: "100%", textAlign: "center", padding: "0 10px",
+                  }}
                 >
-                  <div style={{ color: "#00e5cc", fontSize: "9px", letterSpacing: "3px" }}>CLICK A</div>
-                  <div style={{ color: "#fff", fontFamily: "'Playfair Display',serif", fontSize: "12px", marginTop: 2 }}>milestone</div>
+                  <div style={{ color: curr!.color, fontSize: "9px", letterSpacing: "2.5px", textTransform: "uppercase", fontWeight: 700 }}>Node {active} of 12</div>
+                  <div style={{ color: "#fff", fontFamily: "'Playfair Display',serif", fontSize: "11px", marginTop: 3, lineHeight: 1.3 }}>{curr!.title}</div>
                 </motion.div>
               )}
             </AnimatePresence>
           </div>
         </motion.div>
 
-        {/* Node circles */}
+        {/* Node circles — NO number label inside */}
         {NODES.map(node => {
           const { x, y } = nodeXY(node.n);
           const isActive = active === node.n;
           return (
             <motion.button
               key={node.n}
-              whileHover={{ scale: 1.18 }}
-              whileTap={{ scale: 0.9 }}
+              whileHover={{ scale: 1.20 }}
+              whileTap={{ scale: 0.88 }}
               onClick={() => setActive(isActive ? null : node.n)}
               style={{
                 position: "absolute",
                 left: x - NODE_R, top: y - NODE_R,
                 width: NODE_R * 2, height: NODE_R * 2,
                 borderRadius: "50%",
-                background: isActive ? node.color : "rgba(3,8,16,0.88)",
-                border: `2.5px solid ${node.color}`,
+                background: isActive
+                  ? node.color
+                  : "rgba(3,8,16,0.88)",
+                border: `3px solid ${node.color}`,
                 color: isActive ? "#030810" : node.color,
-                fontSize: "12px", fontWeight: 700,
+                fontSize: "14px",
+                fontWeight: 700,
                 cursor: "pointer",
                 display: "flex", alignItems: "center", justifyContent: "center",
                 boxShadow: isActive
-                  ? `0 0 18px ${node.color}cc, 0 0 38px ${node.color}66`
-                  : `0 0 8px ${node.color}44`,
+                  ? `0 0 22px ${node.color}dd, 0 0 44px ${node.color}77`
+                  : `0 0 10px ${node.color}55`,
                 zIndex: 3,
-                transition: "background 0.2s, color 0.2s, box-shadow 0.2s",
+                transition: "background 0.22s, box-shadow 0.22s, color 0.22s",
                 outline: "none",
                 padding: 0,
               }}
             >
-              {node.n}
+              {/* Just a dot/ring — no number */}
+              <div style={{
+                width: isActive ? 10 : 8,
+                height: isActive ? 10 : 8,
+                borderRadius: "50%",
+                background: isActive ? "#030810" : node.color,
+                transition: "all 0.22s",
+              }} />
             </motion.button>
           );
         })}
 
-        {/* Labels */}
+        {/* Labels — bright, larger, glow when active */}
         {NODES.map(node => {
           const { x, y } = labelXY(node.n);
+          const isActive = active === node.n;
           return (
             <div
               key={`lbl-${node.n}`}
@@ -435,22 +393,33 @@ export function Evolution() {
                 left: x, top: y,
                 transform: labelTX(node.n),
                 pointerEvents: "none",
-                maxWidth: 88,
+                maxWidth: 92,
                 zIndex: 2,
-                opacity: active && active !== node.n ? 0.35 : 1,
+                opacity: active && !isActive ? 0.42 : 1,
                 transition: "opacity 0.3s",
               }}
             >
               <div style={{
                 color: node.color,
-                fontSize: "9.5px", fontWeight: 700,
-                lineHeight: 1.25, letterSpacing: "0.3px",
+                fontSize: "12px",
+                fontWeight: 700,
+                lineHeight: 1.25,
+                letterSpacing: "0.3px",
+                textShadow: isActive
+                  ? `0 0 8px ${node.color}, 0 0 18px ${node.color}88`
+                  : "none",
+                transition: "text-shadow 0.3s",
               }}>
                 {node.title}
               </div>
               <div style={{
-                color: "rgba(255,255,255,0.42)",
-                fontSize: "8.5px", lineHeight: 1.25, marginTop: 1,
+                color: isActive ? node.color : "rgba(255,255,255,0.60)",
+                fontSize: "10.5px",
+                lineHeight: 1.25,
+                marginTop: 2,
+                fontWeight: isActive ? 600 : 400,
+                textShadow: isActive ? `0 0 6px ${node.color}88` : "none",
+                transition: "color 0.3s, text-shadow 0.3s",
               }}>
                 {node.era}
               </div>
@@ -470,48 +439,52 @@ export function Evolution() {
             transition={{ duration: 0.42, ease: [0.16, 1, 0.3, 1] }}
             style={{
               position: "fixed",
-              left: 0, top: 0, bottom: 0,
-              width: 262,
+              left: 0,
+              top: panelTopCSS,
+              height: PANEL_H,
+              width: 265,
               background: "rgba(3,8,16,0.97)",
-              borderRight: `1px solid ${curr.color}33`,
-              padding: "70px 22px 28px",
+              borderRight: `1px solid ${curr.color}44`,
+              borderTop: `1px solid ${curr.color}22`,
+              borderBottom: `1px solid ${curr.color}22`,
+              borderRadius: "0 12px 12px 0",
+              padding: "28px 24px 24px",
               zIndex: 20,
               display: "flex",
               flexDirection: "column",
             }}
           >
-            {/* Header badge */}
+            {/* Header */}
             <motion.div
               key={`lh-${curr.n}`}
               initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: 0.1 }}
+              transition={{ duration: 0.28, delay: 0.08 }}
               style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 22 }}
             >
               <div style={{
-                width: 28, height: 28, borderRadius: "50%",
+                width: 30, height: 30, borderRadius: "50%",
                 background: curr.color,
                 display: "flex", alignItems: "center", justifyContent: "center",
-                color: "#030810", fontSize: "12px", fontWeight: 700, flexShrink: 0,
+                color: "#030810", fontSize: "13px", fontWeight: 700, flexShrink: 0,
               }}>{curr.n}</div>
               <div style={{
                 color: "#FFE87C",
-                fontSize: "10px", letterSpacing: "2.5px",
+                fontSize: "11px", letterSpacing: "2.5px",
                 textTransform: "uppercase", fontWeight: 700,
               }}>Why This Matters</div>
             </motion.div>
 
             {/* Bullets */}
-            <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 18, flex: 1 }}>
               {curr.why.map((pt, i) => (
-                <motion.div
-                  key={`${curr.n}-why-${i}`}
-                  initial={{ opacity: 0, x: -12 }}
+                <motion.div key={`${curr.n}-why-${i}`}
+                  initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.3, delay: 0.15 + i * 0.07 }}
+                  transition={{ duration: 0.28, delay: 0.14 + i * 0.07 }}
                   style={{ display: "flex", gap: 10 }}
                 >
-                  <div style={{ color: curr.color, fontSize: "13px", flexShrink: 0, lineHeight: 1.6 }}>—</div>
-                  <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "12.5px", lineHeight: 1.62 }}>{pt}</div>
+                  <div style={{ color: curr.color, fontSize: "15px", flexShrink: 0, lineHeight: 1.6 }}>—</div>
+                  <div style={{ color: "rgba(255,255,255,0.88)", fontSize: "14px", lineHeight: 1.65 }}>{pt}</div>
                 </motion.div>
               ))}
             </div>
@@ -519,7 +492,7 @@ export function Evolution() {
         )}
       </AnimatePresence>
 
-      {/* ── RIGHT PANEL — Details + Prev/Next ───────────────────────── */}
+      {/* ── RIGHT PANEL — Details ────────────────────────────────────── */}
       <AnimatePresence>
         {curr && (
           <motion.div
@@ -530,23 +503,27 @@ export function Evolution() {
             transition={{ duration: 0.42, ease: [0.16, 1, 0.3, 1] }}
             style={{
               position: "fixed",
-              right: 0, top: 0, bottom: 0,
-              width: 278,
+              right: 0,
+              top: panelTopCSS,
+              height: PANEL_H,
+              width: 275,
               background: "rgba(3,8,16,0.97)",
-              borderLeft: `1px solid ${curr.color}33`,
-              padding: "70px 24px 28px",
+              borderLeft: `1px solid ${curr.color}44`,
+              borderTop: `1px solid ${curr.color}22`,
+              borderBottom: `1px solid ${curr.color}22`,
+              borderRadius: "12px 0 0 12px",
+              padding: "28px 26px 24px",
               zIndex: 20,
               display: "flex",
               flexDirection: "column",
             }}
           >
             {/* Badge + title */}
-            <motion.div
-              key={`rh-${curr.n}`}
+            <motion.div key={`rh-${curr.n}`}
               initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: 0.1 }}
+              transition={{ duration: 0.28, delay: 0.08 }}
             >
-              <div style={{ display: "flex", gap: 12, alignItems: "center", marginBottom: 12 }}>
+              <div style={{ display: "flex", gap: 12, alignItems: "center", marginBottom: 10 }}>
                 <div style={{
                   width: 34, height: 34, borderRadius: "50%",
                   background: curr.color,
@@ -554,70 +531,98 @@ export function Evolution() {
                   color: "#030810", fontSize: "15px", fontWeight: 700, flexShrink: 0,
                 }}>{curr.n}</div>
                 <div style={{
-                  color: "#fff", fontSize: "13px", fontWeight: 700,
+                  color: "#fff", fontSize: "14px", fontWeight: 700,
                   letterSpacing: "0.4px", lineHeight: 1.3,
                 }}>{curr.title}</div>
               </div>
 
-              {/* Era */}
+              {/* Era — italic serif, coloured */}
               <div style={{
                 color: curr.color,
                 fontFamily: "'Playfair Display', serif",
-                fontSize: "19px", fontStyle: "italic",
+                fontSize: "20px", fontStyle: "italic",
                 marginBottom: 20, lineHeight: 1.3,
               }}>
                 {curr.era}
               </div>
             </motion.div>
 
-            {/* Details */}
-            <div style={{ display: "flex", flexDirection: "column", gap: 15, flex: 1 }}>
+            {/* Detail bullets */}
+            <div style={{ display: "flex", flexDirection: "column", gap: 16, flex: 1 }}>
               {curr.details.map((d, i) => (
-                <motion.div
-                  key={`${curr.n}-det-${i}`}
-                  initial={{ opacity: 0, x: 12 }}
+                <motion.div key={`${curr.n}-det-${i}`}
+                  initial={{ opacity: 0, x: 10 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.3, delay: 0.18 + i * 0.07 }}
+                  transition={{ duration: 0.28, delay: 0.16 + i * 0.07 }}
                   style={{ display: "flex", gap: 10 }}
                 >
-                  <div style={{ color: curr.color, fontSize: "13px", flexShrink: 0, lineHeight: 1.6 }}>—</div>
-                  <div style={{ color: "rgba(255,255,255,0.85)", fontSize: "12.5px", lineHeight: 1.62 }}>{d}</div>
+                  <div style={{ color: curr.color, fontSize: "15px", flexShrink: 0, lineHeight: 1.6 }}>—</div>
+                  <div style={{ color: "rgba(255,255,255,0.88)", fontSize: "14px", lineHeight: 1.65 }}>{d}</div>
                 </motion.div>
               ))}
             </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-            {/* Prev / Next */}
+      {/* ── PREV / NEXT — bottom center, clear of the ✕ button ─────── */}
+      <AnimatePresence>
+        {curr && (
+          <motion.div
+            key="nav-bar"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 16 }}
+            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            style={{
+              position: "fixed",
+              bottom: 28,
+              left: "50%",
+              transform: "translateX(-50%)",
+              display: "flex",
+              alignItems: "center",
+              gap: 20,
+              zIndex: 25,
+              background: "rgba(3,8,16,0.90)",
+              border: `1px solid ${curr.color}44`,
+              borderRadius: 40,
+              padding: "10px 22px",
+            }}
+          >
+            <button onClick={goPrev} style={{
+              background: "none", border: "none",
+              color: curr.color, fontSize: "13px", fontWeight: 700,
+              letterSpacing: "1.5px", cursor: "pointer",
+              fontFamily: "'Josefin Sans',sans-serif",
+              padding: "4px 8px",
+            }}>← PREV</button>
+
             <div style={{
-              display: "flex", alignItems: "center", justifyContent: "space-between",
-              marginTop: "auto", paddingTop: 18,
-              borderTop: `1px solid ${curr.color}28`,
+              display: "flex", gap: 6, alignItems: "center",
             }}>
-              <button
-                onClick={goPrev}
-                style={{
-                  background: "rgba(255,255,255,0.06)",
-                  border: `1px solid ${curr.color}66`,
-                  color: "#fff",
-                  padding: "7px 14px", borderRadius: 5,
-                  cursor: "pointer", fontSize: "11px",
-                  letterSpacing: "1px", fontFamily: "'Josefin Sans',sans-serif",
-                }}
-              >← PREV</button>
-              <div style={{ color: "rgba(255,255,255,0.36)", fontSize: "11px" }}>
-                {curr.n} / 12
-              </div>
-              <button
-                onClick={goNext}
-                style={{
-                  background: "rgba(255,255,255,0.06)",
-                  border: `1px solid ${curr.color}66`,
-                  color: "#fff",
-                  padding: "7px 14px", borderRadius: 5,
-                  cursor: "pointer", fontSize: "11px",
-                  letterSpacing: "1px", fontFamily: "'Josefin Sans',sans-serif",
-                }}
-              >NEXT →</button>
+              {NODES.map(n => (
+                <button key={n.n} onClick={() => setActive(n.n)} style={{
+                  width: active === n.n ? 22 : 7,
+                  height: 7, borderRadius: 4,
+                  background: active === n.n ? n.color : "rgba(255,255,255,0.20)",
+                  border: "none", cursor: "pointer", padding: 0,
+                  transition: "all 0.3s",
+                  flexShrink: 0,
+                }} />
+              ))}
             </div>
+
+            <div style={{ color: "rgba(255,255,255,0.42)", fontSize: "12px", minWidth: 36, textAlign: "center" }}>
+              {curr.n} / 12
+            </div>
+
+            <button onClick={goNext} style={{
+              background: "none", border: "none",
+              color: curr.color, fontSize: "13px", fontWeight: 700,
+              letterSpacing: "1.5px", cursor: "pointer",
+              fontFamily: "'Josefin Sans',sans-serif",
+              padding: "4px 8px",
+            }}>NEXT →</button>
           </motion.div>
         )}
       </AnimatePresence>
