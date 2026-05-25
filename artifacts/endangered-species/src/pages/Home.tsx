@@ -164,7 +164,7 @@ export default function Home() {
             transition={{ duration:0.45, ease:[0.16,1,0.3,1] }}
             style={{
               position:"fixed",
-              top: domeOpen ? "270px" : "0px",
+              top: domeOpen ? "465px" : "0px",
               left:0, right:0, bottom:0,
               zIndex:9000,
               transition:"top 0.45s cubic-bezier(0.16,1,0.3,1)",
