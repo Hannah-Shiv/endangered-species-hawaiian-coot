@@ -337,14 +337,14 @@ export function DomeNav({ onSelect, activeSection, onCloseSection, autoOpenGroup
           const {x,y}=POSITIONS[i];
           const left=HALF+x-IHLF, top=HALF+y-IHLF;
           const toX=IHLF-x, toY=IHLF-y;
-          const isAct=group===grp.key, isDim=group!==null&&!isAct;
+          const isAct=group===grp.key;
           return (
             <div key={grp.key} style={{
               position:"absolute",left:`${left}px`,top:`${top}px`,
               width:`${ITEM}px`,height:`${ITEM}px`,
               transformOrigin:`${toX}px ${toY}px`,
               transform:open?"scale(1)":"scale(0.12)",
-              opacity:open?(isDim?0.32:1):0,
+              opacity:open?1:0,
               pointerEvents:open?"auto":"none",
               transition:[
                 `transform 0.42s cubic-bezier(0.16,1,0.3,1) ${open?0.06+i*0.042:0}s`,
