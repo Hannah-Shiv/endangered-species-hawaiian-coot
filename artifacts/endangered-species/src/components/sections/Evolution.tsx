@@ -2,13 +2,13 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import cootImg from "@assets/image_1779671102911.png";
 
-// ─── Geometry ────────────────────────────────────────────────────────────────
-const CW = 460, CH = 460;
-const CX = CW / 2, CY = CH / 2;   // 230, 230
-const RING_R  = 170;
-const NODE_R  = 24;
-const LABEL_R = 218;
-const CTR_D   = 142;
+// ─── Geometry (BIG) ──────────────────────────────────────────────────────────
+const CW = 600, CH = 600;
+const CX = CW / 2, CY = CH / 2;     // 300, 300
+const RING_R  = 218;
+const NODE_R  = 27;
+const LABEL_R = 270;
+const CTR_D   = 182;
 
 const toRad = (d: number) => d * Math.PI / 180;
 
@@ -210,13 +210,14 @@ export function Evolution() {
   const curr = active !== null ? NODES[active - 1] : null;
   const goPrev = () => setActive(a => a == null ? 1 : a === 1 ? 12 : a - 1);
   const goNext = () => setActive(a => a == null ? 1 : a === 12 ? 1 : a + 1);
+  const isLit  = (n: number) => active === n || hovered === n;
 
-  // A node is visually "lit" when active OR hovered
-  const isLit = (n: number) => active === n || hovered === n;
+  // Panels centered at the visual clock center (50vh + ~20px due to paddingTop:80px)
+  const PANEL_H = 480;
+  const panelTopCSS = `calc(50vh - ${PANEL_H / 2 - 20}px)`;
 
-  // Panels: height 400px, vertically centered at 50vh+40px (due to paddingTop:80)
-  const PANEL_H = 400;
-  const panelTopCSS = `calc(50vh - ${PANEL_H / 2 - 40}px)`;
+  // PREV/NEXT bar sits just below the bottom of the ring inside the clock container
+  const navTop = CY + RING_R + NODE_R + 20;   // 300+218+27+20 = 565
 
   return (
     <div style={{
@@ -239,18 +240,18 @@ export function Evolution() {
         overflow: "visible",
       }}>
 
-        {/* Active title + era — floats inside ring, above center circle */}
+        {/* Active title + era — between node 12 and center circle */}
         <AnimatePresence mode="wait">
           {curr && (
             <motion.div
               key={`title-${curr.n}`}
-              initial={{ opacity: 0, y: -6 }}
+              initial={{ opacity: 0, y: -5 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.28 }}
+              transition={{ duration: 0.25 }}
               style={{
                 position: "absolute",
-                top: CY - CTR_D / 2 - 68,
+                top: CY - CTR_D / 2 - 78,
                 left: 0, right: 0,
                 textAlign: "center",
                 pointerEvents: "none",
@@ -258,20 +259,19 @@ export function Evolution() {
               }}
             >
               <div style={{
-                color: "#fff",
-                fontFamily: "'Josefin Sans', sans-serif",
-                fontSize: "18px", fontWeight: 700,
+                color: "#ffffff",
+                fontSize: "22px", fontWeight: 800,
                 letterSpacing: "0.5px",
-                textShadow: `0 0 18px rgba(0,0,0,0.8)`,
+                textShadow: "0 2px 12px rgba(0,0,0,0.9)",
               }}>
                 {curr.title}
               </div>
               <div style={{
                 color: curr.color,
                 fontFamily: "'Playfair Display', serif",
-                fontSize: "15px", fontStyle: "italic",
-                marginTop: 3,
-                textShadow: `0 0 12px ${curr.color}88`,
+                fontSize: "17px", fontStyle: "italic",
+                marginTop: 4,
+                textShadow: `0 0 14px ${curr.color}99`,
               }}>
                 {curr.era}
               </div>
@@ -279,57 +279,46 @@ export function Evolution() {
           )}
         </AnimatePresence>
 
-        {/* SVG rings + spokes */}
-        <svg
-          style={{ position: "absolute", inset: 0, overflow: "visible" }}
-          width={CW} height={CH}
-        >
-          {/* Outermost hint ring */}
-          <circle cx={CX} cy={CY} r={RING_R + NODE_R + 10}
-            stroke="rgba(0,229,204,0.08)" strokeWidth={1.5} fill="none" />
-          {/* Dashed main ring */}
+        {/* SVG: rings + spokes + active halo */}
+        <svg style={{ position: "absolute", inset: 0, overflow: "visible" }} width={CW} height={CH}>
+          <circle cx={CX} cy={CY} r={RING_R + NODE_R + 12}
+            stroke="rgba(0,229,204,0.07)" strokeWidth={2} fill="none" />
           <circle cx={CX} cy={CY} r={RING_R}
-            stroke="rgba(0,229,204,0.25)" strokeWidth={1} fill="none"
-            strokeDasharray="3 10" />
-          {/* Inner ring around medallion */}
-          <circle cx={CX} cy={CY} r={CTR_D / 2 + 12}
-            stroke="rgba(0,229,204,0.18)" strokeWidth={1} fill="none" />
-          {/* Spokes */}
+            stroke="rgba(0,229,204,0.28)" strokeWidth={1.5} fill="none"
+            strokeDasharray="4 11" />
+          <circle cx={CX} cy={CY} r={CTR_D / 2 + 14}
+            stroke="rgba(0,229,204,0.18)" strokeWidth={1.5} fill="none" />
           {NODES.map(({ n }) => {
             const a  = nodeAngle(n);
-            const x1 = CX + (CTR_D / 2 + 14) * Math.cos(a);
-            const y1 = CY + (CTR_D / 2 + 14) * Math.sin(a);
-            const x2 = CX + (RING_R - NODE_R - 3) * Math.cos(a);
-            const y2 = CY + (RING_R - NODE_R - 3) * Math.sin(a);
+            const x1 = CX + (CTR_D / 2 + 16) * Math.cos(a);
+            const y1 = CY + (CTR_D / 2 + 16) * Math.sin(a);
+            const x2 = CX + (RING_R - NODE_R - 4) * Math.cos(a);
+            const y2 = CY + (RING_R - NODE_R - 4) * Math.sin(a);
             return (
               <line key={n} x1={x1} y1={y1} x2={x2} y2={y2}
-                stroke={isLit(n) ? `${NODES[n-1].color}66` : "rgba(0,229,204,0.11)"}
-                strokeWidth={isLit(n) ? 2 : 1}
+                stroke={isLit(n) ? `${NODES[n-1].color}70` : "rgba(0,229,204,0.12)"}
+                strokeWidth={isLit(n) ? 2.5 : 1}
                 style={{ transition: "stroke 0.25s, stroke-width 0.25s" }}
               />
             );
           })}
-          {/* Active node outer halo ring */}
           {active !== null && (() => {
             const p = nodeXY(active);
             return (
-              <circle cx={p.x} cy={p.y} r={NODE_R + 8}
-                fill="none"
-                stroke={NODES[active - 1].color}
-                strokeWidth={2}
-                strokeOpacity={0.50}
-              />
+              <circle cx={p.x} cy={p.y} r={NODE_R + 10}
+                fill="none" stroke={NODES[active - 1].color}
+                strokeWidth={2.5} strokeOpacity={0.55} />
             );
           })()}
         </svg>
 
-        {/* Center medallion — pure bird photo, NO text */}
+        {/* Center medallion — pure coot photo, zero text */}
         <motion.div
           animate={{
             boxShadow: [
-              "0 0 20px rgba(0,229,204,0.35), 0 0 50px rgba(0,229,204,0.10)",
-              "0 0 34px rgba(0,229,204,0.55), 0 0 72px rgba(0,229,204,0.18)",
-              "0 0 20px rgba(0,229,204,0.35), 0 0 50px rgba(0,229,204,0.10)",
+              "0 0 24px rgba(0,229,204,0.38), 0 0 56px rgba(0,229,204,0.12)",
+              "0 0 40px rgba(0,229,204,0.60), 0 0 84px rgba(0,229,204,0.20)",
+              "0 0 24px rgba(0,229,204,0.38), 0 0 56px rgba(0,229,204,0.12)",
             ],
           }}
           transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
@@ -339,22 +328,17 @@ export function Evolution() {
             width: CTR_D, height: CTR_D,
             borderRadius: "50%",
             overflow: "hidden",
-            border: "3px solid rgba(0,229,204,0.45)",
+            border: "3px solid rgba(0,229,204,0.48)",
           }}
         >
           <img
             src={cootImg as string}
             alt="Hawaiian Coot"
-            style={{
-              width: "100%", height: "100%",
-              objectFit: "cover", objectPosition: "center 58%",
-              display: "block",
-            }}
+            style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 58%", display: "block" }}
           />
-          {/* Absolutely nothing else here — no overlay, no text */}
         </motion.div>
 
-        {/* ── Node circles — numbered 1–12 ────────────────────────── */}
+        {/* Node circles — numbered 1–12 */}
         {NODES.map(node => {
           const { x, y } = nodeXY(node.n);
           const isActive = active === node.n;
@@ -372,22 +356,19 @@ export function Evolution() {
                 borderRadius: "50%",
                 background: isActive
                   ? node.color
-                  : lit
-                    ? `${node.color}22`
-                    : "rgba(5,14,31,0.92)",
+                  : lit ? `${node.color}28` : "rgba(5,14,31,0.92)",
                 border: `3px solid ${node.color}`,
                 color: isActive ? "#050e1f" : node.color,
-                fontSize: "15px", fontWeight: 700,
+                fontSize: "17px", fontWeight: 800,
                 cursor: "pointer",
                 display: "flex", alignItems: "center", justifyContent: "center",
                 boxShadow: lit
-                  ? `0 0 22px ${node.color}dd, 0 0 44px ${node.color}88`
-                  : `0 0 8px ${node.color}44`,
+                  ? `0 0 26px ${node.color}ee, 0 0 52px ${node.color}99`
+                  : `0 0 10px ${node.color}55`,
                 zIndex: 3,
-                transform: lit && !isActive ? "scale(1.16)" : "scale(1)",
-                transition: "background 0.22s, box-shadow 0.22s, color 0.22s, border-color 0.22s, transform 0.18s",
-                outline: "none",
-                userSelect: "none",
+                transform: lit && !isActive ? "scale(1.18)" : "scale(1)",
+                transition: "background 0.2s, box-shadow 0.2s, color 0.2s, transform 0.18s",
+                outline: "none", userSelect: "none",
               }}
             >
               {node.n}
@@ -395,7 +376,7 @@ export function Evolution() {
           );
         })}
 
-        {/* ── Labels — hoverable, glow with their node ────────────── */}
+        {/* Labels — hoverable, large, bright, glow with node */}
         {NODES.map(node => {
           const { x, y } = labelXY(node.n);
           const lit = isLit(node.n);
@@ -410,30 +391,29 @@ export function Evolution() {
                 left: x, top: y,
                 transform: labelTX(node.n),
                 pointerEvents: "auto",
-                maxWidth: 96,
+                maxWidth: 104,
                 zIndex: 4,
                 cursor: "pointer",
-                opacity: active && active !== node.n && hovered !== node.n ? 0.38 : 1,
+                opacity: active && active !== node.n && hovered !== node.n ? 0.35 : 1,
                 transition: "opacity 0.3s",
               }}
             >
               <div style={{
-                color: "#fff",
-                fontSize: "13px", fontWeight: 700,
-                lineHeight: 1.25, letterSpacing: "0.3px",
+                color: "#ffffff",
+                fontSize: "14px", fontWeight: 700,
+                lineHeight: 1.3, letterSpacing: "0.2px",
                 textShadow: lit
-                  ? `0 0 10px ${node.color}, 0 0 22px ${node.color}99`
+                  ? `0 0 12px ${node.color}, 0 0 26px ${node.color}aa`
                   : "none",
                 transition: "text-shadow 0.25s",
               }}>
                 {node.title}
               </div>
               <div style={{
-                color: lit ? node.color : "rgba(255,255,255,0.55)",
-                fontSize: "11px", lineHeight: 1.25, marginTop: 2,
-                fontStyle: "italic",
-                fontWeight: lit ? 600 : 400,
-                textShadow: lit ? `0 0 8px ${node.color}aa` : "none",
+                color: lit ? node.color : "rgba(255,255,255,0.52)",
+                fontSize: "12px", lineHeight: 1.3, marginTop: 3,
+                fontStyle: "italic", fontWeight: lit ? 600 : 400,
+                textShadow: lit ? `0 0 8px ${node.color}bb` : "none",
                 transition: "color 0.25s, text-shadow 0.25s",
               }}>
                 {node.era}
@@ -441,6 +421,67 @@ export function Evolution() {
             </div>
           );
         })}
+
+        {/* ── PREV / NEXT — absolutely below the ring, centered ──── */}
+        <AnimatePresence>
+          {curr && (
+            <motion.div
+              key="nav-bar"
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              style={{
+                position: "absolute",
+                top: navTop,
+                left: 0, right: 0,
+                display: "flex",
+                justifyContent: "center",
+                zIndex: 30,
+              }}
+            >
+              <div style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 18,
+                background: "rgba(5,14,31,0.94)",
+                border: `1px solid ${curr.color}55`,
+                borderRadius: 40,
+                padding: "11px 24px",
+              }}>
+                <button onClick={goPrev} style={{
+                  background: "none", border: "none",
+                  color: curr.color, fontSize: "15px", fontWeight: 800,
+                  letterSpacing: "1.5px", cursor: "pointer",
+                  fontFamily: "'Josefin Sans',sans-serif", padding: "2px 6px",
+                }}>← PREV</button>
+
+                <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
+                  {NODES.map(n => (
+                    <button key={n.n} onClick={() => setActive(n.n)} style={{
+                      width: active === n.n ? 22 : 7, height: 7,
+                      borderRadius: 4,
+                      background: active === n.n ? n.color : "rgba(255,255,255,0.22)",
+                      border: "none", cursor: "pointer", padding: 0,
+                      transition: "all 0.28s", flexShrink: 0,
+                    }} />
+                  ))}
+                </div>
+
+                <div style={{ color: "rgba(255,255,255,0.42)", fontSize: "14px", minWidth: 38, textAlign: "center" }}>
+                  {curr.n} / 12
+                </div>
+
+                <button onClick={goNext} style={{
+                  background: "none", border: "none",
+                  color: curr.color, fontSize: "15px", fontWeight: 800,
+                  letterSpacing: "1.5px", cursor: "pointer",
+                  fontFamily: "'Josefin Sans',sans-serif", padding: "2px 6px",
+                }}>NEXT →</button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       {/* ── LEFT PANEL — Why This Matters ───────────────────────────── */}
@@ -457,13 +498,13 @@ export function Evolution() {
               left: 0,
               top: panelTopCSS,
               height: PANEL_H,
-              width: 268,
+              width: 308,
               background: "rgba(5,14,31,0.97)",
               borderRight: `1px solid ${curr.color}44`,
               borderTop: `1px solid ${curr.color}22`,
               borderBottom: `1px solid ${curr.color}22`,
-              borderRadius: "0 14px 14px 0",
-              padding: "28px 24px",
+              borderRadius: "0 16px 16px 0",
+              padding: "30px 26px",
               zIndex: 20,
               display: "flex",
               flexDirection: "column",
@@ -472,32 +513,32 @@ export function Evolution() {
             <motion.div
               key={`lh-${curr.n}`}
               initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.26, delay: 0.08 }}
-              style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 22 }}
+              transition={{ duration: 0.25, delay: 0.08 }}
+              style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 26 }}
             >
               <div style={{
-                width: 30, height: 30, borderRadius: "50%",
+                width: 34, height: 34, borderRadius: "50%",
                 background: curr.color,
                 display: "flex", alignItems: "center", justifyContent: "center",
-                color: "#050e1f", fontSize: "14px", fontWeight: 700, flexShrink: 0,
+                color: "#050e1f", fontSize: "16px", fontWeight: 800, flexShrink: 0,
               }}>{curr.n}</div>
               <div style={{
                 color: "#FFE87C",
-                fontSize: "11px", letterSpacing: "2.5px",
+                fontSize: "13px", letterSpacing: "2.5px",
                 textTransform: "uppercase", fontWeight: 700,
               }}>Why This Matters</div>
             </motion.div>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: 18, flex: 1 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 22, flex: 1 }}>
               {curr.why.map((pt, i) => (
                 <motion.div key={`${curr.n}-why-${i}`}
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.26, delay: 0.14 + i * 0.07 }}
-                  style={{ display: "flex", gap: 10 }}
+                  transition={{ duration: 0.25, delay: 0.14 + i * 0.07 }}
+                  style={{ display: "flex", gap: 12 }}
                 >
-                  <div style={{ color: curr.color, fontSize: "16px", flexShrink: 0, lineHeight: 1.55 }}>—</div>
-                  <div style={{ color: "rgba(255,255,255,0.90)", fontSize: "14px", lineHeight: 1.65 }}>{pt}</div>
+                  <div style={{ color: curr.color, fontSize: "18px", flexShrink: 0, lineHeight: 1.55 }}>—</div>
+                  <div style={{ color: "rgba(255,255,255,0.92)", fontSize: "16px", lineHeight: 1.65 }}>{pt}</div>
                 </motion.div>
               ))}
             </div>
@@ -519,13 +560,13 @@ export function Evolution() {
               right: 0,
               top: panelTopCSS,
               height: PANEL_H,
-              width: 276,
+              width: 308,
               background: "rgba(5,14,31,0.97)",
               borderLeft: `1px solid ${curr.color}44`,
               borderTop: `1px solid ${curr.color}22`,
               borderBottom: `1px solid ${curr.color}22`,
-              borderRadius: "14px 0 0 14px",
-              padding: "28px 26px",
+              borderRadius: "16px 0 0 16px",
+              padding: "30px 28px",
               zIndex: 20,
               display: "flex",
               flexDirection: "column",
@@ -534,17 +575,17 @@ export function Evolution() {
             <motion.div
               key={`rh-${curr.n}`}
               initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.26, delay: 0.08 }}
+              transition={{ duration: 0.25, delay: 0.08 }}
             >
-              <div style={{ display: "flex", gap: 12, alignItems: "center", marginBottom: 10 }}>
+              <div style={{ display: "flex", gap: 14, alignItems: "center", marginBottom: 12 }}>
                 <div style={{
-                  width: 34, height: 34, borderRadius: "50%",
+                  width: 38, height: 38, borderRadius: "50%",
                   background: curr.color,
                   display: "flex", alignItems: "center", justifyContent: "center",
-                  color: "#050e1f", fontSize: "15px", fontWeight: 700, flexShrink: 0,
+                  color: "#050e1f", fontSize: "17px", fontWeight: 800, flexShrink: 0,
                 }}>{curr.n}</div>
                 <div style={{
-                  color: "#fff", fontSize: "15px", fontWeight: 700,
+                  color: "#fff", fontSize: "18px", fontWeight: 700,
                   letterSpacing: "0.3px", lineHeight: 1.3,
                 }}>{curr.title}</div>
               </div>
@@ -552,91 +593,27 @@ export function Evolution() {
               <div style={{
                 color: curr.color,
                 fontFamily: "'Playfair Display', serif",
-                fontSize: "21px", fontStyle: "italic",
-                marginBottom: 20, lineHeight: 1.3,
-                textShadow: `0 0 14px ${curr.color}66`,
+                fontSize: "24px", fontStyle: "italic",
+                marginBottom: 22, lineHeight: 1.3,
+                textShadow: `0 0 16px ${curr.color}66`,
               }}>
                 {curr.era}
               </div>
             </motion.div>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: 16, flex: 1 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 18, flex: 1 }}>
               {curr.details.map((d, i) => (
                 <motion.div key={`${curr.n}-det-${i}`}
                   initial={{ opacity: 0, x: 10 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.26, delay: 0.16 + i * 0.07 }}
-                  style={{ display: "flex", gap: 10 }}
+                  transition={{ duration: 0.25, delay: 0.16 + i * 0.07 }}
+                  style={{ display: "flex", gap: 12 }}
                 >
-                  <div style={{ color: curr.color, fontSize: "16px", flexShrink: 0, lineHeight: 1.55 }}>—</div>
-                  <div style={{ color: "rgba(255,255,255,0.90)", fontSize: "14px", lineHeight: 1.65 }}>{d}</div>
+                  <div style={{ color: curr.color, fontSize: "18px", flexShrink: 0, lineHeight: 1.55 }}>—</div>
+                  <div style={{ color: "rgba(255,255,255,0.92)", fontSize: "16px", lineHeight: 1.65 }}>{d}</div>
                 </motion.div>
               ))}
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* ── PREV / NEXT — fixed, just below clock, clear of ✕ button ── */}
-      <AnimatePresence>
-        {curr && (
-          <motion.div
-            key="nav-bar"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 10 }}
-            transition={{ duration: 0.32 }}
-            style={{
-              position: "fixed",
-              bottom: "16px",
-              left: "50%",
-              transform: "translateX(-50%)",
-              display: "flex",
-              alignItems: "center",
-              gap: 16,
-              zIndex: 25,
-              background: "rgba(5,14,31,0.92)",
-              border: `1px solid ${curr.color}44`,
-              borderRadius: 40,
-              padding: "9px 20px",
-              whiteSpace: "nowrap",
-            }}
-          >
-            <button onClick={goPrev} style={{
-              background: "none", border: "none",
-              color: curr.color, fontSize: "14px", fontWeight: 700,
-              letterSpacing: "1.5px", cursor: "pointer",
-              fontFamily: "'Josefin Sans',sans-serif",
-              padding: "2px 4px",
-            }}>← PREV</button>
-
-            <div style={{ display: "flex", gap: 5, alignItems: "center" }}>
-              {NODES.map(n => (
-                <button key={n.n} onClick={() => setActive(n.n)} style={{
-                  width: active === n.n ? 20 : 6,
-                  height: 6, borderRadius: 3,
-                  background: active === n.n ? n.color : "rgba(255,255,255,0.22)",
-                  border: "none", cursor: "pointer", padding: 0,
-                  transition: "all 0.28s",
-                  flexShrink: 0,
-                }} />
-              ))}
-            </div>
-
-            <div style={{
-              color: "rgba(255,255,255,0.45)",
-              fontSize: "13px", minWidth: 34, textAlign: "center",
-            }}>
-              {curr.n} / 12
-            </div>
-
-            <button onClick={goNext} style={{
-              background: "none", border: "none",
-              color: curr.color, fontSize: "14px", fontWeight: 700,
-              letterSpacing: "1.5px", cursor: "pointer",
-              fontFamily: "'Josefin Sans',sans-serif",
-              padding: "2px 4px",
-            }}>NEXT →</button>
           </motion.div>
         )}
       </AnimatePresence>
