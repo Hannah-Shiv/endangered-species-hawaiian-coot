@@ -268,18 +268,21 @@ export function DomeNav({ onSelect, activeSection, onCloseSection, autoOpenGroup
           width:`${BACKDROP_W}px`,                       // 440
           left:`${HALF - BACKDROP_W/2}px`,               // −180
           top:`${BACKDROP_TOP}px`,                       // −22
-          height: group
-            ? `${SUB_Y + PH*2 + PGAP + 38 - BACKDROP_TOP}px`  // ~446
-            : `${BACKDROP_H_SEMI}px`,                           // ~282
+          height: !open
+            ? 0
+            : group
+              ? `${SUB_Y + PH*2 + PGAP + 38 - BACKDROP_TOP}px`  // ~446
+              : `${BACKDROP_H_SEMI}px`,                           // ~282
+          overflow:"hidden",
           background:"rgba(3,6,16,0.94)",
           borderRadius: group ? "0 0 20px 20px" : `0 0 ${DOM_R}px ${DOM_R}px`,
           borderLeft:`1px solid rgba(180,180,255,0.10)`,
           borderRight:`1px solid rgba(180,180,255,0.10)`,
-          borderBottom:`1px solid rgba(180,180,255,0.10)`,
+          borderBottom: open ? `1px solid rgba(180,180,255,0.10)` : "none",
           borderTop:"none",
           pointerEvents:"none", zIndex:-1,
-          opacity: open ? 1 : 0,
-          transition:"opacity 0.3s ease, height 0.42s cubic-bezier(0.16,1,0.3,1), border-radius 0.38s ease",
+          opacity:1,
+          transition:"height 0.45s cubic-bezier(0.16,1,0.3,1), border-radius 0.38s ease",
         }}/>
 
         {/* ── Hamburger ─────────────────────────────────────────────────────── */}
