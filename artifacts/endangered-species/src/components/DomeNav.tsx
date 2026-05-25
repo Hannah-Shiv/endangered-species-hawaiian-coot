@@ -19,9 +19,6 @@ import { motion, AnimatePresence } from "framer-motion";
 
 // ─── Palette ───────────────────────────────────────────────────────────────────
 const C = {
-  fill:   "#16a34a",
-  border: "#22c55e",
-  active: "#4ade80",
   gold:   "#d4af37",
   goldLt: "#ffe58f",
   dark:   "#040712",
@@ -30,20 +27,20 @@ const C = {
 
 // ─── Data ──────────────────────────────────────────────────────────────────────
 interface Sub   { key: string; label: string; icon: string; }
-interface Group { key: string; num: string; icon: string; label: string[]; items: Sub[]; }
+interface Group { key: string; num: string; icon: string; label: string[]; color: string; items: Sub[]; }
 
 const GROUPS: Group[] = [
-  { key:"the-species", num:"01", icon:"🐦", label:["THE","SPECIES"],
+  { key:"the-species", num:"01", icon:"🐦", color:"#22c55e", label:["THE","SPECIES"],
     items:[{key:"Meet the Species",label:"MEET THE SPECIES",icon:"🐦"},{key:"Evolution",label:"EVOLUTION & CLASS.",icon:"🧬"}] },
-  { key:"habitat",     num:"02", icon:"🗺", label:["HABITAT","& FOOD"],
+  { key:"habitat",     num:"02", icon:"🗺", color:"#06b6d4", label:["HABITAT","& FOOD"],
     items:[{key:"Habitat & Location",label:"HABITAT & LOCATION",icon:"🗺"},{key:"Food Web",label:"FOOD WEB",icon:"🦋"}] },
-  { key:"climate",     num:"03", icon:"🌧", label:["CLIMATE","& CHANGE"],
+  { key:"climate",     num:"03", icon:"🌧", color:"#0891b2", label:["CLIMATE","& CHANGE"],
     items:[{key:"Climate Stressors",label:"CLIMATE STRESSORS",icon:"🌧"},{key:"Patterns of Change",label:"PATTERNS OF CHANGE",icon:"📈"}] },
-  { key:"threats",     num:"04", icon:"🏙", label:["THREATS","& IMPACT"],
+  { key:"threats",     num:"04", icon:"🏙", color:"#7c3aed", label:["THREATS","& IMPACT"],
     items:[{key:"Human Impact",label:"HUMAN IMPACT",icon:"🏙"},{key:"Predators",label:"PREDATORS",icon:"🦅"}] },
-  { key:"survival",    num:"05", icon:"🌱", label:["SURVIVAL","& ACTION"],
+  { key:"survival",    num:"05", icon:"🌱", color:"#f97316", label:["SURVIVAL","& ACTION"],
     items:[{key:"Adaptations",label:"ADAPTATIONS",icon:"🌿"},{key:"Conservation & Solutions",label:"CONSERVATION",icon:"🌱"}] },
-  { key:"future",      num:"06", icon:"🛡", label:["FUTURE","& DATA"],
+  { key:"future",      num:"06", icon:"🛡", color:"#d4af37", label:["FUTURE","& DATA"],
     items:[{key:"Extinction Risk",label:"EXTINCTION RISK",icon:"🛡"},{key:"Sources & Citations",label:"SOURCES & CITATIONS",icon:"📄"}] },
 ];
 
@@ -223,10 +220,10 @@ export function DomeNav({ onSelect, activeSection, onCloseSection, autoOpenGroup
           <motion.button key="close" initial={{scale:0}} animate={{scale:1}} exit={{scale:0}}
             onClick={onCloseSection} data-testid="button-back-to-nav"
             style={{position:"fixed",bottom:"1.5rem",right:"1.5rem",zIndex:10002,
-              width:"56px",height:"56px",borderRadius:"50%",background:C.fill,
-              border:`2px solid ${C.active}`,color:C.white,fontSize:"18px",cursor:"pointer",
+              width:"56px",height:"56px",borderRadius:"50%",background:"rgba(20,20,40,0.92)",
+              border:`2px solid ${C.gold}`,color:C.white,fontSize:"18px",cursor:"pointer",
               display:"flex",alignItems:"center",justifyContent:"center",
-              boxShadow:`0 0 0 5px rgba(0,0,0,0.8), 0 0 20px rgba(34,197,94,0.4)`,
+              boxShadow:`0 0 0 5px rgba(0,0,0,0.8), 0 0 20px rgba(212,175,55,0.4)`,
               fontFamily:"'Josefin Sans',sans-serif"}}>✕</motion.button>
         )}
       </AnimatePresence>
@@ -254,9 +251,9 @@ export function DomeNav({ onSelect, activeSection, onCloseSection, autoOpenGroup
             : `${BACKDROP_H_SEMI}px`,                           // ~282
           background:"rgba(3,6,16,0.94)",
           borderRadius: group ? "0 0 20px 20px" : `0 0 ${DOM_R}px ${DOM_R}px`,
-          borderLeft:`1px solid rgba(34,197,94,0.11)`,
-          borderRight:`1px solid rgba(34,197,94,0.11)`,
-          borderBottom:`1px solid rgba(34,197,94,0.11)`,
+          borderLeft:`1px solid rgba(180,180,255,0.10)`,
+          borderRight:`1px solid rgba(180,180,255,0.10)`,
+          borderBottom:`1px solid rgba(180,180,255,0.10)`,
           borderTop:"none",
           pointerEvents:"none", zIndex:-1,
           opacity: open ? 1 : 0,
@@ -268,10 +265,10 @@ export function DomeNav({ onSelect, activeSection, onCloseSection, autoOpenGroup
           onClick={(e)=>{e.stopPropagation();setOpen(v=>!v);if(open)setGroup(null);}}
           aria-label={open?"Close navigation":"Open navigation"} aria-expanded={open}
           data-testid="button-dome-hamburger"
-          style={{width:`${BTN}px`,height:`${BTN}px`,borderRadius:"50%",background:C.fill,
-            border:`2.5px solid ${C.active}`,display:"flex",alignItems:"center",justifyContent:"center",
+          style={{width:`${BTN}px`,height:`${BTN}px`,borderRadius:"50%",background:"rgba(10,12,28,0.92)",
+            border:`2.5px solid ${C.gold}`,display:"flex",alignItems:"center",justifyContent:"center",
             cursor:"pointer",position:"relative",zIndex:10001,
-            boxShadow:`0 0 0 7px rgba(3,6,16,0.92), 0 0 0 9px rgba(34,197,94,0.22), 0 0 28px rgba(34,197,94,0.18)`,
+            boxShadow:`0 0 0 7px rgba(3,6,16,0.92), 0 0 0 9px rgba(212,175,55,0.22), 0 0 28px rgba(212,175,55,0.18)`,
             transition:"box-shadow 0.3s"}}>
           <motion.div animate={{rotate:open?90:0}} transition={{duration:0.35,ease:[0.4,0,0.2,1]}}
             style={{display:"flex",flexDirection:"column",gap:"5px",alignItems:"center"}}>
@@ -330,19 +327,23 @@ export function DomeNav({ onSelect, activeSection, onCloseSection, autoOpenGroup
                 data-testid={`button-nav-group-${grp.key}`}
                 style={{
                   width:"100%",height:"100%",borderRadius:"50%",
-                  background:isAct?C.fill:C.dark,
-                  border:`2.5px solid ${isAct?C.active:C.border}`,
+                  background:isAct
+                    ? `radial-gradient(circle at 42% 38%, ${grp.color}88 0%, ${grp.color}44 40%, ${grp.color}18 70%, transparent 100%)`
+                    : `radial-gradient(circle at 42% 38%, ${grp.color}33 0%, ${grp.color}18 50%, transparent 80%)`,
+                  border:`2.5px solid ${grp.color}`,
                   color:isAct?C.white:C.gold,
                   fontFamily:"'Josefin Sans',sans-serif",fontSize:"8.5px",fontWeight:700,
                   letterSpacing:"0.05em",textTransform:"uppercase",
                   display:"flex",flexDirection:"column",alignItems:"center",
                   justifyContent:"center",textAlign:"center",cursor:"pointer",
                   padding:"6px 4px 4px",lineHeight:1.3,
-                  boxShadow:isAct?`0 0 0 5px rgba(3,6,16,0.7),0 0 22px rgba(34,197,94,0.55),0 0 44px rgba(34,197,94,0.2)`:"none",
+                  boxShadow:isAct
+                    ? `0 0 0 5px rgba(3,6,16,0.7),0 0 22px ${grp.color}99,0 0 44px ${grp.color}44`
+                    : `0 0 10px ${grp.color}33`,
                   transition:"background 0.2s,border-color 0.2s,color 0.2s,box-shadow 0.2s",
                 }}
-                onMouseOver={e=>{if(!isAct){const b=e.currentTarget;b.style.background=C.fill;b.style.borderColor=C.active;b.style.color=C.white;}}}
-                onMouseOut ={e=>{if(!isAct){const b=e.currentTarget;b.style.background=C.dark;b.style.borderColor=C.border;b.style.color=C.gold;}}}
+                onMouseOver={e=>{if(!isAct){const b=e.currentTarget;b.style.background=`radial-gradient(circle at 42% 38%, ${grp.color}66 0%, ${grp.color}33 50%, transparent 80%)`;b.style.color=C.white;b.style.boxShadow=`0 0 18px ${grp.color}66`;} }}
+                onMouseOut ={e=>{if(!isAct){const b=e.currentTarget;b.style.background=`radial-gradient(circle at 42% 38%, ${grp.color}33 0%, ${grp.color}18 50%, transparent 80%)`;b.style.color=C.gold;b.style.boxShadow=`0 0 10px ${grp.color}33`;}}}
               >
                 <span style={{fontSize:"17px",lineHeight:1,marginBottom:"2px"}}>{grp.icon}</span>
                 <span style={{fontSize:"7px",opacity:0.5,marginBottom:"2px",letterSpacing:"0.07em"}}>{grp.num}</span>
@@ -391,7 +392,7 @@ export function DomeNav({ onSelect, activeSection, onCloseSection, autoOpenGroup
                           width:`${PW}px`,height:`${PH}px`,
                           borderRadius:`${PH/2}px`,
                           background:C.dark,
-                          border:`2px solid ${C.border}`,
+                          border:`2px solid ${C.gold}`,
                           color:C.gold,
                           fontFamily:"'Josefin Sans',sans-serif",
                           fontSize:"11px",fontWeight:700,
@@ -400,8 +401,8 @@ export function DomeNav({ onSelect, activeSection, onCloseSection, autoOpenGroup
                           gap:"10px",cursor:"pointer",padding:"0 20px",
                           transition:"background 0.15s,border-color 0.15s,color 0.15s",
                         }}
-                        onMouseOver={e=>{const b=e.currentTarget;b.style.background=C.fill;b.style.borderColor=C.active;b.style.color=C.white;}}
-                        onMouseOut ={e=>{const b=e.currentTarget;b.style.background=C.dark;b.style.borderColor=C.border;b.style.color=C.gold;}}
+                        onMouseOver={e=>{const ag2=GROUPS.find(g=>g.key===group)!;const b=e.currentTarget;b.style.background=`radial-gradient(circle at 42% 38%, ${ag2.color}66 0%, ${ag2.color}33 60%, transparent 100%)`;b.style.borderColor=ag2.color;b.style.color=C.white;}}
+                        onMouseOut ={e=>{const b=e.currentTarget;b.style.background=C.dark;b.style.borderColor=C.gold;b.style.color=C.gold;}}
                       >
                         <span style={{fontSize:"16px",lineHeight:1}}>{sub.icon}</span>
                         {sub.label}
