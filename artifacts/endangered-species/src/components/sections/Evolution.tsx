@@ -245,8 +245,6 @@ export function Evolution() {
           <circle cx={CX} cy={CY} r={RING_R}
             stroke="rgba(0,229,204,0.28)" strokeWidth={1.5} fill="none"
             strokeDasharray="4 11" />
-          <circle cx={CX} cy={CY} r={CTR_D / 2 + 14}
-            stroke="rgba(0,229,204,0.18)" strokeWidth={0.75} fill="none" />
           {NODES.map(({ n }) => {
             const a  = nodeAngle(n);
             const x1 = CX + (CTR_D / 2 + 16) * Math.cos(a);
