@@ -405,6 +405,20 @@ export function DomeNav({ onSelect, activeSection, onCloseSection, autoOpenGroup
                       }}
                       style={{marginBottom:j<ag.items.length-1?`${PGAP}px`:0,
                               position:"relative",zIndex:1}}>
+                      {/* Vertical bridge to next pill */}
+                      {j<ag.items.length-1&&(
+                        <div style={{
+                          position:"absolute",
+                          bottom:`-${PGAP}px`,
+                          left:"50%",
+                          transform:"translateX(-50%)",
+                          width:"2px",
+                          height:`${PGAP}px`,
+                          background:`linear-gradient(to bottom, ${C.gold}, ${C.gold})`,
+                          opacity:0.75,
+                          zIndex:0,
+                        }}/>
+                      )}
                       <button
                         onClick={(e)=>{e.stopPropagation();setOpen(false);setGroup(null);onSelect(sub.key);}}
                         data-testid={`button-nav-sub-${sub.key.toLowerCase().replace(/[^a-z0-9]+/g,"-")}`}
