@@ -255,7 +255,7 @@ export function DomeNav({ onSelect, activeSection, onCloseSection, autoOpenGroup
 
       {/* ══ Wrap ══════════════════════════════════════════════════════════════ */}
       <div ref={wrapRef}
-        style={{position:"fixed",top:"10px",left:"50%",transform:"translateX(-50%)",width:`${BTN}px`,zIndex:9999}}>
+        style={{position:"fixed",top:"0px",left:"50%",transform:"translateX(-50%)",width:`${BTN}px`,zIndex:9999}}>
 
         {/* ── Dome backdrop ─────────────────────────────────────────────────────
              SEMICIRCLE when open (no active group):
