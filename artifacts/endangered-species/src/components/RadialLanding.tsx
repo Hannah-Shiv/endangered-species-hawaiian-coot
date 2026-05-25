@@ -14,7 +14,7 @@ import birdImg    from "../assets/bird-transparent.png";
 import whereItLivesImg from "@assets/image_1779661049779.png";
 import centerImg       from "@assets/image_1779664835983.png";
 import explorePanelImg from "@assets/image_1779661407544.png";
-import quickFactsImg   from "@assets/image_1779743829706.png";
+import quickFactsImg   from "@assets/image_1779743947906.png";
 import topLeftImg      from "@assets/image_1779662050427.png";
 import circle01 from "../assets/circles/circle01.png";
 import circle02 from "../assets/circles/circle02.png";
@@ -344,72 +344,102 @@ export function RadialLanding({ onSelect, exiting }: Props) {
         right:"14px", top:"3%", zIndex:6,
         width:`calc(50% - ${R + CZ/2 + 26}px)`,
       }}>
-        {/* Animated "Quick Facts" title */}
+        {/* Animated "Quick Facts" title — Orbitron gold, opens from center */}
         <motion.div
-          initial={{ opacity: 0, y: -12 }}
+          initial={{ opacity: 0, scaleX: 0 }}
           animate={exiting
-            ? { opacity: 0, transition: { duration: 0.2 } }
-            : { opacity: 1, y: 0, transition: { duration: 0.7, delay: 0.35, ease: [0.16,1,0.3,1] as const } }
+            ? { opacity: 0, scaleX: 0, transition: { duration: 0.25 } }
+            : { opacity: 1, scaleX: 1, transition: { duration: 0.75, delay: 0.3, ease: [0.16,1,0.3,1] as const } }
           }
           style={{
             textAlign: "center",
             marginBottom: "8px",
             position: "relative",
+            transformOrigin: "center",
+            overflow: "hidden",
           }}
         >
-          {/* Glow backdrop */}
+          {/* Gold glow backdrop */}
           <motion.div
-            animate={{ opacity: [0.4, 0.85, 0.4] }}
-            transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
+            animate={{ opacity: [0.3, 0.7, 0.3] }}
+            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
             style={{
               position: "absolute", inset: 0,
-              background: "radial-gradient(ellipse 80% 100% at 50% 50%, rgba(0,218,195,0.13) 0%, transparent 75%)",
+              background: "radial-gradient(ellipse 90% 120% at 50% 50%, rgba(212,175,55,0.15) 0%, transparent 70%)",
               pointerEvents: "none",
             }}
           />
 
-          {/* Decorative leaf left */}
-          <motion.span
-            animate={{ rotate: [-6, 6, -6] }}
-            transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
-            style={{ display:"inline-block", fontSize:13, marginRight:8, filter:"drop-shadow(0 0 4px rgba(0,218,195,0.8))" }}
-          >🌿</motion.span>
+          {/* Row: rect ▪ QUICK FACTS ▪ rect */}
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
 
-          {/* Title text */}
-          <motion.span
-            animate={{ textShadow: [
-              "0 0 18px rgba(0,218,195,0.6), 0 0 40px rgba(0,218,195,0.2)",
-              "0 0 28px rgba(0,218,195,0.95), 0 0 60px rgba(0,218,195,0.4)",
-              "0 0 18px rgba(0,218,195,0.6), 0 0 40px rgba(0,218,195,0.2)",
-            ]}}
-            transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
-            style={{
-              fontFamily: "'Josefin Sans', sans-serif",
-              fontSize: "clamp(13px, 1.4vw, 18px)",
-              fontWeight: 700,
-              letterSpacing: "0.28em",
-              color: "#00DAC3",
-              textTransform: "uppercase",
-              display: "inline-block",
-            }}
-          >Quick Facts</motion.span>
+            {/* Left rectangle blocks */}
+            <div style={{ display: "flex", gap: 3, alignItems: "center" }}>
+              <motion.div
+                animate={{ opacity: [0.5, 1, 0.5], scaleY: [0.7, 1, 0.7] }}
+                transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut", delay: 0.1 }}
+                style={{ width: 3, height: 14, background: "#D4AF37", borderRadius: 1, transformOrigin: "center" }}
+              />
+              <motion.div
+                animate={{ opacity: [0.5, 1, 0.5], scaleY: [0.5, 1, 0.5] }}
+                transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut", delay: 0.3 }}
+                style={{ width: 3, height: 9, background: "rgba(212,175,55,0.6)", borderRadius: 1, transformOrigin: "center" }}
+              />
+              <motion.div
+                animate={{ opacity: [0.5, 1, 0.5], scaleY: [0.3, 0.8, 0.3] }}
+                transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+                style={{ width: 3, height: 5, background: "rgba(212,175,55,0.35)", borderRadius: 1, transformOrigin: "center" }}
+              />
+            </div>
 
-          {/* Decorative leaf right */}
-          <motion.span
-            animate={{ rotate: [6, -6, 6] }}
-            transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
-            style={{ display:"inline-block", fontSize:13, marginLeft:8, filter:"drop-shadow(0 0 4px rgba(0,218,195,0.8))" }}
-          >🌿</motion.span>
+            {/* Title text */}
+            <motion.span
+              animate={{ textShadow: [
+                "0 0 14px rgba(212,175,55,0.55), 0 0 35px rgba(212,175,55,0.2)",
+                "0 0 24px rgba(212,175,55,1.0), 0 0 55px rgba(255,215,80,0.45)",
+                "0 0 14px rgba(212,175,55,0.55), 0 0 35px rgba(212,175,55,0.2)",
+              ]}}
+              transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
+              style={{
+                fontFamily: "'Orbitron', monospace",
+                fontSize: "clamp(11px, 1.2vw, 15px)",
+                fontWeight: 700,
+                letterSpacing: "0.22em",
+                color: "#D4AF37",
+                textTransform: "uppercase",
+                display: "inline-block",
+              }}
+            >Quick Facts</motion.span>
 
-          {/* Underline shimmer */}
+            {/* Right rectangle blocks (mirrored) */}
+            <div style={{ display: "flex", gap: 3, alignItems: "center" }}>
+              <motion.div
+                animate={{ opacity: [0.5, 1, 0.5], scaleY: [0.3, 0.8, 0.3] }}
+                transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+                style={{ width: 3, height: 5, background: "rgba(212,175,55,0.35)", borderRadius: 1, transformOrigin: "center" }}
+              />
+              <motion.div
+                animate={{ opacity: [0.5, 1, 0.5], scaleY: [0.5, 1, 0.5] }}
+                transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut", delay: 0.3 }}
+                style={{ width: 3, height: 9, background: "rgba(212,175,55,0.6)", borderRadius: 1, transformOrigin: "center" }}
+              />
+              <motion.div
+                animate={{ opacity: [0.5, 1, 0.5], scaleY: [0.7, 1, 0.7] }}
+                transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut", delay: 0.1 }}
+                style={{ width: 3, height: 14, background: "#D4AF37", borderRadius: 1, transformOrigin: "center" }}
+              />
+            </div>
+          </div>
+
+          {/* Gold shimmer underline */}
           <motion.div
-            animate={{ scaleX: [0.4, 1, 0.4], opacity: [0.4, 0.9, 0.4] }}
+            animate={{ scaleX: [0.3, 1, 0.3], opacity: [0.3, 0.85, 0.3] }}
             transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
             style={{
               height: 1,
-              background: "linear-gradient(to right, transparent, rgba(0,218,195,0.8), transparent)",
+              background: "linear-gradient(to right, transparent, rgba(212,175,55,0.9), transparent)",
               borderRadius: 2,
-              marginTop: 5,
+              marginTop: 6,
               transformOrigin: "center",
             }}
           />
