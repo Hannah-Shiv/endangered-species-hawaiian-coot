@@ -214,23 +214,27 @@ export function Evolution({ domeOpen = false }: Props) {
   const goNext = () => setActive(a => a == null ? 1 : a === 12 ? 1 : a + 1);
   const isLit  = (n: number) => active === n || hovered === n;
 
-  // Panels centered at the visual clock center (50vh + ~20px due to paddingTop:80px)
+  // Panels vertically centred within the container (50% of container height, offset for paddingTop)
   const PANEL_H = 480;
-  const panelTopCSS = `calc(50vh - ${PANEL_H / 2 - 20}px)`;
+  const panelTopCSS = `calc(50% - 180px)`;
 
   // PREV/NEXT bar sits just below the bottom of the ring inside the clock container
   return (
-    <div style={{
-      position: "fixed", inset: 0,
-      background: "#050e1f",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      paddingTop: "80px",
-      boxSizing: "border-box",
-      overflow: "hidden",
-      fontFamily: "'Josefin Sans', sans-serif",
-    }}>
+    <motion.div
+      animate={{ top: domeOpen ? 440 : 0 }}
+      transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+      style={{
+        position: "fixed",
+        left: 0, right: 0, bottom: 0,
+        background: "#050e1f",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        paddingTop: "80px",
+        boxSizing: "border-box",
+        overflow: "hidden",
+        fontFamily: "'Josefin Sans', sans-serif",
+      }}>
 
       {/* ── Page title ───────────────────────────────────────────────── */}
       <motion.div
@@ -426,7 +430,7 @@ export function Evolution({ domeOpen = false }: Props) {
             exit={{ x: "-100%" }}
             transition={{ duration: 0.40, ease: [0.16, 1, 0.3, 1] }}
             style={{
-              position: "fixed",
+              position: "absolute",
               left: 0,
               top: panelTopCSS,
               height: PANEL_H,
@@ -488,7 +492,7 @@ export function Evolution({ domeOpen = false }: Props) {
             exit={{ x: "100%" }}
             transition={{ duration: 0.40, ease: [0.16, 1, 0.3, 1] }}
             style={{
-              position: "fixed",
+              position: "absolute",
               right: 0,
               top: panelTopCSS,
               height: PANEL_H,
@@ -560,7 +564,7 @@ export function Evolution({ domeOpen = false }: Props) {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
             style={{
-              position: "fixed",
+              position: "absolute",
               bottom: "18px",
               left: 0, right: 0,
               display: "flex",
@@ -612,6 +616,6 @@ export function Evolution({ domeOpen = false }: Props) {
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+    </motion.div>
   );
 }
