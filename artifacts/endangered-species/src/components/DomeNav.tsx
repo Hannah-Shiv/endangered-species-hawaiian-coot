@@ -343,24 +343,24 @@ export function DomeNav({ onSelect, activeSection, onCloseSection, autoOpenGroup
               left:`${iconLeft}px`,top:`${iconTop}px`,
               width:`${ICO}px`,height:`${ICO}px`,
               display:"flex",alignItems:"center",justifyContent:"center",
-              fontSize:"24px",lineHeight:1,
+              fontSize:"22px",lineHeight:1,
               opacity:open?1:0,
-              transform:open ? (isIconGlowing ? "scale(1.25)" : "scale(1)") : "scale(0)",
+              transform:open ? (isIconGlowing ? "scale(1.3)" : "scale(1)") : "scale(0)",
               transition:[
                 `opacity 0.32s ease ${open?0.14+i*0.04:0}s`,
-                `transform 0.28s cubic-bezier(0.16,1,0.3,1)`,
+                `transform 0.22s cubic-bezier(0.16,1,0.3,1)`,
                 `box-shadow 0.2s ease`,
+                `background 0.2s ease`,
               ].join(","),
               zIndex:10001,
               pointerEvents:"none",
               borderRadius:"50%",
               background: isIconGlowing
-                ? `radial-gradient(circle, ${grp.color}88 0%, ${grp.color}44 55%, transparent 100%)`
-                : "transparent",
+                ? grp.color
+                : `${grp.color}cc`,
               boxShadow: isIconGlowing
-                ? `0 0 16px ${grp.color}, 0 0 32px ${grp.color}88`
-                : "none",
-              filter:"saturate(3) brightness(1.4)",
+                ? `0 0 0 3px ${grp.color}, 0 0 18px ${grp.color}, 0 0 36px ${grp.color}88`
+                : `0 0 8px ${grp.color}88`,
             }}>
               {grp.icon}
             </div>
@@ -393,22 +393,23 @@ export function DomeNav({ onSelect, activeSection, onCloseSection, autoOpenGroup
                 style={{
                   width:"100%",height:"100%",borderRadius:"50%",
                   background:isAct
-                    ? `radial-gradient(circle at 42% 38%, ${grp.color}88 0%, ${grp.color}44 40%, ${grp.color}18 70%, transparent 100%)`
-                    : `radial-gradient(circle at 42% 38%, ${grp.color}33 0%, ${grp.color}18 50%, transparent 80%)`,
+                    ? `radial-gradient(circle at 42% 38%, ${grp.color}cc 0%, ${grp.color}88 40%, ${grp.color}44 70%, transparent 100%)`
+                    : `radial-gradient(circle at 42% 38%, ${grp.color}66 0%, ${grp.color}44 50%, ${grp.color}22 80%)`,
                   border:`2.5px solid ${grp.color}`,
-                  color:isAct?C.white:C.gold,
+                  color:"#ffffff",
                   fontFamily:"'Josefin Sans',sans-serif",fontSize:"13px",fontWeight:700,
                   letterSpacing:"0.05em",textTransform:"uppercase",
                   display:"flex",flexDirection:"column",alignItems:"center",
                   justifyContent:"center",textAlign:"center",cursor:"pointer",
                   padding:"6px 4px 4px",lineHeight:1.3,
+                  textShadow:`0 0 8px ${grp.color}aa`,
                   boxShadow:isAct
-                    ? `0 0 0 5px rgba(3,6,16,0.7),0 0 22px ${grp.color}99,0 0 44px ${grp.color}44`
-                    : `0 0 10px ${grp.color}33`,
+                    ? `0 0 0 4px rgba(3,6,16,0.6),0 0 22px ${grp.color}cc,0 0 44px ${grp.color}66`
+                    : `0 0 14px ${grp.color}88, inset 0 0 12px ${grp.color}22`,
                   transition:"background 0.2s,border-color 0.2s,color 0.2s,box-shadow 0.2s,text-shadow 0.2s",
                 }}
-                onMouseOver={e=>{setHoveredGroup(grp.key);if(!isAct){const b=e.currentTarget;b.style.background=`radial-gradient(circle at 42% 38%, ${grp.color}66 0%, ${grp.color}33 50%, transparent 80%)`;b.style.color=C.white;b.style.boxShadow=`0 0 24px ${grp.color}99`;b.style.textShadow=`0 0 10px ${grp.color}, 0 0 20px ${grp.color}aa`;} }}
-                onMouseOut ={e=>{setHoveredGroup(null);if(!isAct){const b=e.currentTarget;b.style.background=`radial-gradient(circle at 42% 38%, ${grp.color}33 0%, ${grp.color}18 50%, transparent 80%)`;b.style.color=C.gold;b.style.boxShadow=`0 0 10px ${grp.color}33`;b.style.textShadow="";}}}
+                onMouseOver={e=>{setHoveredGroup(grp.key);const b=e.currentTarget;b.style.background=`radial-gradient(circle at 42% 38%, ${grp.color}ff 0%, ${grp.color}cc 40%, ${grp.color}66 70%, transparent 100%)`;b.style.boxShadow=`0 0 0 3px rgba(3,6,16,0.5), 0 0 28px ${grp.color}, 0 0 50px ${grp.color}88`;b.style.textShadow=`0 0 12px #fff, 0 0 24px ${grp.color}`;} }
+                onMouseOut ={e=>{setHoveredGroup(null);const b=e.currentTarget;b.style.background=`radial-gradient(circle at 42% 38%, ${grp.color}66 0%, ${grp.color}44 50%, ${grp.color}22 80%)`;b.style.boxShadow=`0 0 14px ${grp.color}88, inset 0 0 12px ${grp.color}22`;b.style.textShadow=`0 0 8px ${grp.color}aa`;}}
               >
                 {grp.label.map((ln,j)=><span key={j} style={{display:"block"}}>{ln}</span>)}
               </button>
