@@ -13,7 +13,7 @@ import bgPhoto    from "../assets/bg-photo.png";
 import birdImg    from "../assets/bird-transparent.png";
 import whereItLivesImg from "@assets/image_1779744281696.png";
 import centerImg       from "@assets/image_1779664835983.png";
-import explorePanelImg from "@assets/image_1779661407544.png";
+import explorePanelImg from "@assets/image_1779744468786.png";
 import quickFactsImg   from "@assets/image_1779743947906.png";
 import topLeftImg      from "@assets/image_1779662050427.png";
 import circle01 from "../assets/circles/circle01.png";
@@ -334,7 +334,7 @@ export function RadialLanding({ onSelect, exiting }: Props) {
         <img
           src={explorePanelImg}
           alt="Explore, Learn, Protect"
-          style={{ width:"100%", display:"block", borderRadius:"10px" }}
+          style={{ width:"100%", display:"block" }}
         />
       </motion.div>
 
