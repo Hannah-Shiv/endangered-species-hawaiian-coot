@@ -213,6 +213,7 @@ interface Props {
 export function DomeNav({ onSelect, activeSection, onCloseSection, autoOpenGroup, onOpenChange }: Props) {
   const [open,  setOpen]  = useState(false);
   const [group, setGroup] = useState<string|null>(null);
+  const [hoveredGroup, setHoveredGroup] = useState<string|null>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => { onOpenChange?.(open); }, [open]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -335,6 +336,7 @@ export function DomeNav({ onSelect, activeSection, onCloseSection, autoOpenGroup
           const {x,y}=POSITIONS[i];
           const ICO=38;
           const iconLeft=HALF+x/2-ICO/2, iconTop=HALF+y/2-ICO/2;
+          const isIconGlowing = hoveredGroup === grp.key;
           return (
             <div key={`icon-${grp.key}`} style={{
               position:"absolute",
@@ -343,17 +345,22 @@ export function DomeNav({ onSelect, activeSection, onCloseSection, autoOpenGroup
               display:"flex",alignItems:"center",justifyContent:"center",
               fontSize:"24px",lineHeight:1,
               opacity:open?1:0,
-              transform:open?"scale(1)":"scale(0)",
+              transform:open ? (isIconGlowing ? "scale(1.25)" : "scale(1)") : "scale(0)",
               transition:[
                 `opacity 0.32s ease ${open?0.14+i*0.04:0}s`,
-                `transform 0.36s cubic-bezier(0.16,1,0.3,1) ${open?0.14+i*0.04:0}s`,
+                `transform 0.28s cubic-bezier(0.16,1,0.3,1)`,
+                `box-shadow 0.2s ease`,
               ].join(","),
               zIndex:10001,
               pointerEvents:"none",
               borderRadius:"50%",
-              background:`radial-gradient(circle, ${grp.color}44 0%, ${grp.color}18 60%, transparent 100%)`,
-              boxShadow:`0 0 10px ${grp.color}88, 0 0 22px ${grp.color}44`,
-              filter:`drop-shadow(0 0 7px ${grp.color}) drop-shadow(0 0 3px #fff8)`,
+              background: isIconGlowing
+                ? `radial-gradient(circle, ${grp.color}88 0%, ${grp.color}44 55%, transparent 100%)`
+                : "transparent",
+              boxShadow: isIconGlowing
+                ? `0 0 16px ${grp.color}, 0 0 32px ${grp.color}88`
+                : "none",
+              filter:"saturate(3) brightness(1.4)",
             }}>
               {grp.icon}
             </div>
@@ -400,8 +407,8 @@ export function DomeNav({ onSelect, activeSection, onCloseSection, autoOpenGroup
                     : `0 0 10px ${grp.color}33`,
                   transition:"background 0.2s,border-color 0.2s,color 0.2s,box-shadow 0.2s,text-shadow 0.2s",
                 }}
-                onMouseOver={e=>{if(!isAct){const b=e.currentTarget;b.style.background=`radial-gradient(circle at 42% 38%, ${grp.color}66 0%, ${grp.color}33 50%, transparent 80%)`;b.style.color=C.white;b.style.boxShadow=`0 0 24px ${grp.color}99`;b.style.textShadow=`0 0 10px ${grp.color}, 0 0 20px ${grp.color}aa`;} }}
-                onMouseOut ={e=>{if(!isAct){const b=e.currentTarget;b.style.background=`radial-gradient(circle at 42% 38%, ${grp.color}33 0%, ${grp.color}18 50%, transparent 80%)`;b.style.color=C.gold;b.style.boxShadow=`0 0 10px ${grp.color}33`;b.style.textShadow="";}}}
+                onMouseOver={e=>{setHoveredGroup(grp.key);if(!isAct){const b=e.currentTarget;b.style.background=`radial-gradient(circle at 42% 38%, ${grp.color}66 0%, ${grp.color}33 50%, transparent 80%)`;b.style.color=C.white;b.style.boxShadow=`0 0 24px ${grp.color}99`;b.style.textShadow=`0 0 10px ${grp.color}, 0 0 20px ${grp.color}aa`;} }}
+                onMouseOut ={e=>{setHoveredGroup(null);if(!isAct){const b=e.currentTarget;b.style.background=`radial-gradient(circle at 42% 38%, ${grp.color}33 0%, ${grp.color}18 50%, transparent 80%)`;b.style.color=C.gold;b.style.boxShadow=`0 0 10px ${grp.color}33`;b.style.textShadow="";}}}
               >
                 {grp.label.map((ln,j)=><span key={j} style={{display:"block"}}>{ln}</span>)}
               </button>
