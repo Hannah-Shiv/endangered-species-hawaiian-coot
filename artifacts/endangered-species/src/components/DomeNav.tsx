@@ -295,7 +295,7 @@ export function DomeNav({ onSelect, activeSection, onCloseSection, autoOpenGroup
           <motion.div animate={{rotate:open?90:0}} transition={{duration:0.35,ease:[0.4,0,0.2,1]}}
             style={{display:"flex",flexDirection:"column",gap:"5px",alignItems:"center"}}>
             {[0,1,2].map(n=>(
-              <span key={n} style={{display:"block",width:"22px",height:"2.5px",borderRadius:"2px",background:"#FFD700",boxShadow:"0 0 4px rgba(255,215,0,0.9)"}}/>
+              <span key={n} style={{display:"block",width:"22px",height:"1.5px",borderRadius:"1px",background:"rgba(255,248,220,0.92)"}}/>
             ))}
           </motion.div>
         </button>
