@@ -246,7 +246,7 @@ export function Evolution() {
             stroke="rgba(0,229,204,0.28)" strokeWidth={1.5} fill="none"
             strokeDasharray="4 11" />
           <circle cx={CX} cy={CY} r={CTR_D / 2 + 14}
-            stroke="rgba(0,229,204,0.18)" strokeWidth={1.5} fill="none" />
+            stroke="rgba(0,229,204,0.18)" strokeWidth={0.75} fill="none" />
           {NODES.map(({ n }) => {
             const a  = nodeAngle(n);
             const x1 = CX + (CTR_D / 2 + 16) * Math.cos(a);
@@ -287,7 +287,7 @@ export function Evolution() {
             width: CTR_D, height: CTR_D,
             borderRadius: "50%",
             overflow: "hidden",
-            border: "3px solid rgba(0,229,204,0.48)",
+            border: "1.5px solid rgba(0,229,204,0.40)",
           }}
         >
           <img
