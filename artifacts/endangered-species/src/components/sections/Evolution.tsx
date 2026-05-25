@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import cootImg from "@assets/image_1779671102911.png";
+import cootImg from "@assets/image_1779676899308.png";
 
 // ─── Geometry (BIG) ──────────────────────────────────────────────────────────
 const CW = 600, CH = 600;
@@ -26,7 +26,7 @@ function labelTX(n: number): string {
   const a = nodeAngle(n);
   const cx = Math.cos(a), sy = Math.sin(a);
   const tx = cx < -0.2 ? "-100%" : Math.abs(cx) <= 0.2 ? "-50%" : "0";
-  const ty = sy < -0.15 ? "-100%" : "0";
+  const ty = sy < -0.15 ? "-100%" : Math.abs(sy) < 0.2 ? "-50%" : "0";
   return `translate(${tx},${ty})`;
 }
 
@@ -238,49 +238,10 @@ export function Evolution() {
         overflow: "visible",
       }}>
 
-        {/* Active title + era — between node 12 and center circle */}
-        <AnimatePresence mode="wait">
-          {curr && (
-            <motion.div
-              key={`title-${curr.n}`}
-              initial={{ opacity: 0, y: -5 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.25 }}
-              style={{
-                position: "absolute",
-                top: CY - CTR_D / 2 - 78,
-                left: 0, right: 0,
-                textAlign: "center",
-                pointerEvents: "none",
-                zIndex: 10,
-              }}
-            >
-              <div style={{
-                color: "#ffffff",
-                fontSize: "22px", fontWeight: 800,
-                letterSpacing: "0.5px",
-                textShadow: "0 2px 12px rgba(0,0,0,0.9)",
-              }}>
-                {curr.title}
-              </div>
-              <div style={{
-                color: curr.color,
-                fontFamily: "'Playfair Display', serif",
-                fontSize: "17px", fontStyle: "italic",
-                marginTop: 4,
-                textShadow: `0 0 14px ${curr.color}99`,
-              }}>
-                {curr.era}
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
         {/* SVG: rings + spokes + active halo */}
         <svg style={{ position: "absolute", inset: 0, overflow: "visible" }} width={CW} height={CH}>
-          <circle cx={CX} cy={CY} r={RING_R + NODE_R + 12}
-            stroke="rgba(0,229,204,0.07)" strokeWidth={2} fill="none" />
+          <circle cx={CX} cy={CY} r={RING_R + NODE_R + 14}
+            stroke="rgba(0,229,204,0.55)" strokeWidth={2.5} fill="none" />
           <circle cx={CX} cy={CY} r={RING_R}
             stroke="rgba(0,229,204,0.28)" strokeWidth={1.5} fill="none"
             strokeDasharray="4 11" />
