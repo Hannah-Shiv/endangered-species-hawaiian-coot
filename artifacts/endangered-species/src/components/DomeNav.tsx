@@ -355,29 +355,36 @@ export function DomeNav({ onSelect, activeSection, onCloseSection, autoOpenGroup
               <button
                 onClick={(e)=>{e.stopPropagation();setGroup(v=>v===grp.key?null:grp.key);}}
                 data-testid={`button-nav-group-${grp.key}`}
+                onMouseOver={()=>setHoveredGroup(grp.key)}
+                onMouseOut={()=>setHoveredGroup(null)}
                 style={{
                   width:"100%",height:"100%",borderRadius:"50%",
-                  background:isAct
-                    ? `radial-gradient(circle at 42% 38%, ${grp.color}cc 0%, ${grp.color}88 40%, ${grp.color}44 70%, transparent 100%)`
-                    : `radial-gradient(circle at 42% 38%, ${grp.color}66 0%, ${grp.color}44 50%, ${grp.color}22 80%)`,
+                  background: hoveredGroup===grp.key
+                    ? `radial-gradient(circle at 42% 38%, ${grp.color}ff 0%, ${grp.color}cc 40%, ${grp.color}66 70%, transparent 100%)`
+                    : isAct
+                      ? `radial-gradient(circle at 42% 38%, ${grp.color}cc 0%, ${grp.color}88 40%, ${grp.color}44 70%, transparent 100%)`
+                      : `radial-gradient(circle at 42% 38%, ${grp.color}88 0%, ${grp.color}55 50%, ${grp.color}22 80%)`,
                   border:`2.5px solid ${grp.color}`,
                   color:"#ffffff",
                   fontFamily:"'Josefin Sans',sans-serif",fontSize:"11.5px",fontWeight:700,
                   letterSpacing:"0.04em",textTransform:"uppercase",
                   display:"flex",flexDirection:"column",alignItems:"center",
-                  justifyContent:"center",textAlign:"center",cursor:"pointer",
-                  padding:"4px 3px 3px",lineHeight:1.25,
-                  textShadow:`0 0 8px ${grp.color}aa`,
-                  boxShadow:isAct
-                    ? `0 0 0 4px rgba(3,6,16,0.6),0 0 22px ${grp.color}cc,0 0 44px ${grp.color}66`
-                    : `0 0 14px ${grp.color}88, inset 0 0 12px ${grp.color}22`,
-                  transition:"background 0.2s,border-color 0.2s,color 0.2s,box-shadow 0.2s,text-shadow 0.2s",
+                  justifyContent:"flex-start",textAlign:"center",cursor:"pointer",
+                  paddingTop:"10px",paddingBottom:"0px",paddingLeft:"3px",paddingRight:"3px",
+                  lineHeight:1.25,
+                  textShadow: hoveredGroup===grp.key
+                    ? `0 0 12px #fff, 0 0 24px ${grp.color}`
+                    : `0 0 8px ${grp.color}bb`,
+                  boxShadow: hoveredGroup===grp.key
+                    ? `0 0 0 3px rgba(3,6,16,0.5), 0 0 28px ${grp.color}, 0 0 50px ${grp.color}88`
+                    : isAct
+                      ? `0 0 0 4px rgba(3,6,16,0.6),0 0 22px ${grp.color}cc,0 0 44px ${grp.color}66`
+                      : `0 0 14px ${grp.color}88, inset 0 0 12px ${grp.color}22`,
+                  transition:"background 0.2s,box-shadow 0.2s,text-shadow 0.2s",
                 }}
-                onMouseOver={e=>{setHoveredGroup(grp.key);const b=e.currentTarget;b.style.background=`radial-gradient(circle at 42% 38%, ${grp.color}ff 0%, ${grp.color}cc 40%, ${grp.color}66 70%, transparent 100%)`;b.style.boxShadow=`0 0 0 3px rgba(3,6,16,0.5), 0 0 28px ${grp.color}, 0 0 50px ${grp.color}88`;b.style.textShadow=`0 0 12px #fff, 0 0 24px ${grp.color}`;} }
-                onMouseOut ={e=>{setHoveredGroup(null);const b=e.currentTarget;b.style.background=`radial-gradient(circle at 42% 38%, ${grp.color}66 0%, ${grp.color}44 50%, ${grp.color}22 80%)`;b.style.boxShadow=`0 0 14px ${grp.color}88, inset 0 0 12px ${grp.color}22`;b.style.textShadow=`0 0 8px ${grp.color}aa`;}}
               >
                 <span style={{fontSize:"20px",lineHeight:1,marginBottom:"1px"}}>{grp.icon}</span>
-                <span style={{fontSize:"7px",opacity:0.55,marginBottom:"1px",letterSpacing:"0.1em"}}>{grp.num}</span>
+                <span style={{fontSize:"7px",opacity:0.6,marginBottom:"1px",letterSpacing:"0.1em"}}>{grp.num}</span>
                 {grp.label.map((ln,j)=><span key={j} style={{display:"block"}}>{ln}</span>)}
               </button>
             </div>
