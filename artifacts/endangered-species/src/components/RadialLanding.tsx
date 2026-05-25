@@ -15,7 +15,7 @@ import whereItLivesImg from "@assets/image_1779744281696.png";
 import centerImg       from "@assets/image_1779664835983.png";
 import explorePanelImg from "@assets/image_1779744468786.png";
 import quickFactsImg   from "@assets/image_1779743947906.png";
-import topLeftImg      from "@assets/image_1779662050427.png";
+import topLeftImg      from "@assets/image_1779744667581.png";
 import circle01 from "../assets/circles/circle01.png";
 import circle02 from "../assets/circles/circle02.png";
 import circle03 from "../assets/circles/circle03.png";
@@ -329,7 +329,7 @@ export function RadialLanding({ onSelect, exiting }: Props) {
       {/* ── BOTTOM-LEFT: Explore / Learn / Protect — image panel ────────────── */}
       <motion.div {...panelAnim(-1, 0.18)} style={{
         position:"absolute", left:"14px", bottom:"3%",
-        zIndex:6, width:`calc(50% - ${R + CZ/2 + 26}px)`,
+        zIndex:6, width:`calc(50% - ${R + CZ/2 + 60}px)`,
       }}>
         <img
           src={explorePanelImg}
@@ -401,11 +401,11 @@ export function RadialLanding({ onSelect, exiting }: Props) {
               ]}}
               transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
               style={{
-                fontFamily: "'Orbitron', monospace",
+                fontFamily: "'Share Tech Mono', monospace",
                 fontSize: "clamp(14px, 1.6vw, 20px)",
-                fontWeight: 900,
+                fontWeight: 400,
                 letterSpacing: "0.22em",
-                color: "#FFD700",
+                color: "#FFEE44",
                 textTransform: "uppercase",
                 display: "inline-block",
               }}
