@@ -212,7 +212,6 @@ export function DomeNav({ onSelect, activeSection, onCloseSection, autoOpenGroup
 
   return (
     <>
-      <IntelThreads visible={open}/>
 
       {/* Back button when inside a section */}
       <AnimatePresence>
@@ -268,7 +267,7 @@ export function DomeNav({ onSelect, activeSection, onCloseSection, autoOpenGroup
           style={{width:`${BTN}px`,height:`${BTN}px`,borderRadius:"50%",background:"#8b0000",
             border:`3px solid ${C.gold}`,display:"flex",alignItems:"center",justifyContent:"center",
             cursor:"pointer",position:"relative",zIndex:10001,
-            boxShadow:`0 0 0 6px rgba(3,6,16,0.92), 0 0 0 8px rgba(212,175,55,0.35), 0 0 28px rgba(139,0,0,0.55)`,
+            boxShadow:`0 0 24px rgba(139,0,0,0.65)`,
             transition:"box-shadow 0.3s"}}>
           <motion.div animate={{rotate:open?90:0}} transition={{duration:0.35,ease:[0.4,0,0.2,1]}}
             style={{display:"flex",flexDirection:"column",gap:"5px",alignItems:"center"}}>
