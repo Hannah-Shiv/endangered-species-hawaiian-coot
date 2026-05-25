@@ -1,6 +1,5 @@
 import { useState, useCallback } from "react";
 import cootPhoto from "@assets/image_1779651061989.png";
-import { LandingHero } from "@/components/LandingHero";
 import { DomeNav } from "@/components/DomeNav";
 import { RadialLanding } from "@/components/RadialLanding";
 import { CinematicIntro } from "@/components/CinematicIntro";
@@ -121,8 +120,15 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      {/* Hero background — only shown in nav mode (RadialLanding has its own bg) */}
-      {mode === "nav" && <LandingHero />}
+      {/* Persistent dark background for the entire home phase — shown once splash/intro are done.
+          Sits behind both RadialLanding and DomeNav so there's never a white flash or
+          hero overlay bleeding through during the transition. */}
+      {phase === "home" && (
+        <div style={{
+          position:"fixed", inset:0, zIndex:0,
+          background:"#030810",
+        }}/>
+      )}
 
       {/* DomeNav — only present after the landing collapse */}
       {mode === "nav" && (
