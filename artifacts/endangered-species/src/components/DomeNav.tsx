@@ -52,7 +52,7 @@ const IHLF  = ITEM / 2;   // 42
 const R     = 158;        // semicircle radius
 
 // Sub-item pills
-const PW    = 224;
+const PW    = 268;
 const PH    = 52;
 const PGAP  = 12;
 
@@ -442,7 +442,7 @@ export function DomeNav({ onSelect, activeSection, onCloseSection, autoOpenGroup
                           fontSize:"13.5px",fontWeight:700,
                           letterSpacing:"0.06em",textTransform:"uppercase",
                           display:"flex",alignItems:"center",justifyContent:"center",
-                          gap:"12px",cursor:"pointer",padding:"0 20px",
+                          gap:"12px",cursor:"pointer",padding:"0 20px",whiteSpace:"nowrap",
                           transition:"background 0.15s,border-color 0.15s,color 0.15s",
                         }}
                         onMouseOver={e=>{const ag2=GROUPS.find(g=>g.key===group)!;const b=e.currentTarget;b.style.background=`radial-gradient(circle at 42% 38%, ${ag2.color}66 0%, ${ag2.color}33 60%, transparent 100%)`;b.style.borderColor=ag2.color;b.style.color=C.white;}}
