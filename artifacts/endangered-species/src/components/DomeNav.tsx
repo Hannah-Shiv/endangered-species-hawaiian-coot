@@ -361,14 +361,6 @@ export function DomeNav({ onSelect, activeSection, onCloseSection, autoOpenGroup
           pointerEvents:group?"auto":"none",
           zIndex:10001,
         }}>
-          {/* Vertical gold spine through pills */}
-          <svg aria-hidden style={{position:"absolute",left:`${PW/2}px`,top:0,width:1,height:1,overflow:"visible",pointerEvents:"none"}}>
-            {group && (
-              <line x1={0} y1={0} x2={0} y2={PH*2+PGAP}
-                stroke={C.gold} strokeWidth="2.5"/>
-            )}
-          </svg>
-
           <AnimatePresence mode="wait">
             {group && (()=>{
               const ag=GROUPS.find(g=>g.key===group)!;
