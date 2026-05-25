@@ -11,7 +11,7 @@ import { useRef, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import bgPhoto    from "../assets/bg-photo.png";
 import birdImg    from "../assets/bird-transparent.png";
-import whereItLivesImg from "@assets/image_1779661049779.png";
+import whereItLivesImg from "@assets/image_1779744281696.png";
 import centerImg       from "@assets/image_1779664835983.png";
 import explorePanelImg from "@assets/image_1779661407544.png";
 import quickFactsImg   from "@assets/image_1779743947906.png";
@@ -402,10 +402,10 @@ export function RadialLanding({ onSelect, exiting }: Props) {
               transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
               style={{
                 fontFamily: "'Orbitron', monospace",
-                fontSize: "clamp(11px, 1.2vw, 15px)",
-                fontWeight: 700,
+                fontSize: "clamp(14px, 1.6vw, 20px)",
+                fontWeight: 900,
                 letterSpacing: "0.22em",
-                color: "#D4AF37",
+                color: "#FFD700",
                 textTransform: "uppercase",
                 display: "inline-block",
               }}
