@@ -402,7 +402,7 @@ export function RadialLanding({ onSelect, exiting }: Props) {
               transition={{ duration: 2.8, repeat: Infinity, ease: "easeInOut" }}
               style={{
                 fontFamily: "'Share Tech Mono', monospace",
-                fontSize: "clamp(14px, 1.6vw, 20px)",
+                fontSize: "clamp(18px, 2.0vw, 26px)",
                 fontWeight: 400,
                 letterSpacing: "0.22em",
                 color: "#FFEE44",
