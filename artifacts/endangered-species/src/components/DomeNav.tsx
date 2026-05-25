@@ -207,12 +207,15 @@ interface Props {
   activeSection: string | null;
   onCloseSection: () => void;
   autoOpenGroup?: string | null;
+  onOpenChange?: (isOpen: boolean) => void;
 }
 
-export function DomeNav({ onSelect, activeSection, onCloseSection, autoOpenGroup }: Props) {
+export function DomeNav({ onSelect, activeSection, onCloseSection, autoOpenGroup, onOpenChange }: Props) {
   const [open,  setOpen]  = useState(false);
   const [group, setGroup] = useState<string|null>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => { onOpenChange?.(open); }, [open]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     const onOut=(e:MouseEvent)=>{if(wrapRef.current&&!wrapRef.current.contains(e.target as Node)){setOpen(false);setGroup(null);}};

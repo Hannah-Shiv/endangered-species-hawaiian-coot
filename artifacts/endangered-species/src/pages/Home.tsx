@@ -92,6 +92,7 @@ export default function Home() {
   const [exiting,       setExiting]       = useState(false);
   const [autoGroup,     setAutoGroup]     = useState<string | null>(null);
   const [activeSection, setActiveSection] = useState<string | null>(null);
+  const [domeOpen,      setDomeOpen]      = useState(false);
 
   // Called when user clicks a radial landing circle.
   // 1. Trigger exit animation on the landing (700 ms).
@@ -137,6 +138,7 @@ export default function Home() {
           onSelect={setActiveSection}
           onCloseSection={() => setActiveSection(null)}
           autoOpenGroup={autoGroup}
+          onOpenChange={setDomeOpen}
         />
       )}
 
@@ -151,7 +153,7 @@ export default function Home() {
         )}
       </AnimatePresence>
 
-      {/* Section detail panels — full-screen overlay */}
+      {/* Section detail panels — pushed down to clear the dome when it is open */}
       <AnimatePresence mode="wait">
         {activeSection && (
           <motion.div
@@ -160,7 +162,14 @@ export default function Home() {
             animate={{ opacity:1, y:0 }}
             exit={{ opacity:0, y:-16 }}
             transition={{ duration:0.45, ease:[0.16,1,0.3,1] }}
-            style={{ position:"fixed", inset:0, zIndex:9000 }}
+            style={{
+              position:"fixed",
+              top: domeOpen ? "270px" : "0px",
+              left:0, right:0, bottom:0,
+              zIndex:9000,
+              transition:"top 0.45s cubic-bezier(0.16,1,0.3,1)",
+              overflowY:"auto",
+            }}
           >
             {renderSection(activeSection)}
           </motion.div>
