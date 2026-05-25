@@ -31,7 +31,7 @@ interface Group { key: string; num: string; icon: string; label: string[]; color
 
 const GROUPS: Group[] = [
   { key:"the-species", num:"01", icon:"🐦", color:"#22c55e", label:["THE","SPECIES"],
-    items:[{key:"Meet the Species",label:"MEET THE SPECIES",icon:"🐦"},{key:"Evolution",label:"EVOLUTION & CLASS.",icon:"🧬"}] },
+    items:[{key:"Meet the Species",label:"MEET THE SPECIES",icon:"🐦"},{key:"Evolution",label:"EVOLUTION & CLASS",icon:"🧬"}] },
   { key:"habitat",     num:"02", icon:"🗺", color:"#06b6d4", label:["HABITAT","& FOOD"],
     items:[{key:"Habitat & Location",label:"HABITAT & LOCATION",icon:"🗺"},{key:"Food Web",label:"FOOD WEB",icon:"🦋"}] },
   { key:"climate",     num:"03", icon:"🌧", color:"#3b82f6", label:["CLIMATE","CHANGE"],
