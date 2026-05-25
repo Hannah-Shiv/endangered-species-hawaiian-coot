@@ -230,6 +230,28 @@ export function Evolution() {
       fontFamily: "'Josefin Sans', sans-serif",
     }}>
 
+      {/* ── Page title ───────────────────────────────────────────────── */}
+      <div style={{
+        position: "fixed",
+        top: "88px",
+        left: 0, right: 0,
+        textAlign: "center",
+        pointerEvents: "none",
+        zIndex: 15,
+      }}>
+        <div style={{
+          color: "#ffffff",
+          fontFamily: "'Josefin Sans', sans-serif",
+          fontSize: "13px",
+          fontWeight: 700,
+          letterSpacing: "5px",
+          textTransform: "uppercase",
+          opacity: 0.55,
+        }}>
+          Evolutionary Journey
+        </div>
+      </div>
+
       {/* ── Clock container ──────────────────────────────────────────── */}
       <div style={{
         position: "relative",
@@ -316,7 +338,7 @@ export function Evolution() {
                   : lit ? `${node.color}28` : "rgba(5,14,31,0.92)",
                 border: `3px solid ${node.color}`,
                 color: isActive ? "#050e1f" : node.color,
-                fontSize: "20px", fontWeight: 800,
+                fontSize: "23px", fontWeight: 800,
                 cursor: "pointer",
                 display: "flex", alignItems: "center", justifyContent: "center",
                 boxShadow: lit
@@ -355,7 +377,7 @@ export function Evolution() {
             >
               <div style={{
                 color: "#ffffff",
-                fontSize: "16px", fontWeight: 700,
+                fontSize: "19px", fontWeight: 700,
                 lineHeight: 1.3, letterSpacing: "0.2px",
                 textShadow: lit
                   ? `0 0 14px ${node.color}, 0 0 30px ${node.color}bb`
@@ -366,7 +388,7 @@ export function Evolution() {
               </div>
               <div style={{
                 color: node.color,
-                fontSize: "14px", lineHeight: 1.3, marginTop: 3,
+                fontSize: "15px", lineHeight: 1.3, marginTop: 3,
                 fontStyle: "italic", fontWeight: 600,
                 textShadow: lit ? `0 0 10px ${node.color}cc` : "none",
                 transition: "text-shadow 0.25s",
