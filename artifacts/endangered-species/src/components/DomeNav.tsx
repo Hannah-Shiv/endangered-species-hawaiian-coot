@@ -288,7 +288,7 @@ export function DomeNav({ onSelect, activeSection, onCloseSection, autoOpenGroup
           aria-label={open?"Close navigation":"Open navigation"} aria-expanded={open}
           data-testid="button-dome-hamburger"
           style={{width:`${BTN}px`,height:`${BTN}px`,borderRadius:"50%",background:"#8b0000",
-            border:`3px solid #FFE87C`,display:"flex",alignItems:"center",justifyContent:"center",
+            border:`2px solid #FFE87C`,display:"flex",alignItems:"center",justifyContent:"center",
             cursor:"pointer",position:"relative",zIndex:10001,
             boxShadow:`0 0 0 1px rgba(255,232,124,0.4), 0 0 24px rgba(139,0,0,0.65)`,
             transition:"box-shadow 0.3s"}}>
