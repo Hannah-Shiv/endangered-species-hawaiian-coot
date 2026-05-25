@@ -142,11 +142,11 @@ export default function Home() {
               transition:"opacity 0.9s ease",
             }}
           />
-          {/* Dark overlay — keeps dome readable and adds cinematic depth */}
+          {/* Subtle overlay — just enough to keep the dome readable at top */}
           <div style={{
             position:"absolute", inset:0,
             background: mode === "nav"
-              ? "linear-gradient(to bottom, rgba(3,8,16,0.72) 0%, rgba(3,8,16,0.45) 50%, rgba(3,8,16,0.68) 100%)"
+              ? "linear-gradient(to bottom, rgba(3,8,16,0.55) 0%, rgba(3,8,16,0.10) 40%, rgba(3,8,16,0.22) 100%)"
               : "#030810",
             transition:"background 0.9s ease",
           }}/>
