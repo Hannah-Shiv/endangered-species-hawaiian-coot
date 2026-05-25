@@ -214,14 +214,16 @@ export function Evolution({ domeOpen = false }: Props) {
   const goNext = () => setActive(a => a == null ? 1 : a === 12 ? 1 : a + 1);
   const isLit  = (n: number) => active === n || hovered === n;
 
-  // Panels vertically centred within the container (50% of container height, offset for paddingTop)
+  // panelTopCSS tracks the clock's flex-centre inside the outer container.
+  // Dome closed (paddingTop 80):  clock centre ≈ 50vh + 40px  → panel top ≈ calc(50% - 200px)
+  // Dome open  (paddingTop 260):  clock centre ≈ 50%ctr + 130 → panel top ≈ calc(50% - 110px)
   const PANEL_H = 480;
-  const panelTopCSS = `calc(50% - 180px)`;
+  const panelTopCSS = domeOpen ? "calc(50% - 110px)" : "calc(50% - 200px)";
 
   // PREV/NEXT bar sits just below the bottom of the ring inside the clock container
   return (
     <motion.div
-      animate={{ top: domeOpen ? 440 : 0 }}
+      animate={{ top: domeOpen ? 440 : 0, paddingTop: domeOpen ? 260 : 80 }}
       transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
       style={{
         position: "fixed",
@@ -230,7 +232,6 @@ export function Evolution({ domeOpen = false }: Props) {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        paddingTop: "80px",
         boxSizing: "border-box",
         overflow: "hidden",
         fontFamily: "'Josefin Sans', sans-serif",
