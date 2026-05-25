@@ -385,7 +385,6 @@ export function DomeNav({ onSelect, activeSection, onCloseSection, autoOpenGroup
                 }}
               >
                 <span style={{fontSize:"20px",lineHeight:1,marginBottom:"1px"}}>{grp.icon}</span>
-                <span style={{fontSize:"7px",opacity:0.6,marginBottom:"1px",letterSpacing:"0.1em"}}>{grp.num}</span>
                 {grp.label.map((ln,j)=><span key={j} style={{display:"block"}}>{ln}</span>)}
               </button>
             </div>
@@ -440,16 +439,16 @@ export function DomeNav({ onSelect, activeSection, onCloseSection, autoOpenGroup
                           border:`2px solid ${C.gold}`,
                           color:C.gold,
                           fontFamily:"'Josefin Sans',sans-serif",
-                          fontSize:"11px",fontWeight:700,
+                          fontSize:"13.5px",fontWeight:700,
                           letterSpacing:"0.06em",textTransform:"uppercase",
                           display:"flex",alignItems:"center",justifyContent:"center",
-                          gap:"10px",cursor:"pointer",padding:"0 20px",
+                          gap:"12px",cursor:"pointer",padding:"0 20px",
                           transition:"background 0.15s,border-color 0.15s,color 0.15s",
                         }}
                         onMouseOver={e=>{const ag2=GROUPS.find(g=>g.key===group)!;const b=e.currentTarget;b.style.background=`radial-gradient(circle at 42% 38%, ${ag2.color}66 0%, ${ag2.color}33 60%, transparent 100%)`;b.style.borderColor=ag2.color;b.style.color=C.white;}}
                         onMouseOut ={e=>{const b=e.currentTarget;b.style.background=C.dark;b.style.borderColor=C.gold;b.style.color=C.gold;}}
                       >
-                        <span style={{fontSize:"16px",lineHeight:1}}>{sub.icon}</span>
+                        <span style={{fontSize:"20px",lineHeight:1,display:"flex",alignItems:"center"}}>{sub.icon}</span>
                         {sub.label}
                       </button>
                     </motion.div>
