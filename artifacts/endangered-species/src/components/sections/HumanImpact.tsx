@@ -123,29 +123,35 @@ function ImageLabel({ label, color, side }: { label: string; color: string; side
 
 // ── Lock button ───────────────────────────────────────────────────────────────
 function LockBtn({
-  isLocked, isHovered, color, onClick,
+  isLocked, color, onClick,
 }: {
-  isLocked: boolean; isHovered: boolean; color: string;
+  isLocked: boolean; color: string;
   onClick: (e: React.MouseEvent) => void;
 }) {
   const bright = color.replace(",1)", ",0.9)");
-  const glow   = color.replace(",1)", ",0.4)");
+  const glow   = color.replace(",1)", ",0.5)");
   return (
     <motion.div
       onClick={onClick}
+      whileHover={{
+        boxShadow: isLocked
+          ? `0 0 28px ${glow}, 0 0 10px ${color}`
+          : `0 0 20px ${color.replace(",1)", ",0.45)")}, 0 0 8px ${color.replace(",1)", ",0.3)")}`,
+        borderColor: isLocked ? bright : color.replace(",1)", ",0.85)"),
+        scale: 1.1,
+      }}
       animate={{
         background:  isLocked ? color : "rgba(0,0,0,0)",
-        borderColor: isLocked ? bright : isHovered ? color.replace(",1)", ",0.5)") : "rgba(255,255,255,0.2)",
+        borderColor: isLocked ? bright : "rgba(255,255,255,0.22)",
         boxShadow:   isLocked ? `0 0 18px ${glow}, 0 0 6px ${color}` : "none",
-        scale:       isLocked ? 1.05 : 1,
       }}
       transition={{ duration: 0.3 }}
       style={{
-        width: 42, height: 42, borderRadius: "50%",
-        border: "2px solid rgba(255,255,255,0.2)",
+        width: 46, height: 46, borderRadius: "50%",
+        border: "2px solid rgba(255,255,255,0.22)",
         display: "flex", flexDirection: "column",
         alignItems: "center", justifyContent: "center",
-        cursor: "pointer", flexShrink: 0, gap: 1,
+        cursor: "pointer", flexShrink: 0, gap: 2,
       }}
     >
       <AnimatePresence mode="wait">
@@ -154,17 +160,17 @@ function LockBtn({
             initial={{ scale: 0, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0, opacity: 0 }}
             transition={{ type: "spring", stiffness: 300, damping: 18 }}
-            style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 1 }}
+            style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
           >
-            <span style={{ fontSize: 16, color: "#000", lineHeight: 1 }}>🔒</span>
+            <span style={{ fontSize: 22, color: "#000", lineHeight: 1 }}>🔒</span>
           </motion.div>
         ) : (
           <motion.div key="unlocked"
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 1 }}
+            style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2 }}
           >
-            <span style={{ fontSize: 14, lineHeight: 1, opacity: 0.5 }}>🔓</span>
-            <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 7, color: "rgba(255,255,255,0.45)", letterSpacing: "0.06em", fontWeight: 700 }}>LOCK</span>
+            <span style={{ fontSize: 20, lineHeight: 1, opacity: 0.55 }}>🔓</span>
+            <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 9, color: "rgba(255,255,255,0.5)", letterSpacing: "0.07em", fontWeight: 700 }}>LOCK</span>
           </motion.div>
         )}
       </AnimatePresence>
@@ -174,25 +180,19 @@ function LockBtn({
 
 // ── Main Component ────────────────────────────────────────────────────────────
 export function HumanImpact() {
-  const [hoveredId,  setHoveredId]  = useState<string | null>(null);
-  const [lockedIds,  setLockedIds]  = useState<Set<string>>(new Set());
-  const [activated,  setActivated]  = useState<Set<number>>(new Set());
+  const [hoveredId,   setHoveredId]   = useState<string | null>(null);
+  const [lockedIds,   setLockedIds]   = useState<Set<string>>(new Set());
+  const [activated,   setActivated]   = useState<Set<number>>(new Set());
   const [justClicked, setJustClicked] = useState<number | null>(null);
 
-  // All side card data indexed by id
   const allSideCards: Record<string, CardData> = {};
   harmCards.forEach(c => { allSideCards[c.id] = { id: c.id, type: "harm", delta: c.delta, effect: c.effect }; });
   hopeCards.forEach(c => { allSideCards[c.id] = { id: c.id, type: "hope", delta: c.delta, effect: c.effect }; });
 
   function toggleLock(id: string) {
-    setLockedIds(prev => {
-      const next = new Set(prev);
-      next.has(id) ? next.delete(id) : next.add(id);
-      return next;
-    });
+    setLockedIds(prev => { const next = new Set(prev); next.has(id) ? next.delete(id) : next.add(id); return next; });
   }
 
-  // Locked deltas — sum all locked cards
   const lockedDelta = Array.from(lockedIds).reduce(
     (acc, id) => {
       const d = allSideCards[id]?.delta;
@@ -202,7 +202,6 @@ export function HumanImpact() {
     { wetland: 0, nesting: 0, water: 0, population: 0 }
   );
 
-  // Help boost
   const helpBoost = Array.from(activated).reduce(
     (acc, n) => {
       const c = helpCards[n - 1];
@@ -226,14 +225,8 @@ export function HumanImpact() {
         water:      Math.max(10, Math.min(95, withLockAndHelp.water      + hoveredData.delta.water)),
         population: Math.max(4,  Math.min(95, withLockAndHelp.population + hoveredData.delta.population)),
       }
-    : {
-        wetland:    Math.min(92, withLockAndHelp.wetland),
-        nesting:    Math.min(92, withLockAndHelp.nesting),
-        water:      Math.min(92, withLockAndHelp.water),
-        population: Math.min(92, withLockAndHelp.population),
-      };
+    : { wetland: Math.min(92, withLockAndHelp.wetland), nesting: Math.min(92, withLockAndHelp.nesting), water: Math.min(92, withLockAndHelp.water), population: Math.min(92, withLockAndHelp.population) };
 
-  // Divider: hover overrides; else tally locked types
   const lockedHarmCount = Array.from(lockedIds).filter(id => allSideCards[id]?.type === "harm").length;
   const lockedHopeCount = Array.from(lockedIds).filter(id => allSideCards[id]?.type === "hope").length;
   const dividerPct = hoveredData
@@ -252,18 +245,14 @@ export function HumanImpact() {
     setTimeout(() => setJustClicked(null), 700);
   }
 
-  // ── Shared side card row renderer ─────────────────────────────────────────
-  function renderSideCard(
-    card: typeof harmCards[0],
-    color: string,
-    type: "harm" | "hope",
-  ) {
-    const isHov = hoveredId === card.id;
+  // ── Side card renderer ────────────────────────────────────────────────────
+  function renderSideCard(card: typeof harmCards[0], color: string, type: "harm" | "hope") {
+    const isHov    = hoveredId === card.id;
     const isLocked = lockedIds.has(card.id);
-    const lit = isHov || isLocked;
-    const bright = color.replace(",1)", ",0.9)");
-    const faint  = color.replace(",1)", ",0.1)");
-    const glow   = color.replace(",1)", ",0.35)");
+    const lit      = isHov || isLocked;
+    const bright   = color.replace(",1)", ",0.9)");
+    const faint    = color.replace(",1)", ",0.1)");
+    const glow     = color.replace(",1)", ",0.35)");
 
     return (
       <motion.div
@@ -280,11 +269,10 @@ export function HumanImpact() {
         style={{
           flex: 1, minHeight: 0,
           border: `1.5px solid ${color.replace(",1)", ",0.22)")}`,
-          borderRadius: 10, overflow: "hidden",
-          display: "flex",
+          borderRadius: 10, overflow: "hidden", display: "flex",
         }}
       >
-        {/* LEFT: icon + title + description */}
+        {/* LEFT: content */}
         <div style={{ flex: 1, minWidth: 0, padding: "11px 10px 11px 12px", display: "flex", gap: 10 }}>
           <span style={{ fontSize: 26, flexShrink: 0, marginTop: 1 }}>{card.icon}</span>
           <div style={{ flex: 1, minWidth: 0 }}>
@@ -297,18 +285,16 @@ export function HumanImpact() {
           </div>
         </div>
 
-        {/* RIGHT: lock button */}
+        {/* RIGHT: lock panel — wider */}
         <div style={{
-          width: 58, flexShrink: 0,
-          background: isLocked ? color.replace(",1)", ",0.07)") : "rgba(255,255,255,0.03)",
-          borderLeft: `1px solid ${isLocked ? color.replace(",1)", ",0.3)") : "rgba(255,255,255,0.08)"}`,
+          width: 76, flexShrink: 0,
+          background: isLocked ? color.replace(",1)", ",0.08)") : "rgba(255,255,255,0.025)",
+          borderLeft: `1px solid ${isLocked ? color.replace(",1)", ",0.3)") : "rgba(255,255,255,0.07)"}`,
           display: "flex", alignItems: "center", justifyContent: "center",
           transition: "background 0.3s, border-color 0.3s",
         }}>
-          <LockBtn
-            isLocked={isLocked} isHovered={isHov} color={color}
-            onClick={e => { e.stopPropagation(); toggleLock(card.id); }}
-          />
+          <LockBtn isLocked={isLocked} color={color}
+            onClick={e => { e.stopPropagation(); toggleLock(card.id); }} />
         </div>
       </motion.div>
     );
@@ -337,7 +323,7 @@ export function HumanImpact() {
       {/* ── Harm | Ecosystem | Hope ── */}
       <div style={{ flex: 2, minHeight: 0, display: "grid", gridTemplateColumns: "1fr 1.65fr 1fr", gap: 6 }}>
 
-        {/* HARM column */}
+        {/* HARM */}
         <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
           <div style={{
             flexShrink: 0, display: "flex", alignItems: "center", gap: 10,
@@ -361,55 +347,35 @@ export function HumanImpact() {
           boxShadow: "0 0 30px rgba(212,175,55,0.07)",
         }}>
           <div style={{ flex: 1, minHeight: 0, position: "relative", overflow: "hidden" }}>
-            <img src={wetlandStressed as string} alt="Damaged wetland"
+            <img src={wetlandStressed as string} alt="Damaged"
               style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 40%" }} />
             <motion.div animate={{ clipPath: `inset(0 0 0 ${dividerPct}%)` }} transition={spring}
               style={{ position: "absolute", inset: 0 }}>
-              <img src={wetlandHealthy as string} alt="Healthy wetland"
+              <img src={wetlandHealthy as string} alt="Healthy"
                 style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 40%" }} />
             </motion.div>
-
-            {/* Color overlays */}
-            <motion.div
-              animate={{ opacity: (hoveredData?.type === "harm" || (!hoveredData && lockedHarmCount > lockedHopeCount)) ? 0.5 : 0.1 }}
-              transition={{ duration: 0.4 }}
+            <motion.div animate={{ opacity: (hoveredData?.type === "harm" || (!hoveredData && lockedHarmCount > lockedHopeCount)) ? 0.5 : 0.1 }} transition={{ duration: 0.4 }}
               style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, rgba(200,30,10,0.9) 0%, rgba(200,30,10,0.2) 55%, transparent 100%)", pointerEvents: "none" }} />
-            <motion.div
-              animate={{ opacity: (hoveredData?.type === "hope" || (!hoveredData && lockedHopeCount > lockedHarmCount)) ? 0.42 : 0.07 }}
-              transition={{ duration: 0.4 }}
+            <motion.div animate={{ opacity: (hoveredData?.type === "hope" || (!hoveredData && lockedHopeCount > lockedHarmCount)) ? 0.42 : 0.07 }} transition={{ duration: 0.4 }}
               style={{ position: "absolute", inset: 0, background: "linear-gradient(to left, rgba(30,180,80,0.85) 0%, rgba(30,180,80,0.15) 55%, transparent 100%)", pointerEvents: "none" }} />
-            <motion.div
-              animate={{ opacity: activated.size > 0 ? Math.min(0.35, activated.size * 0.09) : 0 }}
-              transition={{ duration: 0.7 }}
+            <motion.div animate={{ opacity: activated.size > 0 ? Math.min(0.35, activated.size * 0.09) : 0 }} transition={{ duration: 0.7 }}
               style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at center, rgba(50,200,100,0.4) 0%, transparent 70%)", pointerEvents: "none" }} />
-
-            {/* Divider */}
             <motion.div animate={{ left: `${dividerPct}%` }} transition={spring}
               style={{ position: "absolute", top: 0, bottom: 0, width: 2, transform: "translateX(-1px)", background: "rgba(255,255,255,0.9)", boxShadow: "0 0 14px rgba(255,255,255,0.8)", zIndex: 5, pointerEvents: "none" }} />
             <motion.div animate={{ left: `${dividerPct}%` }} transition={spring}
               style={{ position: "absolute", top: "50%", transform: "translate(-50%,-50%)", width: 28, height: 28, borderRadius: "50%", background: "rgba(0,0,0,0.9)", border: "2px solid rgba(255,255,255,0.9)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 6, pointerEvents: "none" }}>
               <span style={{ fontSize: 12, color: "white" }}>⟷</span>
             </motion.div>
-
-            {/* Glowing HARM / HOPE labels */}
             <ImageLabel label="HARM" color={RED}   side="left" />
             <ImageLabel label="HOPE" color={GREEN} side="right" />
-
-            {/* Effect tooltip */}
             <motion.div animate={{ opacity: showTooltip ? 1 : 0, y: showTooltip ? 0 : 6 }} transition={{ duration: 0.25 }}
               style={{ position: "absolute", bottom: 12, left: "50%", transform: "translateX(-50%)", background: "rgba(0,0,0,0.92)", border: `1.5px solid ${activeType === "harm" ? "rgba(220,50,30,0.85)" : "rgba(50,200,100,0.85)"}`, borderRadius: 7, padding: "6px 18px", whiteSpace: "nowrap", zIndex: 7, pointerEvents: "none" }}>
-              <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, color: activeType === "harm" ? RED : GREEN, fontWeight: 700, letterSpacing: "0.07em" }}>
-                {activeEffect ?? ""}
-              </span>
+              <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, color: activeType === "harm" ? RED : GREEN, fontWeight: 700, letterSpacing: "0.07em" }}>{activeEffect ?? ""}</span>
             </motion.div>
             <motion.div animate={{ opacity: showTooltip ? 0 : 1 }} transition={{ duration: 0.2 }}
               style={{ position: "absolute", bottom: 12, left: "50%", transform: "translateX(-50%)", background: "rgba(0,0,0,0.8)", border: "1px solid rgba(212,175,55,0.4)", borderRadius: 7, padding: "6px 16px", whiteSpace: "nowrap", zIndex: 7, pointerEvents: "none" }}>
-              <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11.5, color: "rgba(212,175,55,0.85)", letterSpacing: "0.07em" }}>
-                HOVER TO PREVIEW · CLICK 🔒 TO LOCK
-              </span>
+              <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11.5, color: "rgba(212,175,55,0.85)", letterSpacing: "0.07em" }}>HOVER TO PREVIEW · CLICK 🔒 TO LOCK</span>
             </motion.div>
-
-            {/* Locked count badges */}
             {lockedIds.size > 0 && (
               <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
                 style={{ position: "absolute", top: 10, left: "50%", transform: "translateX(-50%)", display: "flex", gap: 6, zIndex: 4 }}>
@@ -426,7 +392,6 @@ export function HumanImpact() {
               </motion.div>
             )}
           </div>
-
           {/* Meters */}
           <div style={{ flexShrink: 0, padding: "9px 16px 11px", borderTop: "1px solid rgba(212,175,55,0.15)" }}>
             <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 12, color: "rgba(212,175,55,0.6)", letterSpacing: "0.16em", textAlign: "center", marginBottom: 8 }}>ECOSYSTEM HEALTH</p>
@@ -450,7 +415,7 @@ export function HumanImpact() {
           </div>
         </div>
 
-        {/* HOPE column */}
+        {/* HOPE */}
         <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
           <div style={{
             flexShrink: 0, display: "flex", alignItems: "center", gap: 10,
@@ -475,6 +440,7 @@ export function HumanImpact() {
         padding: "8px 12px 10px", display: "flex", flexDirection: "column", gap: 6,
         background: "rgba(212,175,55,0.02)", boxShadow: "0 0 24px rgba(212,175,55,0.06)",
       }}>
+        {/* Header */}
         <div style={{ flexShrink: 0, display: "flex", alignItems: "center", gap: 10 }}>
           <div style={{ flex: 1, height: 1, background: "rgba(212,175,55,0.25)" }} />
           <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 18, color: GOLD, fontWeight: 700, letterSpacing: "0.06em" }}>→ How You Can Help ←</span>
@@ -489,6 +455,7 @@ export function HumanImpact() {
           <div style={{ flex: 1, height: 1, background: "rgba(212,175,55,0.25)" }} />
         </div>
 
+        {/* Take Action cards — button TOP, divider, content BOTTOM */}
         <div style={{ flex: 1, minHeight: 0, display: "flex", gap: 7 }}>
           {helpCards.map(card => {
             const isActive  = activated.has(card.n);
@@ -496,72 +463,113 @@ export function HumanImpact() {
             const c       = card.color;
             const cFaint  = c.replace(",1)", ",0.12)");
             const cBorder = c.replace(",1)", ",0.8)");
-            const cGlow   = c.replace(",1)", ",0.3)");
-            const cMid    = c.replace(",1)", ",0.6)");
+            const cGlow   = c.replace(",1)", ",0.35)");
+            const cMid    = c.replace(",1)", ",0.55)");
 
             return (
               <motion.div key={card.n}
-                onClick={() => toggleHelp(card.n)}
                 animate={{
                   borderColor: isActive ? cBorder : GOLDF,
                   background:  isActive ? cFaint  : "rgba(0,0,0,1)",
                   boxShadow:   isActive ? `0 0 22px ${cGlow}, inset 0 0 28px ${c.replace(",1)", ",0.06)")}` : "none",
-                  scale: isPulsing ? [1, 1.04, 1] : 1,
                 }}
-                transition={{ scale: { duration: 0.45 }, default: { duration: 0.3 } }}
+                transition={{ duration: 0.3 }}
                 style={{
                   flex: 1, border: `1px solid ${GOLDF}`, borderRadius: 11,
-                  padding: "10px 10px 9px", cursor: "pointer",
-                  display: "flex", flexDirection: "column", alignItems: "center",
-                  textAlign: "center", overflow: "hidden",
+                  overflow: "hidden", display: "flex", flexDirection: "column",
                 }}
               >
-                <span style={{ fontSize: 26, marginBottom: 5 }}>{card.icon}</span>
-                <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 15, color: isActive ? c : GOLD, fontWeight: 700, letterSpacing: "0.04em", marginBottom: 4, lineHeight: 1.2 }}>{card.title}</p>
-                <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 13, color: "rgba(255,255,255,0.72)", lineHeight: 1.45, flex: 1 }}>{card.desc}</p>
-                <AnimatePresence>
-                  {isActive && (
-                    <motion.p key="edu"
-                      initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }}
-                      exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.3 }}
-                      style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontSize: 12, color: "rgba(255,255,255,0.82)", lineHeight: 1.42, marginTop: 5, overflow: "hidden" }}>
-                      {card.message}
-                    </motion.p>
-                  )}
-                </AnimatePresence>
-                <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 12, color: isActive ? c : "rgba(212,175,55,0.45)", fontWeight: 700, letterSpacing: "0.05em", marginTop: 6, marginBottom: 8 }}>{card.effect}</p>
-
-                {/* Circular Take Action button */}
-                <motion.div
-                  animate={{
-                    background:  isActive ? c : "rgba(0,0,0,0)",
-                    borderColor: isActive ? cBorder : "rgba(212,175,55,0.5)",
-                    boxShadow:   isActive ? `0 0 22px ${cGlow}, 0 0 8px ${cMid}` : "none",
-                    scale:       isPulsing ? [1, 1.2, 1] : 1,
+                {/* TOP: Take Action button area */}
+                <div
+                  onClick={() => toggleHelp(card.n)}
+                  style={{
+                    flexShrink: 0, display: "flex", flexDirection: "column",
+                    alignItems: "center", paddingTop: 10, paddingBottom: 8,
+                    cursor: "pointer",
                   }}
-                  transition={{ scale: { duration: 0.4 }, default: { duration: 0.35 } }}
-                  style={{ width: 56, height: 56, borderRadius: "50%", border: "2px solid rgba(212,175,55,0.5)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}
                 >
-                  <AnimatePresence mode="wait">
-                    {isActive ? (
-                      <motion.span key="tick"
-                        initial={{ scale: 0, opacity: 0, rotate: -30 }} animate={{ scale: 1, opacity: 1, rotate: 0 }}
-                        exit={{ scale: 0, opacity: 0 }}
-                        transition={{ type: "spring", stiffness: 280, damping: 18 }}
-                        style={{ fontSize: 26, color: "#000", fontWeight: 900, lineHeight: 1 }}>✓</motion.span>
-                    ) : (
-                      <motion.span key="label"
-                        initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                        style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 9, color: "rgba(212,175,55,0.75)", fontWeight: 700, letterSpacing: "0.07em", lineHeight: 1.3, textAlign: "center" }}>
-                        TAKE<br/>ACTION
-                      </motion.span>
+                  <motion.div
+                    animate={{
+                      background:  isActive ? c : "rgba(0,0,0,0)",
+                      borderColor: isActive ? cBorder : "rgba(212,175,55,0.5)",
+                      boxShadow:   isActive ? `0 0 22px ${cGlow}, 0 0 8px ${cMid}` : "none",
+                      scale:       isPulsing ? [1, 1.2, 1] : 1,
+                    }}
+                    whileHover={{
+                      boxShadow: isActive
+                        ? `0 0 32px ${cGlow}, 0 0 14px ${cMid}`
+                        : `0 0 20px ${c.replace(",1)", ",0.4)")}, 0 0 8px ${c.replace(",1)", ",0.25)")}`,
+                      scale: isPulsing ? 1 : 1.1,
+                      borderColor: isActive ? cBorder : c.replace(",1)", ",0.85)"),
+                    }}
+                    transition={{ scale: { duration: 0.4 }, default: { duration: 0.3 } }}
+                    style={{
+                      width: 52, height: 52, borderRadius: "50%",
+                      border: "2px solid rgba(212,175,55,0.5)",
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                    }}
+                  >
+                    <AnimatePresence mode="wait">
+                      {isActive ? (
+                        <motion.span key="tick"
+                          initial={{ scale: 0, opacity: 0, rotate: -30 }}
+                          animate={{ scale: 1, opacity: 1, rotate: 0 }}
+                          exit={{ scale: 0, opacity: 0 }}
+                          transition={{ type: "spring", stiffness: 280, damping: 18 }}
+                          style={{ fontSize: 24, color: "#000", fontWeight: 900, lineHeight: 1 }}>✓</motion.span>
+                      ) : (
+                        <motion.span key="label"
+                          initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                          style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 9, color: "rgba(212,175,55,0.75)", fontWeight: 700, letterSpacing: "0.07em", lineHeight: 1.3, textAlign: "center" }}>
+                          TAKE<br/>ACTION
+                        </motion.span>
+                      )}
+                    </AnimatePresence>
+                  </motion.div>
+                  <motion.span
+                    animate={{ opacity: isActive ? 1 : 0 }}
+                    style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 10, color: c, fontWeight: 700, letterSpacing: "0.1em", marginTop: 4 }}>
+                    ACTIVATED
+                  </motion.span>
+                </div>
+
+                {/* DIVIDER */}
+                <div style={{ height: 1, background: isActive ? c.replace(",1)", ",0.35)") : "rgba(212,175,55,0.18)", margin: "0 10px", transition: "background 0.3s" }} />
+
+                {/* BOTTOM: icon + content */}
+                <div
+                  onClick={() => toggleHelp(card.n)}
+                  style={{
+                    flex: 1, minHeight: 0, padding: "8px 10px 9px",
+                    display: "flex", flexDirection: "column", alignItems: "center",
+                    textAlign: "center", cursor: "pointer", overflow: "hidden",
+                  }}
+                >
+                  <span style={{ fontSize: 24, marginBottom: 4 }}>{card.icon}</span>
+
+                  <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 16, color: isActive ? c : GOLD, fontWeight: 700, letterSpacing: "0.04em", marginBottom: 3, lineHeight: 1.2 }}>
+                    {card.title}
+                  </p>
+
+                  <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 13.5, color: "rgba(255,255,255,0.74)", lineHeight: 1.45, flex: 1 }}>
+                    {card.desc}
+                  </p>
+
+                  <AnimatePresence>
+                    {isActive && (
+                      <motion.p key="edu"
+                        initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }}
+                        exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.3 }}
+                        style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontSize: 12, color: "rgba(255,255,255,0.82)", lineHeight: 1.4, marginTop: 4, overflow: "hidden" }}>
+                        {card.message}
+                      </motion.p>
                     )}
                   </AnimatePresence>
-                </motion.div>
-                <motion.span animate={{ opacity: isActive ? 1 : 0 }}
-                  style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 10, color: c, fontWeight: 700, letterSpacing: "0.1em", marginTop: 5 }}>
-                  ACTIVATED
-                </motion.span>
+
+                  <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, color: isActive ? c : "rgba(212,175,55,0.45)", fontWeight: 700, letterSpacing: "0.05em", marginTop: 5 }}>
+                    {card.effect}
+                  </p>
+                </div>
               </motion.div>
             );
           })}
