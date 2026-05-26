@@ -193,13 +193,19 @@ export function Habitat() {
                 onChange={e=>setSlider(Number(e.target.value))}
                 className="vslider"
               />
-              <span style={{
+              <div style={{
                 position:"absolute", pointerEvents:"none", userSelect:"none", zIndex:2,
-                writingMode:"vertical-rl", transform:"rotate(180deg)",
-                fontFamily:"'Josefin Sans',sans-serif", fontSize:"9px",
-                fontWeight:900, letterSpacing:"0.14em", textTransform:"uppercase",
-                color:"#000000",
-              }}>D R A G   T H I S   B A R</span>
+                display:"flex", flexDirection:"column", alignItems:"center", gap:"1px",
+                fontFamily:"'Josefin Sans',sans-serif", fontSize:"13px",
+                fontWeight:900, letterSpacing:"0.05em", textTransform:"uppercase",
+                color:"#000000", lineHeight:1.15,
+              }}>
+                {(["D","R","A","G",null,"T","H","I","S",null,"B","A","R"] as (string|null)[]).map((c,i)=>
+                  c===null
+                    ? <div key={i} style={{height:"7px"}}/>
+                    : <span key={i}>{c}</span>
+                )}
+              </div>
             </div>
 
             <span style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:"9px",letterSpacing:"0.05em",textTransform:"uppercase",color:"rgba(34,197,94,0.9)",textAlign:"center",lineHeight:1.2,flexShrink:0}}>
