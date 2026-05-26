@@ -94,7 +94,7 @@ export function Habitat() {
           background:linear-gradient(to top,rgba(34,197,94,0.9),rgba(212,175,55,0.9),rgba(239,120,68,0.9),rgba(239,68,68,1));
           box-shadow:0 0 8px rgba(212,175,55,0.25)}
         .vslider::-webkit-slider-thumb{
-          -webkit-appearance:none;width:30px;height:5px;border-radius:3px;
+          -webkit-appearance:none;width:30px;height:7px;border-radius:3px;
           border:none;
           background:rgba(147,51,234,1);
           cursor:pointer;margin-left:0;
@@ -103,7 +103,7 @@ export function Habitat() {
           width:30px;border-radius:15px;
           background:linear-gradient(to top,rgba(34,197,94,0.9),rgba(212,175,55,0.9),rgba(239,120,68,0.9),rgba(239,68,68,1))}
         .vslider::-moz-range-thumb{
-          width:30px;height:5px;border-radius:3px;
+          width:30px;height:7px;border-radius:3px;
           border:none;background:rgba(147,51,234,1);cursor:pointer;
           box-shadow:0 0 10px rgba(147,51,234,0.85)}
       `}</style>
@@ -196,13 +196,13 @@ export function Habitat() {
               <div style={{
                 position:"absolute", pointerEvents:"none", userSelect:"none", zIndex:2,
                 display:"flex", flexDirection:"column", alignItems:"center", gap:"1px",
-                fontFamily:"'Josefin Sans',sans-serif", fontSize:"13px",
+                fontFamily:"'Josefin Sans',sans-serif", fontSize:"15px",
                 fontWeight:900, letterSpacing:"0.05em", textTransform:"uppercase",
                 color:"#000000", lineHeight:1.15,
               }}>
                 {(["D",1,"R",1,"A",1,"G",2,"T",1,"H",1,"I",1,"S",2,"B",1,"A",1,"R"] as (string|number)[]).map((c,i)=>
                   c===1 ? <div key={i} style={{height:"5px"}}/>
-                  : c===2 ? <div key={i} style={{height:"10px"}}/>
+                  : c===2 ? <div key={i} style={{height:"20px"}}/>
                   : <span key={i}>{c}</span>
                 )}
               </div>
@@ -244,7 +244,7 @@ export function Habitat() {
                   const tempVal = Math.round(d.tempLow + f*(d.tempHigh-d.tempLow) + deg*9*f);
                   return <g key={i}>
                     <line x1="38" y1={ty} x2="52" y2={ty} stroke="rgba(255,255,255,0.35)" strokeWidth="2"/>
-                    <text x="57" y={ty+13} fill="rgba(255,255,255,0.9)" fontSize="30" fontFamily="'Josefin Sans'" fontWeight="700">{tempVal}°</text>
+                    <text x="57" y={ty+13} fill="rgba(255,255,255,0.9)" fontSize="28" fontFamily="'Josefin Sans'" fontWeight="700">{tempVal}°</text>
                   </g>;
                 })}
                 {/* Tube */}
