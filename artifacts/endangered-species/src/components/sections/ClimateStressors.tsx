@@ -111,7 +111,7 @@ function BeforeAfterSlider() {
       <div
         ref={containerRef}
         className="relative w-full overflow-hidden rounded-t-xl"
-        style={{ height: "460px", cursor: dragging ? "ew-resize" : "col-resize", userSelect: "none" }}
+        style={{ height: "560px", background: "#000", cursor: dragging ? "ew-resize" : "col-resize", userSelect: "none" }}
         onMouseDown={onMouseDown}
         onTouchStart={onTouchStart}
         onClick={handleContainerClick}
@@ -124,7 +124,7 @@ function BeforeAfterSlider() {
           <img
             src={wetlandBefore}
             alt="Healthy Hawaiian wetland before sea level rise"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-contain"
             draggable={false}
           />
           {/* Green tint */}
@@ -139,7 +139,7 @@ function BeforeAfterSlider() {
           <img
             src={wetlandAfter}
             alt="Hawaiian wetland after projected sea level rise"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-contain"
             draggable={false}
           />
           {/* Red-brown tint */}
@@ -186,24 +186,24 @@ function BeforeAfterSlider() {
             pointerEvents: "none",
             opacity: sliderPos > 10 ? 1 : 0,
             transition: "opacity 0.25s",
-            maxWidth: 240,
+            maxWidth: 280,
           }}
         >
           <div
             className="flex items-center gap-2 px-4 py-2 rounded-full mb-2"
             style={{
-              background: "rgba(0,0,0,0.75)",
-              border: "1.5px solid rgba(34,180,34,0.8)",
+              background: "rgba(0,0,0,0.82)",
+              border: "2px solid rgba(34,200,34,0.9)",
               display: "inline-flex",
             }}
           >
-            <span style={{ fontSize: 16 }}>🌿</span>
+            <span style={{ fontSize: 20 }}>🌿</span>
             <span
               style={{
                 fontFamily: "'Josefin Sans', sans-serif",
-                fontSize: 16,
-                letterSpacing: "0.16em",
-                color: "rgb(80,220,80)",
+                fontSize: 20,
+                letterSpacing: "0.18em",
+                color: "rgb(80,240,80)",
                 fontWeight: 700,
               }}
             >
@@ -214,11 +214,12 @@ function BeforeAfterSlider() {
             style={{
               fontFamily: "'Playfair Display', serif",
               fontStyle: "italic",
-              fontSize: 13,
-              color: "rgba(210,250,210,0.92)",
-              textShadow: "0 1px 8px rgba(0,0,0,1)",
+              fontSize: 16,
+              color: "rgba(220,255,220,1)",
+              textShadow: "0 2px 10px rgba(0,0,0,1)",
               lineHeight: 1.5,
               paddingLeft: 2,
+              fontWeight: 600,
             }}
           >
             Healthy Wetlands at Current Sea Levels
@@ -232,23 +233,23 @@ function BeforeAfterSlider() {
             pointerEvents: "none",
             opacity: sliderPos < 90 ? 1 : 0,
             transition: "opacity 0.25s",
-            maxWidth: 240,
+            maxWidth: 280,
           }}
         >
           <div
             className="flex items-center gap-2 px-4 py-2 rounded-full mb-2 ml-auto"
             style={{
-              background: "rgba(0,0,0,0.75)",
-              border: "1.5px solid rgba(220,60,30,0.8)",
+              background: "rgba(0,0,0,0.82)",
+              border: "2px solid rgba(240,60,30,0.9)",
               display: "inline-flex",
             }}
           >
-            <span style={{ fontSize: 16 }}>🔥</span>
+            <span style={{ fontSize: 20 }}>🔥</span>
             <span
               style={{
                 fontFamily: "'Josefin Sans', sans-serif",
-                fontSize: 16,
-                letterSpacing: "0.16em",
+                fontSize: 20,
+                letterSpacing: "0.18em",
                 color: "rgb(255,90,60)",
                 fontWeight: 700,
               }}
@@ -260,11 +261,12 @@ function BeforeAfterSlider() {
             style={{
               fontFamily: "'Playfair Display', serif",
               fontStyle: "italic",
-              fontSize: 13,
-              color: "rgba(255,215,210,0.92)",
-              textShadow: "0 1px 8px rgba(0,0,0,1)",
+              fontSize: 16,
+              color: "rgba(255,220,215,1)",
+              textShadow: "0 2px 10px rgba(0,0,0,1)",
               lineHeight: 1.5,
               paddingRight: 2,
+              fontWeight: 600,
             }}
           >
             Projected Sea Level Rise (20–60 cm by 2100)
@@ -304,7 +306,7 @@ function BeforeAfterSlider() {
         <div
           className="grid grid-cols-3 gap-0"
           style={{
-            background: "rgba(0,28,4,0.75)",
+            background: "rgba(0,28,4,0.85)",
             opacity: sliderPos >= 50 ? 1 : 0,
             transition: "opacity 0.4s ease",
             position: sliderPos >= 50 ? "relative" : "absolute",
@@ -315,16 +317,16 @@ function BeforeAfterSlider() {
           {beforeCards.map((c, i) => (
             <div
               key={c.title}
-              className="p-4 flex flex-col gap-1.5"
-              style={{ borderRight: i < 2 ? "1px solid rgba(212,175,55,0.12)" : "none" }}
+              className="p-5 flex flex-col gap-2"
+              style={{ borderRight: i < 2 ? "1px solid rgba(212,175,55,0.15)" : "none" }}
             >
-              <span style={{ fontSize: 22 }}>{c.icon}</span>
+              <span style={{ fontSize: 30 }}>{c.icon}</span>
               <p
                 style={{
                   fontFamily: "'Josefin Sans', sans-serif",
-                  fontSize: 11,
+                  fontSize: 14,
                   letterSpacing: "0.1em",
-                  color: "rgb(80,220,80)",
+                  color: "rgb(80,230,80)",
                   fontWeight: 700,
                   textTransform: "uppercase",
                 }}
@@ -334,8 +336,8 @@ function BeforeAfterSlider() {
               <p
                 style={{
                   fontFamily: "'Playfair Display', serif",
-                  fontSize: 12,
-                  color: "rgba(210,245,210,0.75)",
+                  fontSize: 14,
+                  color: "rgba(220,250,220,0.9)",
                   lineHeight: 1.55,
                 }}
               >
@@ -349,7 +351,7 @@ function BeforeAfterSlider() {
         <div
           className="grid grid-cols-3 gap-0"
           style={{
-            background: "rgba(30,6,0,0.8)",
+            background: "rgba(32,6,0,0.88)",
             opacity: sliderPos < 50 ? 1 : 0,
             transition: "opacity 0.4s ease",
             position: sliderPos < 50 ? "relative" : "absolute",
@@ -360,14 +362,14 @@ function BeforeAfterSlider() {
           {afterCards.map((c, i) => (
             <div
               key={c.title}
-              className="p-4 flex flex-col gap-1.5"
-              style={{ borderRight: i < 2 ? "1px solid rgba(212,175,55,0.12)" : "none" }}
+              className="p-5 flex flex-col gap-2"
+              style={{ borderRight: i < 2 ? "1px solid rgba(212,175,55,0.15)" : "none" }}
             >
-              <span style={{ fontSize: 22 }}>{c.icon}</span>
+              <span style={{ fontSize: 30 }}>{c.icon}</span>
               <p
                 style={{
                   fontFamily: "'Josefin Sans', sans-serif",
-                  fontSize: 11,
+                  fontSize: 14,
                   letterSpacing: "0.1em",
                   color: "rgb(255,90,60)",
                   fontWeight: 700,
@@ -379,8 +381,8 @@ function BeforeAfterSlider() {
               <p
                 style={{
                   fontFamily: "'Playfair Display', serif",
-                  fontSize: 12,
-                  color: "rgba(255,210,200,0.75)",
+                  fontSize: 14,
+                  color: "rgba(255,215,205,0.9)",
                   lineHeight: 1.55,
                 }}
               >
@@ -448,10 +450,10 @@ export function ClimateStressors() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="mb-12 text-center"
+          className="mb-4 text-center"
         >
           <h1
-            className="text-5xl mb-3"
+            className="text-6xl mb-3"
             style={{
               fontFamily: "'Playfair Display', serif",
               color: "rgba(212,175,55,1)",
@@ -464,14 +466,13 @@ export function ClimateStressors() {
             style={{
               fontFamily: "'Playfair Display', serif",
               fontStyle: "italic",
-              fontSize: 18,
-              color: "rgba(212,175,55,0.75)",
-              maxWidth: 680,
+              fontSize: 20,
+              color: "rgba(212,175,55,0.88)",
+              whiteSpace: "nowrap",
               margin: "0 auto",
             }}
           >
-            Hawaii's delicate ecosystems are facing unprecedented changes, directly
-            threatening the shallow wetlands coots depend on.
+            Hawaii's delicate ecosystems are facing unprecedented changes, directly threatening the shallow wetlands coots depend on.
           </p>
         </motion.div>
 
@@ -480,13 +481,13 @@ export function ClimateStressors() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, delay: 0.15 }}
-          className="mb-14"
+          className="mb-10"
           style={{
             border: "1px solid rgba(212,175,55,0.3)",
             borderRadius: 12,
-            padding: "14px 14px 20px",
+            padding: "10px 10px 16px",
             background: "rgba(6,4,0,0.6)",
-            margin: "0 6px 56px",
+            margin: "0 6px 40px",
           }}
         >
           <BeforeAfterSlider />
