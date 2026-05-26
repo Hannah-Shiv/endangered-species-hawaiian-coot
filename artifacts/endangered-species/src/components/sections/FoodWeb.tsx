@@ -21,7 +21,7 @@ const nodes: FWNode[] = [
   { id: 'bullfrog', label: 'Bullfrog',        emoji: '🐸', type: 'competitor', x: 82, y: 46 },
   { id: 'insects',  label: 'Aquatic Insects', emoji: '🦟', type: 'prey',       x: 34, y: 60 },
   { id: 'fish',     label: 'Small Fish',      emoji: '🐟', type: 'prey',       x: 66, y: 60 },
-  { id: 'snails',   label: 'Snails/Mollusks', emoji: '🐌', type: 'prey',       x: 50, y: 76 },
+  { id: 'snails',   label: 'Snails/Mollusks', emoji: '🐌', type: 'prey',       x: 50, y: 68 },
   { id: 'algae',    label: 'Algae / Plants',  emoji: '🌿', type: 'producer',   x: 50, y: 91 },
   { id: 'bacteria', label: 'Decomposers',     emoji: '🦠', type: 'decomposer', x: 82, y: 91 },
 ];
