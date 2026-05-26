@@ -159,7 +159,7 @@ function TimelineScrubber({ currentYear, onChange }: { currentYear: number; onCh
   }, [updateFromX]);
 
   return (
-    <div style={{ padding: "4px 16px 6px", userSelect: "none" }}>
+    <div style={{ padding: "4px 0 6px", userSelect: "none" }}>
       {/* Year pill + range row */}
       <div style={{ position: "relative", display: "flex", justifyContent: "space-between", alignItems: "center", height: 24, marginBottom: 4 }}>
         <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11, color: "rgba(255,255,255,0.5)", letterSpacing: "0.06em" }}>{MIN_YEAR}</span>
@@ -368,10 +368,12 @@ export function PatternsOfChange() {
             style={{ ...panel, borderRadius: 10, flex: 1, minHeight: 0, padding: "14px 18px", display: "flex", flexDirection: "column", justifyContent: "flex-start" }}
           >
             <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 15, color: "rgba(212,175,55,0.9)", letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 4, fontWeight: 700 }}>Current Year</p>
-            <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 54, color: GOLD, fontWeight: 900, lineHeight: 1, marginBottom: 5, textShadow: "0 0 18px rgba(212,175,55,0.5)" }}>{currentYear}</p>
-            <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 15, color: "rgba(212,175,55,0.9)", letterSpacing: "0.04em", marginBottom: 9, fontWeight: 700 }}>
-              ~{currentPop.toLocaleString()} individuals
-            </p>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 9 }}>
+              <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 54, color: GOLD, fontWeight: 900, lineHeight: 1, textShadow: "0 0 18px rgba(212,175,55,0.5)" }}>{currentYear}</p>
+              <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 15, color: "rgba(212,175,55,0.9)", letterSpacing: "0.04em", fontWeight: 700 }}>
+                ~{currentPop.toLocaleString()}<br />individuals
+              </p>
+            </div>
             <motion.p
               key={yearInfo.desc}
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}
