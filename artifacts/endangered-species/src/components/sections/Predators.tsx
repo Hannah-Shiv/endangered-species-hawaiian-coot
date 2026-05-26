@@ -129,8 +129,8 @@ const PREDATORS: Predator[] = [
     imgFilter: "none",
     headline: "BULLFROGS IMPACT",
     overlays: [
-      { label: "⚠  FOOD CHAIN IMBALANCE", text: "Bullfrogs consume large amounts of insects and invertebrates.", top: "10%", left: "3%" },
-      { label: "⚠  CHICK VULNERABLE", text: "Young coots near water face direct predation risk.", top: "8%", left: "52%" },
+      { label: "⚠  FOOD CHAIN IMBALANCE", text: "Bullfrogs consume large amounts of insects and invertebrates.", top: "5%", left: "3%" },
+      { label: "⚠  CHICK VULNERABLE", text: "Young coots near water face direct predation risk.", top: "5%", left: "38%", transform: "translateX(-50%)" },
     ],
     ecoImpact: [
       { icon: "🐟", label: "Food Availability",    dir: "down", pct: 47 },
