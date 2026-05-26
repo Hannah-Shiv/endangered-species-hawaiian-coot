@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { useState, useRef, useCallback, useEffect } from "react";
 import {
   ComposedChart, Area, Line, XAxis, YAxis, CartesianGrid,
-  Tooltip, ResponsiveContainer, Legend, ReferenceLine,
+  Tooltip, ResponsiveContainer, Legend, ReferenceLine, Customized,
 } from "recharts";
 import wetlandHealthy from "@assets/image_1779819729646.png";
 import wetlandStressed from "@assets/image_1779819734890.png";
@@ -123,6 +123,14 @@ function ChartTooltip({ active, payload, label }: any) {
   );
 }
 
+// ── Plot-area spy — reads recharts' actual offset so scrubber aligns perfectly ─
+function PlotAreaSpy({ offset, onMeasure }: { offset?: { left: number; right: number }; onMeasure: (l: number, r: number) => void }) {
+  useEffect(() => {
+    if (offset) onMeasure(offset.left, offset.right);
+  }, [offset?.left, offset?.right, onMeasure]);
+  return null;
+}
+
 // ── Timeline scrubber ──────────────────────────────────────────────────────────
 function TimelineScrubber({ currentYear, onChange }: { currentYear: number; onChange: (y: number) => void }) {
   const trackRef = useRef<HTMLDivElement>(null);
@@ -185,6 +193,20 @@ export function PatternsOfChange() {
   const indicators = getIndicators(currentYear);
   const currentPop = interpolatePop(currentYear);
 
+  // Measured recharts plot-area offsets (left/right from SVG edge)
+  const plotRef = useRef({ left: 44, right: 82 });
+  const [plotArea, setPlotArea] = useState({ left: 44, right: 82 });
+  const handlePlotMeasure = useCallback((l: number, r: number) => {
+    if (l !== plotRef.current.left || r !== plotRef.current.right) {
+      plotRef.current = { left: l, right: r };
+      setPlotArea({ left: l, right: r });
+    }
+  }, []);
+  // chart div has padding: "0 4px" so SVG starts 4px inset from panel edge
+  const CHART_PAD = 4;
+  const padLeft  = CHART_PAD + plotArea.left;
+  const padRight = CHART_PAD + plotArea.right;
+
   const GOLD   = "rgba(212,175,55,1)";
   const GOLDF  = "rgba(212,175,55,0.22)";
   const panel: React.CSSProperties = { background: "#000", border: `1px solid ${GOLDF}` };
@@ -214,7 +236,7 @@ export function PatternsOfChange() {
         {/* Chart column */}
         <div style={{ ...panel, borderRadius: 10, display: "flex", flexDirection: "column", overflow: "hidden" }}>
           {/* Chart header — padded to align with plot area */}
-          <div style={{ flexShrink: 0, paddingTop: 8, paddingBottom: 4, paddingLeft: 48, paddingRight: 86, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
+          <div style={{ flexShrink: 0, paddingTop: 8, paddingBottom: 4, paddingLeft: padLeft, paddingRight: padRight, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
             <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 17, color: "rgba(212,175,55,1)", letterSpacing: "0.02em", fontWeight: 900, textShadow: "0 0 14px rgba(212,175,55,0.45)", flexShrink: 1, minWidth: 0 }}>
               Estimated Wild Population &amp; Rainfall (1970 – 2024)
             </p>
@@ -274,12 +296,13 @@ export function PatternsOfChange() {
                   strokeDasharray="5 3"
                   label={{ value: currentYear, position: "insideTopRight", fill: "rgba(220,160,255,1)", fontSize: 12, fontFamily: "'Josefin Sans', sans-serif", fontWeight: 900, dy: -4 }}
                 />
+                <Customized component={PlotAreaSpy as any} onMeasure={handlePlotMeasure} />
               </ComposedChart>
             </ResponsiveContainer>
           </div>
 
           {/* Scrubber — padded to align with plot area */}
-          <div style={{ flexShrink: 0, borderTop: "1px solid rgba(212,175,55,0.18)", paddingBottom: 2, paddingLeft: 48, paddingRight: 86 }}>
+          <div style={{ flexShrink: 0, borderTop: "1px solid rgba(212,175,55,0.18)", paddingBottom: 2, paddingLeft: padLeft, paddingRight: padRight }}>
             <TimelineScrubber currentYear={currentYear} onChange={setCurrentYear} />
           </div>
         </div>
@@ -342,7 +365,7 @@ export function PatternsOfChange() {
           <motion.div
             key={`year-${currentYear}`}
             initial={{ opacity: 0.7 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}
-            style={{ ...panel, borderRadius: 10, flex: 1, minHeight: 0, padding: "14px 18px", display: "flex", flexDirection: "column", justifyContent: "center" }}
+            style={{ ...panel, borderRadius: 10, flex: 1, minHeight: 0, padding: "14px 18px", display: "flex", flexDirection: "column", justifyContent: "flex-start" }}
           >
             <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 15, color: "rgba(212,175,55,0.9)", letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 4, fontWeight: 700 }}>Current Year</p>
             <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 54, color: GOLD, fontWeight: 900, lineHeight: 1, marginBottom: 5, textShadow: "0 0 18px rgba(212,175,55,0.5)" }}>{currentYear}</p>
@@ -362,7 +385,7 @@ export function PatternsOfChange() {
           <motion.div
             key={`eco-${currentYear}`}
             initial={{ opacity: 0.7 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}
-            style={{ ...panel, borderRadius: 10, flex: 1, minHeight: 0, padding: "14px 18px", display: "flex", flexDirection: "column", justifyContent: "center" }}
+            style={{ ...panel, borderRadius: 10, flex: 1, minHeight: 0, padding: "14px 18px", display: "flex", flexDirection: "column", justifyContent: "flex-start" }}
           >
             <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 14, color: "rgba(212,175,55,0.9)", letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 14, fontWeight: 700 }}>Ecosystem Status</p>
             <div style={{ display: "flex", flexDirection: "column", gap: 13 }}>
