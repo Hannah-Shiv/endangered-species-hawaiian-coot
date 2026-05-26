@@ -86,11 +86,11 @@ export function Habitat() {
         @keyframes alert-pulse{0%,100%{opacity:0.4}50%{opacity:1}}
         @keyframes therm-glow {0%,100%{filter:drop-shadow(0 0 5px rgba(239,68,68,0.5))}50%{filter:drop-shadow(0 0 16px rgba(239,68,68,1))}}
 
-        /* Thick vertical slider — thumb sits inside the track */
-        .vslider{writing-mode:vertical-lr;direction:rtl;-webkit-appearance:slider-vertical;
+        /* Thick vertical slider — thumb is a horizontal bar */
+        .vslider{writing-mode:vertical-lr;direction:rtl;-webkit-appearance:none;
           height:100%;width:30px;cursor:pointer;outline:none;border:none;background:transparent;padding:0}
         .vslider::-webkit-slider-runnable-track{
-          width:30px;border-radius:15px;
+          width:30px;border-radius:4px;
           background:linear-gradient(to top,rgba(34,197,94,0.9),rgba(212,175,55,0.9),rgba(239,120,68,0.9),rgba(239,68,68,1));
           box-shadow:0 0 8px rgba(212,175,55,0.25)}
         .vslider::-webkit-slider-thumb{
@@ -182,32 +182,26 @@ export function Habitat() {
           {/* ═══ COL 2 — Vertical Slider (between scene and thermometer) ════════ */}
           <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:"6px",minHeight:0,paddingTop:"28px"}}>
 
-            {/* Drag hint label — pulsing arrow badge */}
-            <motion.div
-              animate={{ opacity:[0.5,1,0.5] }}
-              transition={{ duration:2, repeat:Infinity, ease:"easeInOut" }}
-              style={{
-                flexShrink:0, display:"flex", flexDirection:"column", alignItems:"center", gap:"2px",
-                background:"rgba(212,175,55,0.12)", border:"1px solid rgba(212,175,55,0.4)",
-                borderRadius:"8px", padding:"5px 4px",
-              }}
-            >
-              <span style={{fontSize:"14px",lineHeight:1}}>↕</span>
-              <span style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:"8px",letterSpacing:"0.07em",textTransform:"uppercase",color:"rgba(212,175,55,1)",textAlign:"center",lineHeight:1.2,fontWeight:700}}>
-                DRAG<br/>ME
-              </span>
-            </motion.div>
-
             <span style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:"9px",letterSpacing:"0.05em",textTransform:"uppercase",color:"rgba(239,68,68,0.9)",textAlign:"center",lineHeight:1.2,flexShrink:0}}>
               Severe<br/>Change
             </span>
-            <div style={{flex:1,minHeight:0,display:"flex",alignItems:"center",justifyContent:"center"}}>
+
+            {/* Slider with "DRAG THIS BAR" text written vertically inside the track */}
+            <div style={{flex:1,minHeight:0,position:"relative",display:"flex",alignItems:"center",justifyContent:"center"}}>
               <input
                 type="range" min={0} max={100} value={slider}
                 onChange={e=>setSlider(Number(e.target.value))}
                 className="vslider"
               />
+              <span style={{
+                position:"absolute", pointerEvents:"none", userSelect:"none", zIndex:2,
+                writingMode:"vertical-rl", transform:"rotate(180deg)",
+                fontFamily:"'Josefin Sans',sans-serif", fontSize:"9px",
+                fontWeight:900, letterSpacing:"0.14em", textTransform:"uppercase",
+                color:"#000000",
+              }}>DRAG THIS BAR</span>
             </div>
+
             <span style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:"9px",letterSpacing:"0.05em",textTransform:"uppercase",color:"rgba(34,197,94,0.9)",textAlign:"center",lineHeight:1.2,flexShrink:0}}>
               Healthy<br/>Climate
             </span>
@@ -244,7 +238,7 @@ export function Habitat() {
                   const tempVal = Math.round(d.tempLow + f*(d.tempHigh-d.tempLow) + deg*9*f);
                   return <g key={i}>
                     <line x1="38" y1={ty} x2="52" y2={ty} stroke="rgba(255,255,255,0.35)" strokeWidth="2"/>
-                    <text x="57" y={ty+13} fill="rgba(255,255,255,0.9)" fontSize="36" fontFamily="'Josefin Sans'" fontWeight="700">{tempVal}°</text>
+                    <text x="57" y={ty+13} fill="rgba(255,255,255,0.9)" fontSize="34" fontFamily="'Josefin Sans'" fontWeight="700">{tempVal}°</text>
                   </g>;
                 })}
                 {/* Tube */}
