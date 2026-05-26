@@ -270,7 +270,7 @@ export function Predators() {
       <motion.div
         initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}
         style={{
-          flexShrink: 0, paddingTop: 56, paddingBottom: 14,
+          flexShrink: 0, paddingTop: 80, paddingBottom: 14,
           borderBottom: `1px solid rgba(212,175,55,0.22)`,
           textAlign: "center",
         }}
