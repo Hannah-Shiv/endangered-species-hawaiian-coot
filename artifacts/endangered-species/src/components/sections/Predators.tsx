@@ -66,7 +66,7 @@ const PREDATORS: Predator[] = [
     imgFilter: "none",
     headline: "MONGOOSE IMPACT",
     overlays: [
-      { label: "⚠  ACTIVE PREDATOR DETECTED", text: "Mongoose are highly adaptable and hunt both day and night.", top: "5%", left: "50%", transform: "translateX(-50%)" },
+      { label: "⚠  ACTIVE PREDATOR DETECTED", text: "Mongoose are highly adaptable and hunt both day and night.", top: "5%", left: "38%", transform: "translateX(-50%)" },
       { label: "⚠  NEST AT RISK", text: "Eggs and chicks are left exposed — entire clutches lost in minutes.", top: "74%", right: "2%" },
     ],
     ecoImpact: [
