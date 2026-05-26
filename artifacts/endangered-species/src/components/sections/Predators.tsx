@@ -85,8 +85,8 @@ const PREDATORS: Predator[] = [
     imgFilter: "none",
     headline: "RATS & FERAL CATS IMPACT",
     overlays: [
-      { label: "⚠  NOCTURNAL THREAT ACTIVE", text: "Rats and feral cats strike silently under cover of night.", top: "10%", left: "3%" },
-      { label: "⚠  EGGS UNDER ATTACK", text: "Entire clutches can be lost in a single night.", top: "55%", left: "38%" },
+      { label: "⚠  NOCTURNAL THREAT ACTIVE", text: "Rats and feral cats strike silently under cover of night.", top: "58%", left: "2%" },
+      { label: "⚠  EGGS UNDER ATTACK", text: "Entire clutches can be lost in a single night.", top: "76%", left: "2%" },
     ],
     ecoImpact: [
       { icon: "🪺", label: "Nesting Success",      dir: "down", pct: 50 },
@@ -484,7 +484,7 @@ export function Predators() {
                       border: `2.5px solid ${tc}`,
                       borderLeft: `5px solid ${tc}`,
                       borderRadius: 10, padding: "14px 18px", maxWidth: 280,
-                      boxShadow: `0 0 28px ${tc}55, 0 4px 20px rgba(0,0,0,0.7)`,
+                      boxShadow: `0 0 8px ${tc}28, 0 2px 10px rgba(0,0,0,0.55)`,
                     }}
                   >
                     <p style={{ fontSize: 14, fontWeight: 900, letterSpacing: "0.1em", color: tc, marginBottom: 7, lineHeight: 1.2 }}>{ov.label}</p>
