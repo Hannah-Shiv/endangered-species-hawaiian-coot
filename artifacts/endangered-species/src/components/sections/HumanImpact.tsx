@@ -1,5 +1,5 @@
-import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { motion, AnimatePresence, useSpring } from "framer-motion";
+import { useState, useEffect } from "react";
 import wetlandHealthy from "@assets/image_1779819729646.png";
 import wetlandStressed from "@assets/image_1779819734890.png";
 
@@ -101,6 +101,26 @@ const METERS = [
 ] as const;
 
 type CardData = { id: string; type: "harm" | "hope"; delta: typeof BASE; effect: string };
+
+// ── Animated integer counter ─────────────────────────────────────────────────
+function AnimatedCounter({ value, color }: { value: number; color: string }) {
+  const [display, setDisplay] = useState(Math.round(value));
+  const spring = useSpring(value, { stiffness: 50, damping: 16 });
+  useEffect(() => {
+    spring.set(value);
+    const unsub = spring.on("change", v => setDisplay(Math.round(v)));
+    return unsub;
+  }, [value, spring]);
+  return (
+    <span style={{
+      fontFamily: "'Josefin Sans', sans-serif", fontSize: 18, fontWeight: 900,
+      color, transition: "color 0.4s", minWidth: 48, textAlign: "right",
+      display: "inline-block",
+    }}>
+      {display}%
+    </span>
+  );
+}
 
 // ── Glowing image label ───────────────────────────────────────────────────────
 function ImageLabel({ label, color, side }: { label: string; color: string; side: "left" | "right" }) {
@@ -394,20 +414,29 @@ export function HumanImpact() {
             )}
           </div>
           {/* Meters */}
-          <div style={{ flexShrink: 0, padding: "10px 16px 13px", borderTop: "1px solid rgba(212,175,55,0.15)" }}>
-            <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 14, color: "rgba(212,175,55,0.65)", letterSpacing: "0.16em", textAlign: "center", marginBottom: 10 }}>ECOSYSTEM HEALTH</p>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px 20px" }}>
+          <div style={{ flexShrink: 0, padding: "10px 16px 13px", borderTop: "1px solid rgba(212,175,55,0.3)" }}>
+            <p style={{
+              fontFamily: "'Josefin Sans', sans-serif", fontSize: 14, letterSpacing: "0.18em",
+              textAlign: "center", marginBottom: 10, fontWeight: 800,
+              color: GOLD, textShadow: `0 0 12px ${GOLD}`,
+            }}>⬡ ECOSYSTEM HEALTH ⬡</p>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "11px 22px" }}>
               {METERS.map(({ key, label, icon }) => {
-                const val = metrics[key];
-                const barColor = val < 30 ? "#e63333" : val < 55 ? "#ddaa22" : "#44cc88";
+                const val   = Math.round(metrics[key]);
+                const barColor = val < 30 ? "#ff4444" : val < 55 ? "#ffbb22" : "#33ee88";
+                const glowColor = val < 30 ? "rgba(255,68,68,0.6)" : val < 55 ? "rgba(255,187,34,0.6)" : "rgba(51,238,136,0.6)";
                 return (
                   <div key={key}>
-                    <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 5, alignItems: "center" }}>
-                      <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 15, color: "rgba(255,255,255,0.82)", letterSpacing: "0.04em" }}>{icon} {label}</span>
-                      <motion.span animate={{ color: barColor }} style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 17, fontWeight: 900 }}>{val}%</motion.span>
+                    <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6, alignItems: "center" }}>
+                      <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 14, color: "#fff", letterSpacing: "0.04em", fontWeight: 600 }}>{icon} {label}</span>
+                      <AnimatedCounter value={val} color={barColor} />
                     </div>
-                    <div style={{ height: 10, background: "rgba(255,255,255,0.1)", borderRadius: 5, overflow: "hidden" }}>
-                      <motion.div animate={{ width: `${val}%`, backgroundColor: barColor }} transition={spring} style={{ height: "100%", borderRadius: 5 }} />
+                    <div style={{ height: 11, background: "rgba(255,255,255,0.08)", borderRadius: 6, overflow: "visible", position: "relative" }}>
+                      <motion.div
+                        animate={{ width: `${val}%`, backgroundColor: barColor, boxShadow: `0 0 10px ${glowColor}, 0 0 4px ${barColor}` }}
+                        transition={spring}
+                        style={{ height: "100%", borderRadius: 6, position: "absolute", top: 0, left: 0 }}
+                      />
                     </div>
                   </div>
                 );
