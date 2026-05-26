@@ -1,7 +1,7 @@
 import { motion, AnimatePresence, useSpring } from "framer-motion";
 import { useState, useEffect } from "react";
 import healthyImg from "@assets/image_1779835298098.png";
-import ratsImg    from "@assets/image_1779833978256.png";
+import ratsImg    from "@assets/image_1779835596663.png";
 import dogsImg    from "@assets/image_1779833987765.png";
 import frogsImg   from "@assets/image_1779834002262.png";
 
@@ -82,7 +82,7 @@ const PREDATORS: Predator[] = [
     sideIcon: "🐀",
     sideDesc: "Nocturnal nest raiders and direct predators that are widespread throughout the Hawaiian Islands.",
     image: ratsImg as string,
-    imgFilter: "brightness(0.5) saturate(0.55)",
+    imgFilter: "brightness(0.9) saturate(1.1)",
     headline: "RATS & FERAL CATS IMPACT",
     overlays: [
       { label: "⚠  NOCTURNAL THREAT ACTIVE", text: "Rats and feral cats strike silently under cover of night.", top: "10%", left: "3%" },
