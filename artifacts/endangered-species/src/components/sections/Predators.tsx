@@ -555,93 +555,90 @@ export function Predators() {
             </div>
 
           </div>{/* end content row */}
+
+          {/* ── ECOSYSTEM HEALTH OVERVIEW — below image ────────────────── */}
+          <div style={{
+            flexShrink: 0,
+            background: "rgba(0,0,0,0.85)",
+            borderTop: "1px solid rgba(255,255,255,0.07)",
+            padding: "12px 20px",
+            paddingRight: 64,
+            display: "flex", alignItems: "center", gap: 16,
+          }}>
+            <p style={{ fontSize: 11.5, letterSpacing: "0.16em", color: GOLD, fontWeight: 800, flexShrink: 0, textShadow: `0 0 8px ${GOLD}` }}>
+              ECOSYSTEM HEALTH OVERVIEW
+            </p>
+            <div style={{ flex: 1, display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: "0 16px" }}>
+              {DASH_KEYS.map(({ key, label, icon, barColor }) => (
+                <DashBar key={key + p.id} value={p.metrics[key]} label={label} icon={icon} barColor={barColor} />
+              ))}
+            </div>
+            <div style={{ flexShrink: 0 }}>
+              <AnimatePresence mode="wait">
+                <motion.div key={p.id + "-gauge"} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                  <ThreatGauge threat={p.threat} color={tc} />
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          </div>
+
         </div>{/* end right main */}
       </div>{/* end main body */}
 
-      {/* ── 3+4. BOTTOM ROW — SEE THE DIFFERENCE + ECOSYSTEM HEALTH ──── */}
+      {/* ── 3. BOTTOM ROW — SEE THE DIFFERENCE ───────────────────────── */}
       <div style={{
-        flexShrink: 0, display: "flex",
+        flexShrink: 0,
         borderTop: "1px solid rgba(255,255,255,0.07)",
-        background: "rgba(0,0,0,0.85)",
+        background: "rgba(0,0,0,0.7)",
+        padding: "8px 16px",
+        display: "flex", flexDirection: "column", alignItems: "center",
       }}>
-
-        {/* LEFT: SEE THE DIFFERENCE carousel */}
-        <div style={{
-          flexShrink: 0, padding: "10px 16px",
-          borderRight: "1px solid rgba(255,255,255,0.07)",
-          display: "flex", flexDirection: "column", justifyContent: "center",
-        }}>
-          <p style={{ fontSize: 9, letterSpacing: "0.2em", color: "rgba(255,255,255,0.35)", marginBottom: 8, textAlign: "center" }}>
-            SEE THE DIFFERENCE
-          </p>
-          <div style={{ display: "flex", gap: 8 }}>
-            {PREDATORS.map(pred => {
-              const isSel = pred.id === selId;
-              const pc    = THREAT_COLORS[pred.threat];
-              return (
-                <motion.button
-                  key={pred.id}
-                  onClick={() => select(pred.id)}
-                  whileTap={{ scale: 0.96 }}
-                  style={{
-                    padding: 0, cursor: "pointer",
-                    background: "none", border: "none",
-                    display: "flex", flexDirection: "column", alignItems: "center", gap: 4,
-                  }}
-                >
-                  <div style={{
-                    width: 82, height: 48, borderRadius: 6, overflow: "hidden",
-                    border: `2px solid ${isSel ? pc : "rgba(255,255,255,0.1)"}`,
-                    boxShadow: isSel ? `0 0 12px ${pc}66` : "none",
-                    transition: "border-color 0.25s, box-shadow 0.25s",
-                    position: "relative",
-                  }}>
-                    <img
-                      src={pred.image} alt={pred.name}
-                      style={{ width: "100%", height: "100%", objectFit: "cover", filter: pred.imgFilter }}
-                    />
-                    {isSel && (
-                      <div style={{ position: "absolute", inset: 0, background: `${pc}28` }} />
-                    )}
-                  </div>
-                  <span style={{
-                    fontFamily: "'Josefin Sans', sans-serif",
-                    fontSize: 8.5, letterSpacing: "0.06em", fontWeight: 700,
-                    color: isSel ? pc : "rgba(255,255,255,0.45)",
-                    textAlign: "center", maxWidth: 82,
-                    transition: "color 0.25s",
-                  }}>
-                    {pred.name}
-                  </span>
-                </motion.button>
-              );
-            })}
-          </div>
+        <p style={{ fontSize: 9, letterSpacing: "0.2em", color: "rgba(255,255,255,0.35)", marginBottom: 8, textAlign: "center" }}>
+          SEE THE DIFFERENCE
+        </p>
+        <div style={{ display: "flex", gap: 8 }}>
+          {PREDATORS.map(pred => {
+            const isSel = pred.id === selId;
+            const pc    = THREAT_COLORS[pred.threat];
+            return (
+              <motion.button
+                key={pred.id}
+                onClick={() => select(pred.id)}
+                whileTap={{ scale: 0.96 }}
+                style={{
+                  padding: 0, cursor: "pointer",
+                  background: "none", border: "none",
+                  display: "flex", flexDirection: "column", alignItems: "center", gap: 4,
+                }}
+              >
+                <div style={{
+                  width: 82, height: 48, borderRadius: 6, overflow: "hidden",
+                  border: `2px solid ${isSel ? pc : "rgba(255,255,255,0.1)"}`,
+                  boxShadow: isSel ? `0 0 12px ${pc}66` : "none",
+                  transition: "border-color 0.25s, box-shadow 0.25s",
+                  position: "relative",
+                }}>
+                  <img
+                    src={pred.image} alt={pred.name}
+                    style={{ width: "100%", height: "100%", objectFit: "cover", filter: pred.imgFilter }}
+                  />
+                  {isSel && (
+                    <div style={{ position: "absolute", inset: 0, background: `${pc}28` }} />
+                  )}
+                </div>
+                <span style={{
+                  fontFamily: "'Josefin Sans', sans-serif",
+                  fontSize: 8.5, letterSpacing: "0.06em", fontWeight: 700,
+                  color: isSel ? pc : "rgba(255,255,255,0.45)",
+                  textAlign: "center", maxWidth: 82,
+                  transition: "color 0.25s",
+                }}>
+                  {pred.name}
+                </span>
+              </motion.button>
+            );
+          })}
         </div>
-
-        {/* RIGHT: ECOSYSTEM HEALTH OVERVIEW */}
-        <div style={{
-          flex: 1, padding: "10px 20px 10px 20px",
-          paddingRight: 64,
-          display: "flex", alignItems: "center", gap: 16,
-        }}>
-          <p style={{ fontSize: 11.5, letterSpacing: "0.16em", color: GOLD, fontWeight: 800, flexShrink: 0, textShadow: `0 0 8px ${GOLD}` }}>
-            ECOSYSTEM HEALTH OVERVIEW
-          </p>
-          <div style={{ flex: 1, display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: "0 16px" }}>
-            {DASH_KEYS.map(({ key, label, icon, barColor }) => (
-              <DashBar key={key + p.id} value={p.metrics[key]} label={label} icon={icon} barColor={barColor} />
-            ))}
-          </div>
-          <div style={{ flexShrink: 0 }}>
-            <AnimatePresence mode="wait">
-              <motion.div key={p.id + "-gauge"} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                <ThreatGauge threat={p.threat} color={tc} />
-              </motion.div>
-            </AnimatePresence>
-          </div>
-        </div>
-
       </div>
 
       {/* ── 5. FOOTER BANNER ──────────────────────────────────────────── */}
