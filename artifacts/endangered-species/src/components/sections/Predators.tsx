@@ -85,7 +85,7 @@ const PREDATORS: Predator[] = [
     imgFilter: "none",
     headline: "RATS & FERAL CATS IMPACT",
     overlays: [
-      { label: "⚠  NOCTURNAL THREAT ACTIVE", text: "Rats and feral cats strike silently under cover of night.", top: "58%", left: "2%" },
+      { label: "⚠  NOCTURNAL THREAT ACTIVE", text: "Rats and feral cats strike silently under cover of night.", top: "8%", left: "2%" },
       { label: "⚠  EGGS UNDER ATTACK", text: "Entire clutches can be lost in a single night.", top: "76%", left: "2%" },
     ],
     ecoImpact: [
