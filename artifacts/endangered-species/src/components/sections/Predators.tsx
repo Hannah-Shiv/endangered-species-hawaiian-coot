@@ -46,7 +46,7 @@ const PREDATORS: Predator[] = [
     headline: "HEALTHY ECOSYSTEM — BASELINE STATE",
     overlays: [
       { label: "✅  STABLE ECOSYSTEM", text: "No invasive threats detected. Hawaiian Coots nest and forage safely.", top: "10%", left: "3%" },
-      { label: "🪺  ACTIVE NEST", text: "Eggs and chicks are safe. Incubation proceeding normally.", top: "55%", left: "40%" },
+      { label: "🪺  ACTIVE NEST", text: "Eggs and chicks are safe. Incubation proceeding normally.", top: "5%", right: "2%" },
     ],
     ecoImpact: [
       { icon: "🪺", label: "Nesting Success",      dir: "up", pct: 85 },
