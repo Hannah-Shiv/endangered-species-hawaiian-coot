@@ -94,17 +94,18 @@ export function Habitat() {
           background:linear-gradient(to top,rgba(34,197,94,0.9),rgba(212,175,55,0.9),rgba(239,120,68,0.9),rgba(239,68,68,1));
           box-shadow:0 0 8px rgba(212,175,55,0.25)}
         .vslider::-webkit-slider-thumb{
-          -webkit-appearance:none;width:26px;height:26px;border-radius:50%;
-          border:2.5px solid rgba(212,175,55,1);
-          background:radial-gradient(circle,rgba(40,20,0,1) 40%,rgba(20,10,0,1) 100%);
-          cursor:pointer;margin-left:2px;
-          box-shadow:0 0 6px rgba(212,175,55,0.5)}
+          -webkit-appearance:none;width:30px;height:5px;border-radius:3px;
+          border:none;
+          background:rgba(212,175,55,1);
+          cursor:pointer;margin-left:0;
+          box-shadow:0 0 10px rgba(212,175,55,0.85)}
         .vslider::-moz-range-track{
           width:30px;border-radius:15px;
           background:linear-gradient(to top,rgba(34,197,94,0.9),rgba(212,175,55,0.9),rgba(239,120,68,0.9),rgba(239,68,68,1))}
         .vslider::-moz-range-thumb{
-          width:24px;height:24px;border-radius:50%;
-          border:2.5px solid rgba(212,175,55,1);background:rgba(20,10,0,1);cursor:pointer}
+          width:30px;height:5px;border-radius:3px;
+          border:none;background:rgba(212,175,55,1);cursor:pointer;
+          box-shadow:0 0 10px rgba(212,175,55,0.85)}
       `}</style>
 
       <div style={{
@@ -235,15 +236,15 @@ export function Habitat() {
               ))}
 
               {/* Taller thermometer — tubeH=230, viewBox height=300 */}
-              <svg width="52" height="268" viewBox="0 0 70 300"
+              <svg width="110" height="268" viewBox="0 0 145 300"
                 style={{flexShrink:0,animation:critical?"therm-glow 1.8s ease-in-out infinite":"none"}}>
                 {/* Scale ticks */}
                 {[0.12,0.30,0.50,0.70,0.88].map((f,i)=>{
                   const ty = tubeTop + tubeH*(1-f);
                   const tempVal = Math.round(d.tempLow + f*(d.tempHigh-d.tempLow) + deg*9*f);
                   return <g key={i}>
-                    <line x1="38" y1={ty} x2="46" y2={ty} stroke="rgba(255,255,255,0.25)" strokeWidth="1.5"/>
-                    <text x="49" y={ty+4} fill="rgba(255,255,255,0.4)" fontSize="9" fontFamily="'Josefin Sans'">{tempVal}°</text>
+                    <line x1="38" y1={ty} x2="52" y2={ty} stroke="rgba(255,255,255,0.35)" strokeWidth="2"/>
+                    <text x="57" y={ty+13} fill="rgba(255,255,255,0.9)" fontSize="36" fontFamily="'Josefin Sans'" fontWeight="700">{tempVal}°</text>
                   </g>;
                 })}
                 {/* Tube */}
