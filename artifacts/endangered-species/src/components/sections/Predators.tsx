@@ -3,7 +3,8 @@ import { useState, useEffect } from "react";
 import healthyImg from "@assets/image_1779835298098.png";
 import ratsImg    from "@assets/image_1779835596663.png";
 import dogsImg    from "@assets/image_1779838496982.png";
-import frogsImg   from "@assets/image_1779838792688.png";
+import frogsImg     from "@assets/image_1779838792688.png";
+import mongooseImg  from "@assets/image_1779838906638.png";
 
 // ── Palette ───────────────────────────────────────────────────────────────────
 const GOLD = "rgba(212,175,55,1)";
@@ -60,12 +61,12 @@ const PREDATORS: Predator[] = [
     id: "mongoose", num: 1, name: "Mongoose", threat: "HIGH", color: "#ff3344",
     sideIcon: "🦡",
     sideDesc: "Introduced in 1883, mongoose devastate ground and low nests, taking both eggs and chicks.",
-    image: healthyImg as string,
+    image: mongooseImg as string,
     imgFilter: "none",
     headline: "MONGOOSE IMPACT",
     overlays: [
-      { label: "⚠  ACTIVE PREDATOR DETECTED", text: "Mongoose are highly adaptable and hunt both day and night.", top: "12%", left: "3%" },
-      { label: "⚠  NEST AT RISK", text: "Eggs and chicks are vulnerable.", top: "58%", left: "46%" },
+      { label: "⚠  ACTIVE PREDATOR DETECTED", text: "Mongoose are highly adaptable and hunt both day and night.", top: "8%", left: "52%" },
+      { label: "⚠  NEST AT RISK", text: "Eggs and chicks are left exposed — entire clutches lost in minutes.", top: "75%", left: "52%" },
     ],
     ecoImpact: [
       { icon: "🪺", label: "Nesting Success",      dir: "down", pct: 60 },
