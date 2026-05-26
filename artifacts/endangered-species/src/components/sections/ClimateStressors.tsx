@@ -299,7 +299,7 @@ function BeforeAfterSlider() {
           <p
             style={{
               fontFamily: "'Josefin Sans', sans-serif",
-              fontSize: 12,
+              fontSize: 16,
               letterSpacing: "0.08em",
               color: "rgba(212,175,55,0.9)",
               fontWeight: 600,
@@ -391,7 +391,7 @@ export function ClimateStressors() {
               style={{
                 fontFamily: "'Playfair Display', serif",
                 fontSize: 20,
-                color: "rgba(212,175,55,1)",
+                color: "rgba(255,255,255,0.95)",
               }}
             >
               Temperature Increase — °C
@@ -406,14 +406,15 @@ export function ClimateStressors() {
                     </linearGradient>
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" stroke="rgba(212,175,55,0.1)" />
-                  <XAxis dataKey="year" stroke="rgba(255,255,255,0.4)" tick={{ fontSize: 11 }} />
-                  <YAxis stroke="rgba(255,255,255,0.4)" tick={{ fontSize: 11 }} />
+                  <XAxis dataKey="year" stroke="rgba(255,255,255,0.85)" tick={{ fontSize: 12, fill: "rgba(255,255,255,0.85)" }} />
+                  <YAxis stroke="rgba(255,255,255,0.85)" tick={{ fontSize: 12, fill: "rgba(255,255,255,0.85)" }} />
                   <Tooltip
                     contentStyle={{
                       backgroundColor: "#0a0700",
                       borderColor: "rgba(212,175,55,0.3)",
                     }}
                     itemStyle={{ color: "#ff6644" }}
+                    formatter={(value: number) => [`${value} °C`, "Temperature increase by"]}
                   />
                   <Area
                     type="monotone"
@@ -456,10 +457,10 @@ export function ClimateStressors() {
                 color: "#ff4422",
                 lineHeight: 1,
                 marginBottom: 4,
+                whiteSpace: "nowrap",
               }}
             >
-              20–60
-              <span style={{ fontSize: 38 }}>cm</span>
+              20–60{" "}<span style={{ fontSize: 38 }}>cm</span>
             </div>
             <p
               style={{
