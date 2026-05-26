@@ -113,9 +113,8 @@ function ImageLabel({ label, color, side }: { label: string; color: string; side
       boxShadow: `0 0 22px ${color}, 0 0 10px ${color}, 0 0 4px ${color}, inset 0 0 10px ${color.replace(",1)", ",0.12)")}`,
     }}>
       <span style={{
-        fontFamily: "'Josefin Sans', sans-serif", fontSize: 15, color,
+        fontFamily: "'Josefin Sans', sans-serif", fontSize: 15, color: "#fff",
         letterSpacing: "0.22em", fontWeight: 900,
-        textShadow: `0 0 14px ${color}, 0 0 7px ${color}, 0 0 3px #fff`,
       }}>{label}</span>
     </div>
   );
@@ -197,7 +196,9 @@ export function HumanImpact() {
     (acc, id) => {
       const d = allSideCards[id]?.delta;
       if (!d) return acc;
-      return { wetland: acc.wetland + d.wetland, nesting: acc.nesting + d.nesting, water: acc.water + d.water, population: acc.population + d.population };
+      // Each card contributes 1/3 of its delta — all 3 locked = full effect
+      const s = 1 / 3;
+      return { wetland: acc.wetland + d.wetland * s, nesting: acc.nesting + d.nesting * s, water: acc.water + d.water * s, population: acc.population + d.population * s };
     },
     { wetland: 0, nesting: 0, water: 0, population: 0 }
   );
@@ -573,9 +574,10 @@ export function HumanImpact() {
                     )}
                   </AnimatePresence>
 
-                  <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 16, color: c, fontWeight: 800, letterSpacing: "0.05em", marginTop: 7,
-                    textShadow: isActive ? `0 0 12px ${c}, 0 0 6px ${c}` : `0 0 6px ${c.replace(",1)", ",0.5)")}`,
-                    opacity: isActive ? 1 : 0.7,
+                  <p style={{
+                    fontFamily: "'Josefin Sans', sans-serif", fontSize: 17, color: c,
+                    fontWeight: 900, letterSpacing: "0.05em", marginTop: 7,
+                    opacity: isActive ? 1 : 0.75,
                   }}>
                     {card.effect}
                   </p>
