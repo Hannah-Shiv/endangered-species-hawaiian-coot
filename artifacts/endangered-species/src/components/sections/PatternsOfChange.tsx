@@ -162,17 +162,19 @@ function TimelineScrubber({ currentYear, onChange }: { currentYear: number; onCh
       </div>
       {/* Thick draggable bar */}
       <div ref={trackRef}
-        style={{ position: "relative", height: 44, cursor: "ew-resize", borderRadius: 8, background: "rgba(212,175,55,0.08)", border: "1.5px solid rgba(212,175,55,0.3)" }}
+        style={{ position: "relative", height: 44, cursor: "ew-resize", borderRadius: 8, background: "rgba(120,60,200,0.12)", border: "1.5px solid rgba(150,80,220,0.5)" }}
         onMouseDown={onMouseDown} onTouchStart={onTouchStart}
       >
         {/* Filled progress */}
-        <div style={{ position: "absolute", top: 0, left: 0, bottom: 0, width: `${pct}%`, background: "linear-gradient(to right, rgba(160,20,8,0.7), rgba(212,175,55,0.72))", borderRadius: "7px 0 0 7px", transition: dragging.current ? "none" : "width 0.1s ease" }} />
-        {/* DRAG THIS BAR label inside track */}
-        <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", pointerEvents: "none" }}>
-          <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 12, fontWeight: 900, letterSpacing: "0.22em", textTransform: "uppercase", color: "rgba(212,175,55,0.55)" }}>← DRAG THIS BAR →</span>
+        <div style={{ position: "absolute", top: 0, left: 0, bottom: 0, width: `${pct}%`, background: "linear-gradient(to right, rgba(100,30,180,0.75), rgba(160,80,255,0.8))", borderRadius: "7px 0 0 7px", transition: dragging.current ? "none" : "width 0.1s ease" }} />
+        {/* D R A G letters spaced out horizontally */}
+        <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", gap: 10, pointerEvents: "none" }}>
+          {["D","R","A","G"].map((c, i) => (
+            <span key={i} style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 16, fontWeight: 900, letterSpacing: "0.05em", color: "rgba(255,255,255,0.9)", lineHeight: 1 }}>{c}</span>
+          ))}
         </div>
-        {/* Thumb — vertical red line */}
-        <div style={{ position: "absolute", top: 0, bottom: 0, left: `${pct}%`, width: 4, background: "#e63333", transform: "translateX(-50%)", borderRadius: 2, boxShadow: "0 0 10px rgba(230,50,50,0.9)", transition: dragging.current ? "none" : "left 0.1s ease", zIndex: 2 }} />
+        {/* Thumb — vertical white line */}
+        <div style={{ position: "absolute", top: 0, bottom: 0, left: `${pct}%`, width: 4, background: "rgba(220,160,255,1)", transform: "translateX(-50%)", borderRadius: 2, boxShadow: "0 0 10px rgba(180,100,255,0.9)", transition: dragging.current ? "none" : "left 0.1s ease", zIndex: 2 }} />
       </div>
     </div>
   );
@@ -215,7 +217,7 @@ export function PatternsOfChange() {
         <div style={{ ...panel, borderRadius: 10, display: "flex", flexDirection: "column", overflow: "hidden" }}>
           {/* Chart header */}
           <div style={{ flexShrink: 0, padding: "8px 14px 4px", position: "relative", textAlign: "center" }}>
-            <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 17, color: "rgba(212,175,55,1)", letterSpacing: "0.02em" }}>
+            <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 20, color: "rgba(212,175,55,1)", letterSpacing: "0.02em", fontWeight: 900, textShadow: "0 0 14px rgba(212,175,55,0.45)" }}>
               Estimated Wild Population &amp; Rainfall (1970 – 2024)
             </p>
             <div style={{ position: "absolute", right: 14, top: "50%", transform: "translateY(-50%)", display: "flex", alignItems: "center", gap: 10 }}>
@@ -278,7 +280,7 @@ export function PatternsOfChange() {
 
         {/* Key Inflection Points column */}
         <div style={{ ...panel, borderRadius: 10, padding: "10px 12px 8px", display: "flex", flexDirection: "column", overflow: "hidden" }}>
-          <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 17, color: GOLD, marginBottom: 8, flexShrink: 0 }}>
+          <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 20, color: GOLD, marginBottom: 8, flexShrink: 0, fontWeight: 900, textShadow: "0 0 14px rgba(212,175,55,0.45)" }}>
             Key Inflection Points
           </h3>
           <div style={{ flex: 1, minHeight: 0, display: "flex", flexDirection: "column", gap: 0 }}>
@@ -293,10 +295,10 @@ export function PatternsOfChange() {
                   flexShrink: 0,
                   background: `linear-gradient(135deg, ${pt.color}25, ${pt.color}45)`,
                   border: `1.5px solid ${pt.color}99`,
-                  borderRadius: 7, padding: "6px 14px", fontFamily: "'Josefin Sans', sans-serif",
-                  fontSize: 12, color: pt.color, letterSpacing: "0.1em", cursor: "pointer",
+                  borderRadius: 7, padding: "8px 18px", fontFamily: "'Josefin Sans', sans-serif",
+                  fontSize: 13, color: pt.color, letterSpacing: "0.1em", cursor: "pointer",
                   fontWeight: 900, textTransform: "uppercase", whiteSpace: "nowrap",
-                  boxShadow: `0 0 10px ${pt.color}33`,
+                  boxShadow: `0 0 12px ${pt.color}44`,
                 }}>→ View</button>
               </div>
             ))}
