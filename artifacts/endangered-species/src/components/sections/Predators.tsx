@@ -367,21 +367,29 @@ export function Predators() {
             flexShrink: 0, padding: "8px 16px",
             background: "rgba(0,0,0,0.7)",
             borderBottom: `1px solid ${tc}44`,
-            display: "flex", alignItems: "center", gap: 12,
+            display: "flex", alignItems: "center",
+            position: "relative",
             transition: "border-color 0.4s",
           }}>
-            <span style={{ fontSize: 14, opacity: 0.9 }}>⚠</span>
+            {/* Centered headline */}
             <AnimatePresence mode="wait">
-              <motion.span
+              <motion.div
                 key={p.id + "-headline"}
-                initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0 }}
-                style={{ fontSize: 14, fontWeight: 900, letterSpacing: "0.1em", color: tc, flex: 1 }}
+                initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
+                style={{
+                  position: "absolute", left: 0, right: 0,
+                  display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+                  pointerEvents: "none",
+                }}
               >
-                {p.headline}
-              </motion.span>
+                <span style={{ fontSize: 14, opacity: 0.9 }}>⚠</span>
+                <span style={{ fontSize: 14, fontWeight: 900, letterSpacing: "0.1em", color: tc }}>
+                  {p.headline}
+                </span>
+              </motion.div>
             </AnimatePresence>
-            {/* Toggle buttons */}
-            <div style={{ display: "flex", gap: 6 }}>
+            {/* Toggle buttons — stay right */}
+            <div style={{ display: "flex", gap: 6, marginLeft: "auto" }}>
               {(["impact","info"] as const).map(v => (
                 <button key={v} onClick={() => setView(v)} style={{
                   fontFamily: "'Josefin Sans', sans-serif",
