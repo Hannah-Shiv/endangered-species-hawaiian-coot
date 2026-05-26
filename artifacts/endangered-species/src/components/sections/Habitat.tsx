@@ -10,7 +10,7 @@ const ISLANDS = {
 };
 type IslandKey = keyof typeof ISLANDS;
 
-const RAIN_DROPS = Array.from({length:20},(_,i)=>({ delay:(i*0.21)%2.1, left:(i*23+7)%96, dur:0.7+(i%5)*0.12 }));
+const RAIN_DROPS = Array.from({length:38},(_,i)=>({ delay:(i*0.13)%2.6, left:(i*17+5)%95, dur:0.65+(i%7)*0.11 }));
 
 function StatBox({ label, value, color, icon }: { label:string; value:number; color:string; icon:string }) {
   return (
@@ -120,7 +120,7 @@ export function Habitat() {
           <h1 style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:"clamp(1.5rem,2.2vw,2.1rem)",fontWeight:700,letterSpacing:"0.13em",textTransform:"uppercase",color:"rgba(212,175,55,1)",margin:"0 0 2px"}}>
             Habitat &amp; Location
           </h1>
-          <p style={{fontFamily:"'Playfair Display',serif",fontSize:"clamp(0.8rem,0.95vw,0.92rem)",color:"rgba(255,255,255,0.6)",margin:0}}>
+          <p style={{fontFamily:"'Playfair Display',serif",fontStyle:"italic",fontSize:"clamp(0.85rem,1vw,1rem)",color:"rgba(212,175,55,0.85)",margin:0,letterSpacing:"0.02em"}}>
             Freshwater and brackish wetlands across the Hawaiian Islands — home to the Hawaiian Coot.
           </p>
         </div>
@@ -285,7 +285,7 @@ export function Habitat() {
                 transition:"border-color 0.4s,box-shadow 0.4s",cursor:"default"}}>
 
               {RAIN_DROPS.slice(0,rainCount).map((dr,i)=>(
-                <div key={i} style={{position:"absolute",left:`${dr.left}%`,top:"-12px",width:"2px",height:"15px",borderRadius:"2px",
+                <div key={i} style={{position:"absolute",left:`${dr.left}%`,top:"-12px",width:"2.5px",height:"19px",borderRadius:"2px",
                   background:"linear-gradient(to bottom,transparent,rgba(59,130,246,0.85))",
                   animation:`rain-fall ${dr.dur}s linear ${dr.delay}s infinite`,pointerEvents:"none"}}/>
               ))}
