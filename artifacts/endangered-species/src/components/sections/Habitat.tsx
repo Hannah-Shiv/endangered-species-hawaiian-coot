@@ -116,7 +116,7 @@ export function Habitat() {
       }}>
 
         {/* Header */}
-        <div style={{textAlign:"center",flexShrink:0}}>
+        <div style={{textAlign:"center",flexShrink:0,paddingTop:"52px"}}>
           <h1 style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:"clamp(1.5rem,2.2vw,2.1rem)",fontWeight:700,letterSpacing:"0.13em",textTransform:"uppercase",color:"rgba(212,175,55,1)",margin:"0 0 2px"}}>
             Habitat &amp; Location
           </h1>
