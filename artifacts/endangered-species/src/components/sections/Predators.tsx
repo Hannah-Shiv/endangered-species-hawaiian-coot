@@ -150,7 +150,7 @@ const PREDATORS: Predator[] = [
     imgFilter: "none",
     headline: "NIGHT HERON — NATURAL PREDATION",
     overlays: [
-      { label: "🌙  NATURAL BEHAVIOR", text: "Night Herons evolved alongside the Hawaiian Coot — this is ecological balance, not crisis.", top: "3%", left: "2%" },
+      { label: "🌙  NATURAL BEHAVIOR", text: "Night Herons evolved alongside the Hawaiian Coot — this is ecological balance, not crisis.", top: "3%", left: "52%" },
       { label: "✦  NATIVE PREDATOR", text: "Unlike invasive species, the Night Heron is part of Hawaii's natural ecosystem.", top: "74%", left: "52%" },
     ],
     ecoImpact: [
