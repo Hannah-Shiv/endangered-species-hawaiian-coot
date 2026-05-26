@@ -130,19 +130,29 @@ export function FoodWeb() {
         <h1 style={{ fontFamily:"'Josefin Sans',sans-serif", fontSize:"clamp(1.8rem,3vw,2.8rem)", fontWeight:700, letterSpacing:"0.1em", textTransform:"uppercase", color:"rgba(212,175,55,1)", margin:0 }}>
           Wetland Food Web
         </h1>
-        {/* Subtitle — three separate lines */}
-        <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:"2px", marginTop:"8px" }}>
-          <p style={{ fontFamily:"'Playfair Display',serif", color:"rgba(255,255,255,0.88)", fontSize:"16px", margin:0 }}>
+        {/* Subtitle — single line with pipe separators, inside a styled box */}
+        <div style={{
+          display:"inline-flex", alignItems:"center", gap:"0",
+          marginTop:"10px",
+          padding:"8px 20px",
+          border:"1px solid rgba(212,175,55,0.4)",
+          borderRadius:"999px",
+          background:"rgba(212,175,55,0.07)",
+          boxShadow:"0 0 18px rgba(212,175,55,0.1)",
+        }}>
+          <span style={{ fontFamily:"'Playfair Display',serif", color:"rgba(255,255,255,0.88)", fontSize:"15px" }}>
             Hover any organism
-          </p>
-          <p style={{ fontFamily:"'Playfair Display',serif", fontSize:"15px", margin:0 }}>
+          </span>
+          <span style={{ color:"rgba(212,175,55,0.5)", margin:"0 10px", fontSize:"16px" }}>|</span>
+          <span style={{ fontFamily:"'Playfair Display',serif", fontSize:"15px" }}>
             <span style={{ color:"rgba(34,197,94,1)", fontWeight:600 }}>green arrows</span>
-            <span style={{ color:"rgba(255,255,255,0.7)" }}> = what it eats</span>
-          </p>
-          <p style={{ fontFamily:"'Playfair Display',serif", fontSize:"15px", margin:0 }}>
+            <span style={{ color:"rgba(255,255,255,0.75)" }}> = what it eats</span>
+          </span>
+          <span style={{ color:"rgba(212,175,55,0.5)", margin:"0 10px", fontSize:"16px" }}>|</span>
+          <span style={{ fontFamily:"'Playfair Display',serif", fontSize:"15px" }}>
             <span style={{ color:"rgba(239,68,68,1)", fontWeight:600 }}>red arrows</span>
-            <span style={{ color:"rgba(255,255,255,0.7)" }}> = what eats it</span>
-          </p>
+            <span style={{ color:"rgba(255,255,255,0.75)" }}> = what eats it</span>
+          </span>
         </div>
       </div>
 
@@ -167,19 +177,7 @@ export function FoodWeb() {
               <marker id="arr-faded" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
                 <path d="M0,0.5 L0,6.5 L6.5,3.5 z" fill="rgba(212,175,55,0.07)"/>
               </marker>
-              {/* Vertical fade gradient for column dividers */}
-              <linearGradient id="vfade" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%"   stopColor="rgba(212,175,55,0)"   />
-                <stop offset="15%"  stopColor="rgba(212,175,55,0.45)"/>
-                <stop offset="50%"  stopColor="rgba(212,175,55,0.6)" />
-                <stop offset="85%"  stopColor="rgba(212,175,55,0.45)"/>
-                <stop offset="100%" stopColor="rgba(212,175,55,0)"   />
-              </linearGradient>
             </defs>
-
-            {/* ── Vertical column dividers (left | center | right) ── */}
-            <rect x="29%" y="0" width="1.5" height="100%" fill="url(#vfade)" />
-            <rect x="69%" y="0" width="1.5" height="100%" fill="url(#vfade)" />
 
             {edges.map((edge, i) => {
               const src = nodes.find(n => n.id === edge.source)!;
