@@ -11,7 +11,7 @@ const GREEN = "rgba(50,200,100,1)";
 const spring = { type: "spring" as const, stiffness: 100, damping: 20 };
 
 // ── Data ─────────────────────────────────────────────────────────────────────
-const BASE = { wetland: 28, nesting: 31, water: 68, population: 42 };
+const BASE = { wetland: 52, nesting: 50, water: 60, population: 48 };
 
 const harmCards = [
   {
@@ -216,9 +216,7 @@ export function HumanImpact() {
     (acc, id) => {
       const d = allSideCards[id]?.delta;
       if (!d) return acc;
-      // Each card contributes 1/3 of its delta — all 3 locked = full effect
-      const s = 1 / 3;
-      return { wetland: acc.wetland + d.wetland * s, nesting: acc.nesting + d.nesting * s, water: acc.water + d.water * s, population: acc.population + d.population * s };
+      return { wetland: acc.wetland + d.wetland, nesting: acc.nesting + d.nesting, water: acc.water + d.water, population: acc.population + d.population };
     },
     { wetland: 0, nesting: 0, water: 0, population: 0 }
   );
@@ -398,15 +396,29 @@ export function HumanImpact() {
               <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11.5, color: "rgba(212,175,55,0.85)", letterSpacing: "0.07em" }}>HOVER TO PREVIEW · CLICK 🔒 TO LOCK</span>
             </motion.div>
             {lockedIds.size > 0 && (
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                style={{ position: "absolute", top: 10, left: "50%", transform: "translateX(-50%)", display: "flex", gap: 6, zIndex: 4 }}>
+              <motion.div
+                initial={{ opacity: 0, y: -6 }} animate={{ opacity: 1, y: 0 }}
+                style={{ position: "absolute", top: 50, left: "50%", transform: "translateX(-50%)", display: "flex", gap: 8, zIndex: 20, whiteSpace: "nowrap" }}
+              >
                 {lockedHarmCount > 0 && (
-                  <div style={{ background: "rgba(220,50,30,0.22)", border: "1px solid rgba(220,50,30,0.8)", borderRadius: 20, padding: "2px 10px", fontFamily: "'Josefin Sans', sans-serif", fontSize: 10, color: RED, fontWeight: 700, letterSpacing: "0.06em", boxShadow: "0 0 8px rgba(220,50,30,0.4)" }}>
+                  <div style={{
+                    background: "rgba(0,0,0,0.88)", border: "2px solid rgba(220,50,30,1)",
+                    borderRadius: 24, padding: "5px 14px",
+                    fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, color: "#ff6666",
+                    fontWeight: 800, letterSpacing: "0.08em",
+                    boxShadow: "0 0 18px rgba(220,50,30,0.8), 0 0 6px rgba(220,50,30,0.5)",
+                  }}>
                     🔒 {lockedHarmCount} HARM
                   </div>
                 )}
                 {lockedHopeCount > 0 && (
-                  <div style={{ background: "rgba(50,200,100,0.18)", border: "1px solid rgba(50,200,100,0.8)", borderRadius: 20, padding: "2px 10px", fontFamily: "'Josefin Sans', sans-serif", fontSize: 10, color: GREEN, fontWeight: 700, letterSpacing: "0.06em", boxShadow: "0 0 8px rgba(50,200,100,0.4)" }}>
+                  <div style={{
+                    background: "rgba(0,0,0,0.88)", border: "2px solid rgba(50,200,100,1)",
+                    borderRadius: 24, padding: "5px 14px",
+                    fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, color: "#55ff99",
+                    fontWeight: 800, letterSpacing: "0.08em",
+                    boxShadow: "0 0 18px rgba(50,200,100,0.8), 0 0 6px rgba(50,200,100,0.5)",
+                  }}>
                     🔒 {lockedHopeCount} HOPE
                   </div>
                 )}
@@ -428,7 +440,7 @@ export function HumanImpact() {
                 return (
                   <div key={key}>
                     <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6, alignItems: "center" }}>
-                      <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 14, color: "#fff", letterSpacing: "0.04em", fontWeight: 600 }}>{icon} {label}</span>
+                      <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 16, color: "#fff", letterSpacing: "0.04em", fontWeight: 700 }}>{icon} {label}</span>
                       <AnimatedCounter value={val} color={barColor} />
                     </div>
                     <div style={{ height: 11, background: "rgba(255,255,255,0.08)", borderRadius: 6, overflow: "visible", position: "relative" }}>
