@@ -107,31 +107,27 @@ function BeforeAfterSlider() {
 
   return (
     <div className="space-y-0">
-      {/* Slider image */}
+      {/* Slider image — height is driven by the BEFORE image, never crops */}
       <div
         ref={containerRef}
-        className="relative w-full overflow-hidden rounded-xl"
-        style={{ height: "560px", cursor: dragging ? "ew-resize" : "col-resize", userSelect: "none" }}
+        className="relative w-full overflow-hidden rounded-t-xl"
+        style={{ cursor: dragging ? "ew-resize" : "col-resize", userSelect: "none" }}
         onMouseDown={onMouseDown}
         onTouchStart={onTouchStart}
         onClick={handleContainerClick}
       >
-        {/* BEFORE image — full width, left side visible */}
-        <div
-          className="absolute inset-0"
-          style={{ clipPath: `inset(0 ${100 - sliderPos}% 0 0)` }}
-        >
+        {/* BEFORE image — normal flow, drives container height */}
+        <div style={{ clipPath: `inset(0 ${100 - sliderPos}% 0 0)` }}>
           <img
             src={wetlandBefore}
             alt="Healthy Hawaiian wetland before sea level rise"
-            className="w-full h-full object-cover"
+            style={{ width: "100%", height: "auto", display: "block" }}
             draggable={false}
           />
-          {/* Green tint */}
-          <div className="absolute inset-0" style={{ background: "rgba(0,90,10,0.22)", mixBlendMode: "multiply" }} />
+          <div className="absolute inset-0" style={{ background: "rgba(0,90,10,0.22)", mixBlendMode: "multiply", pointerEvents: "none" }} />
         </div>
 
-        {/* AFTER image — full width, right side visible */}
+        {/* AFTER image — absolute, fills the same space */}
         <div
           className="absolute inset-0"
           style={{ clipPath: `inset(0 0 0 ${sliderPos}%)` }}
@@ -139,11 +135,10 @@ function BeforeAfterSlider() {
           <img
             src={wetlandAfter}
             alt="Hawaiian wetland after projected sea level rise"
-            className="w-full h-full object-cover"
+            style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
             draggable={false}
           />
-          {/* Red-brown tint */}
-          <div className="absolute inset-0" style={{ background: "rgba(140,20,0,0.28)", mixBlendMode: "multiply" }} />
+          <div className="absolute inset-0" style={{ background: "rgba(140,20,0,0.28)", mixBlendMode: "multiply", pointerEvents: "none" }} />
         </div>
 
         {/* Divider line */}
@@ -171,7 +166,6 @@ function BeforeAfterSlider() {
             zIndex: 10,
           }}
         >
-          {/* Left/right arrows */}
           <svg width="28" height="16" viewBox="0 0 28 16" fill="none">
             <path d="M8 8H2M2 8L5 5M2 8L5 11" stroke="rgba(212,175,55,0.95)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             <path d="M20 8H26M26 8L23 5M26 8L23 11" stroke="rgba(212,175,55,0.95)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -182,46 +176,14 @@ function BeforeAfterSlider() {
         {/* BEFORE block — top-left corner */}
         <div
           className="absolute top-4 left-4"
-          style={{
-            pointerEvents: "none",
-            opacity: sliderPos > 10 ? 1 : 0,
-            transition: "opacity 0.25s",
-            maxWidth: 280,
-          }}
+          style={{ pointerEvents: "none", opacity: sliderPos > 10 ? 1 : 0, transition: "opacity 0.25s", maxWidth: 280 }}
         >
-          <div
-            className="flex items-center gap-2 px-4 py-2 rounded-full mb-2"
-            style={{
-              background: "rgba(0,0,0,0.82)",
-              border: "2px solid rgba(34,200,34,0.9)",
-              display: "inline-flex",
-            }}
-          >
+          <div className="flex items-center gap-2 px-4 py-2 rounded-full mb-2"
+            style={{ background: "rgba(0,0,0,0.82)", border: "2px solid rgba(34,200,34,0.9)", display: "inline-flex" }}>
             <span style={{ fontSize: 20 }}>🌿</span>
-            <span
-              style={{
-                fontFamily: "'Josefin Sans', sans-serif",
-                fontSize: 20,
-                letterSpacing: "0.18em",
-                color: "rgb(80,240,80)",
-                fontWeight: 700,
-              }}
-            >
-              BEFORE
-            </span>
+            <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 20, letterSpacing: "0.18em", color: "rgb(80,240,80)", fontWeight: 700 }}>BEFORE</span>
           </div>
-          <p
-            style={{
-              fontFamily: "'Playfair Display', serif",
-              fontStyle: "italic",
-              fontSize: 16,
-              color: "rgba(220,255,220,1)",
-              textShadow: "0 2px 10px rgba(0,0,0,1)",
-              lineHeight: 1.5,
-              paddingLeft: 2,
-              fontWeight: 600,
-            }}
-          >
+          <p style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontSize: 16, color: "rgba(220,255,220,1)", textShadow: "0 2px 10px rgba(0,0,0,1)", lineHeight: 1.5, paddingLeft: 2, fontWeight: 600 }}>
             Healthy Wetlands at Current Sea Levels
           </p>
         </div>
@@ -229,164 +191,71 @@ function BeforeAfterSlider() {
         {/* AFTER block — top-right corner */}
         <div
           className="absolute top-4 right-4 text-right"
-          style={{
-            pointerEvents: "none",
-            opacity: sliderPos < 90 ? 1 : 0,
-            transition: "opacity 0.25s",
-            maxWidth: 280,
-          }}
+          style={{ pointerEvents: "none", opacity: sliderPos < 90 ? 1 : 0, transition: "opacity 0.25s", maxWidth: 280 }}
         >
-          <div
-            className="flex items-center gap-2 px-4 py-2 rounded-full mb-2 ml-auto"
-            style={{
-              background: "rgba(0,0,0,0.82)",
-              border: "2px solid rgba(240,60,30,0.9)",
-              display: "inline-flex",
-            }}
-          >
+          <div className="flex items-center gap-2 px-4 py-2 rounded-full mb-2 ml-auto"
+            style={{ background: "rgba(0,0,0,0.82)", border: "2px solid rgba(240,60,30,0.9)", display: "inline-flex" }}>
             <span style={{ fontSize: 20 }}>🔥</span>
-            <span
-              style={{
-                fontFamily: "'Josefin Sans', sans-serif",
-                fontSize: 20,
-                letterSpacing: "0.18em",
-                color: "rgb(255,90,60)",
-                fontWeight: 700,
-              }}
-            >
-              AFTER
-            </span>
+            <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 20, letterSpacing: "0.18em", color: "rgb(255,90,60)", fontWeight: 700 }}>AFTER</span>
           </div>
-          <p
-            style={{
-              fontFamily: "'Playfair Display', serif",
-              fontStyle: "italic",
-              fontSize: 16,
-              color: "rgba(255,220,215,1)",
-              textShadow: "0 2px 10px rgba(0,0,0,1)",
-              lineHeight: 1.5,
-              paddingRight: 2,
-              fontWeight: 600,
-            }}
-          >
+          <p style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontSize: 16, color: "rgba(255,220,215,1)", textShadow: "0 2px 10px rgba(0,0,0,1)", lineHeight: 1.5, paddingRight: 2, fontWeight: 600 }}>
             Projected Sea Level Rise (20–60 cm by 2100)
           </p>
         </div>
 
-        {/* Drag hint — above cards strip */}
-        <div
-          className="absolute left-1/2 -translate-x-1/2"
-          style={{ pointerEvents: "none", bottom: 148, zIndex: 12 }}
-        >
-          <p
-            style={{
-              fontFamily: "'Josefin Sans', sans-serif",
-              fontSize: 11,
-              letterSpacing: "0.12em",
-              color: "rgba(212,175,55,0.65)",
-              textTransform: "uppercase",
-              whiteSpace: "nowrap",
-            }}
-          >
+        {/* Drag hint — bottom center of image */}
+        <div className="absolute bottom-3 left-1/2 -translate-x-1/2" style={{ pointerEvents: "none", zIndex: 10 }}>
+          <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11, letterSpacing: "0.12em", color: "rgba(212,175,55,0.65)", textTransform: "uppercase", whiteSpace: "nowrap" }}>
             ← drag to compare →
           </p>
         </div>
+      </div>
 
-        {/* Bottom overlay — cards on image */}
+      {/* Cards section — sits BELOW the full image, never overlapping */}
+      <div
+        className="relative rounded-b-xl overflow-hidden"
+        style={{ border: "1px solid rgba(212,175,55,0.25)", borderTop: "none" }}
+      >
+        {/* BEFORE cards */}
         <div
-          className="absolute bottom-0 left-0 right-0"
+          className="grid grid-cols-3"
           style={{
-            height: 140,
-            background: "linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.82) 30%, rgba(0,0,0,0.92) 100%)",
-            zIndex: 11,
-            pointerEvents: "none",
-          }}
-        />
-
-        {/* BEFORE cards overlay */}
-        <div
-          className="absolute bottom-0 left-0 right-0 grid grid-cols-3"
-          style={{
+            background: "rgba(0,22,4,0.92)",
             opacity: sliderPos >= 50 ? 1 : 0,
             transition: "opacity 0.4s ease",
-            zIndex: 12,
-            pointerEvents: "none",
+            position: sliderPos >= 50 ? "relative" : "absolute",
+            inset: 0,
+            width: "100%",
           }}
         >
           {beforeCards.map((c, i) => (
-            <div
-              key={c.title}
-              className="px-5 pb-5 pt-2 flex flex-col gap-1"
-              style={{ borderRight: i < 2 ? "1px solid rgba(212,175,55,0.15)" : "none" }}
-            >
-              <span style={{ fontSize: 26 }}>{c.icon}</span>
-              <p
-                style={{
-                  fontFamily: "'Josefin Sans', sans-serif",
-                  fontSize: 13,
-                  letterSpacing: "0.1em",
-                  color: "rgb(80,240,80)",
-                  fontWeight: 700,
-                  textTransform: "uppercase",
-                }}
-              >
-                {c.title}
-              </p>
-              <p
-                style={{
-                  fontFamily: "'Playfair Display', serif",
-                  fontSize: 13,
-                  color: "rgba(220,255,220,0.95)",
-                  lineHeight: 1.5,
-                  textShadow: "0 1px 6px rgba(0,0,0,0.9)",
-                }}
-              >
-                {c.desc}
-              </p>
+            <div key={c.title} className="p-5 flex flex-col gap-2"
+              style={{ borderRight: i < 2 ? "1px solid rgba(212,175,55,0.15)" : "none" }}>
+              <span style={{ fontSize: 28 }}>{c.icon}</span>
+              <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 14, letterSpacing: "0.1em", color: "rgb(80,230,80)", fontWeight: 700, textTransform: "uppercase" }}>{c.title}</p>
+              <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 14, color: "rgba(210,250,210,0.9)", lineHeight: 1.55 }}>{c.desc}</p>
             </div>
           ))}
         </div>
 
-        {/* AFTER cards overlay */}
+        {/* AFTER cards */}
         <div
-          className="absolute bottom-0 left-0 right-0 grid grid-cols-3"
+          className="grid grid-cols-3"
           style={{
+            background: "rgba(26,5,0,0.92)",
             opacity: sliderPos < 50 ? 1 : 0,
             transition: "opacity 0.4s ease",
-            zIndex: 12,
-            pointerEvents: "none",
+            position: sliderPos < 50 ? "relative" : "absolute",
+            inset: 0,
+            width: "100%",
           }}
         >
           {afterCards.map((c, i) => (
-            <div
-              key={c.title}
-              className="px-5 pb-5 pt-2 flex flex-col gap-1"
-              style={{ borderRight: i < 2 ? "1px solid rgba(212,175,55,0.15)" : "none" }}
-            >
-              <span style={{ fontSize: 26 }}>{c.icon}</span>
-              <p
-                style={{
-                  fontFamily: "'Josefin Sans', sans-serif",
-                  fontSize: 13,
-                  letterSpacing: "0.1em",
-                  color: "rgb(255,100,65)",
-                  fontWeight: 700,
-                  textTransform: "uppercase",
-                }}
-              >
-                {c.title}
-              </p>
-              <p
-                style={{
-                  fontFamily: "'Playfair Display', serif",
-                  fontSize: 13,
-                  color: "rgba(255,220,210,0.95)",
-                  lineHeight: 1.5,
-                  textShadow: "0 1px 6px rgba(0,0,0,0.9)",
-                }}
-              >
-                {c.desc}
-              </p>
+            <div key={c.title} className="p-5 flex flex-col gap-2"
+              style={{ borderRight: i < 2 ? "1px solid rgba(212,175,55,0.15)" : "none" }}>
+              <span style={{ fontSize: 28 }}>{c.icon}</span>
+              <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 14, letterSpacing: "0.1em", color: "rgb(255,90,60)", fontWeight: 700, textTransform: "uppercase" }}>{c.title}</p>
+              <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 14, color: "rgba(255,210,200,0.9)", lineHeight: 1.55 }}>{c.desc}</p>
             </div>
           ))}
         </div>
