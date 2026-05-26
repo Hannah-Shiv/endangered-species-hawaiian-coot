@@ -469,15 +469,16 @@ export function HumanImpact() {
             return (
               <motion.div key={card.n}
                 animate={{
-                  borderColor: isActive ? cBorder : c.replace(",1)", ",0.55)"),
-                  background:  isActive ? cFaint  : c.replace(",1)", ",0.06)"),
-                  boxShadow:   isActive
+                  background: isActive ? cFaint : c.replace(",1)", ",0.06)"),
+                  boxShadow:  isActive
                     ? `0 0 28px ${cGlow}, inset 0 0 28px ${c.replace(",1)", ",0.07)")}`
                     : `0 0 10px ${c.replace(",1)", ",0.18)")}`,
                 }}
                 transition={{ duration: 0.3 }}
                 style={{
-                  flex: 1, border: `1px solid ${GOLDF}`, borderRadius: 11,
+                  flex: 1, borderRadius: 11,
+                  border: `1px solid ${isActive ? cBorder : c.replace(",1)", ",0.55)")}`,
+                  transition: "border-color 0.3s",
                   overflow: "hidden", display: "flex", flexDirection: "column",
                 }}
               >
@@ -492,23 +493,22 @@ export function HumanImpact() {
                 >
                   <motion.div
                     animate={{
-                      background:  isActive ? c : "rgba(0,0,0,0)",
-                      borderColor: isActive ? cBorder : "rgba(212,175,55,0.5)",
-                      boxShadow:   isActive ? `0 0 28px ${cGlow}, 0 0 10px ${cMid}` : "none",
-                      scale:       isPulsing ? [1, 1.08, 1] : 1,
+                      background: isActive ? c : "rgba(0,0,0,0)",
+                      boxShadow:  isActive ? `0 0 28px ${cGlow}, 0 0 10px ${cMid}` : "none",
                     }}
                     whileHover={{
                       boxShadow: isActive
-                        ? `0 0 38px ${cGlow}, 0 0 16px ${cMid}`
-                        : `0 0 24px ${c.replace(",1)", ",0.45)")}, 0 0 10px ${c.replace(",1)", ",0.28)")}`,
-                      scale: isPulsing ? 1 : 1.04,
-                      borderColor: isActive ? cBorder : c.replace(",1)", ",0.9)"),
+                        ? `0 0 40px ${cGlow}, 0 0 18px ${cMid}`
+                        : `0 0 26px ${c.replace(",1)", ",0.5)")}, 0 0 12px ${c.replace(",1)", ",0.3)")}`,
+                      scale: 1.04,
                     }}
-                    transition={{ scale: { duration: 0.35 }, default: { duration: 0.3 } }}
+                    whileTap={{ scale: 0.96 }}
+                    transition={{ duration: 0.25 }}
                     style={{
                       width: "auto", height: 40, borderRadius: 20,
                       padding: "0 22px",
-                      border: `2px solid ${isActive ? cBorder : c.replace(",1)", ",0.7)")}`,
+                      border: `2px solid ${isActive ? cBorder : c.replace(",1)", ",0.75)")}`,
+                      transition: "border-color 0.25s",
                       display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
                     }}
                   >
