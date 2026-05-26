@@ -195,14 +195,14 @@ export function Habitat() {
               />
               <div style={{
                 position:"absolute", pointerEvents:"none", userSelect:"none", zIndex:2,
-                display:"flex", flexDirection:"column", alignItems:"center", gap:"1px",
-                fontFamily:"'Josefin Sans',sans-serif", fontSize:"15px",
+                display:"flex", flexDirection:"column", alignItems:"center", gap:"2px",
+                fontFamily:"'Josefin Sans',sans-serif", fontSize:"19px",
                 fontWeight:900, letterSpacing:"0.05em", textTransform:"uppercase",
                 color:"#000000", lineHeight:1.15,
               }}>
                 {(["D",1,"R",1,"A",1,"G",2,"T",1,"H",1,"I",1,"S",2,"B",1,"A",1,"R"] as (string|number)[]).map((c,i)=>
-                  c===1 ? <div key={i} style={{height:"5px"}}/>
-                  : c===2 ? <div key={i} style={{height:"20px"}}/>
+                  c===1 ? <div key={i} style={{height:"9px"}}/>
+                  : c===2 ? <div key={i} style={{height:"28px"}}/>
                   : <span key={i}>{c}</span>
                 )}
               </div>
