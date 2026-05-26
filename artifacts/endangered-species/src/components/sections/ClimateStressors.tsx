@@ -139,31 +139,38 @@ function BeforeAfterSlider() {
           className="absolute inset-0"
           style={{ clipPath: `inset(0 0 0 ${sliderPos}%)` }}
         >
+          {/* Image — mild dim, no colour shift */}
           <img
             src={wetlandAfter}
             alt="Hawaiian wetland after projected sea level rise"
             className="w-full h-full object-cover"
-            style={{
-              filter: "saturate(0.15) brightness(0.42) hue-rotate(195deg) contrast(1.1)",
-            }}
+            style={{ filter: "brightness(0.62) saturate(0.78)" }}
             draggable={false}
           />
-          {/* Dark blue flood overlay */}
+          {/* Risen water body — covers bottom 65% of image */}
           <div
-            className="absolute inset-0"
+            className="absolute left-0 right-0 bottom-0"
             style={{
+              height: "65%",
               background:
-                "linear-gradient(to bottom, rgba(0,20,60,0.55) 0%, rgba(0,40,120,0.45) 50%, rgba(0,10,40,0.7) 100%)",
+                "linear-gradient(to top, rgba(18,32,22,0.92) 0%, rgba(22,44,28,0.88) 30%, rgba(28,52,34,0.82) 55%, rgba(30,55,36,0.55) 75%, transparent 100%)",
             }}
           />
-          {/* Rising water shimmer */}
+          {/* Waterline surface shimmer */}
           <div
-            className="absolute bottom-0 left-0 right-0"
+            className="absolute left-0 right-0"
             style={{
-              height: "38%",
+              bottom: "62%",
+              height: 6,
               background:
-                "linear-gradient(to top, rgba(0,60,180,0.5) 0%, rgba(0,80,200,0.15) 60%, transparent 100%)",
+                "linear-gradient(to right, transparent 0%, rgba(160,200,160,0.25) 20%, rgba(200,230,200,0.45) 50%, rgba(160,200,160,0.25) 80%, transparent 100%)",
+              boxShadow: "0 0 18px 4px rgba(120,180,120,0.18)",
             }}
+          />
+          {/* Subtle darkening top overlay for overall dimming */}
+          <div
+            className="absolute inset-0"
+            style={{ background: "rgba(0,0,0,0.22)" }}
           />
         </div>
 
@@ -200,100 +207,114 @@ function BeforeAfterSlider() {
           </svg>
         </div>
 
-        {/* BEFORE label — top-left */}
+        {/* BEFORE block — top-left corner */}
         <div
-          className="absolute top-4 left-4 flex items-center gap-2 px-3 py-1.5 rounded-full"
+          className="absolute top-4 left-4"
           style={{
-            background: "rgba(0,0,0,0.78)",
-            border: "1px solid rgba(34,139,34,0.8)",
             pointerEvents: "none",
-            opacity: sliderPos > 12 ? 1 : 0,
-            transition: "opacity 0.2s",
+            opacity: sliderPos > 10 ? 1 : 0,
+            transition: "opacity 0.25s",
+            maxWidth: 210,
           }}
         >
-          <span style={{ fontSize: 14 }}>🌿</span>
-          <span
+          <div
+            className="flex items-center gap-2 px-3 py-1.5 rounded-full mb-2"
             style={{
-              fontFamily: "'Josefin Sans', sans-serif",
-              fontSize: 12,
-              letterSpacing: "0.12em",
-              color: "rgb(100,220,100)",
-              fontWeight: 700,
+              background: "rgba(0,0,0,0.72)",
+              border: "1px solid rgba(34,160,34,0.75)",
+              display: "inline-flex",
             }}
           >
-            BEFORE
-          </span>
-        </div>
-
-        {/* AFTER label — top-right */}
-        <div
-          className="absolute top-4 right-4 flex items-center gap-2 px-3 py-1.5 rounded-full"
-          style={{
-            background: "rgba(0,0,0,0.78)",
-            border: "1px solid rgba(180,60,60,0.8)",
-            pointerEvents: "none",
-            opacity: sliderPos < 88 ? 1 : 0,
-            transition: "opacity 0.2s",
-          }}
-        >
-          <span style={{ fontSize: 14 }}>🔥</span>
-          <span
-            style={{
-              fontFamily: "'Josefin Sans', sans-serif",
-              fontSize: 12,
-              letterSpacing: "0.12em",
-              color: "rgb(255,100,80)",
-              fontWeight: 700,
-            }}
-          >
-            AFTER
-          </span>
-        </div>
-
-        {/* BEFORE subtitle — bottom left */}
-        <div
-          className="absolute bottom-4 left-4"
-          style={{
-            pointerEvents: "none",
-            opacity: sliderPos > 18 ? 1 : 0,
-            transition: "opacity 0.2s",
-          }}
-        >
+            <span style={{ fontSize: 13 }}>🌿</span>
+            <span
+              style={{
+                fontFamily: "'Josefin Sans', sans-serif",
+                fontSize: 11,
+                letterSpacing: "0.14em",
+                color: "rgb(100,220,100)",
+                fontWeight: 700,
+              }}
+            >
+              BEFORE
+            </span>
+          </div>
           <p
             style={{
               fontFamily: "'Playfair Display', serif",
               fontStyle: "italic",
-              fontSize: 13,
-              color: "rgba(200,240,200,0.9)",
-              textShadow: "0 1px 4px rgba(0,0,0,0.9)",
-              maxWidth: 200,
+              fontSize: 12,
+              color: "rgba(210,245,210,0.88)",
+              textShadow: "0 1px 6px rgba(0,0,0,1)",
+              lineHeight: 1.5,
+              paddingLeft: 2,
             }}
           >
             Healthy Wetlands at Current Sea Levels
           </p>
         </div>
 
-        {/* AFTER subtitle — bottom right */}
+        {/* AFTER block — top-right corner */}
         <div
-          className="absolute bottom-4 right-4 text-right"
+          className="absolute top-4 right-4 text-right"
           style={{
             pointerEvents: "none",
-            opacity: sliderPos < 82 ? 1 : 0,
-            transition: "opacity 0.2s",
+            opacity: sliderPos < 90 ? 1 : 0,
+            transition: "opacity 0.25s",
+            maxWidth: 210,
           }}
         >
+          <div
+            className="flex items-center gap-2 px-3 py-1.5 rounded-full mb-2 ml-auto"
+            style={{
+              background: "rgba(0,0,0,0.72)",
+              border: "1px solid rgba(200,60,40,0.75)",
+              display: "inline-flex",
+            }}
+          >
+            <span style={{ fontSize: 13 }}>🔥</span>
+            <span
+              style={{
+                fontFamily: "'Josefin Sans', sans-serif",
+                fontSize: 11,
+                letterSpacing: "0.14em",
+                color: "rgb(255,100,70)",
+                fontWeight: 700,
+              }}
+            >
+              AFTER
+            </span>
+          </div>
           <p
             style={{
               fontFamily: "'Playfair Display', serif",
               fontStyle: "italic",
-              fontSize: 13,
-              color: "rgba(180,200,255,0.9)",
-              textShadow: "0 1px 4px rgba(0,0,0,0.9)",
-              maxWidth: 200,
-              marginLeft: "auto",
+              fontSize: 12,
+              color: "rgba(245,220,210,0.88)",
+              textShadow: "0 1px 6px rgba(0,0,0,1)",
+              lineHeight: 1.5,
+              paddingRight: 2,
             }}
           >
             Projected Sea Level Rise (20–60 cm by 2100)
+          </p>
+        </div>
+
+        {/* Drag hint — bottom center */}
+        <div
+          className="absolute bottom-3 left-1/2 -translate-x-1/2"
+          style={{ pointerEvents: "none" }}
+        >
+          <p
+            style={{
+              fontFamily: "'Josefin Sans', sans-serif",
+              fontSize: 10,
+              letterSpacing: "0.12em",
+              color: "rgba(212,175,55,0.5)",
+              textTransform: "uppercase",
+              whiteSpace: "nowrap",
+            }}
+          >
+            ← drag to compare →
           </p>
         </div>
       </div>
@@ -473,56 +494,11 @@ export function ClimateStressors() {
           style={{
             border: "1px solid rgba(212,175,55,0.3)",
             borderRadius: 12,
-            padding: "28px 28px 24px",
+            padding: "14px 14px 20px",
             background: "rgba(6,4,0,0.6)",
             margin: "0 6px 56px",
           }}
         >
-          {/* Section title with decorative arrows */}
-          <div className="text-center mb-3">
-            <h2
-              style={{
-                fontFamily: "'Playfair Display', serif",
-                fontSize: 28,
-                color: "rgba(212,175,55,1)",
-                letterSpacing: "0.03em",
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 14,
-              }}
-            >
-              <span style={{ color: "rgba(212,175,55,0.6)", fontSize: 20 }}>→</span>
-              Rising Sea Level in Hawaii
-              <span style={{ color: "rgba(212,175,55,0.6)", fontSize: 20 }}>←</span>
-            </h2>
-            <p
-              style={{
-                fontFamily: "'Playfair Display', serif",
-                fontStyle: "italic",
-                fontSize: 14,
-                color: "rgba(255,255,255,0.6)",
-                marginTop: 6,
-                maxWidth: 560,
-                margin: "6px auto 0",
-              }}
-            >
-              Rising seas threaten the shallow wetlands that Hawaiian Coots depend on
-              for nesting, feeding, and survival.
-            </p>
-            <p
-              style={{
-                fontFamily: "'Josefin Sans', sans-serif",
-                fontSize: 11,
-                letterSpacing: "0.12em",
-                color: "rgba(212,175,55,0.5)",
-                marginTop: 8,
-                textTransform: "uppercase",
-              }}
-            >
-              ← drag the divider to compare →
-            </p>
-          </div>
-
           <BeforeAfterSlider />
         </motion.div>
 
