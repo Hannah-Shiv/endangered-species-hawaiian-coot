@@ -202,7 +202,7 @@ export function Habitat() {
               }}>
                 {(["D",1,"R",1,"A",1,"G",2,"T",1,"H",1,"I",1,"S",2,"B",1,"A",1,"R"] as (string|number)[]).map((c,i)=>
                   c===1 ? <div key={i} style={{height:"9px"}}/>
-                  : c===2 ? <div key={i} style={{height:"28px"}}/>
+                  : c===2 ? <div key={i} style={{height:"55px"}}/>
                   : <span key={i}>{c}</span>
                 )}
               </div>
