@@ -393,20 +393,20 @@ export function HumanImpact() {
             )}
           </div>
           {/* Meters */}
-          <div style={{ flexShrink: 0, padding: "9px 16px 11px", borderTop: "1px solid rgba(212,175,55,0.15)" }}>
-            <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 12, color: "rgba(212,175,55,0.6)", letterSpacing: "0.16em", textAlign: "center", marginBottom: 8 }}>ECOSYSTEM HEALTH</p>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px 18px" }}>
+          <div style={{ flexShrink: 0, padding: "10px 16px 13px", borderTop: "1px solid rgba(212,175,55,0.15)" }}>
+            <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 14, color: "rgba(212,175,55,0.65)", letterSpacing: "0.16em", textAlign: "center", marginBottom: 10 }}>ECOSYSTEM HEALTH</p>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px 20px" }}>
               {METERS.map(({ key, label, icon }) => {
                 const val = metrics[key];
                 const barColor = val < 30 ? "#e63333" : val < 55 ? "#ddaa22" : "#44cc88";
                 return (
                   <div key={key}>
-                    <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 3, alignItems: "center" }}>
-                      <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, color: "rgba(255,255,255,0.78)", letterSpacing: "0.04em" }}>{icon} {label}</span>
-                      <motion.span animate={{ color: barColor }} style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, fontWeight: 900 }}>{val}%</motion.span>
+                    <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 5, alignItems: "center" }}>
+                      <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 15, color: "rgba(255,255,255,0.82)", letterSpacing: "0.04em" }}>{icon} {label}</span>
+                      <motion.span animate={{ color: barColor }} style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 17, fontWeight: 900 }}>{val}%</motion.span>
                     </div>
-                    <div style={{ height: 7, background: "rgba(255,255,255,0.1)", borderRadius: 4, overflow: "hidden" }}>
-                      <motion.div animate={{ width: `${val}%`, backgroundColor: barColor }} transition={spring} style={{ height: "100%", borderRadius: 4 }} />
+                    <div style={{ height: 10, background: "rgba(255,255,255,0.1)", borderRadius: 5, overflow: "hidden" }}>
+                      <motion.div animate={{ width: `${val}%`, backgroundColor: barColor }} transition={spring} style={{ height: "100%", borderRadius: 5 }} />
                     </div>
                   </div>
                 );
@@ -492,43 +492,47 @@ export function HumanImpact() {
                     animate={{
                       background:  isActive ? c : "rgba(0,0,0,0)",
                       borderColor: isActive ? cBorder : "rgba(212,175,55,0.5)",
-                      boxShadow:   isActive ? `0 0 22px ${cGlow}, 0 0 8px ${cMid}` : "none",
-                      scale:       isPulsing ? [1, 1.2, 1] : 1,
+                      boxShadow:   isActive ? `0 0 28px ${cGlow}, 0 0 10px ${cMid}` : "none",
+                      scale:       isPulsing ? [1, 1.08, 1] : 1,
                     }}
                     whileHover={{
                       boxShadow: isActive
-                        ? `0 0 32px ${cGlow}, 0 0 14px ${cMid}`
-                        : `0 0 20px ${c.replace(",1)", ",0.4)")}, 0 0 8px ${c.replace(",1)", ",0.25)")}`,
-                      scale: isPulsing ? 1 : 1.1,
-                      borderColor: isActive ? cBorder : c.replace(",1)", ",0.85)"),
+                        ? `0 0 38px ${cGlow}, 0 0 16px ${cMid}`
+                        : `0 0 24px ${c.replace(",1)", ",0.45)")}, 0 0 10px ${c.replace(",1)", ",0.28)")}`,
+                      scale: isPulsing ? 1 : 1.04,
+                      borderColor: isActive ? cBorder : c.replace(",1)", ",0.9)"),
                     }}
-                    transition={{ scale: { duration: 0.4 }, default: { duration: 0.3 } }}
+                    transition={{ scale: { duration: 0.35 }, default: { duration: 0.3 } }}
                     style={{
-                      width: 52, height: 52, borderRadius: "50%",
-                      border: "2px solid rgba(212,175,55,0.5)",
-                      display: "flex", alignItems: "center", justifyContent: "center",
+                      width: "88%", height: 44, borderRadius: 8,
+                      border: `2px solid ${isActive ? cBorder : "rgba(212,175,55,0.5)"}`,
+                      display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
                     }}
                   >
                     <AnimatePresence mode="wait">
                       {isActive ? (
-                        <motion.span key="tick"
+                        <motion.div key="tick"
                           initial={{ scale: 0, opacity: 0, rotate: -30 }}
                           animate={{ scale: 1, opacity: 1, rotate: 0 }}
                           exit={{ scale: 0, opacity: 0 }}
                           transition={{ type: "spring", stiffness: 280, damping: 18 }}
-                          style={{ fontSize: 24, color: "#000", fontWeight: 900, lineHeight: 1 }}>✓</motion.span>
+                          style={{ display: "flex", alignItems: "center", gap: 6 }}
+                        >
+                          <span style={{ fontSize: 20, color: "#000", fontWeight: 900, lineHeight: 1 }}>✓</span>
+                          <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 12, color: "#000", fontWeight: 800, letterSpacing: "0.08em" }}>DONE</span>
+                        </motion.div>
                       ) : (
                         <motion.span key="label"
                           initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                          style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 9, color: "rgba(212,175,55,0.75)", fontWeight: 700, letterSpacing: "0.07em", lineHeight: 1.3, textAlign: "center" }}>
-                          TAKE<br/>ACTION
+                          style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 12, color: "rgba(212,175,55,0.85)", fontWeight: 700, letterSpacing: "0.1em" }}>
+                          TAKE ACTION
                         </motion.span>
                       )}
                     </AnimatePresence>
                   </motion.div>
                   <motion.span
                     animate={{ opacity: isActive ? 1 : 0 }}
-                    style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 10, color: c, fontWeight: 700, letterSpacing: "0.1em", marginTop: 4 }}>
+                    style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 12, color: c, fontWeight: 700, letterSpacing: "0.1em", marginTop: 5 }}>
                     ACTIVATED
                   </motion.span>
                 </div>
@@ -545,13 +549,13 @@ export function HumanImpact() {
                     textAlign: "center", cursor: "pointer", overflow: "hidden",
                   }}
                 >
-                  <span style={{ fontSize: 24, marginBottom: 4 }}>{card.icon}</span>
+                  <span style={{ fontSize: 28, marginBottom: 5 }}>{card.icon}</span>
 
-                  <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 16, color: isActive ? c : GOLD, fontWeight: 700, letterSpacing: "0.04em", marginBottom: 3, lineHeight: 1.2 }}>
+                  <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 18, color: isActive ? c : GOLD, fontWeight: 700, letterSpacing: "0.04em", marginBottom: 4, lineHeight: 1.2 }}>
                     {card.title}
                   </p>
 
-                  <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 13.5, color: "rgba(255,255,255,0.74)", lineHeight: 1.45, flex: 1 }}>
+                  <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 15, color: "rgba(255,255,255,0.78)", lineHeight: 1.5, flex: 1 }}>
                     {card.desc}
                   </p>
 
@@ -560,13 +564,13 @@ export function HumanImpact() {
                       <motion.p key="edu"
                         initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }}
                         exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.3 }}
-                        style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontSize: 12, color: "rgba(255,255,255,0.82)", lineHeight: 1.4, marginTop: 4, overflow: "hidden" }}>
+                        style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontSize: 13.5, color: "rgba(255,255,255,0.85)", lineHeight: 1.45, marginTop: 5, overflow: "hidden" }}>
                         {card.message}
                       </motion.p>
                     )}
                   </AnimatePresence>
 
-                  <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, color: isActive ? c : "rgba(212,175,55,0.45)", fontWeight: 700, letterSpacing: "0.05em", marginTop: 5 }}>
+                  <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 14.5, color: isActive ? c : "rgba(212,175,55,0.5)", fontWeight: 700, letterSpacing: "0.05em", marginTop: 6 }}>
                     {card.effect}
                   </p>
                 </div>
