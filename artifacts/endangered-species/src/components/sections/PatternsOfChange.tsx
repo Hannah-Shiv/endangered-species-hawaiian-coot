@@ -4,8 +4,8 @@ import {
   ComposedChart, Area, Line, XAxis, YAxis, CartesianGrid,
   Tooltip, ResponsiveContainer, Legend,
 } from "recharts";
-import wetlandHealthy from "@assets/image_1779814678211.png";
-import wetlandStressed from "@assets/image_1779814700434.png";
+import wetlandHealthy from "@assets/image_1779819729646.png";
+import wetlandStressed from "@assets/image_1779819734890.png";
 
 // ── Combined rainfall + population data ───────────────────────────────────────
 const chartData = [
@@ -199,7 +199,7 @@ export function PatternsOfChange() {
       </motion.div>
 
       {/* ── Row 2: Chart (left) + Inflection Points (right) ── */}
-      <div style={{ flex: 3, minHeight: 0, display: "grid", gridTemplateColumns: "1fr 300px", gap: 5 }}>
+      <div style={{ flex: 2, minHeight: 0, display: "grid", gridTemplateColumns: "1fr 300px", gap: 5 }}>
 
         {/* Chart column */}
         <div style={{ ...panel, borderRadius: 10, display: "flex", flexDirection: "column", overflow: "hidden" }}>
@@ -276,13 +276,13 @@ export function PatternsOfChange() {
               <div key={pt.year} style={{ display: "flex", gap: 8, alignItems: "flex-start" }}>
                 <div style={{ width: 10, height: 10, borderRadius: "50%", background: pt.color, flexShrink: 0, marginTop: 2, boxShadow: `0 0 6px ${pt.color}88` }} />
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11, color: pt.color, fontWeight: 700, letterSpacing: "0.04em", marginBottom: 1 }}>{pt.title}</p>
-                  <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 11, color: "rgba(255,255,255,0.55)", lineHeight: 1.45 }}>{pt.desc}</p>
+                  <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, color: pt.color, fontWeight: 700, letterSpacing: "0.04em", marginBottom: 2 }}>{pt.title}</p>
+                  <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 12, color: "rgba(255,255,255,0.6)", lineHeight: 1.45 }}>{pt.desc}</p>
                 </div>
                 <button onClick={() => setCurrentYear(pt.year)} style={{
                   flexShrink: 0, background: "rgba(0,0,0,0.6)", border: `1px solid ${pt.color}55`,
                   borderRadius: 5, padding: "2px 7px", fontFamily: "'Josefin Sans', sans-serif",
-                  fontSize: 9, color: pt.color, letterSpacing: "0.08em", cursor: "pointer",
+                  fontSize: 11, color: pt.color, letterSpacing: "0.08em", cursor: "pointer",
                   fontWeight: 700, textTransform: "uppercase", whiteSpace: "nowrap",
                 }}>View Year</button>
               </div>
@@ -295,7 +295,7 @@ export function PatternsOfChange() {
       </div>
 
       {/* ── Row 3: Triptych — Year flap | Habitat image | Ecosystem flap ── */}
-      <div style={{ flex: 2, minHeight: 0, display: "grid", gridTemplateColumns: "210px 1fr 210px", gap: 0, border: `1px solid ${GOLDF}`, borderRadius: 10, overflow: "hidden" }}>
+      <div style={{ flex: 3, minHeight: 0, display: "grid", gridTemplateColumns: "300px 220px 1fr", gap: 0, border: `1px solid ${GOLDF}`, borderRadius: 10, overflow: "hidden" }}>
 
         {/* Left flap — Current Year */}
         <motion.div
@@ -345,19 +345,19 @@ export function PatternsOfChange() {
           transition={{ duration: 0.3 }}
           style={{ background: "#000", borderLeft: `1px solid ${GOLDF}`, padding: "12px 14px", display: "flex", flexDirection: "column", justifyContent: "center" }}
         >
-          <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 9, color: "rgba(212,175,55,0.5)", letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 10 }}>Ecosystem Status</p>
-          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+          <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 10, color: "rgba(212,175,55,0.5)", letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 12 }}>Ecosystem Status</p>
+          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             {indicators.map((ind) => (
               <motion.div
                 key={ind.label}
                 initial={{ opacity: 0, x: 6 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.25 }}
-                style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 4 }}
+                style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}
               >
-                <div style={{ display: "flex", alignItems: "center", gap: 5 }}>
-                  <span style={{ fontSize: 13 }}>{ind.icon}</span>
-                  <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11, color: "rgba(255,255,255,0.65)", letterSpacing: "0.02em" }}>{ind.label}</span>
+                <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
+                  <span style={{ fontSize: 16 }}>{ind.icon}</span>
+                  <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, color: "rgba(255,255,255,0.72)", letterSpacing: "0.02em" }}>{ind.label}</span>
                 </div>
-                <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11, color: ind.color, fontWeight: 700, whiteSpace: "nowrap" }}>{ind.status}</span>
+                <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, color: ind.color, fontWeight: 700, whiteSpace: "nowrap" }}>{ind.status}</span>
               </motion.div>
             ))}
           </div>
