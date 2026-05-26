@@ -108,7 +108,7 @@ const PREDATORS: Predator[] = [
     imgFilter: "none",
     headline: "DOGS IMPACT",
     overlays: [
-      { label: "⚠  NESTING DISTURBANCE", text: "Dogs flush incubating birds and trample vegetation.", top: "10%", left: "3%" },
+      { label: "⚠  NESTING DISTURBANCE", text: "Dogs flush incubating birds and trample vegetation.", top: "74%", right: "2%" },
       { label: "⚠  NEST AT RISK", text: "Disturbance causes nest abandonment.", top: "62%", left: "40%" },
     ],
     ecoImpact: [
