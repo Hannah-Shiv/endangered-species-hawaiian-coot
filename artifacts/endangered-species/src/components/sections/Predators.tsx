@@ -642,7 +642,8 @@ export function Predators() {
         flexShrink: 0,
         background: "rgba(0,0,0,0.85)",
         borderTop: "1px solid rgba(255,255,255,0.07)",
-        padding: "10px 20px",
+        padding: "10px 20px 10px 20px",
+        paddingRight: 64,
         display: "flex", alignItems: "center", gap: 16,
       }}>
         <p style={{ fontSize: 11.5, letterSpacing: "0.16em", color: GOLD, fontWeight: 800, flexShrink: 0, textShadow: `0 0 8px ${GOLD}` }}>
