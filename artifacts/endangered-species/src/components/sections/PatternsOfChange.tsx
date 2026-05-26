@@ -181,7 +181,7 @@ export function PatternsOfChange() {
   const panel: React.CSSProperties = { background: "#000", border: `1px solid ${GOLDF}` };
 
   return (
-    <div style={{ height: "100%", display: "flex", flexDirection: "column", padding: "8px 18px 6px", gap: 5, overflowY: "auto", boxSizing: "border-box", background: "#000" }}>
+    <div style={{ height: "100%", display: "flex", flexDirection: "column", padding: "8px 18px 6px", gap: 5, overflow: "hidden", boxSizing: "border-box", background: "#000" }}>
 
       {/* ── Row 1: Centered title (matches other pages) ── */}
       <motion.div
@@ -199,7 +199,7 @@ export function PatternsOfChange() {
       </motion.div>
 
       {/* ── Row 2: Chart (left) + Inflection Points (right) ── */}
-      <div style={{ flex: "0 0 auto", height: "clamp(220px, 38vh, 310px)", display: "grid", gridTemplateColumns: "1fr 300px", gap: 5 }}>
+      <div style={{ flex: 3, minHeight: 0, display: "grid", gridTemplateColumns: "1fr 300px", gap: 5 }}>
 
         {/* Chart column */}
         <div style={{ ...panel, borderRadius: 10, display: "flex", flexDirection: "column", overflow: "hidden" }}>
@@ -295,7 +295,7 @@ export function PatternsOfChange() {
       </div>
 
       {/* ── Row 3: Triptych — Year flap | Habitat image | Ecosystem flap ── */}
-      <div style={{ flexShrink: 0, height: 148, display: "grid", gridTemplateColumns: "210px 1fr 210px", gap: 0, border: `1px solid ${GOLDF}`, borderRadius: 10, overflow: "hidden" }}>
+      <div style={{ flex: 2, minHeight: 0, display: "grid", gridTemplateColumns: "210px 1fr 210px", gap: 0, border: `1px solid ${GOLDF}`, borderRadius: 10, overflow: "hidden" }}>
 
         {/* Left flap — Current Year */}
         <motion.div
