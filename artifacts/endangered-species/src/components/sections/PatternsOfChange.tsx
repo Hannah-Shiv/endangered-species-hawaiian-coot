@@ -368,8 +368,8 @@ export function PatternsOfChange() {
             style={{ ...panel, borderRadius: 10, flex: 1, minHeight: 0, padding: "14px 18px", display: "flex", flexDirection: "column", justifyContent: "flex-start" }}
           >
             <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 15, color: "rgba(212,175,55,0.9)", letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 4, fontWeight: 700 }}>Current Year</p>
-            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 9, whiteSpace: "nowrap", flexWrap: "nowrap" }}>
-              <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 36, color: GOLD, fontWeight: 900, lineHeight: 1, textShadow: "0 0 18px rgba(212,175,55,0.5)", marginTop: 6 }}>{currentYear}</span>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 12, marginBottom: 18, whiteSpace: "nowrap", flexWrap: "nowrap" }}>
+              <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 36, color: GOLD, fontWeight: 900, lineHeight: 1, textShadow: "0 0 18px rgba(212,175,55,0.5)" }}>{currentYear}</span>
               <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 18, color: GOLD, fontWeight: 900, lineHeight: 1 }}>→</span>
               <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 22, color: "rgba(212,175,55,0.9)", letterSpacing: "0.04em", fontWeight: 700 }}>~{currentPop.toLocaleString()} individuals</span>
             </div>
