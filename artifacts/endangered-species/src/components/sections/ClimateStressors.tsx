@@ -107,27 +107,34 @@ function BeforeAfterSlider() {
 
   return (
     <div className="space-y-0">
-      {/* Slider image — height is driven by the BEFORE image, never crops */}
+      {/* Slider image — height is viewport-relative so image + cards always fit on screen */}
       <div
         ref={containerRef}
         className="relative w-full overflow-hidden rounded-t-xl"
-        style={{ cursor: dragging ? "ew-resize" : "col-resize", userSelect: "none" }}
+        style={{
+          height: "clamp(260px, calc(100vh - 420px), 580px)",
+          cursor: dragging ? "ew-resize" : "col-resize",
+          userSelect: "none",
+        }}
         onMouseDown={onMouseDown}
         onTouchStart={onTouchStart}
         onClick={handleContainerClick}
       >
-        {/* BEFORE image — normal flow, drives container height */}
-        <div style={{ clipPath: `inset(0 ${100 - sliderPos}% 0 0)` }}>
+        {/* BEFORE image */}
+        <div
+          className="absolute inset-0"
+          style={{ clipPath: `inset(0 ${100 - sliderPos}% 0 0)` }}
+        >
           <img
             src={wetlandBefore}
             alt="Healthy Hawaiian wetland before sea level rise"
-            style={{ width: "100%", height: "auto", display: "block" }}
+            style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 65%", display: "block" }}
             draggable={false}
           />
           <div className="absolute inset-0" style={{ background: "rgba(0,90,10,0.22)", mixBlendMode: "multiply", pointerEvents: "none" }} />
         </div>
 
-        {/* AFTER image — absolute, fills the same space */}
+        {/* AFTER image */}
         <div
           className="absolute inset-0"
           style={{ clipPath: `inset(0 0 0 ${sliderPos}%)` }}
@@ -135,7 +142,7 @@ function BeforeAfterSlider() {
           <img
             src={wetlandAfter}
             alt="Hawaiian wetland after projected sea level rise"
-            style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+            style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 65%", display: "block" }}
             draggable={false}
           />
           <div className="absolute inset-0" style={{ background: "rgba(140,20,0,0.28)", mixBlendMode: "multiply", pointerEvents: "none" }} />
