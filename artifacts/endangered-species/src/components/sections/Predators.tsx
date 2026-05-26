@@ -185,8 +185,8 @@ function DashBar({ value, label, icon, barColor }: { value: number; label: strin
   return (
     <div>
       <div style={{ display: "flex", alignItems: "center", gap: 5, marginBottom: 4 }}>
-        <span style={{ fontSize: 13 }}>{icon}</span>
-        <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11, color: "rgba(255,255,255,0.7)", letterSpacing: "0.04em" }}>{label}</span>
+        <span style={{ fontSize: 15 }}>{icon}</span>
+        <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, color: "rgba(255,255,255,0.75)", letterSpacing: "0.04em" }}>{label}</span>
       </div>
       <div style={{ height: 8, background: "rgba(255,255,255,0.08)", borderRadius: 4, overflow: "visible", position: "relative" }}>
         <motion.div
@@ -195,7 +195,7 @@ function DashBar({ value, label, icon, barColor }: { value: number; label: strin
           style={{ height: "100%", borderRadius: 4, position: "absolute", top: 0, left: 0, boxShadow: `0 0 8px ${barColor}88` }}
         />
       </div>
-      <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 12, fontWeight: 800, color: barColor, display: "block", marginTop: 3 }}>
+      <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 14, fontWeight: 800, color: barColor, display: "block", marginTop: 3 }}>
         {display}%
       </span>
     </div>
@@ -222,7 +222,7 @@ function ThreatGauge({ threat, color }: { threat: ThreatLevel; color: string }) 
 
   return (
     <div style={{ textAlign: "center" }}>
-      <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 9, letterSpacing: "0.15em", color: "rgba(255,255,255,0.45)", marginBottom: 2 }}>OVERALL THREAT LEVEL</p>
+      <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11, letterSpacing: "0.15em", color: "rgba(255,255,255,0.5)", marginBottom: 2 }}>OVERALL THREAT LEVEL</p>
       <svg width="116" height="68" viewBox="0 0 116 68" style={{ display: "block", margin: "0 auto" }}>
         <defs>
           <linearGradient id="gaugeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -240,7 +240,7 @@ function ThreatGauge({ threat, color }: { threat: ThreatLevel; color: string }) 
       </svg>
       <motion.p
         animate={{ color }}
-        style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 15, fontWeight: 900, letterSpacing: "0.14em", marginTop: -4 }}
+        style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 17, fontWeight: 900, letterSpacing: "0.14em", marginTop: -4 }}
       >
         {threat}
       </motion.p>
@@ -268,42 +268,39 @@ export function Predators() {
 
       {/* ── 1. PAGE HEADER ────────────────────────────────────────────── */}
       <div style={{
-        flexShrink: 0, paddingTop: 56, paddingBottom: 8,
-        paddingLeft: 24, paddingRight: 24,
-        borderBottom: "1px solid rgba(255,255,255,0.07)",
-        display: "flex", alignItems: "flex-end", gap: 16, position: "relative",
+        flexShrink: 0, paddingTop: 56, paddingBottom: 12,
+        paddingLeft: 28, paddingRight: 28,
+        borderBottom: `1px solid rgba(212,175,55,0.22)`,
+        display: "flex", alignItems: "center", gap: 20,
       }}>
-        {/* Instruction hint */}
-        <div style={{ position: "absolute", top: 14, left: 24, display: "flex", alignItems: "center", gap: 6 }}>
-          <span style={{ fontSize: 13, opacity: 0.55 }}>☞</span>
-          <span style={{ fontSize: 10.5, color: "rgba(255,255,255,0.4)", letterSpacing: "0.06em" }}>Hover or click a threat to see its impact in real time.</span>
-        </div>
-
         {/* Title block */}
         <div style={{ flex: 1 }}>
+          <p style={{ fontSize: 11, letterSpacing: "0.22em", color: GOLD, opacity: 0.85, marginBottom: 5, fontWeight: 700 }}>
+            SECTION 05 · HAWAIIAN COOT ECOSYSTEM THREATS
+          </p>
           <h1 style={{
-            fontSize: 26, fontWeight: 900, letterSpacing: "0.05em",
-            background: "linear-gradient(90deg, #ff4455, #ff8844)",
-            WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
-            marginBottom: 2,
+            fontFamily: "'Playfair Display', serif",
+            fontSize: 30, fontWeight: 900, color: "#fff",
+            marginBottom: 5, lineHeight: 1.1,
           }}>
             Predators &amp; Invasive Threats
           </h1>
-          <p style={{ fontSize: 11.5, color: "rgba(255,255,255,0.5)", letterSpacing: "0.04em" }}>
-            The Hawaiian Coot evolved without terrestrial predators. The introduction of invasive species has had devastating effects on their population.
+          <p style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", letterSpacing: "0.03em" }}>
+            The Hawaiian Coot evolved without terrestrial predators. Invasive species have had devastating effects.{" "}
+            <span style={{ color: "rgba(212,175,55,0.75)", fontStyle: "italic" }}>Hover or click a threat to explore its impact.</span>
           </p>
         </div>
 
         {/* Threat level legend */}
         <div style={{
-          flexShrink: 0, background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)",
-          borderRadius: 8, padding: "6px 12px", display: "flex", flexDirection: "column", gap: 3,
+          flexShrink: 0, background: "rgba(255,255,255,0.04)", border: "1px solid rgba(212,175,55,0.18)",
+          borderRadius: 10, padding: "10px 16px", display: "flex", flexDirection: "column", gap: 6,
         }}>
-          <p style={{ fontSize: 9, letterSpacing: "0.14em", color: "rgba(255,255,255,0.4)", marginBottom: 2 }}>THREAT LEVEL GUIDE</p>
+          <p style={{ fontSize: 11, letterSpacing: "0.14em", color: GOLD, marginBottom: 2, fontWeight: 800 }}>THREAT LEVEL GUIDE</p>
           {(["HIGH","MEDIUM","LOW"] as ThreatLevel[]).map(t => (
-            <div key={t} style={{ display: "flex", alignItems: "center", gap: 6 }}>
-              <div style={{ width: 8, height: 8, borderRadius: "50%", background: THREAT_COLORS[t] }} />
-              <span style={{ fontSize: 9.5, color: "rgba(255,255,255,0.65)", letterSpacing: "0.06em" }}>
+            <div key={t} style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <div style={{ width: 10, height: 10, borderRadius: "50%", background: THREAT_COLORS[t] }} />
+              <span style={{ fontSize: 12, color: "rgba(255,255,255,0.72)", letterSpacing: "0.05em" }}>
                 {t === "LOW" ? "Low Threat (Natural)" : t === "MEDIUM" ? "Medium Threat" : "High Threat"}
               </span>
             </div>
@@ -344,40 +341,40 @@ export function Predators() {
                 <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
                   {/* Number circle */}
                   <div style={{
-                    width: 30, height: 30, borderRadius: "50%", flexShrink: 0,
+                    width: 36, height: 36, borderRadius: "50%", flexShrink: 0,
                     background: isSel ? `${pc}33` : "rgba(255,255,255,0.07)",
                     border: `1.5px solid ${isSel ? pc : "rgba(255,255,255,0.12)"}`,
                     display: "flex", alignItems: "center", justifyContent: "center",
                     transition: "background 0.25s, border-color 0.25s",
                   }}>
-                    <span style={{ fontSize: 11.5, fontWeight: 900, color: isSel ? pc : "rgba(255,255,255,0.55)" }}>
+                    <span style={{ fontSize: 13.5, fontWeight: 900, color: isSel ? pc : "rgba(255,255,255,0.55)" }}>
                       {pred.num}
                     </span>
                   </div>
 
                   <div style={{ flex: 1, minWidth: 0 }}>
                     {/* Name + threat badge */}
-                    <div style={{ display: "flex", alignItems: "center", gap: 7, flexWrap: "wrap", marginBottom: 5 }}>
-                      <span style={{ fontSize: 20, lineHeight: 1 }}>{pred.sideIcon}</span>
-                      <span style={{ fontSize: 13.5, fontWeight: 800, color: isSel ? "#fff" : "rgba(255,255,255,0.75)", letterSpacing: "0.04em" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 7, flexWrap: "wrap", marginBottom: 6 }}>
+                      <span style={{ fontSize: 22, lineHeight: 1 }}>{pred.sideIcon}</span>
+                      <span style={{ fontSize: 15.5, fontWeight: 800, color: isSel ? "#fff" : "rgba(255,255,255,0.78)", letterSpacing: "0.04em" }}>
                         {pred.name}
                       </span>
                       <span style={{
-                        fontSize: 8.5, fontWeight: 800, letterSpacing: "0.1em",
+                        fontSize: 10.5, fontWeight: 800, letterSpacing: "0.1em",
                         background: `${pc}28`, color: pc,
                         border: `1px solid ${pc}88`,
-                        borderRadius: 4, padding: "1px 5px",
+                        borderRadius: 4, padding: "2px 7px",
                       }}>
                         {pred.threat === "LOW" ? "LOW THREAT" : pred.threat === "MEDIUM" ? "MEDIUM THREAT" : "HIGH THREAT"}
                       </span>
                     </div>
-                    <p style={{ fontSize: 11, lineHeight: 1.5, color: "rgba(255,255,255,0.5)" }}>
+                    <p style={{ fontSize: 13, lineHeight: 1.5, color: "rgba(255,255,255,0.52)" }}>
                       {pred.sideDesc}
                     </p>
                   </div>
 
                   {/* Arrow */}
-                  <span style={{ fontSize: 14, color: isSel ? pc : "rgba(255,255,255,0.2)", flexShrink: 0, marginTop: 4 }}>→</span>
+                  <span style={{ fontSize: 16, color: isSel ? pc : "rgba(255,255,255,0.2)", flexShrink: 0, marginTop: 4 }}>→</span>
                 </div>
               </motion.button>
             );
@@ -424,7 +421,7 @@ export function Predators() {
           </div>
 
           {/* Content row: image + right panel */}
-          <div style={{ flex: 1, display: "flex", minHeight: 0 }}>
+          <div style={{ flex: "0 1 46vh", display: "flex", minHeight: 0, maxHeight: "46vh" }}>
 
             {/* CINEMATIC IMAGE PANEL */}
             <div style={{ flex: 1, position: "relative", overflow: "hidden" }}>
@@ -525,8 +522,8 @@ export function Predators() {
               overflowY: "auto",
             }}>
               {/* ECOLOGICAL IMPACT */}
-              <div style={{ padding: "12px 14px", borderBottom: "1px solid rgba(255,255,255,0.07)" }}>
-                <p style={{ fontSize: 9.5, letterSpacing: "0.18em", color: "rgba(255,255,255,0.45)", marginBottom: 10 }}>
+              <div style={{ padding: "14px 16px", borderBottom: "1px solid rgba(255,255,255,0.07)" }}>
+                <p style={{ fontSize: 11.5, letterSpacing: "0.16em", color: "rgba(255,255,255,0.55)", marginBottom: 12, fontWeight: 700 }}>
                   ECOLOGICAL IMPACT
                 </p>
                 <AnimatePresence mode="wait">
@@ -534,14 +531,14 @@ export function Predators() {
                     key={p.id + "-eco"}
                     initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
                     transition={{ duration: 0.35 }}
-                    style={{ display: "flex", flexDirection: "column", gap: 9 }}
+                    style={{ display: "flex", flexDirection: "column", gap: 11 }}
                   >
                     {p.ecoImpact.map((row, i) => (
-                      <div key={i} style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                        <span style={{ fontSize: 14, flexShrink: 0 }}>{row.icon}</span>
-                        <span style={{ fontSize: 11.5, color: "rgba(255,255,255,0.78)", flex: 1, lineHeight: 1.3 }}>{row.label}</span>
+                      <div key={i} style={{ display: "flex", alignItems: "center", gap: 9 }}>
+                        <span style={{ fontSize: 16, flexShrink: 0 }}>{row.icon}</span>
+                        <span style={{ fontSize: 13.5, color: "rgba(255,255,255,0.82)", flex: 1, lineHeight: 1.3 }}>{row.label}</span>
                         <span style={{
-                          fontSize: 11, fontWeight: 900,
+                          fontSize: 13, fontWeight: 900,
                           color: row.dir === "up" ? "#ff6644" : "#ff3344",
                           flexShrink: 0,
                         }}>
@@ -554,8 +551,8 @@ export function Predators() {
               </div>
 
               {/* WHAT YOU CAN DO */}
-              <div style={{ padding: "12px 14px", flex: 1 }}>
-                <p style={{ fontSize: 9.5, letterSpacing: "0.18em", color: "rgba(255,255,255,0.45)", marginBottom: 10 }}>
+              <div style={{ padding: "14px 16px", flex: 1 }}>
+                <p style={{ fontSize: 11.5, letterSpacing: "0.16em", color: "rgba(255,255,255,0.55)", marginBottom: 12, fontWeight: 700 }}>
                   WHAT YOU CAN DO
                 </p>
                 <AnimatePresence mode="wait">
@@ -563,18 +560,18 @@ export function Predators() {
                     key={p.id + "-act"}
                     initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
                     transition={{ duration: 0.35 }}
-                    style={{ display: "flex", flexDirection: "column", gap: 9 }}
+                    style={{ display: "flex", flexDirection: "column", gap: 11 }}
                   >
                     {p.actions.map((act, i) => (
-                      <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 7 }}>
+                      <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 9 }}>
                         <div style={{
-                          width: 16, height: 16, borderRadius: 3, flexShrink: 0, marginTop: 1,
-                          background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.12)",
+                          width: 20, height: 20, borderRadius: 4, flexShrink: 0, marginTop: 1,
+                          background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.15)",
                           display: "flex", alignItems: "center", justifyContent: "center",
                         }}>
-                          <span style={{ fontSize: 8 }}>✓</span>
+                          <span style={{ fontSize: 10 }}>✓</span>
                         </div>
-                        <span style={{ fontSize: 11, color: "rgba(255,255,255,0.7)", lineHeight: 1.4 }}>{act}</span>
+                        <span style={{ fontSize: 13, color: "rgba(255,255,255,0.72)", lineHeight: 1.5 }}>{act}</span>
                       </div>
                     ))}
                   </motion.div>
@@ -648,7 +645,7 @@ export function Predators() {
         padding: "10px 20px",
         display: "flex", alignItems: "center", gap: 16,
       }}>
-        <p style={{ fontSize: 9.5, letterSpacing: "0.16em", color: GOLD, fontWeight: 800, flexShrink: 0, textShadow: `0 0 8px ${GOLD}` }}>
+        <p style={{ fontSize: 11.5, letterSpacing: "0.16em", color: GOLD, fontWeight: 800, flexShrink: 0, textShadow: `0 0 8px ${GOLD}` }}>
           ECOSYSTEM HEALTH OVERVIEW
         </p>
         <div style={{ flex: 1, display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: "0 16px" }}>
