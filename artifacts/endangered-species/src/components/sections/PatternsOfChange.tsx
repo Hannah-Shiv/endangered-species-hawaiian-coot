@@ -181,7 +181,7 @@ export function PatternsOfChange() {
   const panel: React.CSSProperties = { background: "#000", border: `1px solid ${GOLDF}` };
 
   return (
-    <div style={{ height: "100%", display: "flex", flexDirection: "column", padding: "8px 18px 6px", gap: 5, overflow: "hidden", boxSizing: "border-box", background: "#000" }}>
+    <div style={{ height: "100%", display: "flex", flexDirection: "column", padding: "8px 18px 6px", gap: 5, overflowY: "auto", boxSizing: "border-box", background: "#000" }}>
 
       {/* ── Row 1: Centered title (matches other pages) ── */}
       <motion.div
@@ -199,7 +199,7 @@ export function PatternsOfChange() {
       </motion.div>
 
       {/* ── Row 2: Chart (left) + Inflection Points (right) ── */}
-      <div style={{ flex: 1, minHeight: 0, display: "grid", gridTemplateColumns: "1fr 300px", gap: 5 }}>
+      <div style={{ flex: "0 0 auto", height: "clamp(220px, 38vh, 310px)", display: "grid", gridTemplateColumns: "1fr 300px", gap: 5 }}>
 
         {/* Chart column */}
         <div style={{ ...panel, borderRadius: 10, display: "flex", flexDirection: "column", overflow: "hidden" }}>
