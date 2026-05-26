@@ -1,117 +1,347 @@
 import { motion } from "framer-motion";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import wetlandHealthy from "@assets/image_1779819729646.png";
+import wetlandStressed from "@assets/image_1779819734890.png";
 
+// ── Palette ─────────────────────────────────────────────────────────────────
+const GOLD  = "rgba(212,175,55,1)";
+const GOLDF = "rgba(212,175,55,0.22)";
+const RED   = "rgba(220,50,30,1)";
+const GREEN = "rgba(50,200,100,1)";
+const panel: React.CSSProperties = { background: "#000", border: `1px solid ${GOLDF}` };
+
+// ── Data ─────────────────────────────────────────────────────────────────────
+const BASE = { wetland: 28, nesting: 31, water: 68, population: 42 };
+
+const harmCards = [
+  {
+    id: "wetland-drainage", icon: "🌊", title: "Wetland Drainage",
+    desc: "Historical draining for agriculture and coastal development has eliminated ~70% of Hawaii's natural wetlands.",
+    effect: "Habitat loss destroys nesting grounds",
+    delta: { wetland: -18, nesting: -12, water: -22, population: -18 },
+  },
+  {
+    id: "predators", icon: "🦝", title: "Introduced Predators",
+    desc: "Mongoose, rats, and feral cats brought by human settlement decimate ground-nesting birds.",
+    effect: "Predators threaten chicks",
+    delta: { wetland: -6, nesting: -20, water: -4, population: -22 },
+  },
+  {
+    id: "pollution", icon: "🏭", title: "Pollution & Disturbance",
+    desc: "Pesticide runoff contaminates food sources, while recreational activities and off-leash dogs disturb critical nesting sites.",
+    effect: "Pollution damages food sources",
+    delta: { wetland: -10, nesting: -8, water: -36, population: -10 },
+  },
+];
+
+const hopeCards = [
+  {
+    id: "refuge", icon: "🌿", title: "Refuge Creation",
+    desc: "National Wildlife Refuges protect key remaining habitats, managing water levels to maximize breeding success.",
+    effect: "Protected habitats improve survival",
+    delta: { wetland: 44, nesting: 28, water: 24, population: 36 },
+  },
+  {
+    id: "taro", icon: "🌾", title: "Taro Farmer Partnerships",
+    desc: "Collaborations with traditional taro (loi) farmers help maintain agricultural wetlands as crucial secondary habitat.",
+    effect: "Traditional agriculture supports wetlands",
+    delta: { wetland: 34, nesting: 18, water: 20, population: 24 },
+  },
+  {
+    id: "predator-control", icon: "🛡️", title: "Predator Control",
+    desc: "Active trapping and fencing programs around major refuges provide safe havens for chicks to reach adulthood.",
+    effect: "Protection improves nesting success",
+    delta: { wetland: 10, nesting: 46, water: 10, population: 34 },
+  },
+];
+
+const helpCards = [
+  { n: 1, icon: "🏞️", title: "Support Wildlife Refuges",   desc: "Donate or volunteer at local Hawaii wildlife refuges." },
+  { n: 2, icon: "🐾", title: "Manage Pets",                desc: "Keep cats indoors and dogs on leash near wetland areas." },
+  { n: 3, icon: "🌱", title: "Wetland Restoration",        desc: "Join community workdays to restore wetlands and plant native species." },
+  { n: 4, icon: "🐱", title: "Support TNR",                desc: "Back trap-neuter-return programs for feral cat management." },
+  { n: 5, icon: "🔭", title: "Report Wildlife",            desc: "Contact Hawaii Wildlife Center if you spot injured waterbirds." },
+];
+
+const METERS = [
+  { key: "wetland",    label: "Wetland Health",       icon: "💧" },
+  { key: "nesting",    label: "Nesting Success",      icon: "🪺" },
+  { key: "water",      label: "Water Quality",        icon: "🌊" },
+  { key: "population", label: "Population Stability", icon: "🐦" },
+] as const;
+
+type HoveredCard = {
+  type: "harm" | "hope";
+  id: string;
+  delta: { wetland: number; nesting: number; water: number; population: number };
+  effect: string;
+} | null;
+
+// ── Main ─────────────────────────────────────────────────────────────────────
 export function HumanImpact() {
+  const [hovered, setHovered] = useState<HoveredCard>(null);
+
+  const metrics = hovered
+    ? ({
+        wetland:    Math.max(4,  Math.min(100, BASE.wetland    + hovered.delta.wetland)),
+        nesting:    Math.max(4,  Math.min(100, BASE.nesting    + hovered.delta.nesting)),
+        water:      Math.max(10, Math.min(100, BASE.water      + hovered.delta.water)),
+        population: Math.max(4,  Math.min(100, BASE.population + hovered.delta.population)),
+      })
+    : BASE;
+
+  // Center divider: hope pushes right (more healthy), harm pushes left (more damaged)
+  const dividerPct = hovered ? (hovered.type === "harm" ? 65 : 35) : 50;
+
+  const spring = { type: "spring" as const, stiffness: 100, damping: 20 };
+
   return (
-    <div className="w-full min-h-screen pt-24 pb-12 px-6 md:px-12 bg-background overflow-y-auto">
-      <div className="max-w-7xl mx-auto">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-16"
-        >
-          <h1 className="text-5xl font-serif text-foreground mb-4">Human Impact</h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Our footprint has drastically reduced their habitat, but human intervention is now the only thing keeping them alive.
-          </p>
-        </motion.div>
+    <div style={{
+      height: "100%", display: "flex", flexDirection: "column",
+      padding: "80px 12px 6px", gap: 5, overflow: "hidden",
+      boxSizing: "border-box", background: "#000",
+    }}>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
-          {/* HARM */}
-          <motion.div 
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="space-y-6"
-          >
-            <h2 className="text-4xl font-serif text-destructive border-b border-destructive/30 pb-4">Harm</h2>
-            
-            <Card className="bg-destructive/10 border-destructive/20">
-              <CardContent className="p-6">
-                <h3 className="text-xl font-bold text-destructive mb-2">Wetland Drainage</h3>
-                <p className="text-foreground/80">Historical draining of wetlands for agriculture and modern coastal development has eliminated roughly 70% of Hawaii's natural wetlands.</p>
-              </CardContent>
-            </Card>
+      {/* ── Row 1: Title ── */}
+      <motion.div
+        initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}
+        style={{ flexShrink: 0, textAlign: "center" }}
+      >
+        <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: "2.8rem", color: GOLD, letterSpacing: "0.04em", lineHeight: 1.1 }}>
+          Human Impact
+        </h1>
+        <p style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontSize: 13, color: "rgba(212,175,55,0.85)", marginTop: 3 }}>
+          Our footprint has drastically reduced their habitat, but human intervention is now the only thing keeping them alive.
+        </p>
+      </motion.div>
 
-            <Card className="bg-card/50 border-border">
-              <CardContent className="p-6">
-                <h3 className="text-xl font-bold text-foreground mb-2">Introduced Predators</h3>
-                <p className="text-muted-foreground">Mongoose, rats, and feral cats brought by human settlement decimate ground-nesting birds.</p>
-              </CardContent>
-            </Card>
+      {/* ── Row 2: Harm | Ecosystem | Hope ── */}
+      <div style={{ flex: 3, minHeight: 0, display: "grid", gridTemplateColumns: "1fr 1.7fr 1fr", gap: 5 }}>
 
-            <Card className="bg-card/50 border-border">
-              <CardContent className="p-6">
-                <h3 className="text-xl font-bold text-foreground mb-2">Pollution & Disturbance</h3>
-                <p className="text-muted-foreground">Pesticide runoff contaminates food sources, while recreational activities and off-leash dogs disturb critical nesting sites.</p>
-              </CardContent>
-            </Card>
-          </motion.div>
-
-          {/* HOPE */}
-          <motion.div 
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="space-y-6"
-          >
-            <h2 className="text-4xl font-serif text-primary border-b border-primary/30 pb-4">Hope</h2>
-            
-            <Card className="bg-primary/10 border-primary/20">
-              <CardContent className="p-6">
-                <h3 className="text-xl font-bold text-primary mb-2">Refuge Creation</h3>
-                <p className="text-foreground/80">National Wildlife Refuges protect key remaining habitats, managing water levels actively to maximize breeding success.</p>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-card/50 border-border">
-              <CardContent className="p-6">
-                <h3 className="text-xl font-bold text-foreground mb-2">Taro Farmer Partnerships</h3>
-                <p className="text-muted-foreground">Collaborations with traditional taro (loi) farmers help maintain agricultural wetlands that serve as crucial secondary habitat.</p>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-card/50 border-border">
-              <CardContent className="p-6">
-                <h3 className="text-xl font-bold text-foreground mb-2">Predator Control</h3>
-                <p className="text-muted-foreground">Active trapping and fencing programs around major refuges provide safe havens for chicks to reach adulthood.</p>
-              </CardContent>
-            </Card>
-          </motion.div>
-        </div>
-
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-          className="bg-card/30 border border-border p-8 md:p-12 rounded-2xl text-center"
-        >
-          <h2 className="text-3xl font-serif text-accent mb-6">How You Can Help</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8 text-left">
+        {/* ── Harm column ── */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+          <div style={{ flexShrink: 0, display: "flex", alignItems: "center", gap: 7, padding: "5px 10px", ...panel, borderRadius: 8, borderColor: "rgba(220,50,30,0.45)" }}>
+            <span style={{ fontSize: 16 }}>⚠️</span>
             <div>
-              <h4 className="font-bold text-foreground mb-2">1. Support Wildlife Refuges</h4>
-              <p className="text-sm text-muted-foreground">Donate or volunteer at local Hawaii wildlife refuges.</p>
-            </div>
-            <div>
-              <h4 className="font-bold text-foreground mb-2">2. Manage Pets</h4>
-              <p className="text-sm text-muted-foreground">Keep cats indoors and always keep dogs on leash near wetland areas.</p>
-            </div>
-            <div>
-              <h4 className="font-bold text-foreground mb-2">3. Wetland Restoration</h4>
-              <p className="text-sm text-muted-foreground">Participate in community wetland workday events.</p>
-            </div>
-            <div>
-              <h4 className="font-bold text-foreground mb-2">4. Support TNR</h4>
-              <p className="text-sm text-muted-foreground">Support trap-neuter-return programs for feral cat management.</p>
-            </div>
-            <div className="lg:col-span-2">
-              <h4 className="font-bold text-foreground mb-2">5. Report Wildlife</h4>
-              <p className="text-sm text-muted-foreground">Contact the Hawaii Wildlife Center if you spot injured or distressed waterbirds.</p>
+              <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 15, color: RED, fontWeight: 700, lineHeight: 1.1 }}>Harm</p>
+              <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 9, color: "rgba(255,255,255,0.55)", letterSpacing: "0.07em" }}>THREATS THAT DESTROY HABITAT AND PUT COOTS AT RISK</p>
             </div>
           </div>
-        </motion.div>
+
+          {harmCards.map((card) => {
+            const active = hovered?.id === card.id;
+            return (
+              <motion.div
+                key={card.id}
+                onHoverStart={() => setHovered({ type: "harm", id: card.id, delta: card.delta, effect: card.effect })}
+                onHoverEnd={() => setHovered(null)}
+                animate={{
+                  borderColor: active ? "rgba(220,50,30,0.9)" : "rgba(220,50,30,0.2)",
+                  background:  active ? "rgba(220,50,30,0.12)" : "rgba(0,0,0,1)",
+                  boxShadow:   active ? "0 0 20px rgba(220,50,30,0.3), inset 0 0 30px rgba(220,50,30,0.06)" : "none",
+                }}
+                style={{ flex: 1, minHeight: 0, border: "1px solid rgba(220,50,30,0.2)", borderRadius: 8, padding: "8px 10px", cursor: "default", overflow: "hidden" }}
+              >
+                <div style={{ display: "flex", gap: 8, height: "100%" }}>
+                  <span style={{ fontSize: 20, flexShrink: 0, marginTop: 2 }}>{card.icon}</span>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, color: RED, fontWeight: 700, letterSpacing: "0.04em", marginBottom: 3 }}>{card.title}</p>
+                    <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 11.5, color: "rgba(255,255,255,0.72)", lineHeight: 1.45 }}>{card.desc}</p>
+                    <motion.p
+                      animate={{ opacity: active ? 1 : 0, y: active ? 0 : 4 }}
+                      style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 10, color: RED, letterSpacing: "0.07em", marginTop: 5, fontWeight: 700 }}
+                    >↳ {card.effect}</motion.p>
+                  </div>
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
+
+        {/* ── Center ecosystem ── */}
+        <div style={{ ...panel, borderRadius: 10, overflow: "hidden", display: "flex", flexDirection: "column" }}>
+
+          {/* Split image area */}
+          <div style={{ flex: 1, minHeight: 0, position: "relative", overflow: "hidden" }}>
+
+            {/* Stressed base (left side) */}
+            <img src={wetlandStressed as string} alt="Damaged wetland"
+              style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 40%" }} />
+
+            {/* Healthy overlay — revealed from right using clipPath */}
+            <motion.div
+              animate={{ clipPath: `inset(0 0 0 ${dividerPct}%)` }}
+              transition={spring}
+              style={{ position: "absolute", inset: 0 }}
+            >
+              <img src={wetlandHealthy as string} alt="Healthy wetland"
+                style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 40%" }} />
+            </motion.div>
+
+            {/* Harm red glow (left) */}
+            <motion.div
+              animate={{ opacity: hovered?.type === "harm" ? 0.55 : 0.12 }}
+              transition={{ duration: 0.4 }}
+              style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, rgba(200,30,10,0.9) 0%, rgba(200,30,10,0.2) 55%, transparent 100%)", pointerEvents: "none" }}
+            />
+
+            {/* Hope green glow (right) */}
+            <motion.div
+              animate={{ opacity: hovered?.type === "hope" ? 0.5 : 0.08 }}
+              transition={{ duration: 0.4 }}
+              style={{ position: "absolute", inset: 0, background: "linear-gradient(to left, rgba(30,180,80,0.85) 0%, rgba(30,180,80,0.15) 55%, transparent 100%)", pointerEvents: "none" }}
+            />
+
+            {/* Divider line */}
+            <motion.div
+              animate={{ left: `${dividerPct}%` }}
+              transition={spring}
+              style={{ position: "absolute", top: 0, bottom: 0, width: 2, transform: "translateX(-1px)", background: "rgba(255,255,255,0.85)", boxShadow: "0 0 12px rgba(255,255,255,0.7)", zIndex: 5, pointerEvents: "none" }}
+            />
+            {/* Divider handle */}
+            <motion.div
+              animate={{ left: `${dividerPct}%` }}
+              transition={spring}
+              style={{ position: "absolute", top: "50%", transform: "translate(-50%, -50%)", width: 22, height: 22, borderRadius: "50%", background: "rgba(0,0,0,0.85)", border: "2px solid rgba(255,255,255,0.85)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 6, pointerEvents: "none" }}
+            >
+              <span style={{ fontSize: 10, color: "white" }}>⟷</span>
+            </motion.div>
+
+            {/* HARM / HOPE corner labels */}
+            <div style={{ position: "absolute", top: 8, left: 10, zIndex: 4 }}>
+              <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11, color: RED, letterSpacing: "0.12em", fontWeight: 700, textShadow: "0 1px 6px rgba(0,0,0,0.95)" }}>HARM</span>
+            </div>
+            <div style={{ position: "absolute", top: 8, right: 10, zIndex: 4 }}>
+              <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11, color: GREEN, letterSpacing: "0.12em", fontWeight: 700, textShadow: "0 1px 6px rgba(0,0,0,0.95)" }}>HOPE</span>
+            </div>
+
+            {/* Effect message */}
+            <motion.div
+              animate={{ opacity: hovered ? 1 : 0, y: hovered ? 0 : 6 }}
+              transition={{ duration: 0.25 }}
+              style={{ position: "absolute", bottom: 10, left: "50%", transform: "translateX(-50%)", background: "rgba(0,0,0,0.88)", border: `1.5px solid ${hovered?.type === "harm" ? "rgba(220,50,30,0.8)" : "rgba(50,200,100,0.8)"}`, borderRadius: 6, padding: "5px 14px", whiteSpace: "nowrap", zIndex: 7, pointerEvents: "none" }}
+            >
+              <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11, color: hovered?.type === "harm" ? RED : GREEN, fontWeight: 700, letterSpacing: "0.07em" }}>
+                {hovered?.effect ?? ""}
+              </span>
+            </motion.div>
+
+            {/* Default hint */}
+            <motion.div
+              animate={{ opacity: hovered ? 0 : 1 }}
+              transition={{ duration: 0.2 }}
+              style={{ position: "absolute", bottom: 10, left: "50%", transform: "translateX(-50%)", background: "rgba(0,0,0,0.75)", border: "1px solid rgba(212,175,55,0.35)", borderRadius: 6, padding: "5px 14px", whiteSpace: "nowrap", zIndex: 7, pointerEvents: "none" }}
+            >
+              <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 10, color: "rgba(212,175,55,0.8)", letterSpacing: "0.08em" }}>
+                👆 HOVER ANY CARD TO SEE THE IMPACT
+              </span>
+            </motion.div>
+          </div>
+
+          {/* Ecosystem health meters */}
+          <div style={{ flexShrink: 0, padding: "6px 12px 8px", borderTop: "1px solid rgba(212,175,55,0.15)" }}>
+            <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 9, color: "rgba(212,175,55,0.55)", letterSpacing: "0.14em", textAlign: "center", marginBottom: 5 }}>ECOSYSTEM HEALTH</p>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "5px 14px" }}>
+              {METERS.map(({ key, label, icon }) => {
+                const val = metrics[key];
+                const barColor = val < 30 ? "#e63333" : val < 55 ? "#ddaa22" : "#44cc88";
+                return (
+                  <div key={key}>
+                    <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 2, alignItems: "center" }}>
+                      <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 10, color: "rgba(255,255,255,0.65)", letterSpacing: "0.04em" }}>{icon} {label}</span>
+                      <motion.span
+                        animate={{ color: barColor }}
+                        style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 10, fontWeight: 900 }}
+                      >{val}%</motion.span>
+                    </div>
+                    <div style={{ height: 5, background: "rgba(255,255,255,0.1)", borderRadius: 3, overflow: "hidden" }}>
+                      <motion.div
+                        animate={{ width: `${val}%`, backgroundColor: barColor }}
+                        transition={spring}
+                        style={{ height: "100%", borderRadius: 3 }}
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        {/* ── Hope column ── */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+          <div style={{ flexShrink: 0, display: "flex", alignItems: "center", gap: 7, padding: "5px 10px", ...panel, borderRadius: 8, borderColor: "rgba(50,200,100,0.45)" }}>
+            <span style={{ fontSize: 16 }}>🌿</span>
+            <div>
+              <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 15, color: GREEN, fontWeight: 700, lineHeight: 1.1 }}>Hope</p>
+              <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 9, color: "rgba(255,255,255,0.55)", letterSpacing: "0.07em" }}>ACTIONS THAT PROTECT AND RESTORE THEIR HOME</p>
+            </div>
+          </div>
+
+          {hopeCards.map((card) => {
+            const active = hovered?.id === card.id;
+            return (
+              <motion.div
+                key={card.id}
+                onHoverStart={() => setHovered({ type: "hope", id: card.id, delta: card.delta, effect: card.effect })}
+                onHoverEnd={() => setHovered(null)}
+                animate={{
+                  borderColor: active ? "rgba(50,200,100,0.9)" : "rgba(50,200,100,0.2)",
+                  background:  active ? "rgba(50,200,100,0.1)"  : "rgba(0,0,0,1)",
+                  boxShadow:   active ? "0 0 20px rgba(50,200,100,0.25), inset 0 0 30px rgba(50,200,100,0.05)" : "none",
+                }}
+                style={{ flex: 1, minHeight: 0, border: "1px solid rgba(50,200,100,0.2)", borderRadius: 8, padding: "8px 10px", cursor: "default", overflow: "hidden" }}
+              >
+                <div style={{ display: "flex", gap: 8, height: "100%" }}>
+                  <span style={{ fontSize: 20, flexShrink: 0, marginTop: 2 }}>{card.icon}</span>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, color: GREEN, fontWeight: 700, letterSpacing: "0.04em", marginBottom: 3 }}>{card.title}</p>
+                    <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 11.5, color: "rgba(255,255,255,0.72)", lineHeight: 1.45 }}>{card.desc}</p>
+                    <motion.p
+                      animate={{ opacity: active ? 1 : 0, y: active ? 0 : 4 }}
+                      style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 10, color: GREEN, letterSpacing: "0.07em", marginTop: 5, fontWeight: 700 }}
+                    >↳ {card.effect}</motion.p>
+                  </div>
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* ── Row 3: How You Can Help ── */}
+      <div style={{ flex: 1, minHeight: 0, ...panel, borderRadius: 10, padding: "6px 10px 8px", display: "flex", flexDirection: "column", gap: 4 }}>
+        <div style={{ flexShrink: 0, display: "flex", alignItems: "center", gap: 8 }}>
+          <div style={{ flex: 1, height: 1, background: "rgba(212,175,55,0.22)" }} />
+          <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 15, color: GOLD, fontWeight: 700, letterSpacing: "0.05em" }}>→ How You Can Help ←</span>
+          <div style={{ flex: 1, height: 1, background: "rgba(212,175,55,0.22)" }} />
+        </div>
+        <div style={{ flex: 1, minHeight: 0, display: "flex", gap: 5 }}>
+          {helpCards.map((card) => (
+            <motion.div
+              key={card.n}
+              whileHover={{ borderColor: "rgba(212,175,55,0.7)", background: "rgba(212,175,55,0.06)", boxShadow: "0 0 16px rgba(212,175,55,0.14)" }}
+              style={{ flex: 1, border: "1px solid rgba(212,175,55,0.2)", borderRadius: 8, padding: "7px 9px", cursor: "pointer", display: "flex", flexDirection: "column" }}
+            >
+              <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 5 }}>
+                <div style={{ width: 18, height: 18, borderRadius: "50%", background: "rgba(212,175,55,0.18)", border: "1.5px solid rgba(212,175,55,0.55)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                  <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 9, color: GOLD, fontWeight: 900, lineHeight: 1 }}>{card.n}</span>
+                </div>
+                <span style={{ fontSize: 17 }}>{card.icon}</span>
+              </div>
+              <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11.5, color: GOLD, fontWeight: 700, letterSpacing: "0.04em", marginBottom: 3 }}>{card.title}</p>
+              <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 10.5, color: "rgba(255,255,255,0.68)", lineHeight: 1.4, flex: 1 }}>{card.desc}</p>
+              <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 9.5, color: "rgba(212,175,55,0.65)", marginTop: 4, letterSpacing: "0.07em" }}>Take Action →</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+
+      {/* ── Footer note ── */}
+      <div style={{ flexShrink: 0, textAlign: "center" }}>
+        <span style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontSize: 10.5, color: "rgba(212,175,55,0.45)" }}>
+          ℹ️ Every choice matters. Together we can protect Hawaii's wetlands — and the future of the Hawaiian Coot.
+        </span>
       </div>
     </div>
   );
