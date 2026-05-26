@@ -200,10 +200,10 @@ export function Habitat() {
                 fontWeight:900, letterSpacing:"0.05em", textTransform:"uppercase",
                 color:"#000000", lineHeight:1.15,
               }}>
-                {(["D","R","A","G",null,"T","H","I","S",null,"B","A","R"] as (string|null)[]).map((c,i)=>
-                  c===null
-                    ? <div key={i} style={{height:"7px"}}/>
-                    : <span key={i}>{c}</span>
+                {(["D",1,"R",1,"A",1,"G",2,"T",1,"H",1,"I",1,"S",2,"B",1,"A",1,"R"] as (string|number)[]).map((c,i)=>
+                  c===1 ? <div key={i} style={{height:"5px"}}/>
+                  : c===2 ? <div key={i} style={{height:"10px"}}/>
+                  : <span key={i}>{c}</span>
                 )}
               </div>
             </div>
@@ -244,7 +244,7 @@ export function Habitat() {
                   const tempVal = Math.round(d.tempLow + f*(d.tempHigh-d.tempLow) + deg*9*f);
                   return <g key={i}>
                     <line x1="38" y1={ty} x2="52" y2={ty} stroke="rgba(255,255,255,0.35)" strokeWidth="2"/>
-                    <text x="57" y={ty+13} fill="rgba(255,255,255,0.9)" fontSize="32" fontFamily="'Josefin Sans'" fontWeight="700">{tempVal}°</text>
+                    <text x="57" y={ty+13} fill="rgba(255,255,255,0.9)" fontSize="30" fontFamily="'Josefin Sans'" fontWeight="700">{tempVal}°</text>
                   </g>;
                 })}
                 {/* Tube */}
