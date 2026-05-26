@@ -4,8 +4,8 @@ import { useRef, useState, useCallback, useEffect } from "react";
 import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
 } from "recharts";
-import wetlandBefore from "@assets/image_1779813893679.png";
-import wetlandAfter from "@assets/image_1779813900766.png";
+import wetlandBefore from "@assets/image_1779814678211.png";
+import wetlandAfter from "@assets/image_1779814700434.png";
 
 const temperatureData = [
   { year: "1960", temp: 0.0 },
@@ -110,8 +110,8 @@ function BeforeAfterSlider() {
       {/* Slider image */}
       <div
         ref={containerRef}
-        className="relative w-full overflow-hidden rounded-t-xl"
-        style={{ height: "560px", background: "#000", cursor: dragging ? "ew-resize" : "col-resize", userSelect: "none" }}
+        className="relative w-full overflow-hidden rounded-xl"
+        style={{ height: "560px", cursor: dragging ? "ew-resize" : "col-resize", userSelect: "none" }}
         onMouseDown={onMouseDown}
         onTouchStart={onTouchStart}
         onClick={handleContainerClick}
@@ -124,7 +124,7 @@ function BeforeAfterSlider() {
           <img
             src={wetlandBefore}
             alt="Healthy Hawaiian wetland before sea level rise"
-            className="w-full h-full object-contain"
+            className="w-full h-full object-cover"
             draggable={false}
           />
           {/* Green tint */}
@@ -139,7 +139,7 @@ function BeforeAfterSlider() {
           <img
             src={wetlandAfter}
             alt="Hawaiian wetland after projected sea level rise"
-            className="w-full h-full object-contain"
+            className="w-full h-full object-cover"
             draggable={false}
           />
           {/* Red-brown tint */}
@@ -273,17 +273,17 @@ function BeforeAfterSlider() {
           </p>
         </div>
 
-        {/* Drag hint — bottom center */}
+        {/* Drag hint — above cards strip */}
         <div
-          className="absolute bottom-3 left-1/2 -translate-x-1/2"
-          style={{ pointerEvents: "none" }}
+          className="absolute left-1/2 -translate-x-1/2"
+          style={{ pointerEvents: "none", bottom: 148, zIndex: 12 }}
         >
           <p
             style={{
               fontFamily: "'Josefin Sans', sans-serif",
-              fontSize: 10,
+              fontSize: 11,
               letterSpacing: "0.12em",
-              color: "rgba(212,175,55,0.5)",
+              color: "rgba(212,175,55,0.65)",
               textTransform: "uppercase",
               whiteSpace: "nowrap",
             }}
@@ -291,42 +291,41 @@ function BeforeAfterSlider() {
             ← drag to compare →
           </p>
         </div>
-      </div>
 
-      {/* Dynamic info cards — crossfade based on slider position */}
-      <div
-        className="relative rounded-b-xl overflow-hidden"
-        style={{
-          border: "1px solid rgba(212,175,55,0.25)",
-          borderTop: "none",
-          minHeight: 120,
-        }}
-      >
-        {/* BEFORE cards */}
+        {/* Bottom overlay — cards on image */}
         <div
-          className="grid grid-cols-3 gap-0"
+          className="absolute bottom-0 left-0 right-0"
           style={{
-            background: "rgba(0,28,4,0.85)",
+            height: 140,
+            background: "linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.82) 30%, rgba(0,0,0,0.92) 100%)",
+            zIndex: 11,
+            pointerEvents: "none",
+          }}
+        />
+
+        {/* BEFORE cards overlay */}
+        <div
+          className="absolute bottom-0 left-0 right-0 grid grid-cols-3"
+          style={{
             opacity: sliderPos >= 50 ? 1 : 0,
             transition: "opacity 0.4s ease",
-            position: sliderPos >= 50 ? "relative" : "absolute",
-            inset: 0,
-            width: "100%",
+            zIndex: 12,
+            pointerEvents: "none",
           }}
         >
           {beforeCards.map((c, i) => (
             <div
               key={c.title}
-              className="p-5 flex flex-col gap-2"
+              className="px-5 pb-5 pt-2 flex flex-col gap-1"
               style={{ borderRight: i < 2 ? "1px solid rgba(212,175,55,0.15)" : "none" }}
             >
-              <span style={{ fontSize: 30 }}>{c.icon}</span>
+              <span style={{ fontSize: 26 }}>{c.icon}</span>
               <p
                 style={{
                   fontFamily: "'Josefin Sans', sans-serif",
-                  fontSize: 14,
+                  fontSize: 13,
                   letterSpacing: "0.1em",
-                  color: "rgb(80,230,80)",
+                  color: "rgb(80,240,80)",
                   fontWeight: 700,
                   textTransform: "uppercase",
                 }}
@@ -336,9 +335,10 @@ function BeforeAfterSlider() {
               <p
                 style={{
                   fontFamily: "'Playfair Display', serif",
-                  fontSize: 14,
-                  color: "rgba(220,250,220,0.9)",
-                  lineHeight: 1.55,
+                  fontSize: 13,
+                  color: "rgba(220,255,220,0.95)",
+                  lineHeight: 1.5,
+                  textShadow: "0 1px 6px rgba(0,0,0,0.9)",
                 }}
               >
                 {c.desc}
@@ -347,31 +347,29 @@ function BeforeAfterSlider() {
           ))}
         </div>
 
-        {/* AFTER cards */}
+        {/* AFTER cards overlay */}
         <div
-          className="grid grid-cols-3 gap-0"
+          className="absolute bottom-0 left-0 right-0 grid grid-cols-3"
           style={{
-            background: "rgba(32,6,0,0.88)",
             opacity: sliderPos < 50 ? 1 : 0,
             transition: "opacity 0.4s ease",
-            position: sliderPos < 50 ? "relative" : "absolute",
-            inset: 0,
-            width: "100%",
+            zIndex: 12,
+            pointerEvents: "none",
           }}
         >
           {afterCards.map((c, i) => (
             <div
               key={c.title}
-              className="p-5 flex flex-col gap-2"
+              className="px-5 pb-5 pt-2 flex flex-col gap-1"
               style={{ borderRight: i < 2 ? "1px solid rgba(212,175,55,0.15)" : "none" }}
             >
-              <span style={{ fontSize: 30 }}>{c.icon}</span>
+              <span style={{ fontSize: 26 }}>{c.icon}</span>
               <p
                 style={{
                   fontFamily: "'Josefin Sans', sans-serif",
-                  fontSize: 14,
+                  fontSize: 13,
                   letterSpacing: "0.1em",
-                  color: "rgb(255,90,60)",
+                  color: "rgb(255,100,65)",
                   fontWeight: 700,
                   textTransform: "uppercase",
                 }}
@@ -381,9 +379,10 @@ function BeforeAfterSlider() {
               <p
                 style={{
                   fontFamily: "'Playfair Display', serif",
-                  fontSize: 14,
-                  color: "rgba(255,215,205,0.9)",
-                  lineHeight: 1.55,
+                  fontSize: 13,
+                  color: "rgba(255,220,210,0.95)",
+                  lineHeight: 1.5,
+                  textShadow: "0 1px 6px rgba(0,0,0,0.9)",
                 }}
               >
                 {c.desc}
