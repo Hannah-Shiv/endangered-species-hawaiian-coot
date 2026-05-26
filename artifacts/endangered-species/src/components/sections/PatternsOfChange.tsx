@@ -369,14 +369,14 @@ export function PatternsOfChange() {
           >
             <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 15, color: "rgba(212,175,55,0.9)", letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 4, fontWeight: 700 }}>Current Year</p>
             <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 9, whiteSpace: "nowrap", flexWrap: "nowrap" }}>
-              <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 36, color: GOLD, fontWeight: 900, lineHeight: 1, textShadow: "0 0 18px rgba(212,175,55,0.5)" }}>{currentYear}</span>
+              <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 36, color: GOLD, fontWeight: 900, lineHeight: 1, textShadow: "0 0 18px rgba(212,175,55,0.5)", marginTop: 6 }}>{currentYear}</span>
               <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 18, color: GOLD, fontWeight: 900, lineHeight: 1 }}>→</span>
               <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 14, color: "rgba(212,175,55,0.9)", letterSpacing: "0.04em", fontWeight: 700 }}>~{currentPop.toLocaleString()} individuals</span>
             </div>
             <motion.p
               key={yearInfo.desc}
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}
-              style={{ fontFamily: "'Playfair Display', serif", fontSize: 16, color: "rgba(255,255,255,0.95)", lineHeight: 1.55, fontWeight: 600 }}
+              style={{ fontFamily: "'Playfair Display', serif", fontSize: 15, color: "rgba(255,255,255,0.95)", lineHeight: 1.55, fontWeight: 600 }}
             >
               {yearInfo.desc}
             </motion.p>
