@@ -21,7 +21,7 @@ const nodes: FWNode[] = [
   { id: 'bullfrog', label: 'Bullfrog',        emoji: '🐸', type: 'competitor', x: 82, y: 46 },
   { id: 'insects',  label: 'Aquatic Insects', emoji: '🦟', type: 'prey',       x: 34, y: 60 },
   { id: 'fish',     label: 'Small Fish',      emoji: '🐟', type: 'prey',       x: 66, y: 60 },
-  { id: 'snails',   label: 'Snails/Mollusks', emoji: '🐌', type: 'prey',       x: 50, y: 68 },
+  { id: 'snails',   label: 'Snails/\nMollusks', emoji: '🐌', type: 'prey',       x: 50, y: 68 },
   { id: 'algae',    label: 'Algae / Plants',  emoji: '🌿', type: 'producer',   x: 50, y: 91 },
   { id: 'bacteria', label: 'Decomposers',     emoji: '🦠', type: 'decomposer', x: 82, y: 91 },
 ];
@@ -120,11 +120,11 @@ export function FoodWeb() {
     <div style={{ height:"100vh", display:"flex", flexDirection:"column", background:"#000000", overflow:"hidden", boxSizing:"border-box" }}>
 
       {/* ── Header ──────────────────────────────────────────────────────── */}
-      <div style={{ paddingTop:"68px", paddingBottom:"10px", textAlign:"center", flexShrink:0 }}>
+      <div style={{ paddingTop:"80px", paddingBottom:"10px", textAlign:"center", flexShrink:0 }}>
         <h1 style={{ fontFamily:"'Josefin Sans',sans-serif", fontSize:"clamp(1.8rem,3vw,2.8rem)", fontWeight:700, letterSpacing:"0.1em", textTransform:"uppercase", color:"rgba(212,175,55,1)", margin:0 }}>
           Wetland Food Web
         </h1>
-        <p style={{ fontFamily:"'Playfair Display',serif", color:"rgba(255,255,255,0.55)", fontSize:"17px", margin:"4px 0 0" }}>
+        <p style={{ fontFamily:"'Playfair Display',serif", color:"rgba(255,255,255,0.88)", fontSize:"17px", margin:"4px 0 0" }}>
           Hover any organism — <span style={{ color:"rgba(34,197,94,0.9)" }}>green arrows</span> = what it eats &nbsp;·&nbsp; <span style={{ color:"rgba(239,68,68,0.9)" }}>red arrows</span> = what eats it
         </p>
       </div>
@@ -220,6 +220,7 @@ export function FoodWeb() {
                     fontSize:st.labelPx, fontWeight:800, letterSpacing:"0.06em",
                     textTransform:"uppercase", lineHeight:1.2, marginTop:"4px",
                     color: isActive && hoveredNode ? "#fff" : st.text, display:"block",
+                    whiteSpace:"pre-line",
                   }}>
                     {node.label}
                   </span>
@@ -238,7 +239,7 @@ export function FoodWeb() {
 
           {/* Legend */}
           <div>
-            <p style={{ fontFamily:"'Josefin Sans',sans-serif", fontSize:"13px", letterSpacing:"0.14em", textTransform:"uppercase", color:"rgba(212,175,55,0.7)", margin:"0 0 12px", fontWeight:700 }}>
+            <p style={{ fontFamily:"'Josefin Sans',sans-serif", fontSize:"13px", letterSpacing:"0.14em", textTransform:"uppercase", color:"rgba(212,175,55,1)", margin:"0 0 12px", fontWeight:700 }}>
               Legend
             </p>
             <div style={{ display:"flex", flexDirection:"column", gap:"11px" }}>
@@ -273,7 +274,7 @@ export function FoodWeb() {
 
           {/* Who Eats Whom */}
           <div style={{ flex:1 }}>
-            <p style={{ fontFamily:"'Josefin Sans',sans-serif", fontSize:"13px", letterSpacing:"0.14em", textTransform:"uppercase", color:"rgba(212,175,55,0.7)", margin:"0 0 12px", fontWeight:700 }}>
+            <p style={{ fontFamily:"'Josefin Sans',sans-serif", fontSize:"13px", letterSpacing:"0.14em", textTransform:"uppercase", color:"rgba(212,175,55,1)", margin:"0 0 12px", fontWeight:700 }}>
               Who Eats Whom
             </p>
 
@@ -322,7 +323,7 @@ export function FoodWeb() {
                         {eats.map(n => (
                           <div key={n.id} style={{ display:"flex", alignItems:"center", gap:"10px" }}>
                             <span style={{ fontSize:"22px", lineHeight:1 }}>{n.emoji}</span>
-                            <span style={{ fontFamily:"'Josefin Sans',sans-serif", fontSize:"15px", color:"rgba(255,255,255,0.85)", letterSpacing:"0.03em" }}>{n.label}</span>
+                            <span style={{ fontFamily:"'Josefin Sans',sans-serif", fontSize:"15px", color:"rgba(255,255,255,0.85)", letterSpacing:"0.03em", whiteSpace:"pre-line" }}>{n.label}</span>
                           </div>
                         ))}
                       </div>
@@ -342,7 +343,7 @@ export function FoodWeb() {
                         {eatenBy.map(n => (
                           <div key={n.id} style={{ display:"flex", alignItems:"center", gap:"10px" }}>
                             <span style={{ fontSize:"22px", lineHeight:1 }}>{n.emoji}</span>
-                            <span style={{ fontFamily:"'Josefin Sans',sans-serif", fontSize:"15px", color:"rgba(255,255,255,0.85)", letterSpacing:"0.03em" }}>{n.label}</span>
+                            <span style={{ fontFamily:"'Josefin Sans',sans-serif", fontSize:"15px", color:"rgba(255,255,255,0.85)", letterSpacing:"0.03em", whiteSpace:"pre-line" }}>{n.label}</span>
                           </div>
                         ))}
                       </div>
