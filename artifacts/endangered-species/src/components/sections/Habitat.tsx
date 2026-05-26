@@ -31,7 +31,7 @@ function StatBox({ label, value, color, icon }: { label:string; value:number; co
       <motion.div style={{ height:"5px", borderRadius:"3px", background:"rgba(255,255,255,0.07)", width:"90%", overflow:"hidden" }}>
         <motion.div animate={{ width:`${value}%`, background: color }} transition={{ duration:0.7, ease:"easeOut" }} style={{ height:"100%", borderRadius:"3px" }}/>
       </motion.div>
-      <div style={{ fontFamily:"'Josefin Sans',sans-serif", fontSize:"10.5px", letterSpacing:"0.08em", textTransform:"uppercase", color:"rgba(212,175,55,0.8)", textAlign:"center", lineHeight:1.2 }}>
+      <div style={{ fontFamily:"'Josefin Sans',sans-serif", fontSize:"13px", letterSpacing:"0.08em", textTransform:"uppercase", color:"rgba(212,175,55,0.9)", textAlign:"center", lineHeight:1.2 }}>
         {label}
       </div>
     </motion.div>
@@ -134,7 +134,7 @@ export function Habitat() {
           {/* ═══ COL 1 — Climate Change Simulator ═══════════════════════════════ */}
           <div style={{display:"flex",flexDirection:"column",gap:"6px",minHeight:0,overflow:"hidden"}}>
             <div style={{textAlign:"center",flexShrink:0}}>
-              <span style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:"12px",letterSpacing:"0.12em",textTransform:"uppercase",color:statusColor}}>
+              <span style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:"15px",letterSpacing:"0.12em",textTransform:"uppercase",color:statusColor}}>
                 🌡 Climate Change Simulator
               </span>
             </div>
@@ -179,7 +179,7 @@ export function Habitat() {
           {/* ═══ COL 2 — Climate Profile ════════════════════════════════════════ */}
           <div style={{display:"flex",flexDirection:"column",gap:"6px",minHeight:0,overflow:"hidden"}}>
             <div style={{textAlign:"center",flexShrink:0}}>
-              <span style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:"12px",letterSpacing:"0.12em",textTransform:"uppercase",color:"rgba(212,175,55,1)"}}>
+              <span style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:"15px",letterSpacing:"0.12em",textTransform:"uppercase",color:"rgba(212,175,55,1)"}}>
                 🌤 Climate Profile
               </span>
             </div>
@@ -230,11 +230,11 @@ export function Habitat() {
                 <div style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:"clamp(1.5rem,1.9vw,2rem)",fontWeight:800,color:"rgba(239,68,68,1)",lineHeight:1,marginBottom:"3px"}}>
                   {tempLow}–{tempHigh}°C
                 </div>
-                <div style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:"13px",letterSpacing:"0.1em",textTransform:"uppercase",color:"rgba(212,175,55,0.9)",fontWeight:600,marginBottom:"6px"}}>
+                <div style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:"15px",letterSpacing:"0.1em",textTransform:"uppercase",color:"rgba(212,175,55,0.9)",fontWeight:700,marginBottom:"6px"}}>
                   Year-round Temperature
                 </div>
                 {/* Always-visible info */}
-                <div style={{fontFamily:"'Playfair Display',serif",fontSize:"12px",color:"rgba(255,255,255,0.72)",lineHeight:1.5,padding:"6px 8px",borderTop:"1px solid rgba(239,68,68,0.2)",marginTop:"2px"}}>
+                <div style={{fontFamily:"'Playfair Display',serif",fontSize:"14.5px",color:"rgba(255,255,255,0.78)",lineHeight:1.55,padding:"6px 8px",borderTop:"1px solid rgba(239,68,68,0.2)",marginTop:"2px"}}>
                   Warm tropical temperatures allow wetlands to remain active year-round.
                 </div>
               </div>
@@ -274,14 +274,14 @@ export function Habitat() {
                 <div style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:"clamp(1.3rem,1.7vw,1.85rem)",fontWeight:800,color:rainActive?"rgba(212,175,55,1)":"rgba(180,75,25,1)",lineHeight:1,marginBottom:"3px",transition:"color 0.5s"}}>
                   {rainLow}–{rainHigh} mm
                 </div>
-                <div style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:"13px",letterSpacing:"0.1em",textTransform:"uppercase",color:"rgba(212,175,55,0.9)",fontWeight:600,marginBottom:"3px"}}>
+                <div style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:"15px",letterSpacing:"0.1em",textTransform:"uppercase",color:"rgba(212,175,55,0.9)",fontWeight:700,marginBottom:"3px"}}>
                   Annual Rainfall
                 </div>
-                {critical&&<div style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:"13px",letterSpacing:"0.07em",color:"rgba(239,120,68,1)",fontWeight:700,animation:"alert-pulse 1.8s ease-in-out infinite",marginBottom:"3px"}}>
+                {critical&&<div style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:"15px",letterSpacing:"0.07em",color:"rgba(239,120,68,1)",fontWeight:700,animation:"alert-pulse 1.8s ease-in-out infinite",marginBottom:"3px"}}>
                   ⚠ DRY CONDITIONS
                 </div>}
                 {/* Always-visible info */}
-                <div style={{fontFamily:"'Playfair Display',serif",fontSize:"12px",color:"rgba(255,255,255,0.72)",lineHeight:1.5,padding:"6px 8px",borderTop:"1px solid rgba(59,130,246,0.2)",marginTop:"2px"}}>
+                <div style={{fontFamily:"'Playfair Display',serif",fontSize:"14.5px",color:"rgba(255,255,255,0.78)",lineHeight:1.55,padding:"6px 8px",borderTop:"1px solid rgba(59,130,246,0.2)",marginTop:"2px"}}>
                   {rainActive
                     ? "Rainfall sustains freshwater marshes and wetland biodiversity."
                     : "Reduced rainfall dries freshwater habitats, threatening food and nesting."}
@@ -293,7 +293,7 @@ export function Habitat() {
           {/* ═══ COL 3 — Habitat Impact + Sites ════════════════════════════════ */}
           <div style={{display:"flex",flexDirection:"column",gap:"6px",minHeight:0,overflow:"hidden"}}>
             <div style={{textAlign:"center",flexShrink:0}}>
-              <span style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:"12px",letterSpacing:"0.12em",textTransform:"uppercase",color:critical?"rgba(239,68,68,1)":warn?"rgba(239,140,68,1)":"rgba(212,175,55,1)"}}>
+              <span style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:"15px",letterSpacing:"0.12em",textTransform:"uppercase",color:critical?"rgba(239,68,68,1)":warn?"rgba(239,140,68,1)":"rgba(212,175,55,1)"}}>
                 🌿 Habitat Impact Meter
               </span>
             </div>
@@ -316,10 +316,10 @@ export function Habitat() {
                   <AnimatePresence mode="wait">
                     <motion.div key={island} initial={{opacity:0,y:6}} animate={{opacity:1,y:0}} exit={{opacity:0}} transition={{duration:0.3}}
                       style={{borderRadius:"10px",border:"2px solid rgba(212,175,55,0.3)",background:"rgba(255,255,255,0.03)",padding:"8px 8px",display:"flex",flexDirection:"column",gap:"3px",overflow:"hidden"}}>
-                      <div style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:"10px",letterSpacing:"0.09em",textTransform:"uppercase",color:"rgba(212,175,55,0.7)",marginBottom:"2px"}}>📍 Key Sites</div>
+                      <div style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:"13px",letterSpacing:"0.09em",textTransform:"uppercase",color:"rgba(212,175,55,0.9)",marginBottom:"4px",fontWeight:700}}>📍 Key Sites</div>
                       {ISLANDS[island].sites.map(s=>(
-                        <div key={s} style={{fontFamily:"'Playfair Display',serif",fontSize:"13px",color:"rgba(255,255,255,0.85)",lineHeight:1.3,display:"flex",alignItems:"flex-start",gap:"5px"}}>
-                          <span style={{color:"rgba(193,18,31,0.75)",fontSize:"8px",marginTop:"3px",flexShrink:0}}>◆</span>{s}
+                        <div key={s} style={{fontFamily:"'Playfair Display',serif",fontSize:"15px",color:"rgba(255,255,255,0.88)",lineHeight:1.35,display:"flex",alignItems:"flex-start",gap:"5px"}}>
+                          <span style={{color:"rgba(193,18,31,0.75)",fontSize:"9px",marginTop:"4px",flexShrink:0}}>◆</span>{s}
                         </div>
                       ))}
                     </motion.div>
@@ -337,7 +337,7 @@ export function Habitat() {
                 </motion.div>
               ):(
                 <div style={{flexShrink:0,padding:"7px 10px",borderRadius:"8px",background:"rgba(193,18,31,0.08)",border:"1px solid rgba(193,18,31,0.3)"}}>
-                  <p style={{fontFamily:"'Playfair Display',serif",fontSize:"13px",color:"rgba(212,175,55,1)",fontWeight:700,margin:0}}>
+                  <p style={{fontFamily:"'Playfair Display',serif",fontSize:"16px",color:"rgba(212,175,55,1)",fontWeight:700,margin:0}}>
                     70% of Hawaiian wetlands lost to development.
                   </p>
                 </div>
