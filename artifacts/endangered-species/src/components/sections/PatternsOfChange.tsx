@@ -213,20 +213,20 @@ export function PatternsOfChange() {
 
         {/* Chart column */}
         <div style={{ ...panel, borderRadius: 10, display: "flex", flexDirection: "column", overflow: "hidden" }}>
-          {/* Chart header */}
-          <div style={{ flexShrink: 0, padding: "8px 14px 4px", position: "relative", textAlign: "center" }}>
-            <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 20, color: "rgba(212,175,55,1)", letterSpacing: "0.02em", fontWeight: 900, textShadow: "0 0 14px rgba(212,175,55,0.45)" }}>
+          {/* Chart header — padded to align with plot area */}
+          <div style={{ flexShrink: 0, paddingTop: 8, paddingBottom: 4, paddingLeft: 48, paddingRight: 86, display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
+            <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 17, color: "rgba(212,175,55,1)", letterSpacing: "0.02em", fontWeight: 900, textShadow: "0 0 14px rgba(212,175,55,0.45)", flexShrink: 1, minWidth: 0 }}>
               Estimated Wild Population &amp; Rainfall (1970 – 2024)
             </p>
-            <div style={{ position: "absolute", right: 14, top: "50%", transform: "translateY(-50%)", display: "flex", alignItems: "center", gap: 10 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, flexShrink: 0 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
                 <div style={{ width: 18, height: 4, background: "rgba(50,160,255,1)", borderRadius: 1 }} />
-                <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, color: "rgba(50,180,255,1)", letterSpacing: "0.06em" }}>RAINFALL (mm)</span>
+                <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 12, color: "rgba(50,180,255,1)", letterSpacing: "0.06em" }}>RAINFALL</span>
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
                 <div style={{ width: 16, height: 2, background: "#e63333", borderRadius: 1 }} />
                 <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#e63333" }} />
-                <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, color: "rgba(235,120,90,1)", letterSpacing: "0.06em" }}>POPULATION</span>
+                <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 12, color: "rgba(235,120,90,1)", letterSpacing: "0.06em" }}>POPULATION</span>
               </div>
             </div>
           </div>
@@ -278,8 +278,8 @@ export function PatternsOfChange() {
             </ResponsiveContainer>
           </div>
 
-          {/* Scrubber */}
-          <div style={{ flexShrink: 0, borderTop: "1px solid rgba(212,175,55,0.18)", paddingBottom: 2 }}>
+          {/* Scrubber — padded to align with plot area */}
+          <div style={{ flexShrink: 0, borderTop: "1px solid rgba(212,175,55,0.18)", paddingBottom: 2, paddingLeft: 48, paddingRight: 86 }}>
             <TimelineScrubber currentYear={currentYear} onChange={setCurrentYear} />
           </div>
         </div>
