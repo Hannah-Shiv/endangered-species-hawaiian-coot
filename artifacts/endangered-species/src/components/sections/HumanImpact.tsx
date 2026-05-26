@@ -106,16 +106,16 @@ type CardData = { id: string; type: "harm" | "hope"; delta: typeof BASE; effect:
 function ImageLabel({ label, color, side }: { label: string; color: string; side: "left" | "right" }) {
   return (
     <div style={{
-      position: "absolute", top: 10, [side === "left" ? "left" : "right"]: 10, zIndex: 4,
-      background: color.replace(",1)", ",0.18)"),
-      border: `1.5px solid ${color}`,
-      borderRadius: 6, padding: "3px 10px",
-      boxShadow: `0 0 14px ${color.replace(",1)", ",0.7)")}, 0 0 4px ${color}`,
+      position: "absolute", top: 12, [side === "left" ? "left" : "right"]: 12, zIndex: 10,
+      background: "rgba(0,0,0,0.82)",
+      border: `2.5px solid ${color}`,
+      borderRadius: 7, padding: "5px 14px",
+      boxShadow: `0 0 22px ${color}, 0 0 10px ${color}, 0 0 4px ${color}, inset 0 0 10px ${color.replace(",1)", ",0.12)")}`,
     }}>
       <span style={{
-        fontFamily: "'Josefin Sans', sans-serif", fontSize: 12, color,
-        letterSpacing: "0.16em", fontWeight: 800,
-        textShadow: `0 0 10px ${color}`,
+        fontFamily: "'Josefin Sans', sans-serif", fontSize: 15, color,
+        letterSpacing: "0.22em", fontWeight: 900,
+        textShadow: `0 0 14px ${color}, 0 0 7px ${color}, 0 0 3px #fff`,
       }}>{label}</span>
     </div>
   );
@@ -469,9 +469,11 @@ export function HumanImpact() {
             return (
               <motion.div key={card.n}
                 animate={{
-                  borderColor: isActive ? cBorder : GOLDF,
-                  background:  isActive ? cFaint  : "rgba(0,0,0,1)",
-                  boxShadow:   isActive ? `0 0 22px ${cGlow}, inset 0 0 28px ${c.replace(",1)", ",0.06)")}` : "none",
+                  borderColor: isActive ? cBorder : c.replace(",1)", ",0.55)"),
+                  background:  isActive ? cFaint  : c.replace(",1)", ",0.06)"),
+                  boxShadow:   isActive
+                    ? `0 0 28px ${cGlow}, inset 0 0 28px ${c.replace(",1)", ",0.07)")}`
+                    : `0 0 10px ${c.replace(",1)", ",0.18)")}`,
                 }}
                 transition={{ duration: 0.3 }}
                 style={{
@@ -504,8 +506,9 @@ export function HumanImpact() {
                     }}
                     transition={{ scale: { duration: 0.35 }, default: { duration: 0.3 } }}
                     style={{
-                      width: "88%", height: 44, borderRadius: 8,
-                      border: `2px solid ${isActive ? cBorder : "rgba(212,175,55,0.5)"}`,
+                      width: "auto", height: 40, borderRadius: 20,
+                      padding: "0 22px",
+                      border: `2px solid ${isActive ? cBorder : c.replace(",1)", ",0.7)")}`,
                       display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
                     }}
                   >
@@ -570,7 +573,10 @@ export function HumanImpact() {
                     )}
                   </AnimatePresence>
 
-                  <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 14.5, color: isActive ? c : "rgba(212,175,55,0.5)", fontWeight: 700, letterSpacing: "0.05em", marginTop: 6 }}>
+                  <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 16, color: c, fontWeight: 800, letterSpacing: "0.05em", marginTop: 7,
+                    textShadow: isActive ? `0 0 12px ${c}, 0 0 6px ${c}` : `0 0 6px ${c.replace(",1)", ",0.5)")}`,
+                    opacity: isActive ? 1 : 0.7,
+                  }}>
                     {card.effect}
                   </p>
                 </div>
