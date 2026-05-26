@@ -319,7 +319,7 @@ export function PatternsOfChange() {
         </motion.div>
 
         {/* Center — habitat image: fixed aspect ratio, doesn't dominate */}
-        <div style={{ position: "relative", overflow: "hidden", width: "clamp(700px, 90vw, 1000px)", flexShrink: 0 }}>
+        <div style={{ position: "relative", overflow: "hidden", width: "clamp(875px, 100vw, 1250px)", flexShrink: 0 }}>
           <motion.img
             key={yearInfo.isStressed ? "stressed" : "healthy"}
             src={yearInfo.isStressed ? wetlandStressed : wetlandHealthy}
