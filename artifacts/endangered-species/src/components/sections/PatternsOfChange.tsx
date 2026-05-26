@@ -200,24 +200,24 @@ export function PatternsOfChange() {
       </motion.div>
 
       {/* ── Row 2: Chart (left) + Inflection Points (right) ── */}
-      <div style={{ flex: 3, minHeight: 0, display: "grid", gridTemplateColumns: "1fr 290px", gap: 6 }}>
+      <div style={{ flex: 3, minHeight: 0, display: "grid", gridTemplateColumns: "4fr 3fr", gap: 6 }}>
 
         {/* Chart column */}
         <div style={{ ...panel, borderRadius: 10, display: "flex", flexDirection: "column", overflow: "hidden" }}>
           {/* Chart header */}
           <div style={{ flexShrink: 0, padding: "8px 14px 2px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 13, color: "rgba(255,255,255,0.85)" }}>
+            <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 17, color: "rgba(255,255,255,0.95)" }}>
               Estimated Wild Population &amp; Rainfall (1970 – 2024)
             </p>
             <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
                 <div style={{ width: 16, height: 3, background: "rgba(68,136,220,0.7)", borderRadius: 1 }} />
-                <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 9, color: "rgba(80,160,220,0.85)", letterSpacing: "0.06em" }}>RAINFALL (mm)</span>
+                <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11, color: "rgba(80,160,220,0.95)", letterSpacing: "0.06em" }}>RAINFALL (mm)</span>
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
                 <div style={{ width: 16, height: 2, background: "#e63333", borderRadius: 1 }} />
                 <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#e63333" }} />
-                <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 9, color: "rgba(230,80,60,0.85)", letterSpacing: "0.06em" }}>POPULATION</span>
+                <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11, color: "rgba(230,80,60,0.95)", letterSpacing: "0.06em" }}>POPULATION</span>
               </div>
             </div>
           </div>
@@ -230,21 +230,21 @@ export function PatternsOfChange() {
                 <XAxis
                   dataKey="year" type="number" domain={[1970, 2024]}
                   ticks={[1970,1975,1980,1985,1990,1995,2000,2005,2010,2015,2020,2024]}
-                  stroke="rgba(255,255,255,0.3)"
-                  tick={{ fontSize: 10, fill: "rgba(255,255,255,0.6)", fontFamily: "'Josefin Sans', sans-serif" }}
+                  stroke="rgba(255,255,255,0.45)"
+                  tick={{ fontSize: 12, fill: "rgba(255,255,255,0.88)", fontFamily: "'Josefin Sans', sans-serif" }}
                   tickLine={false}
                 />
                 <YAxis
                   yAxisId="rain" domain={[0, 2000]} ticks={[0,500,1000,1500,2000]}
-                  stroke="rgba(68,136,220,0.35)"
-                  tick={{ fontSize: 9, fill: "rgba(80,160,220,0.75)", fontFamily: "'Josefin Sans', sans-serif" }}
-                  tickLine={false} width={34}
+                  stroke="rgba(68,136,220,0.5)"
+                  tick={{ fontSize: 11, fill: "rgba(80,160,220,0.92)", fontFamily: "'Josefin Sans', sans-serif" }}
+                  tickLine={false} width={38}
                 />
                 <YAxis
                   yAxisId="pop" orientation="right" domain={[0, 4500]} ticks={[0,1500,3000,4500]}
-                  stroke="rgba(230,50,50,0.35)"
-                  tick={{ fontSize: 9, fill: "rgba(230,100,80,0.75)", fontFamily: "'Josefin Sans', sans-serif" }}
-                  tickLine={false} width={34}
+                  stroke="rgba(230,50,50,0.5)"
+                  tick={{ fontSize: 11, fill: "rgba(230,100,80,0.92)", fontFamily: "'Josefin Sans', sans-serif" }}
+                  tickLine={false} width={38}
                 />
                 <Tooltip content={<ChartTooltip />} />
                 <Area
@@ -277,13 +277,13 @@ export function PatternsOfChange() {
               <div key={pt.year} style={{ display: "flex", gap: 7, alignItems: "flex-start", flex: 1, minHeight: 0, paddingBottom: i < inflectionPoints.length - 1 ? 6 : 0, borderBottom: i < inflectionPoints.length - 1 ? "1px solid rgba(212,175,55,0.08)" : "none", marginBottom: i < inflectionPoints.length - 1 ? 6 : 0 }}>
                 <div style={{ width: 9, height: 9, borderRadius: "50%", background: pt.color, flexShrink: 0, marginTop: 3, boxShadow: `0 0 5px ${pt.color}88` }} />
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 12, color: pt.color, fontWeight: 700, letterSpacing: "0.04em", marginBottom: 1 }}>{pt.title}</p>
-                  <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 11, color: "rgba(255,255,255,0.58)", lineHeight: 1.4 }}>{pt.desc}</p>
+                  <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 14, color: pt.color, fontWeight: 700, letterSpacing: "0.04em", marginBottom: 2 }}>{pt.title}</p>
+                  <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 13, color: "rgba(255,255,255,0.68)", lineHeight: 1.4 }}>{pt.desc}</p>
                 </div>
                 <button onClick={() => setCurrentYear(pt.year)} style={{
                   flexShrink: 0, background: "transparent", border: `1px solid ${pt.color}55`,
-                  borderRadius: 4, padding: "1px 6px", fontFamily: "'Josefin Sans', sans-serif",
-                  fontSize: 9, color: pt.color, letterSpacing: "0.07em", cursor: "pointer",
+                  borderRadius: 4, padding: "2px 7px", fontFamily: "'Josefin Sans', sans-serif",
+                  fontSize: 11, color: pt.color, letterSpacing: "0.07em", cursor: "pointer",
                   fontWeight: 700, textTransform: "uppercase", whiteSpace: "nowrap",
                 }}>View</button>
               </div>
@@ -295,31 +295,11 @@ export function PatternsOfChange() {
         </div>
       </div>
 
-      {/* ── Row 3: Triptych — Year flap | Habitat image | Ecosystem flap ── */}
-      <div style={{ flex: 2, minHeight: 0, display: "grid", gridTemplateColumns: "1fr auto 1fr", gap: 0, border: `1px solid ${GOLDF}`, borderRadius: 10, overflow: "hidden" }}>
+      {/* ── Row 3: Image (4fr, right aligns with chart) | Stacked panels (3fr) ── */}
+      <div style={{ flex: 2, minHeight: 0, display: "grid", gridTemplateColumns: "4fr 3fr", gap: 6 }}>
 
-        {/* Left flap — Current Year */}
-        <motion.div
-          key={`year-${currentYear}`}
-          initial={{ opacity: 0.7 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}
-          style={{ background: "#000", borderRight: `1px solid ${GOLDF}`, padding: "14px 18px", display: "flex", flexDirection: "column", justifyContent: "center" }}
-        >
-          <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 10, color: "rgba(212,175,55,0.5)", letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 4 }}>Current Year</p>
-          <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 36, color: GOLD, fontWeight: 700, lineHeight: 1, marginBottom: 4 }}>{currentYear}</p>
-          <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11, color: "rgba(212,175,55,0.6)", letterSpacing: "0.04em", marginBottom: 8 }}>
-            ~{currentPop.toLocaleString()} individuals
-          </p>
-          <motion.p
-            key={yearInfo.desc}
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}
-            style={{ fontFamily: "'Playfair Display', serif", fontSize: 12, color: "rgba(255,255,255,0.65)", lineHeight: 1.55 }}
-          >
-            {yearInfo.desc}
-          </motion.p>
-        </motion.div>
-
-        {/* Center — habitat image: fixed aspect ratio, doesn't dominate */}
-        <div style={{ position: "relative", overflow: "hidden", width: "clamp(875px, 100vw, 1250px)", flexShrink: 0 }}>
+        {/* Left — habitat image, right edge aligns with chart right edge */}
+        <div style={{ position: "relative", overflow: "hidden", borderRadius: 10, border: `1px solid ${GOLDF}` }}>
           <motion.img
             key={yearInfo.isStressed ? "stressed" : "healthy"}
             src={yearInfo.isStressed ? wetlandStressed : wetlandHealthy}
@@ -330,35 +310,59 @@ export function PatternsOfChange() {
           {yearInfo.isStressed && (
             <div style={{ position: "absolute", inset: 0, background: "rgba(60,10,0,0.28)", pointerEvents: "none" }} />
           )}
-          <div style={{ position: "absolute", bottom: 6, left: "50%", transform: "translateX(-50%)", background: "rgba(0,0,0,0.75)", border: `1px solid ${GOLDF}`, borderRadius: 4, padding: "1px 8px" }}>
-            <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 10, color: GOLD, letterSpacing: "0.08em", fontWeight: 700 }}>{currentYear}</span>
+          <div style={{ position: "absolute", bottom: 8, left: "50%", transform: "translateX(-50%)", background: "rgba(0,0,0,0.75)", border: `1px solid ${GOLDF}`, borderRadius: 4, padding: "2px 10px" }}>
+            <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 12, color: GOLD, letterSpacing: "0.08em", fontWeight: 700 }}>{currentYear}</span>
           </div>
         </div>
 
-        {/* Right flap — Ecosystem Status */}
-        <motion.div
-          key={`eco-${currentYear}`}
-          initial={{ opacity: 0.7 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}
-          style={{ background: "#000", borderLeft: `1px solid ${GOLDF}`, padding: "14px 18px", display: "flex", flexDirection: "column", justifyContent: "center" }}
-        >
-          <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 10, color: "rgba(212,175,55,0.5)", letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 12 }}>Ecosystem Status</p>
-          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-            {indicators.map((ind) => (
-              <motion.div
-                key={ind.label}
-                initial={{ opacity: 0, x: 6 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.25 }}
-                style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10 }}
-              >
-                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                  <span style={{ fontSize: 17 }}>{ind.icon}</span>
-                  <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, color: "rgba(255,255,255,0.75)", letterSpacing: "0.03em" }}>{ind.label}</span>
-                </div>
-                <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 14, color: ind.color, fontWeight: 700, whiteSpace: "nowrap" }}>{ind.status}</span>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
+        {/* Right — Current Year (top) + Ecosystem Status (bottom) */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 6, minHeight: 0 }}>
 
+          {/* Current Year */}
+          <motion.div
+            key={`year-${currentYear}`}
+            initial={{ opacity: 0.7 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}
+            style={{ ...panel, borderRadius: 10, flex: 1, minHeight: 0, padding: "14px 18px", display: "flex", flexDirection: "column", justifyContent: "center" }}
+          >
+            <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 12, color: "rgba(212,175,55,0.55)", letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 4 }}>Current Year</p>
+            <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 42, color: GOLD, fontWeight: 700, lineHeight: 1, marginBottom: 4 }}>{currentYear}</p>
+            <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, color: "rgba(212,175,55,0.65)", letterSpacing: "0.04em", marginBottom: 8 }}>
+              ~{currentPop.toLocaleString()} individuals
+            </p>
+            <motion.p
+              key={yearInfo.desc}
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}
+              style={{ fontFamily: "'Playfair Display', serif", fontSize: 14, color: "rgba(255,255,255,0.72)", lineHeight: 1.55 }}
+            >
+              {yearInfo.desc}
+            </motion.p>
+          </motion.div>
+
+          {/* Ecosystem Status */}
+          <motion.div
+            key={`eco-${currentYear}`}
+            initial={{ opacity: 0.7 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}
+            style={{ ...panel, borderRadius: 10, flex: 1, minHeight: 0, padding: "14px 18px", display: "flex", flexDirection: "column", justifyContent: "center" }}
+          >
+            <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11, color: "rgba(212,175,55,0.5)", letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 12 }}>Ecosystem Status</p>
+            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+              {indicators.map((ind) => (
+                <motion.div
+                  key={ind.label}
+                  initial={{ opacity: 0, x: 6 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.25 }}
+                  style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10 }}
+                >
+                  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                    <span style={{ fontSize: 17 }}>{ind.icon}</span>
+                    <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 14, color: "rgba(255,255,255,0.8)", letterSpacing: "0.03em" }}>{ind.label}</span>
+                  </div>
+                  <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 14, color: ind.color, fontWeight: 700, whiteSpace: "nowrap" }}>{ind.status}</span>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+        </div>
       </div>
     </div>
   );
