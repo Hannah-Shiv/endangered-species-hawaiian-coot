@@ -181,25 +181,26 @@ export function PatternsOfChange() {
   const panel: React.CSSProperties = { background: "#000", border: `1px solid ${GOLDF}` };
 
   return (
-    <div style={{ height: "100%", display: "flex", flexDirection: "column", padding: "8px 18px 6px", gap: 5, overflow: "hidden", boxSizing: "border-box", background: "#000" }}>
+    <div style={{ height: "100%", display: "flex", flexDirection: "column", padding: "80px 18px 8px", gap: 6, overflow: "hidden", boxSizing: "border-box", background: "#000" }}>
 
-      {/* ── Row 1: Centered title (matches other pages) ── */}
+      {/* ── Row 1: Centered title — matches other pages ── */}
       <motion.div
         initial={{ opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7 }}
-        style={{ flexShrink: 0, textAlign: "center", paddingTop: 4 }}
+        className="mb-2 text-center"
+        style={{ flexShrink: 0 }}
       >
-        <h1 className="text-6xl mb-1" style={{ fontFamily: "'Playfair Display', serif", color: GOLD, letterSpacing: "0.04em", lineHeight: 1.05 }}>
+        <h1 className="text-6xl mb-2" style={{ fontFamily: "'Playfair Display', serif", color: GOLD, letterSpacing: "0.04em" }}>
           Patterns of Change
         </h1>
-        <p style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontSize: 14, color: "rgba(212,175,55,0.75)", marginTop: 2 }}>
+        <p style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontSize: 16, color: "rgba(212,175,55,0.8)" }}>
           A story of near-extinction followed by gradual, fluctuating recovery dependent on wetland management.
         </p>
       </motion.div>
 
       {/* ── Row 2: Chart (left) + Inflection Points (right) ── */}
-      <div style={{ flex: 2, minHeight: 0, display: "grid", gridTemplateColumns: "1fr 300px", gap: 5 }}>
+      <div style={{ flex: 3, minHeight: 0, display: "grid", gridTemplateColumns: "1fr 290px", gap: 6 }}>
 
         {/* Chart column */}
         <div style={{ ...panel, borderRadius: 10, display: "flex", flexDirection: "column", overflow: "hidden" }}>
@@ -267,97 +268,92 @@ export function PatternsOfChange() {
         </div>
 
         {/* Key Inflection Points column */}
-        <div style={{ ...panel, borderRadius: 10, padding: "12px 14px", display: "flex", flexDirection: "column", overflow: "hidden" }}>
-          <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 16, color: GOLD, marginBottom: 10, flexShrink: 0 }}>
+        <div style={{ ...panel, borderRadius: 10, padding: "10px 12px 8px", display: "flex", flexDirection: "column", overflow: "hidden" }}>
+          <h3 style={{ fontFamily: "'Playfair Display', serif", fontSize: 15, color: GOLD, marginBottom: 8, flexShrink: 0 }}>
             Key Inflection Points
           </h3>
-          <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 8, overflow: "hidden" }}>
-            {inflectionPoints.map((pt) => (
-              <div key={pt.year} style={{ display: "flex", gap: 8, alignItems: "flex-start" }}>
-                <div style={{ width: 10, height: 10, borderRadius: "50%", background: pt.color, flexShrink: 0, marginTop: 2, boxShadow: `0 0 6px ${pt.color}88` }} />
+          <div style={{ flex: 1, minHeight: 0, display: "flex", flexDirection: "column", gap: 0 }}>
+            {inflectionPoints.map((pt, i) => (
+              <div key={pt.year} style={{ display: "flex", gap: 7, alignItems: "flex-start", flex: 1, minHeight: 0, paddingBottom: i < inflectionPoints.length - 1 ? 6 : 0, borderBottom: i < inflectionPoints.length - 1 ? "1px solid rgba(212,175,55,0.08)" : "none", marginBottom: i < inflectionPoints.length - 1 ? 6 : 0 }}>
+                <div style={{ width: 9, height: 9, borderRadius: "50%", background: pt.color, flexShrink: 0, marginTop: 3, boxShadow: `0 0 5px ${pt.color}88` }} />
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, color: pt.color, fontWeight: 700, letterSpacing: "0.04em", marginBottom: 2 }}>{pt.title}</p>
-                  <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 12, color: "rgba(255,255,255,0.6)", lineHeight: 1.45 }}>{pt.desc}</p>
+                  <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 12, color: pt.color, fontWeight: 700, letterSpacing: "0.04em", marginBottom: 1 }}>{pt.title}</p>
+                  <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 11, color: "rgba(255,255,255,0.58)", lineHeight: 1.4 }}>{pt.desc}</p>
                 </div>
                 <button onClick={() => setCurrentYear(pt.year)} style={{
-                  flexShrink: 0, background: "rgba(0,0,0,0.6)", border: `1px solid ${pt.color}55`,
-                  borderRadius: 5, padding: "2px 7px", fontFamily: "'Josefin Sans', sans-serif",
-                  fontSize: 11, color: pt.color, letterSpacing: "0.08em", cursor: "pointer",
+                  flexShrink: 0, background: "transparent", border: `1px solid ${pt.color}55`,
+                  borderRadius: 4, padding: "1px 6px", fontFamily: "'Josefin Sans', sans-serif",
+                  fontSize: 9, color: pt.color, letterSpacing: "0.07em", cursor: "pointer",
                   fontWeight: 700, textTransform: "uppercase", whiteSpace: "nowrap",
-                }}>View Year</button>
+                }}>View</button>
               </div>
             ))}
           </div>
-          <p style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontSize: 10, color: "rgba(212,175,55,0.35)", marginTop: 8, flexShrink: 0 }}>
-            ☝️ Click any event to jump to that year on the timeline.
+          <p style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontSize: 9, color: "rgba(212,175,55,0.3)", marginTop: 4, flexShrink: 0 }}>
+            ☝️ Click any event to jump to that year.
           </p>
         </div>
       </div>
 
       {/* ── Row 3: Triptych — Year flap | Habitat image | Ecosystem flap ── */}
-      <div style={{ flex: 3, minHeight: 0, display: "grid", gridTemplateColumns: "300px 220px 1fr", gap: 0, border: `1px solid ${GOLDF}`, borderRadius: 10, overflow: "hidden" }}>
+      <div style={{ flex: 2, minHeight: 0, display: "grid", gridTemplateColumns: "1fr auto 1fr", gap: 0, border: `1px solid ${GOLDF}`, borderRadius: 10, overflow: "hidden" }}>
 
         {/* Left flap — Current Year */}
         <motion.div
           key={`year-${currentYear}`}
-          initial={{ opacity: 0.6 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.3 }}
-          style={{ background: "#000", borderRight: `1px solid ${GOLDF}`, padding: "12px 14px", display: "flex", flexDirection: "column", justifyContent: "center" }}
+          initial={{ opacity: 0.7 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}
+          style={{ background: "#000", borderRight: `1px solid ${GOLDF}`, padding: "14px 18px", display: "flex", flexDirection: "column", justifyContent: "center" }}
         >
-          <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 9, color: "rgba(212,175,55,0.5)", letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 3 }}>Current Year</p>
-          <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 32, color: GOLD, fontWeight: 700, lineHeight: 1, marginBottom: 3 }}>{currentYear}</p>
-          <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 10, color: "rgba(212,175,55,0.55)", letterSpacing: "0.04em", marginBottom: 6 }}>
+          <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 10, color: "rgba(212,175,55,0.5)", letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 4 }}>Current Year</p>
+          <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 36, color: GOLD, fontWeight: 700, lineHeight: 1, marginBottom: 4 }}>{currentYear}</p>
+          <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11, color: "rgba(212,175,55,0.6)", letterSpacing: "0.04em", marginBottom: 8 }}>
             ~{currentPop.toLocaleString()} individuals
           </p>
           <motion.p
             key={yearInfo.desc}
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}
-            style={{ fontFamily: "'Playfair Display', serif", fontSize: 11, color: "rgba(255,255,255,0.62)", lineHeight: 1.5 }}
+            style={{ fontFamily: "'Playfair Display', serif", fontSize: 12, color: "rgba(255,255,255,0.65)", lineHeight: 1.55 }}
           >
             {yearInfo.desc}
           </motion.p>
         </motion.div>
 
-        {/* Center — habitat image */}
-        <div style={{ position: "relative", overflow: "hidden" }}>
+        {/* Center — habitat image: fixed aspect ratio, doesn't dominate */}
+        <div style={{ position: "relative", overflow: "hidden", width: "clamp(140px, 18vw, 200px)", flexShrink: 0 }}>
           <motion.img
             key={yearInfo.isStressed ? "stressed" : "healthy"}
             src={yearInfo.isStressed ? wetlandStressed : wetlandHealthy}
             alt="Habitat"
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.55 }}
-            style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 60%", display: "block" }}
+            style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 40%", display: "block" }}
           />
           {yearInfo.isStressed && (
-            <div style={{ position: "absolute", inset: 0, background: "rgba(60,10,0,0.3)", pointerEvents: "none" }} />
+            <div style={{ position: "absolute", inset: 0, background: "rgba(60,10,0,0.28)", pointerEvents: "none" }} />
           )}
-          {/* Year overlay on image */}
-          <div style={{ position: "absolute", bottom: 8, left: "50%", transform: "translateX(-50%)", background: "rgba(0,0,0,0.7)", border: `1px solid ${GOLDF}`, borderRadius: 5, padding: "2px 10px" }}>
-            <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11, color: GOLD, letterSpacing: "0.08em", fontWeight: 700 }}>{currentYear}</span>
+          <div style={{ position: "absolute", bottom: 6, left: "50%", transform: "translateX(-50%)", background: "rgba(0,0,0,0.75)", border: `1px solid ${GOLDF}`, borderRadius: 4, padding: "1px 8px" }}>
+            <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 10, color: GOLD, letterSpacing: "0.08em", fontWeight: 700 }}>{currentYear}</span>
           </div>
         </div>
 
         {/* Right flap — Ecosystem Status */}
         <motion.div
           key={`eco-${currentYear}`}
-          initial={{ opacity: 0.6 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.3 }}
-          style={{ background: "#000", borderLeft: `1px solid ${GOLDF}`, padding: "12px 14px", display: "flex", flexDirection: "column", justifyContent: "center" }}
+          initial={{ opacity: 0.7 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}
+          style={{ background: "#000", borderLeft: `1px solid ${GOLDF}`, padding: "14px 18px", display: "flex", flexDirection: "column", justifyContent: "center" }}
         >
           <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 10, color: "rgba(212,175,55,0.5)", letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 12 }}>Ecosystem Status</p>
-          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
             {indicators.map((ind) => (
               <motion.div
                 key={ind.label}
                 initial={{ opacity: 0, x: 6 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.25 }}
-                style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}
+                style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10 }}
               >
-                <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
-                  <span style={{ fontSize: 16 }}>{ind.icon}</span>
-                  <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, color: "rgba(255,255,255,0.72)", letterSpacing: "0.02em" }}>{ind.label}</span>
+                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <span style={{ fontSize: 17 }}>{ind.icon}</span>
+                  <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, color: "rgba(255,255,255,0.75)", letterSpacing: "0.03em" }}>{ind.label}</span>
                 </div>
-                <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, color: ind.color, fontWeight: 700, whiteSpace: "nowrap" }}>{ind.status}</span>
+                <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 14, color: ind.color, fontWeight: 700, whiteSpace: "nowrap" }}>{ind.status}</span>
               </motion.div>
             ))}
           </div>
