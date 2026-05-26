@@ -183,14 +183,14 @@ function BeforeAfterSlider() {
         {/* BEFORE block — top-left corner, unified box */}
         <div
           className="absolute top-4 left-4"
-          style={{ pointerEvents: "none", opacity: sliderPos > 10 ? 1 : 0, transition: "opacity 0.25s", maxWidth: 290 }}
+          style={{ pointerEvents: "none", opacity: sliderPos > 10 ? 1 : 0, transition: "opacity 0.25s" }}
         >
           <div style={{ background: "rgba(0,0,0,0.82)", border: "2px solid rgba(34,200,34,0.9)", borderRadius: 12, padding: "10px 16px 12px" }}>
             <div className="flex items-center gap-2 mb-2">
               <span style={{ fontSize: 20 }}>🌿</span>
               <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 20, letterSpacing: "0.18em", color: "rgb(80,240,80)", fontWeight: 700 }}>BEFORE</span>
             </div>
-            <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 16, color: "rgba(220,255,220,1)", lineHeight: 1.5, fontWeight: 600 }}>
+            <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 16, color: "rgba(220,255,220,1)", lineHeight: 1.5, fontWeight: 600, whiteSpace: "nowrap" }}>
               Healthy Wetlands at Current Sea Levels
             </p>
           </div>
@@ -199,14 +199,14 @@ function BeforeAfterSlider() {
         {/* AFTER block — top-right corner, unified box */}
         <div
           className="absolute top-4 right-4 text-right"
-          style={{ pointerEvents: "none", opacity: sliderPos < 90 ? 1 : 0, transition: "opacity 0.25s", maxWidth: 290 }}
+          style={{ pointerEvents: "none", opacity: sliderPos < 90 ? 1 : 0, transition: "opacity 0.25s" }}
         >
           <div style={{ background: "rgba(0,0,0,0.82)", border: "2px solid rgba(240,60,30,0.9)", borderRadius: 12, padding: "10px 16px 12px" }}>
             <div className="flex items-center gap-2 mb-2 justify-end">
               <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 20, letterSpacing: "0.18em", color: "rgb(255,90,60)", fontWeight: 700 }}>AFTER</span>
               <span style={{ fontSize: 20 }}>🔥</span>
             </div>
-            <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 16, color: "rgba(255,220,215,1)", lineHeight: 1.5, fontWeight: 600 }}>
+            <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 16, color: "rgba(255,220,215,1)", lineHeight: 1.5, fontWeight: 600, whiteSpace: "nowrap" }}>
               Projected Sea Level Rise (20–60 cm by 2100)
             </p>
           </div>
