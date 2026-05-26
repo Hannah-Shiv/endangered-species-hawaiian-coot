@@ -57,48 +57,38 @@ const hopeCards = [
 
 const helpCards = [
   {
-    n: 1, icon: "🏞️",
-    title: "Support Wildlife Refuges",
+    n: 1, icon: "🏞️", title: "Support Wildlife Refuges",
     desc: "Donate or volunteer at local Hawaii wildlife refuges.",
     message: "Protected refuges provide safe nesting and feeding grounds essential for Hawaiian Coot survival.",
-    effect: "🛡️ Habitat +15%",
-    color: "rgba(100,200,100,1)",
+    effect: "🛡️ Habitat +15%", color: "rgba(100,200,100,1)",
     delta: { wetland: 15, nesting: 12, water: 5, population: 8 },
   },
   {
-    n: 2, icon: "🐾",
-    title: "Manage Pets",
+    n: 2, icon: "🐾", title: "Manage Pets",
     desc: "Keep cats indoors and dogs on leash near wetlands.",
     message: "Keeping pets controlled near wetlands protects vulnerable chicks and nesting birds.",
-    effect: "🐣 Chick Survival +18%",
-    color: "rgba(100,160,255,1)",
+    effect: "🐣 Chick Survival +18%", color: "rgba(100,160,255,1)",
     delta: { wetland: 2, nesting: 10, water: 2, population: 18 },
   },
   {
-    n: 3, icon: "🌱",
-    title: "Wetland Restoration",
+    n: 3, icon: "🌱", title: "Wetland Restoration",
     desc: "Join community workdays to restore and plant native vegetation.",
     message: "Restoring wetlands rebuilds critical feeding and nesting habitats for future generations.",
-    effect: "💧 Wetland +20%",
-    color: "rgba(50,200,150,1)",
+    effect: "💧 Wetland +20%", color: "rgba(50,200,150,1)",
     delta: { wetland: 20, nesting: 8, water: 15, population: 12 },
   },
   {
-    n: 4, icon: "🐱",
-    title: "Support TNR",
+    n: 4, icon: "🐱", title: "Support TNR",
     desc: "Back trap-neuter-return programs for feral cat management.",
     message: "TNR programs reduce feral predator populations that threaten native birds.",
-    effect: "🦝 Predator −14%",
-    color: "rgba(220,160,80,1)",
+    effect: "🦝 Predator −14%", color: "rgba(220,160,80,1)",
     delta: { wetland: 3, nesting: 8, water: 3, population: 14 },
   },
   {
-    n: 5, icon: "🔭",
-    title: "Report Wildlife",
+    n: 5, icon: "🔭", title: "Report Wildlife",
     desc: "Contact Hawaii Wildlife Center if you spot injured waterbirds.",
     message: "Reporting injured wildlife helps teams respond quickly to protect endangered species.",
-    effect: "📈 Population +6%",
-    color: "rgba(160,120,255,1)",
+    effect: "📈 Population +6%", color: "rgba(160,120,255,1)",
     delta: { wetland: 2, nesting: 4, water: 2, population: 6 },
   },
 ];
@@ -110,135 +100,219 @@ const METERS = [
   { key: "population", label: "Population Stability", icon: "🐦" },
 ] as const;
 
-type SideCardData = {
-  type: "harm" | "hope";
-  id: string;
-  delta: typeof BASE;
-  effect: string;
-};
+type CardData = { id: string; type: "harm" | "hope"; delta: typeof BASE; effect: string };
 
-// ── SideCard component ────────────────────────────────────────────────────────
-function SideCard({
-  color, hovered, selected, onEnter, onLeave, onClick, children,
+// ── Glowing image label ───────────────────────────────────────────────────────
+function ImageLabel({ label, color, side }: { label: string; color: string; side: "left" | "right" }) {
+  return (
+    <div style={{
+      position: "absolute", top: 10, [side === "left" ? "left" : "right"]: 10, zIndex: 4,
+      background: color.replace(",1)", ",0.18)"),
+      border: `1.5px solid ${color}`,
+      borderRadius: 6, padding: "3px 10px",
+      boxShadow: `0 0 14px ${color.replace(",1)", ",0.7)")}, 0 0 4px ${color}`,
+    }}>
+      <span style={{
+        fontFamily: "'Josefin Sans', sans-serif", fontSize: 12, color,
+        letterSpacing: "0.16em", fontWeight: 800,
+        textShadow: `0 0 10px ${color}`,
+      }}>{label}</span>
+    </div>
+  );
+}
+
+// ── Lock button ───────────────────────────────────────────────────────────────
+function LockBtn({
+  isLocked, isHovered, color, onClick,
 }: {
-  color: string; hovered: boolean; selected: boolean;
-  onEnter: () => void; onLeave: () => void; onClick: () => void;
-  children: React.ReactNode;
+  isLocked: boolean; isHovered: boolean; color: string;
+  onClick: (e: React.MouseEvent) => void;
 }) {
-  const lit = hovered || selected;
+  const bright = color.replace(",1)", ",0.9)");
+  const glow   = color.replace(",1)", ",0.4)");
   return (
     <motion.div
-      onHoverStart={onEnter} onHoverEnd={onLeave} onClick={onClick}
+      onClick={onClick}
       animate={{
-        borderColor: lit
-          ? (selected ? color.replace("1)", "1)") : color.replace("1)", "0.8)"))
-          : color.replace("1)", "0.2)"),
-        background: lit ? color.replace("1)", "0.11)") : "rgba(0,0,0,1)",
-        boxShadow: selected
-          ? `0 0 32px ${color.replace("1)", "0.45)")}, inset 0 0 40px ${color.replace("1)", "0.08)")}`
-          : hovered
-          ? `0 0 20px ${color.replace("1)", "0.25)")}`
-          : "none",
+        background:  isLocked ? color : "rgba(0,0,0,0)",
+        borderColor: isLocked ? bright : isHovered ? color.replace(",1)", ",0.5)") : "rgba(255,255,255,0.2)",
+        boxShadow:   isLocked ? `0 0 18px ${glow}, 0 0 6px ${color}` : "none",
+        scale:       isLocked ? 1.05 : 1,
       }}
+      transition={{ duration: 0.3 }}
       style={{
-        flex: 1, minHeight: 0,
-        border: `1.5px solid ${color.replace("1)", "0.2)")}`,
-        borderRadius: 10, padding: "12px 14px",
-        cursor: "pointer", overflow: "hidden",
-        display: "flex", flexDirection: "column", position: "relative",
+        width: 42, height: 42, borderRadius: "50%",
+        border: "2px solid rgba(255,255,255,0.2)",
+        display: "flex", flexDirection: "column",
+        alignItems: "center", justifyContent: "center",
+        cursor: "pointer", flexShrink: 0, gap: 1,
       }}
     >
-      {/* Pinned indicator */}
-      <AnimatePresence>
-        {selected && (
-          <motion.div
-            key="pin"
-            initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.5 }}
-            style={{
-              position: "absolute", top: 8, right: 8,
-              background: color.replace(",1)", ",0.2)"),
-              border: `1px solid ${color.replace(",1)", ",0.7)")}`,
-              borderRadius: 6, padding: "2px 7px",
-              fontFamily: "'Josefin Sans', sans-serif", fontSize: 9,
-              color: color, fontWeight: 700, letterSpacing: "0.08em",
-            }}
+      <AnimatePresence mode="wait">
+        {isLocked ? (
+          <motion.div key="locked"
+            initial={{ scale: 0, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0, opacity: 0 }}
+            transition={{ type: "spring", stiffness: 300, damping: 18 }}
+            style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 1 }}
           >
-            LOCKED
+            <span style={{ fontSize: 16, color: "#000", lineHeight: 1 }}>🔒</span>
+          </motion.div>
+        ) : (
+          <motion.div key="unlocked"
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 1 }}
+          >
+            <span style={{ fontSize: 14, lineHeight: 1, opacity: 0.5 }}>🔓</span>
+            <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 7, color: "rgba(255,255,255,0.45)", letterSpacing: "0.06em", fontWeight: 700 }}>LOCK</span>
           </motion.div>
         )}
       </AnimatePresence>
-      {children}
     </motion.div>
   );
 }
 
 // ── Main Component ────────────────────────────────────────────────────────────
 export function HumanImpact() {
-  const [hoveredSide,  setHoveredSide]  = useState<SideCardData | null>(null);
-  const [selectedSide, setSelectedSide] = useState<SideCardData | null>(null);
-  const [activated,    setActivated]    = useState<Set<number>>(new Set());
-  const [justClicked,  setJustClicked]  = useState<number | null>(null);
+  const [hoveredId,  setHoveredId]  = useState<string | null>(null);
+  const [lockedIds,  setLockedIds]  = useState<Set<string>>(new Set());
+  const [activated,  setActivated]  = useState<Set<number>>(new Set());
+  const [justClicked, setJustClicked] = useState<number | null>(null);
 
-  // Effective side card = hovered (preview) overrides selected (locked)
-  const activeSide = hoveredSide ?? selectedSide;
+  // All side card data indexed by id
+  const allSideCards: Record<string, CardData> = {};
+  harmCards.forEach(c => { allSideCards[c.id] = { id: c.id, type: "harm", delta: c.delta, effect: c.effect }; });
+  hopeCards.forEach(c => { allSideCards[c.id] = { id: c.id, type: "hope", delta: c.delta, effect: c.effect }; });
 
-  function toggleSide(card: SideCardData) {
-    setSelectedSide(prev => (prev?.id === card.id ? null : card));
+  function toggleLock(id: string) {
+    setLockedIds(prev => {
+      const next = new Set(prev);
+      next.has(id) ? next.delete(id) : next.add(id);
+      return next;
+    });
   }
 
-  // Help boost from activated action cards
-  const helpBoost = Array.from(activated).reduce(
-    (acc, n) => {
-      const c = helpCards[n - 1];
-      return {
-        wetland:    acc.wetland    + c.delta.wetland,
-        nesting:    acc.nesting    + c.delta.nesting,
-        water:      acc.water      + c.delta.water,
-        population: acc.population + c.delta.population,
-      };
+  // Locked deltas — sum all locked cards
+  const lockedDelta = Array.from(lockedIds).reduce(
+    (acc, id) => {
+      const d = allSideCards[id]?.delta;
+      if (!d) return acc;
+      return { wetland: acc.wetland + d.wetland, nesting: acc.nesting + d.nesting, water: acc.water + d.water, population: acc.population + d.population };
     },
     { wetland: 0, nesting: 0, water: 0, population: 0 }
   );
 
-  const withHelp = {
-    wetland:    BASE.wetland    + helpBoost.wetland,
-    nesting:    BASE.nesting    + helpBoost.nesting,
-    water:      BASE.water      + helpBoost.water,
-    population: BASE.population + helpBoost.population,
+  // Help boost
+  const helpBoost = Array.from(activated).reduce(
+    (acc, n) => {
+      const c = helpCards[n - 1];
+      return { wetland: acc.wetland + c.delta.wetland, nesting: acc.nesting + c.delta.nesting, water: acc.water + c.delta.water, population: acc.population + c.delta.population };
+    },
+    { wetland: 0, nesting: 0, water: 0, population: 0 }
+  );
+
+  const withLockAndHelp = {
+    wetland:    BASE.wetland    + lockedDelta.wetland    + helpBoost.wetland,
+    nesting:    BASE.nesting    + lockedDelta.nesting    + helpBoost.nesting,
+    water:      BASE.water      + lockedDelta.water      + helpBoost.water,
+    population: BASE.population + lockedDelta.population + helpBoost.population,
   };
 
-  const metrics = activeSide
+  const hoveredData = hoveredId ? allSideCards[hoveredId] : null;
+  const metrics = hoveredData
     ? {
-        wetland:    Math.max(4,  Math.min(95, withHelp.wetland    + activeSide.delta.wetland)),
-        nesting:    Math.max(4,  Math.min(95, withHelp.nesting    + activeSide.delta.nesting)),
-        water:      Math.max(10, Math.min(95, withHelp.water      + activeSide.delta.water)),
-        population: Math.max(4,  Math.min(95, withHelp.population + activeSide.delta.population)),
+        wetland:    Math.max(4,  Math.min(95, withLockAndHelp.wetland    + hoveredData.delta.wetland)),
+        nesting:    Math.max(4,  Math.min(95, withLockAndHelp.nesting    + hoveredData.delta.nesting)),
+        water:      Math.max(10, Math.min(95, withLockAndHelp.water      + hoveredData.delta.water)),
+        population: Math.max(4,  Math.min(95, withLockAndHelp.population + hoveredData.delta.population)),
       }
     : {
-        wetland:    Math.min(92, withHelp.wetland),
-        nesting:    Math.min(92, withHelp.nesting),
-        water:      Math.min(92, withHelp.water),
-        population: Math.min(92, withHelp.population),
+        wetland:    Math.min(92, withLockAndHelp.wetland),
+        nesting:    Math.min(92, withLockAndHelp.nesting),
+        water:      Math.min(92, withLockAndHelp.water),
+        population: Math.min(92, withLockAndHelp.population),
       };
 
-  const dividerPct = activeSide ? (activeSide.type === "harm" ? 65 : 35) : 50;
-  const showTooltip = !!activeSide;
-  const tooltipColor = activeSide?.type === "harm" ? RED : GREEN;
+  // Divider: hover overrides; else tally locked types
+  const lockedHarmCount = Array.from(lockedIds).filter(id => allSideCards[id]?.type === "harm").length;
+  const lockedHopeCount = Array.from(lockedIds).filter(id => allSideCards[id]?.type === "hope").length;
+  const dividerPct = hoveredData
+    ? (hoveredData.type === "harm" ? 65 : 35)
+    : lockedHarmCount > lockedHopeCount ? 62
+    : lockedHopeCount > lockedHarmCount ? 38
+    : 50;
+
+  const activeEffect = hoveredData?.effect ?? (lockedIds.size === 1 ? allSideCards[Array.from(lockedIds)[0]]?.effect : null);
+  const activeType   = hoveredData?.type   ?? (lockedHarmCount > lockedHopeCount ? "harm" : lockedHopeCount > lockedHarmCount ? "hope" : null);
+  const showTooltip  = !!activeEffect;
 
   function toggleHelp(n: number) {
-    setActivated(prev => {
-      const next = new Set(prev);
-      next.has(n) ? next.delete(n) : next.add(n);
-      return next;
-    });
+    setActivated(prev => { const next = new Set(prev); next.has(n) ? next.delete(n) : next.add(n); return next; });
     setJustClicked(n);
     setTimeout(() => setJustClicked(null), 700);
   }
 
-  const hasSelection = !!selectedSide;
-  const hintText = hasSelection
-    ? `📌 CLICK AGAIN TO UNLOCK — ${selectedSide!.effect.toUpperCase()}`
-    : "HOVER TO PREVIEW · CLICK TO LOCK";
+  // ── Shared side card row renderer ─────────────────────────────────────────
+  function renderSideCard(
+    card: typeof harmCards[0],
+    color: string,
+    type: "harm" | "hope",
+  ) {
+    const isHov = hoveredId === card.id;
+    const isLocked = lockedIds.has(card.id);
+    const lit = isHov || isLocked;
+    const bright = color.replace(",1)", ",0.9)");
+    const faint  = color.replace(",1)", ",0.1)");
+    const glow   = color.replace(",1)", ",0.35)");
+
+    return (
+      <motion.div
+        key={card.id}
+        onHoverStart={() => setHoveredId(card.id)}
+        onHoverEnd={() => setHoveredId(null)}
+        animate={{
+          borderColor: lit ? bright : color.replace(",1)", ",0.22)"),
+          background:  lit ? faint  : "rgba(0,0,0,1)",
+          boxShadow:   isLocked
+            ? `0 0 28px ${glow}, inset 0 0 30px ${color.replace(",1)", ",0.07)")}`
+            : isHov ? `0 0 16px ${color.replace(",1)", ",0.2)")}` : "none",
+        }}
+        style={{
+          flex: 1, minHeight: 0,
+          border: `1.5px solid ${color.replace(",1)", ",0.22)")}`,
+          borderRadius: 10, overflow: "hidden",
+          display: "flex",
+        }}
+      >
+        {/* LEFT: icon + title + description */}
+        <div style={{ flex: 1, minWidth: 0, padding: "11px 10px 11px 12px", display: "flex", gap: 10 }}>
+          <span style={{ fontSize: 26, flexShrink: 0, marginTop: 1 }}>{card.icon}</span>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 16, color, fontWeight: 700, letterSpacing: "0.03em", marginBottom: 4 }}>{card.title}</p>
+            <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 13.5, color: "rgba(255,255,255,0.78)", lineHeight: 1.5 }}>{card.desc}</p>
+            <motion.p
+              animate={{ opacity: lit ? 1 : 0, y: lit ? 0 : 4 }}
+              style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 12.5, color, letterSpacing: "0.07em", marginTop: 6, fontWeight: 700 }}
+            >↳ {card.effect}</motion.p>
+          </div>
+        </div>
+
+        {/* RIGHT: lock button */}
+        <div style={{
+          width: 58, flexShrink: 0,
+          background: isLocked ? color.replace(",1)", ",0.07)") : "rgba(255,255,255,0.03)",
+          borderLeft: `1px solid ${isLocked ? color.replace(",1)", ",0.3)") : "rgba(255,255,255,0.08)"}`,
+          display: "flex", alignItems: "center", justifyContent: "center",
+          transition: "background 0.3s, border-color 0.3s",
+        }}>
+          <LockBtn
+            isLocked={isLocked} isHovered={isHov} color={color}
+            onClick={e => { e.stopPropagation(); toggleLock(card.id); }}
+          />
+        </div>
+      </motion.div>
+    );
+  }
 
   return (
     <div style={{
@@ -260,52 +334,27 @@ export function HumanImpact() {
         </p>
       </motion.div>
 
-      {/* ── Harm | Ecosystem | Hope  (flex: 2 → gives more room to bottom) ── */}
+      {/* ── Harm | Ecosystem | Hope ── */}
       <div style={{ flex: 2, minHeight: 0, display: "grid", gridTemplateColumns: "1fr 1.65fr 1fr", gap: 6 }}>
 
-        {/* ── HARM ── */}
+        {/* HARM column */}
         <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
           <div style={{
             flexShrink: 0, display: "flex", alignItems: "center", gap: 10,
-            padding: "8px 14px", borderRadius: 10,
+            padding: "7px 14px", borderRadius: 10,
             background: "rgba(220,50,30,0.1)", border: "1px solid rgba(220,50,30,0.55)",
             boxShadow: "0 0 18px rgba(220,50,30,0.15)",
           }}>
-            <span style={{ fontSize: 22 }}>⚠️</span>
+            <span style={{ fontSize: 20 }}>⚠️</span>
             <div>
-              <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 22, color: RED, fontWeight: 700, lineHeight: 1 }}>Harm</p>
-              <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11, color: "rgba(255,255,255,0.5)", letterSpacing: "0.09em", marginTop: 2 }}>THREATS THAT DESTROY HABITAT</p>
+              <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 21, color: RED, fontWeight: 700, lineHeight: 1 }}>Harm</p>
+              <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 10.5, color: "rgba(255,255,255,0.5)", letterSpacing: "0.09em", marginTop: 2 }}>HOVER TO PREVIEW · LOCK TO KEEP</p>
             </div>
           </div>
-
-          {harmCards.map(card => {
-            const isHovered  = hoveredSide?.id  === card.id;
-            const isSelected = selectedSide?.id === card.id;
-            const lit = isHovered || isSelected;
-            return (
-              <SideCard key={card.id} color={RED}
-                hovered={isHovered} selected={isSelected}
-                onEnter={() => setHoveredSide({ type: "harm", id: card.id, delta: card.delta, effect: card.effect })}
-                onLeave={() => setHoveredSide(null)}
-                onClick={() => toggleSide({ type: "harm", id: card.id, delta: card.delta, effect: card.effect })}
-              >
-                <div style={{ display: "flex", gap: 10 }}>
-                  <span style={{ fontSize: 28, flexShrink: 0 }}>{card.icon}</span>
-                  <div style={{ flex: 1, minWidth: 0, paddingRight: isSelected ? 40 : 0 }}>
-                    <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 17, color: RED, fontWeight: 700, letterSpacing: "0.03em", marginBottom: 5 }}>{card.title}</p>
-                    <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 14, color: "rgba(255,255,255,0.8)", lineHeight: 1.55 }}>{card.desc}</p>
-                    <motion.p
-                      animate={{ opacity: lit ? 1 : 0, y: lit ? 0 : 5 }}
-                      style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, color: RED, letterSpacing: "0.07em", marginTop: 7, fontWeight: 700 }}
-                    >↳ {card.effect}</motion.p>
-                  </div>
-                </div>
-              </SideCard>
-            );
-          })}
+          {harmCards.map(card => renderSideCard(card, RED, "harm"))}
         </div>
 
-        {/* ── CENTER ── */}
+        {/* CENTER */}
         <div style={{
           borderRadius: 12, overflow: "hidden", display: "flex", flexDirection: "column",
           border: "1px solid rgba(212,175,55,0.2)", background: "#000",
@@ -322,13 +371,16 @@ export function HumanImpact() {
 
             {/* Color overlays */}
             <motion.div
-              animate={{ opacity: activeSide?.type === "harm" ? 0.55 : 0.1 }} transition={{ duration: 0.4 }}
+              animate={{ opacity: (hoveredData?.type === "harm" || (!hoveredData && lockedHarmCount > lockedHopeCount)) ? 0.5 : 0.1 }}
+              transition={{ duration: 0.4 }}
               style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, rgba(200,30,10,0.9) 0%, rgba(200,30,10,0.2) 55%, transparent 100%)", pointerEvents: "none" }} />
             <motion.div
-              animate={{ opacity: activeSide?.type === "hope" ? 0.45 : 0.07 }} transition={{ duration: 0.4 }}
+              animate={{ opacity: (hoveredData?.type === "hope" || (!hoveredData && lockedHopeCount > lockedHarmCount)) ? 0.42 : 0.07 }}
+              transition={{ duration: 0.4 }}
               style={{ position: "absolute", inset: 0, background: "linear-gradient(to left, rgba(30,180,80,0.85) 0%, rgba(30,180,80,0.15) 55%, transparent 100%)", pointerEvents: "none" }} />
             <motion.div
-              animate={{ opacity: activated.size > 0 ? Math.min(0.38, activated.size * 0.1) : 0 }} transition={{ duration: 0.7 }}
+              animate={{ opacity: activated.size > 0 ? Math.min(0.35, activated.size * 0.09) : 0 }}
+              transition={{ duration: 0.7 }}
               style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at center, rgba(50,200,100,0.4) 0%, transparent 70%)", pointerEvents: "none" }} />
 
             {/* Divider */}
@@ -339,29 +391,40 @@ export function HumanImpact() {
               <span style={{ fontSize: 12, color: "white" }}>⟷</span>
             </motion.div>
 
-            {/* Corner labels */}
-            <div style={{ position: "absolute", top: 10, left: 12, zIndex: 4 }}>
-              <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, color: RED, letterSpacing: "0.14em", fontWeight: 700, textShadow: "0 2px 8px rgba(0,0,0,1)" }}>HARM</span>
-            </div>
-            <div style={{ position: "absolute", top: 10, right: 12, zIndex: 4 }}>
-              <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, color: GREEN, letterSpacing: "0.14em", fontWeight: 700, textShadow: "0 2px 8px rgba(0,0,0,1)" }}>HOPE</span>
-            </div>
+            {/* Glowing HARM / HOPE labels */}
+            <ImageLabel label="HARM" color={RED}   side="left" />
+            <ImageLabel label="HOPE" color={GREEN} side="right" />
 
             {/* Effect tooltip */}
             <motion.div animate={{ opacity: showTooltip ? 1 : 0, y: showTooltip ? 0 : 6 }} transition={{ duration: 0.25 }}
-              style={{ position: "absolute", bottom: 12, left: "50%", transform: "translateX(-50%)", background: "rgba(0,0,0,0.92)", border: `1.5px solid ${tooltipColor === RED ? "rgba(220,50,30,0.85)" : "rgba(50,200,100,0.85)"}`, borderRadius: 7, padding: "6px 18px", whiteSpace: "nowrap", zIndex: 7, pointerEvents: "none" }}>
-              <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, color: tooltipColor, fontWeight: 700, letterSpacing: "0.07em" }}>
-                {activeSide?.effect ?? ""}
+              style={{ position: "absolute", bottom: 12, left: "50%", transform: "translateX(-50%)", background: "rgba(0,0,0,0.92)", border: `1.5px solid ${activeType === "harm" ? "rgba(220,50,30,0.85)" : "rgba(50,200,100,0.85)"}`, borderRadius: 7, padding: "6px 18px", whiteSpace: "nowrap", zIndex: 7, pointerEvents: "none" }}>
+              <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, color: activeType === "harm" ? RED : GREEN, fontWeight: 700, letterSpacing: "0.07em" }}>
+                {activeEffect ?? ""}
               </span>
             </motion.div>
-
-            {/* Default hint */}
             <motion.div animate={{ opacity: showTooltip ? 0 : 1 }} transition={{ duration: 0.2 }}
               style={{ position: "absolute", bottom: 12, left: "50%", transform: "translateX(-50%)", background: "rgba(0,0,0,0.8)", border: "1px solid rgba(212,175,55,0.4)", borderRadius: 7, padding: "6px 16px", whiteSpace: "nowrap", zIndex: 7, pointerEvents: "none" }}>
               <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11.5, color: "rgba(212,175,55,0.85)", letterSpacing: "0.07em" }}>
-                {hintText}
+                HOVER TO PREVIEW · CLICK 🔒 TO LOCK
               </span>
             </motion.div>
+
+            {/* Locked count badges */}
+            {lockedIds.size > 0 && (
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+                style={{ position: "absolute", top: 10, left: "50%", transform: "translateX(-50%)", display: "flex", gap: 6, zIndex: 4 }}>
+                {lockedHarmCount > 0 && (
+                  <div style={{ background: "rgba(220,50,30,0.22)", border: "1px solid rgba(220,50,30,0.8)", borderRadius: 20, padding: "2px 10px", fontFamily: "'Josefin Sans', sans-serif", fontSize: 10, color: RED, fontWeight: 700, letterSpacing: "0.06em", boxShadow: "0 0 8px rgba(220,50,30,0.4)" }}>
+                    🔒 {lockedHarmCount} HARM
+                  </div>
+                )}
+                {lockedHopeCount > 0 && (
+                  <div style={{ background: "rgba(50,200,100,0.18)", border: "1px solid rgba(50,200,100,0.8)", borderRadius: 20, padding: "2px 10px", fontFamily: "'Josefin Sans', sans-serif", fontSize: 10, color: GREEN, fontWeight: 700, letterSpacing: "0.06em", boxShadow: "0 0 8px rgba(50,200,100,0.4)" }}>
+                    🔒 {lockedHopeCount} HOPE
+                  </div>
+                )}
+              </motion.div>
+            )}
           </div>
 
           {/* Meters */}
@@ -387,68 +450,38 @@ export function HumanImpact() {
           </div>
         </div>
 
-        {/* ── HOPE ── */}
+        {/* HOPE column */}
         <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
           <div style={{
             flexShrink: 0, display: "flex", alignItems: "center", gap: 10,
-            padding: "8px 14px", borderRadius: 10,
+            padding: "7px 14px", borderRadius: 10,
             background: "rgba(50,200,100,0.1)", border: "1px solid rgba(50,200,100,0.55)",
             boxShadow: "0 0 18px rgba(50,200,100,0.15)",
           }}>
-            <span style={{ fontSize: 22 }}>🌿</span>
+            <span style={{ fontSize: 20 }}>🌿</span>
             <div>
-              <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 22, color: GREEN, fontWeight: 700, lineHeight: 1 }}>Hope</p>
-              <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11, color: "rgba(255,255,255,0.5)", letterSpacing: "0.09em", marginTop: 2 }}>ACTIONS THAT PROTECT & RESTORE</p>
+              <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 21, color: GREEN, fontWeight: 700, lineHeight: 1 }}>Hope</p>
+              <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 10.5, color: "rgba(255,255,255,0.5)", letterSpacing: "0.09em", marginTop: 2 }}>HOVER TO PREVIEW · LOCK TO KEEP</p>
             </div>
           </div>
-
-          {hopeCards.map(card => {
-            const isHovered  = hoveredSide?.id  === card.id;
-            const isSelected = selectedSide?.id === card.id;
-            const lit = isHovered || isSelected;
-            return (
-              <SideCard key={card.id} color={GREEN}
-                hovered={isHovered} selected={isSelected}
-                onEnter={() => setHoveredSide({ type: "hope", id: card.id, delta: card.delta, effect: card.effect })}
-                onLeave={() => setHoveredSide(null)}
-                onClick={() => toggleSide({ type: "hope", id: card.id, delta: card.delta, effect: card.effect })}
-              >
-                <div style={{ display: "flex", gap: 10 }}>
-                  <span style={{ fontSize: 28, flexShrink: 0 }}>{card.icon}</span>
-                  <div style={{ flex: 1, minWidth: 0, paddingRight: isSelected ? 40 : 0 }}>
-                    <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 17, color: GREEN, fontWeight: 700, letterSpacing: "0.03em", marginBottom: 5 }}>{card.title}</p>
-                    <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 14, color: "rgba(255,255,255,0.8)", lineHeight: 1.55 }}>{card.desc}</p>
-                    <motion.p
-                      animate={{ opacity: lit ? 1 : 0, y: lit ? 0 : 5 }}
-                      style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, color: GREEN, letterSpacing: "0.07em", marginTop: 7, fontWeight: 700 }}
-                    >↳ {card.effect}</motion.p>
-                  </div>
-                </div>
-              </SideCard>
-            );
-          })}
+          {hopeCards.map(card => renderSideCard(card, GREEN, "hope"))}
         </div>
       </div>
 
-      {/* ── HOW YOU CAN HELP  (flex: 1.5 → was flex: 1, more visible now) ── */}
+      {/* ── HOW YOU CAN HELP ── */}
       <div style={{
         flex: 1.5, minHeight: 0,
         border: "1px solid rgba(212,175,55,0.22)", borderRadius: 12,
         padding: "8px 12px 10px", display: "flex", flexDirection: "column", gap: 6,
         background: "rgba(212,175,55,0.02)", boxShadow: "0 0 24px rgba(212,175,55,0.06)",
       }}>
-        {/* Header */}
         <div style={{ flexShrink: 0, display: "flex", alignItems: "center", gap: 10 }}>
           <div style={{ flex: 1, height: 1, background: "rgba(212,175,55,0.25)" }} />
-          <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 18, color: GOLD, fontWeight: 700, letterSpacing: "0.06em" }}>
-            → How You Can Help ←
-          </span>
+          <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 18, color: GOLD, fontWeight: 700, letterSpacing: "0.06em" }}>→ How You Can Help ←</span>
           <AnimatePresence>
             {activated.size > 0 && (
-              <motion.span
-                initial={{ opacity: 0, scale: 0.75 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.75 }}
-                style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 12, color: GREEN, letterSpacing: "0.07em", fontWeight: 700 }}
-              >
+              <motion.span initial={{ opacity: 0, scale: 0.75 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.75 }}
+                style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 12, color: GREEN, letterSpacing: "0.07em", fontWeight: 700 }}>
                 {activated.size}/{helpCards.length} ACTIONS TAKEN ✓
               </motion.span>
             )}
@@ -456,7 +489,6 @@ export function HumanImpact() {
           <div style={{ flex: 1, height: 1, background: "rgba(212,175,55,0.25)" }} />
         </div>
 
-        {/* Cards */}
         <div style={{ flex: 1, minHeight: 0, display: "flex", gap: 7 }}>
           {helpCards.map(card => {
             const isActive  = activated.has(card.n);
@@ -473,9 +505,7 @@ export function HumanImpact() {
                 animate={{
                   borderColor: isActive ? cBorder : GOLDF,
                   background:  isActive ? cFaint  : "rgba(0,0,0,1)",
-                  boxShadow:   isActive
-                    ? `0 0 22px ${cGlow}, inset 0 0 28px ${c.replace(",1)", ",0.06)")}`
-                    : "none",
+                  boxShadow:   isActive ? `0 0 22px ${cGlow}, inset 0 0 28px ${c.replace(",1)", ",0.06)")}` : "none",
                   scale: isPulsing ? [1, 1.04, 1] : 1,
                 }}
                 transition={{ scale: { duration: 0.45 }, default: { duration: 0.3 } }}
@@ -487,34 +517,21 @@ export function HumanImpact() {
                 }}
               >
                 <span style={{ fontSize: 26, marginBottom: 5 }}>{card.icon}</span>
-
-                <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 15, color: isActive ? c : GOLD, fontWeight: 700, letterSpacing: "0.04em", marginBottom: 4, lineHeight: 1.2 }}>
-                  {card.title}
-                </p>
-
-                <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 13, color: "rgba(255,255,255,0.72)", lineHeight: 1.45, flex: 1 }}>
-                  {card.desc}
-                </p>
-
+                <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 15, color: isActive ? c : GOLD, fontWeight: 700, letterSpacing: "0.04em", marginBottom: 4, lineHeight: 1.2 }}>{card.title}</p>
+                <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 13, color: "rgba(255,255,255,0.72)", lineHeight: 1.45, flex: 1 }}>{card.desc}</p>
                 <AnimatePresence>
                   {isActive && (
                     <motion.p key="edu"
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: "auto" }}
-                      exit={{ opacity: 0, height: 0 }}
-                      transition={{ duration: 0.3 }}
-                      style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontSize: 12, color: "rgba(255,255,255,0.82)", lineHeight: 1.42, marginTop: 5, overflow: "hidden" }}
-                    >
+                      initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.3 }}
+                      style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontSize: 12, color: "rgba(255,255,255,0.82)", lineHeight: 1.42, marginTop: 5, overflow: "hidden" }}>
                       {card.message}
                     </motion.p>
                   )}
                 </AnimatePresence>
+                <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 12, color: isActive ? c : "rgba(212,175,55,0.45)", fontWeight: 700, letterSpacing: "0.05em", marginTop: 6, marginBottom: 8 }}>{card.effect}</p>
 
-                <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 12, color: isActive ? c : "rgba(212,175,55,0.45)", fontWeight: 700, letterSpacing: "0.05em", marginTop: 6, marginBottom: 8 }}>
-                  {card.effect}
-                </p>
-
-                {/* ── Circular Take Action button ── */}
+                {/* Circular Take Action button */}
                 <motion.div
                   animate={{
                     background:  isActive ? c : "rgba(0,0,0,0)",
@@ -523,35 +540,26 @@ export function HumanImpact() {
                     scale:       isPulsing ? [1, 1.2, 1] : 1,
                   }}
                   transition={{ scale: { duration: 0.4 }, default: { duration: 0.35 } }}
-                  style={{
-                    width: 56, height: 56, borderRadius: "50%",
-                    border: "2px solid rgba(212,175,55,0.5)",
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    flexShrink: 0,
-                  }}
+                  style={{ width: 56, height: 56, borderRadius: "50%", border: "2px solid rgba(212,175,55,0.5)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}
                 >
                   <AnimatePresence mode="wait">
                     {isActive ? (
                       <motion.span key="tick"
-                        initial={{ scale: 0, opacity: 0, rotate: -30 }}
-                        animate={{ scale: 1, opacity: 1, rotate: 0 }}
+                        initial={{ scale: 0, opacity: 0, rotate: -30 }} animate={{ scale: 1, opacity: 1, rotate: 0 }}
                         exit={{ scale: 0, opacity: 0 }}
                         transition={{ type: "spring", stiffness: 280, damping: 18 }}
-                        style={{ fontSize: 26, color: "#000", fontWeight: 900, lineHeight: 1 }}
-                      >✓</motion.span>
+                        style={{ fontSize: 26, color: "#000", fontWeight: 900, lineHeight: 1 }}>✓</motion.span>
                     ) : (
                       <motion.span key="label"
                         initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                        style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 9, color: "rgba(212,175,55,0.75)", fontWeight: 700, letterSpacing: "0.07em", lineHeight: 1.3, textAlign: "center" }}
-                      >TAKE<br/>ACTION</motion.span>
+                        style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 9, color: "rgba(212,175,55,0.75)", fontWeight: 700, letterSpacing: "0.07em", lineHeight: 1.3, textAlign: "center" }}>
+                        TAKE<br/>ACTION
+                      </motion.span>
                     )}
                   </AnimatePresence>
                 </motion.div>
-
-                <motion.span
-                  animate={{ opacity: isActive ? 1 : 0 }}
-                  style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 10, color: c, fontWeight: 700, letterSpacing: "0.1em", marginTop: 5 }}
-                >
+                <motion.span animate={{ opacity: isActive ? 1 : 0 }}
+                  style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 10, color: c, fontWeight: 700, letterSpacing: "0.1em", marginTop: 5 }}>
                   ACTIVATED
                 </motion.span>
               </motion.div>
