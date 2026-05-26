@@ -4,7 +4,8 @@ import healthyImg from "@assets/image_1779835298098.png";
 import ratsImg    from "@assets/image_1779835596663.png";
 import dogsImg    from "@assets/image_1779838496982.png";
 import frogsImg     from "@assets/image_1779838792688.png";
-import mongooseImg  from "@assets/image_1779838906638.png";
+import mongooseImg   from "@assets/image_1779838906638.png";
+import nightHeronImg from "@assets/image_1779839059339.png";
 
 // ── Palette ───────────────────────────────────────────────────────────────────
 const GOLD = "rgba(212,175,55,1)";
@@ -145,11 +146,12 @@ const PREDATORS: Predator[] = [
     id: "nightheron", num: 5, name: "Night Heron", threat: "LOW", color: "#f5c842",
     sideIcon: "🌙",
     sideDesc: "The Black-crowned Night Heron is a natural predator that occasionally preys on coot eggs and chicks.",
-    image: healthyImg as string,
+    image: nightHeronImg as string,
     imgFilter: "none",
     headline: "NIGHT HERON — NATURAL PREDATION",
     overlays: [
-      { label: "🌙  NATURAL BEHAVIOR", text: "Night Herons evolved alongside the Hawaiian Coot.", top: "10%", left: "3%" },
+      { label: "🌙  NATURAL BEHAVIOR", text: "Night Herons evolved alongside the Hawaiian Coot — this is ecological balance, not crisis.", top: "8%", left: "3%" },
+      { label: "✦  NATIVE PREDATOR", text: "Unlike invasive species, the Night Heron is part of Hawaii's natural ecosystem.", top: "8%", left: "52%" },
     ],
     ecoImpact: [
       { icon: "🪺", label: "Nesting Success",      dir: "down", pct: 8 },
