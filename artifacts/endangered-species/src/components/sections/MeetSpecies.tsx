@@ -25,9 +25,6 @@ export function MeetSpecies() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <div style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: "0.8rem", letterSpacing: "0.2em", color: "rgba(212,175,55,1)" }} className="mb-4 font-bold uppercase">
-              ◆ SECTION 01 ◆
-            </div>
             <h1 className="text-5xl uppercase mb-6" style={{ fontFamily: "'Josefin Sans', sans-serif", letterSpacing: "0.1em", color: "rgba(212,175,55,1)" }}>
               Meet the Species
             </h1>

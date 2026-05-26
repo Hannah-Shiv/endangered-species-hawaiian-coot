@@ -62,9 +62,6 @@ export function FoodWeb() {
   return (
     <div className="w-full min-h-screen pt-24 pb-12 px-6 md:px-12 bg-background overflow-hidden flex flex-col">
       <div className="text-center mb-8 relative z-10">
-        <div style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: "0.8rem", letterSpacing: "0.2em", color: "rgba(212,175,55,1)" }} className="mb-4 font-bold uppercase">
-          ◆ SECTION 03 ◆
-        </div>
         <h1 className="text-5xl uppercase mb-2" style={{ fontFamily: "'Josefin Sans', sans-serif", letterSpacing: "0.1em", color: "rgba(212,175,55,1)" }}>
           Wetland Food Web
         </h1>

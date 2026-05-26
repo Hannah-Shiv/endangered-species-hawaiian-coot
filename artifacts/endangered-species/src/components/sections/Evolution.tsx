@@ -251,17 +251,6 @@ export function Evolution({ domeOpen = false }: Props) {
       >
         <div style={{
           fontFamily: "'Josefin Sans', sans-serif",
-          fontSize: "0.7rem",
-          letterSpacing: "0.2em",
-          color: "rgba(212,175,55,1)",
-          fontWeight: 700,
-          textTransform: "uppercase",
-          marginBottom: "4px",
-        }}>
-          ◆ SECTION 09 ◆
-        </div>
-        <div style={{
-          fontFamily: "'Josefin Sans', sans-serif",
           fontSize: "clamp(1.6rem, 3vw, 2.6rem)",
           fontWeight: 700,
           letterSpacing: "0.1em",

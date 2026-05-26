@@ -12,9 +12,6 @@ export function Habitat() {
           transition={{ duration: 0.8 }}
           className="text-center mb-16"
         >
-          <div style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: "0.8rem", letterSpacing: "0.2em", color: "rgba(212,175,55,1)" }} className="mb-4 font-bold uppercase">
-            ◆ SECTION 02 ◆
-          </div>
           <h1 className="text-5xl uppercase mb-4" style={{ fontFamily: "'Josefin Sans', sans-serif", letterSpacing: "0.1em", color: "rgba(212,175,55,1)" }}>
             Habitat & Location
           </h1>
