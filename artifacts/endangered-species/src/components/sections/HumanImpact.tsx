@@ -452,45 +452,50 @@ export function HumanImpact() {
                   {card.effect}
                 </p>
 
-                {/* ── Glowing pill button ── */}
-                <motion.div
-                  animate={{
-                    background: isActive
-                      ? `linear-gradient(135deg, ${c.replace(",1)", ",0.28)")}, ${c.replace(",1)", ",0.14)")})`
-                      : "rgba(0,0,0,0)",
-                    borderColor: isActive ? cBorder : "rgba(212,175,55,0.45)",
-                    boxShadow:   isActive ? `0 0 16px ${cGlow}, 0 0 6px ${cMid}` : "none",
-                  }}
-                  style={{
-                    width: "100%", padding: "7px 0",
-                    borderRadius: 999, border: "1.5px solid rgba(212,175,55,0.45)",
-                    display: "flex", alignItems: "center", justifyContent: "center", gap: 7,
-                  }}
-                >
-                  {/* Dot indicator */}
+                {/* ── Circular action button ── */}
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4, marginTop: 2 }}>
                   <motion.div
                     animate={{
-                      background: isActive ? c : "rgba(212,175,55,0.4)",
-                      boxShadow:  isActive ? `0 0 8px ${c}` : "none",
-                      scale:      isActive ? 1.15 : 1,
+                      background:  isActive ? c : "rgba(0,0,0,0)",
+                      borderColor: isActive ? cBorder : "rgba(212,175,55,0.5)",
+                      boxShadow:   isActive ? `0 0 22px ${cGlow}, 0 0 8px ${cMid}` : "0 0 0px transparent",
+                      scale:       isPulsing ? [1, 1.18, 1] : 1,
                     }}
-                    transition={{ duration: 0.3 }}
-                    style={{ width: 8, height: 8, borderRadius: "50%", flexShrink: 0 }}
-                  />
-                  <motion.span
-                    animate={{ color: isActive ? c : "rgba(212,175,55,0.75)" }}
-                    style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 12, fontWeight: 700, letterSpacing: "0.12em" }}
+                    transition={{ scale: { duration: 0.4 }, default: { duration: 0.35 } }}
+                    style={{
+                      width: 52, height: 52, borderRadius: "50%",
+                      border: "2px solid rgba(212,175,55,0.5)",
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                      cursor: "pointer",
+                    }}
                   >
-                    {isActive ? "ACTIVATED" : "TAKE ACTION"}
+                    <AnimatePresence mode="wait">
+                      {isActive ? (
+                        <motion.span key="tick"
+                          initial={{ scale: 0, opacity: 0, rotate: -20 }}
+                          animate={{ scale: 1, opacity: 1, rotate: 0 }}
+                          exit={{   scale: 0, opacity: 0 }}
+                          transition={{ type: "spring", stiffness: 260, damping: 18 }}
+                          style={{ fontSize: 24, color: "#000", fontWeight: 900, lineHeight: 1 }}
+                        >✓</motion.span>
+                      ) : (
+                        <motion.span key="arrow"
+                          initial={{ scale: 0, opacity: 0 }}
+                          animate={{ scale: 1, opacity: 1 }}
+                          exit={{   scale: 0, opacity: 0 }}
+                          transition={{ duration: 0.2 }}
+                          style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 9, color: "rgba(212,175,55,0.75)", fontWeight: 700, letterSpacing: "0.08em", lineHeight: 1.2, textAlign: "center" }}
+                        >TAKE<br/>ACTION</motion.span>
+                      )}
+                    </AnimatePresence>
+                  </motion.div>
+                  <motion.span
+                    animate={{ color: isActive ? c : "rgba(212,175,55,0.45)", opacity: isActive ? 1 : 0.7 }}
+                    style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 10, fontWeight: 700, letterSpacing: "0.1em" }}
+                  >
+                    {isActive ? "ACTIVATED" : ""}
                   </motion.span>
-                  {/* Trailing dot when active */}
-                  {isActive && (
-                    <motion.span
-                      initial={{ opacity: 0, scale: 0 }} animate={{ opacity: 1, scale: 1 }}
-                      style={{ fontSize: 14, lineHeight: 1 }}
-                    >✓</motion.span>
-                  )}
-                </motion.div>
+                </div>
               </motion.div>
             );
           })}
