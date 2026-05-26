@@ -15,7 +15,7 @@ const BG   = "#07080c";
 type ThreatLevel = "HIGH" | "MEDIUM" | "LOW";
 type Metrics     = { habitat: number; nesting: number; water: number; food: number; population: number };
 type EcoRow      = { icon: string; label: string; dir: "up"|"down"; pct: number };
-type Overlay     = { label: string; text: string; top: string; left: string };
+type Overlay     = { label: string; text: string; top: string; left?: string; right?: string };
 
 type Predator = {
   id:        string;
@@ -150,8 +150,8 @@ const PREDATORS: Predator[] = [
     imgFilter: "none",
     headline: "NIGHT HERON — NATURAL PREDATION",
     overlays: [
-      { label: "🌙  NATURAL BEHAVIOR", text: "Night Herons evolved alongside the Hawaiian Coot — this is ecological balance, not crisis.", top: "3%", left: "52%" },
-      { label: "✦  NATIVE PREDATOR", text: "Unlike invasive species, the Night Heron is part of Hawaii's natural ecosystem.", top: "74%", left: "52%" },
+      { label: "🌙  NATURAL BEHAVIOR", text: "Night Herons evolved alongside the Hawaiian Coot — this is ecological balance, not crisis.", top: "3%", right: "2%" },
+      { label: "✦  NATIVE PREDATOR", text: "Unlike invasive species, the Night Heron is part of Hawaii's natural ecosystem.", top: "74%", right: "2%" },
     ],
     ecoImpact: [
       { icon: "🪺", label: "Nesting Success",      dir: "down", pct: 8 },
@@ -462,7 +462,7 @@ export function Predators() {
                     initial={{ opacity: 0, y: -6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
                     transition={{ delay: i * 0.12, duration: 0.35 }}
                     style={{
-                      position: "absolute", top: ov.top, left: ov.left,
+                      position: "absolute", top: ov.top, left: ov.left, right: ov.right,
                       background: `rgba(0,0,0,0.88)`,
                       border: `2.5px solid ${tc}`,
                       borderLeft: `5px solid ${tc}`,
