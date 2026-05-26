@@ -15,7 +15,7 @@ const BG   = "#07080c";
 type ThreatLevel = "HIGH" | "MEDIUM" | "LOW";
 type Metrics     = { habitat: number; nesting: number; water: number; food: number; population: number };
 type EcoRow      = { icon: string; label: string; dir: "up"|"down"; pct: number };
-type Overlay     = { label: string; text: string; top: string; left?: string; right?: string };
+type Overlay     = { label: string; text: string; top: string; left?: string; right?: string; transform?: string };
 
 type Predator = {
   id:        string;
@@ -66,7 +66,7 @@ const PREDATORS: Predator[] = [
     imgFilter: "none",
     headline: "MONGOOSE IMPACT",
     overlays: [
-      { label: "⚠  ACTIVE PREDATOR DETECTED", text: "Mongoose are highly adaptable and hunt both day and night.", top: "5%", left: "30%" },
+      { label: "⚠  ACTIVE PREDATOR DETECTED", text: "Mongoose are highly adaptable and hunt both day and night.", top: "5%", left: "50%", transform: "translateX(-50%)" },
       { label: "⚠  NEST AT RISK", text: "Eggs and chicks are left exposed — entire clutches lost in minutes.", top: "74%", right: "2%" },
     ],
     ecoImpact: [
@@ -462,7 +462,7 @@ export function Predators() {
                     initial={{ opacity: 0, y: -6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
                     transition={{ delay: i * 0.12, duration: 0.35 }}
                     style={{
-                      position: "absolute", top: ov.top, left: ov.left, right: ov.right,
+                      position: "absolute", top: ov.top, left: ov.left, right: ov.right, transform: ov.transform,
                       background: `rgba(0,0,0,0.88)`,
                       border: `2.5px solid ${tc}`,
                       borderLeft: `5px solid ${tc}`,
