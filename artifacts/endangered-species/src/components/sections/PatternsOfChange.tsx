@@ -151,19 +151,28 @@ function TimelineScrubber({ currentYear, onChange }: { currentYear: number; onCh
   }, [updateFromX]);
 
   return (
-    <div style={{ padding: "2px 16px 4px", userSelect: "none" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 1 }}>
-        <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 10, color: "rgba(255,255,255,0.45)", letterSpacing: "0.06em" }}>{MIN_YEAR}</span>
-        <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 10, color: "rgba(255,255,255,0.45)", letterSpacing: "0.06em" }}>{MAX_YEAR}</span>
-      </div>
-      <div ref={trackRef} style={{ position: "relative", height: 24, cursor: "ew-resize" }}
-        onMouseDown={onMouseDown} onTouchStart={onTouchStart}>
-        <div style={{ position: "absolute", top: "50%", left: 0, right: 0, height: 4, transform: "translateY(-50%)", borderRadius: 2, background: "linear-gradient(to right, rgba(212,175,55,0.18), rgba(212,175,55,0.48))" }} />
-        <div style={{ position: "absolute", top: "50%", left: 0, width: `${pct}%`, height: 4, transform: "translateY(-50%)", borderRadius: 2, background: "linear-gradient(to right, rgba(180,30,10,0.65), rgba(212,175,55,0.85))", transition: dragging.current ? "none" : "width 0.1s ease" }} />
-        <div style={{ position: "absolute", left: `${pct}%`, bottom: "calc(50% + 7px)", transform: "translateX(-50%)", background: "#000", border: "1px solid rgba(212,175,55,0.65)", borderRadius: 4, padding: "1px 5px", pointerEvents: "none", transition: dragging.current ? "none" : "left 0.1s ease" }}>
-          <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 10, color: "rgba(212,175,55,1)", fontWeight: 700, letterSpacing: "0.06em" }}>{currentYear}</span>
+    <div style={{ padding: "4px 16px 6px", userSelect: "none" }}>
+      {/* Year pill + range row */}
+      <div style={{ position: "relative", display: "flex", justifyContent: "space-between", alignItems: "center", height: 24, marginBottom: 4 }}>
+        <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11, color: "rgba(255,255,255,0.5)", letterSpacing: "0.06em" }}>{MIN_YEAR}</span>
+        <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11, color: "rgba(255,255,255,0.5)", letterSpacing: "0.06em" }}>{MAX_YEAR}</span>
+        <div style={{ position: "absolute", left: `${pct}%`, top: "50%", transform: "translate(-50%, -50%)", background: "#000", border: "1.5px solid rgba(212,175,55,0.9)", borderRadius: 5, padding: "2px 9px", pointerEvents: "none", transition: dragging.current ? "none" : "left 0.1s ease", zIndex: 4, whiteSpace: "nowrap" }}>
+          <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 12, color: "rgba(212,175,55,1)", fontWeight: 700, letterSpacing: "0.08em" }}>{currentYear}</span>
         </div>
-        <div style={{ position: "absolute", top: "50%", left: `${pct}%`, transform: "translate(-50%, -50%)", width: 15, height: 15, borderRadius: "50%", background: "#e63333", border: "2px solid rgba(255,160,140,0.85)", boxShadow: "0 0 7px rgba(230,50,50,0.65)", transition: dragging.current ? "none" : "left 0.1s ease", zIndex: 2 }} />
+      </div>
+      {/* Thick draggable bar */}
+      <div ref={trackRef}
+        style={{ position: "relative", height: 44, cursor: "ew-resize", borderRadius: 8, background: "rgba(212,175,55,0.08)", border: "1.5px solid rgba(212,175,55,0.3)" }}
+        onMouseDown={onMouseDown} onTouchStart={onTouchStart}
+      >
+        {/* Filled progress */}
+        <div style={{ position: "absolute", top: 0, left: 0, bottom: 0, width: `${pct}%`, background: "linear-gradient(to right, rgba(160,20,8,0.7), rgba(212,175,55,0.72))", borderRadius: "7px 0 0 7px", transition: dragging.current ? "none" : "width 0.1s ease" }} />
+        {/* DRAG THIS BAR label inside track */}
+        <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", pointerEvents: "none" }}>
+          <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 12, fontWeight: 900, letterSpacing: "0.22em", textTransform: "uppercase", color: "rgba(212,175,55,0.55)" }}>← DRAG THIS BAR →</span>
+        </div>
+        {/* Thumb — vertical red line */}
+        <div style={{ position: "absolute", top: 0, bottom: 0, left: `${pct}%`, width: 4, background: "#e63333", transform: "translateX(-50%)", borderRadius: 2, boxShadow: "0 0 10px rgba(230,50,50,0.9)", transition: dragging.current ? "none" : "left 0.1s ease", zIndex: 2 }} />
       </div>
     </div>
   );
@@ -205,11 +214,11 @@ export function PatternsOfChange() {
         {/* Chart column */}
         <div style={{ ...panel, borderRadius: 10, display: "flex", flexDirection: "column", overflow: "hidden" }}>
           {/* Chart header */}
-          <div style={{ flexShrink: 0, padding: "8px 14px 2px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 17, color: "rgba(255,255,255,0.95)" }}>
+          <div style={{ flexShrink: 0, padding: "8px 14px 4px", position: "relative", textAlign: "center" }}>
+            <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 17, color: "rgba(212,175,55,1)", letterSpacing: "0.02em" }}>
               Estimated Wild Population &amp; Rainfall (1970 – 2024)
             </p>
-            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <div style={{ position: "absolute", right: 14, top: "50%", transform: "translateY(-50%)", display: "flex", alignItems: "center", gap: 10 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
                 <div style={{ width: 18, height: 4, background: "rgba(50,160,255,1)", borderRadius: 1 }} />
                 <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, color: "rgba(50,180,255,1)", letterSpacing: "0.06em" }}>RAINFALL (mm)</span>
@@ -262,7 +271,7 @@ export function PatternsOfChange() {
           </div>
 
           {/* Scrubber */}
-          <div style={{ flexShrink: 0, borderTop: "1px solid rgba(212,175,55,0.12)", paddingBottom: 2 }}>
+          <div style={{ flexShrink: 0, borderTop: "1px solid rgba(212,175,55,0.18)", paddingBottom: 2 }}>
             <TimelineScrubber currentYear={currentYear} onChange={setCurrentYear} />
           </div>
         </div>
@@ -277,19 +286,22 @@ export function PatternsOfChange() {
               <div key={pt.year} style={{ display: "flex", gap: 7, alignItems: "flex-start", flex: 1, minHeight: 0, paddingBottom: i < inflectionPoints.length - 1 ? 6 : 0, borderBottom: i < inflectionPoints.length - 1 ? "1px solid rgba(212,175,55,0.08)" : "none", marginBottom: i < inflectionPoints.length - 1 ? 6 : 0 }}>
                 <div style={{ width: 10, height: 10, borderRadius: "50%", background: pt.color, flexShrink: 0, marginTop: 3, boxShadow: `0 0 6px ${pt.color}88` }} />
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 15, color: pt.color, fontWeight: 700, letterSpacing: "0.04em", marginBottom: 2 }}>{pt.title}</p>
-                  <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 14, color: "rgba(255,255,255,0.72)", lineHeight: 1.4 }}>{pt.desc}</p>
+                  <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 16, color: pt.color, fontWeight: 700, letterSpacing: "0.04em", marginBottom: 2 }}>{pt.title}</p>
+                  <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 15, color: "rgba(255,255,255,0.75)", lineHeight: 1.4 }}>{pt.desc}</p>
                 </div>
                 <button onClick={() => setCurrentYear(pt.year)} style={{
-                  flexShrink: 0, background: "transparent", border: `1px solid ${pt.color}55`,
-                  borderRadius: 4, padding: "2px 8px", fontFamily: "'Josefin Sans', sans-serif",
-                  fontSize: 12, color: pt.color, letterSpacing: "0.07em", cursor: "pointer",
-                  fontWeight: 700, textTransform: "uppercase", whiteSpace: "nowrap",
-                }}>View</button>
+                  flexShrink: 0,
+                  background: `linear-gradient(135deg, ${pt.color}25, ${pt.color}45)`,
+                  border: `1.5px solid ${pt.color}99`,
+                  borderRadius: 7, padding: "6px 14px", fontFamily: "'Josefin Sans', sans-serif",
+                  fontSize: 12, color: pt.color, letterSpacing: "0.1em", cursor: "pointer",
+                  fontWeight: 900, textTransform: "uppercase", whiteSpace: "nowrap",
+                  boxShadow: `0 0 10px ${pt.color}33`,
+                }}>→ View</button>
               </div>
             ))}
           </div>
-          <p style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontSize: 9, color: "rgba(212,175,55,0.3)", marginTop: 4, flexShrink: 0 }}>
+          <p style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontSize: 13, color: "rgba(212,175,55,0.45)", marginTop: 6, flexShrink: 0 }}>
             ☝️ Click any event to jump to that year.
           </p>
         </div>
@@ -324,15 +336,15 @@ export function PatternsOfChange() {
             initial={{ opacity: 0.7 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}
             style={{ ...panel, borderRadius: 10, flex: 1, minHeight: 0, padding: "14px 18px", display: "flex", flexDirection: "column", justifyContent: "center" }}
           >
-            <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, color: "rgba(212,175,55,0.55)", letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 4 }}>Current Year</p>
-            <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 46, color: GOLD, fontWeight: 700, lineHeight: 1, marginBottom: 4 }}>{currentYear}</p>
-            <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 14, color: "rgba(212,175,55,0.65)", letterSpacing: "0.04em", marginBottom: 8 }}>
+            <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 15, color: "rgba(212,175,55,0.9)", letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 4, fontWeight: 700 }}>Current Year</p>
+            <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 54, color: GOLD, fontWeight: 900, lineHeight: 1, marginBottom: 5, textShadow: "0 0 18px rgba(212,175,55,0.5)" }}>{currentYear}</p>
+            <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 15, color: "rgba(212,175,55,0.9)", letterSpacing: "0.04em", marginBottom: 9, fontWeight: 700 }}>
               ~{currentPop.toLocaleString()} individuals
             </p>
             <motion.p
               key={yearInfo.desc}
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4 }}
-              style={{ fontFamily: "'Playfair Display', serif", fontSize: 15, color: "rgba(255,255,255,0.75)", lineHeight: 1.55 }}
+              style={{ fontFamily: "'Playfair Display', serif", fontSize: 16, color: "rgba(255,255,255,0.95)", lineHeight: 1.55, fontWeight: 600 }}
             >
               {yearInfo.desc}
             </motion.p>
@@ -344,7 +356,7 @@ export function PatternsOfChange() {
             initial={{ opacity: 0.7 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}
             style={{ ...panel, borderRadius: 10, flex: 1, minHeight: 0, padding: "14px 18px", display: "flex", flexDirection: "column", justifyContent: "center" }}
           >
-            <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 12, color: "rgba(212,175,55,0.5)", letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 14 }}>Ecosystem Status</p>
+            <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 14, color: "rgba(212,175,55,0.9)", letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 14, fontWeight: 700 }}>Ecosystem Status</p>
             <div style={{ display: "flex", flexDirection: "column", gap: 13 }}>
               {indicators.map((ind) => (
                 <motion.div
@@ -352,9 +364,9 @@ export function PatternsOfChange() {
                   initial={{ opacity: 0, x: 6 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.25 }}
                   style={{ display: "flex", alignItems: "center", gap: 10 }}
                 >
-                  <span style={{ fontSize: 18 }}>{ind.icon}</span>
-                  <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 15, color: "rgba(255,255,255,0.82)", letterSpacing: "0.03em" }}>{ind.label}</span>
-                  <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 15, color: ind.color, fontWeight: 700, whiteSpace: "nowrap", marginLeft: 4 }}>{ind.status}</span>
+                  <span style={{ fontSize: 20 }}>{ind.icon}</span>
+                  <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 16, color: "rgba(255,255,255,0.96)", letterSpacing: "0.03em", fontWeight: 600 }}>{ind.label}</span>
+                  <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 16, color: ind.color, fontWeight: 900, whiteSpace: "nowrap", marginLeft: 4, textShadow: `0 0 8px ${ind.color}66` }}>{ind.status}</span>
                 </motion.div>
               ))}
             </div>
