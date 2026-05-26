@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import portraitImg from "@/assets/species-portrait.png";
-import sciClassImg from "@assets/image_1779762355033.png";
+import sciClassImg from "@assets/image_1779762468352.png";
 
 export function MeetSpecies() {
   const facts = [
