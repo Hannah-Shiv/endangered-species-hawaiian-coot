@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import healthyImg from "@assets/image_1779835298098.png";
 import ratsImg    from "@assets/image_1779835596663.png";
 import dogsImg    from "@assets/image_1779838496982.png";
-import frogsImg   from "@assets/image_1779834002262.png";
+import frogsImg   from "@assets/image_1779838792688.png";
 
 // ── Palette ───────────────────────────────────────────────────────────────────
 const GOLD = "rgba(212,175,55,1)";
