@@ -61,7 +61,7 @@ const PREDATORS: Predator[] = [
     sideIcon: "🦡",
     sideDesc: "Introduced in 1883, mongoose devastate ground and low nests, taking both eggs and chicks.",
     image: healthyImg as string,
-    imgFilter: "brightness(0.4) saturate(0.4) sepia(0.6) hue-rotate(-20deg)",
+    imgFilter: "none",
     headline: "MONGOOSE IMPACT",
     overlays: [
       { label: "⚠  ACTIVE PREDATOR DETECTED", text: "Mongoose are highly adaptable and hunt both day and night.", top: "12%", left: "3%" },
@@ -82,7 +82,7 @@ const PREDATORS: Predator[] = [
     sideIcon: "🐀",
     sideDesc: "Nocturnal nest raiders and direct predators that are widespread throughout the Hawaiian Islands.",
     image: ratsImg as string,
-    imgFilter: "brightness(0.9) saturate(1.1)",
+    imgFilter: "none",
     headline: "RATS & FERAL CATS IMPACT",
     overlays: [
       { label: "⚠  NOCTURNAL THREAT ACTIVE", text: "Rats and feral cats strike silently under cover of night.", top: "10%", left: "3%" },
@@ -103,7 +103,7 @@ const PREDATORS: Predator[] = [
     sideIcon: "🐕",
     sideDesc: "Domestic and feral dogs disturb and attack nesting birds in wetland areas.",
     image: dogsImg as string,
-    imgFilter: "brightness(0.75) saturate(0.85)",
+    imgFilter: "none",
     headline: "DOGS IMPACT",
     overlays: [
       { label: "⚠  NESTING DISTURBANCE", text: "Dogs flush incubating birds and trample vegetation.", top: "10%", left: "3%" },
@@ -124,7 +124,7 @@ const PREDATORS: Predator[] = [
     sideIcon: "🐸",
     sideDesc: "Invasive bullfrogs compete for food and may take small coot chicks.",
     image: frogsImg as string,
-    imgFilter: "brightness(0.7) saturate(1.35) hue-rotate(18deg)",
+    imgFilter: "none",
     headline: "BULLFROGS IMPACT",
     overlays: [
       { label: "⚠  FOOD CHAIN IMBALANCE", text: "Bullfrogs consume large amounts of insects and invertebrates.", top: "10%", left: "3%" },
@@ -145,7 +145,7 @@ const PREDATORS: Predator[] = [
     sideIcon: "🌙",
     sideDesc: "The Black-crowned Night Heron is a natural predator that occasionally preys on coot eggs and chicks.",
     image: healthyImg as string,
-    imgFilter: "brightness(0.58) saturate(0.6) hue-rotate(200deg)",
+    imgFilter: "none",
     headline: "NIGHT HERON — NATURAL PREDATION",
     overlays: [
       { label: "🌙  NATURAL BEHAVIOR", text: "Night Herons evolved alongside the Hawaiian Coot.", top: "10%", left: "3%" },
@@ -480,13 +480,15 @@ export function Predators() {
                     transition={{ delay: i * 0.12, duration: 0.35 }}
                     style={{
                       position: "absolute", top: ov.top, left: ov.left,
-                      background: "rgba(0,0,0,0.82)", border: `1px solid ${tc}aa`,
-                      borderRadius: 6, padding: "6px 10px", maxWidth: 200,
-                      boxShadow: `0 0 14px ${tc}44`,
+                      background: `rgba(0,0,0,0.88)`,
+                      border: `2.5px solid ${tc}`,
+                      borderLeft: `5px solid ${tc}`,
+                      borderRadius: 10, padding: "14px 18px", maxWidth: 280,
+                      boxShadow: `0 0 28px ${tc}55, 0 4px 20px rgba(0,0,0,0.7)`,
                     }}
                   >
-                    <p style={{ fontSize: 10, fontWeight: 800, letterSpacing: "0.1em", color: tc, marginBottom: 3 }}>{ov.label}</p>
-                    <p style={{ fontSize: 10, color: "rgba(255,255,255,0.7)", lineHeight: 1.4 }}>{ov.text}</p>
+                    <p style={{ fontSize: 14, fontWeight: 900, letterSpacing: "0.1em", color: tc, marginBottom: 7, lineHeight: 1.2 }}>{ov.label}</p>
+                    <p style={{ fontSize: 13, color: "rgba(255,255,255,0.88)", lineHeight: 1.6, fontWeight: 500 }}>{ov.text}</p>
                   </motion.div>
                 ))}
               </AnimatePresence>
