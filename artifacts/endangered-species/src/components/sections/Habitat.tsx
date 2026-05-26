@@ -170,7 +170,7 @@ export function Habitat() {
                 <div style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:"14px",fontWeight:700,color:statusColor,marginBottom:"4px"}}>{statusLabel}</div>
                 <AnimatePresence mode="wait">
                   <motion.p key={Math.floor(slider/25)} initial={{opacity:0,y:4}} animate={{opacity:1,y:0}} exit={{opacity:0}} transition={{duration:0.3}}
-                    style={{fontFamily:"'Playfair Display',serif",fontSize:"12.5px",color:"rgba(255,255,255,0.72)",lineHeight:1.5,borderLeft:`3px solid ${statusColor}`,paddingLeft:"8px",margin:0}}>
+                    style={{fontFamily:"'Playfair Display',serif",fontSize:"15px",color:"rgba(255,255,255,0.78)",lineHeight:1.5,borderLeft:`3px solid ${statusColor}`,paddingLeft:"8px",margin:0,overflow:"hidden"}}>
                     {edMsg}
                   </motion.p>
                 </AnimatePresence>
@@ -179,7 +179,24 @@ export function Habitat() {
           </div>
 
           {/* ═══ COL 2 — Vertical Slider (between scene and thermometer) ════════ */}
-          <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:"8px",minHeight:0,paddingTop:"28px"}}>
+          <div style={{display:"flex",flexDirection:"column",alignItems:"center",gap:"6px",minHeight:0,paddingTop:"28px"}}>
+
+            {/* Drag hint label — pulsing arrow badge */}
+            <motion.div
+              animate={{ opacity:[0.5,1,0.5] }}
+              transition={{ duration:2, repeat:Infinity, ease:"easeInOut" }}
+              style={{
+                flexShrink:0, display:"flex", flexDirection:"column", alignItems:"center", gap:"2px",
+                background:"rgba(212,175,55,0.12)", border:"1px solid rgba(212,175,55,0.4)",
+                borderRadius:"8px", padding:"5px 4px",
+              }}
+            >
+              <span style={{fontSize:"14px",lineHeight:1}}>↕</span>
+              <span style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:"8px",letterSpacing:"0.07em",textTransform:"uppercase",color:"rgba(212,175,55,1)",textAlign:"center",lineHeight:1.2,fontWeight:700}}>
+                DRAG<br/>ME
+              </span>
+            </motion.div>
+
             <span style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:"9px",letterSpacing:"0.05em",textTransform:"uppercase",color:"rgba(239,68,68,0.9)",textAlign:"center",lineHeight:1.2,flexShrink:0}}>
               Severe<br/>Change
             </span>
@@ -252,7 +269,7 @@ export function Habitat() {
                 <div style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:"15px",letterSpacing:"0.1em",textTransform:"uppercase",color:"rgba(212,175,55,0.9)",fontWeight:700,marginBottom:"5px"}}>
                   Year-round Temperature
                 </div>
-                <div style={{fontFamily:"'Playfair Display',serif",fontSize:"14.5px",color:"rgba(255,255,255,0.78)",lineHeight:1.55,padding:"5px 8px",borderTop:"1px solid rgba(239,68,68,0.2)"}}>
+                <div style={{fontFamily:"'Playfair Display',serif",fontSize:"16px",color:"rgba(255,255,255,0.82)",lineHeight:1.5,padding:"5px 8px",borderTop:"1px solid rgba(239,68,68,0.2)",overflow:"hidden"}}>
                   Warm tropical temperatures allow wetlands to remain active year-round.
                 </div>
               </div>
@@ -295,7 +312,7 @@ export function Habitat() {
                 {critical&&<div style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:"15px",letterSpacing:"0.07em",color:"rgba(239,120,68,1)",fontWeight:700,animation:"alert-pulse 1.8s ease-in-out infinite",marginBottom:"3px"}}>
                   ⚠ DRY CONDITIONS
                 </div>}
-                <div style={{fontFamily:"'Playfair Display',serif",fontSize:"14.5px",color:"rgba(255,255,255,0.78)",lineHeight:1.55,padding:"5px 8px",borderTop:"1px solid rgba(59,130,246,0.2)"}}>
+                <div style={{fontFamily:"'Playfair Display',serif",fontSize:"16px",color:"rgba(255,255,255,0.82)",lineHeight:1.5,padding:"5px 8px",borderTop:"1px solid rgba(59,130,246,0.2)",overflow:"hidden"}}>
                   {rainActive
                     ? "Rainfall sustains freshwater marshes and wetland biodiversity."
                     : "Reduced rainfall dries freshwater habitats, threatening food and nesting."}
@@ -314,15 +331,14 @@ export function Habitat() {
 
             <div style={{flex:1,minHeight:0,display:"flex",flexDirection:"column",gap:"8px",overflow:"hidden"}}>
               {/* 2×2 stat boxes */}
-              <AnimatePresence mode="wait">
-                <motion.div key={`${island}-${Math.floor(slider/5)}`} initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} transition={{duration:0.3}}
-                  style={{display:"grid",gridTemplateColumns:"1fr 1fr",gridTemplateRows:"1fr 1fr",gap:"7px",flex:1,minHeight:0}}>
+              {/* Stat boxes react to slider; Key Sites box keyed only on island */}
+              <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gridTemplateRows:"1fr 1fr",gap:"7px",flex:1,minHeight:0}}>
 
-                  <StatBox label="Wetland Stability"  value={wetland} icon="💧" color={wetColor}/>
-                  <StatBox label="Food Availability"  value={food}    icon="🦋" color={foodColor}/>
-                  <StatBox label="Nesting Conditions" value={nesting} icon="🥚" color={nestColor}/>
+                <StatBox label="Wetland Stability"  value={wetland} icon="💧" color={wetColor}/>
+                <StatBox label="Food Availability"  value={food}    icon="🦋" color={foodColor}/>
+                <StatBox label="Nesting Conditions" value={nesting} icon="🥚" color={nestColor}/>
 
-                  {/* Key Sites box */}
+                  {/* Key Sites box — keyed only on island, never on slider */}
                   <AnimatePresence mode="wait">
                     <motion.div key={island} initial={{opacity:0,y:6}} animate={{opacity:1,y:0}} exit={{opacity:0}} transition={{duration:0.3}}
                       style={{borderRadius:"10px",border:"2px solid rgba(212,175,55,0.35)",background:"rgba(255,255,255,0.03)",
@@ -340,8 +356,7 @@ export function Habitat() {
                     </motion.div>
                   </AnimatePresence>
 
-                </motion.div>
-              </AnimatePresence>
+              </div>
 
               {/* Footer */}
               {critical?(
