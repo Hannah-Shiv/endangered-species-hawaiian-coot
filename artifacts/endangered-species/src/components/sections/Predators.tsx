@@ -1,6 +1,6 @@
 import { motion, AnimatePresence, useSpring } from "framer-motion";
 import { useState, useEffect } from "react";
-import healthyImg from "@assets/image_1779833968892.png";
+import healthyImg from "@assets/image_1779835298098.png";
 import ratsImg    from "@assets/image_1779833978256.png";
 import dogsImg    from "@assets/image_1779833987765.png";
 import frogsImg   from "@assets/image_1779834002262.png";
@@ -35,6 +35,27 @@ type Predator = {
 
 // ── Data ──────────────────────────────────────────────────────────────────────
 const PREDATORS: Predator[] = [
+  {
+    id: "healthy", num: 0, name: "Healthy Habitat", threat: "LOW", color: "#33ee88",
+    sideIcon: "🌿",
+    sideDesc: "A thriving Hawaiian wetland — coots nest peacefully, eggs are safe, and the ecosystem is in natural balance.",
+    image: healthyImg as string,
+    imgFilter: "none",
+    headline: "HEALTHY ECOSYSTEM — BASELINE STATE",
+    overlays: [
+      { label: "✅  STABLE ECOSYSTEM", text: "No invasive threats detected. Hawaiian Coots nest and forage safely.", top: "10%", left: "3%" },
+      { label: "🪺  ACTIVE NEST", text: "Eggs and chicks are safe. Incubation proceeding normally.", top: "55%", left: "40%" },
+    ],
+    ecoImpact: [
+      { icon: "🪺", label: "Nesting Success",      dir: "up", pct: 85 },
+      { icon: "🐣", label: "Chick Survival",       dir: "up", pct: 80 },
+      { icon: "🦤", label: "Population Stability", dir: "up", pct: 78 },
+      { icon: "🌿", label: "Habitat Health",       dir: "up", pct: 88 },
+    ],
+    actions: ["Protect existing wetland refuges", "Support habitat restoration programs", "Report invasive species sightings early"],
+    metrics: { habitat: 85, nesting: 80, water: 88, food: 82, population: 78 },
+    banner: "This is a healthy Hawaiian Coot wetland. Minimal threats. Ideal conditions for nesting, foraging, and raising chicks.",
+  },
   {
     id: "mongoose", num: 1, name: "Mongoose", threat: "HIGH", color: "#ff3344",
     sideIcon: "🦡",
@@ -229,7 +250,7 @@ function ThreatGauge({ threat, color }: { threat: ThreatLevel; color: string }) 
 
 // ── Main ──────────────────────────────────────────────────────────────────────
 export function Predators() {
-  const [selId, setSelId] = useState("mongoose");
+  const [selId, setSelId] = useState("healthy");
   const [view,  setView]  = useState<"impact"|"info">("impact");
 
   const p = PREDATORS.find(x => x.id === selId) ?? PREDATORS[0];
