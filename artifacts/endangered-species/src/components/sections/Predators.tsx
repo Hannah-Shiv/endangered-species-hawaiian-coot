@@ -267,43 +267,21 @@ export function Predators() {
     }}>
 
       {/* ── 1. PAGE HEADER ────────────────────────────────────────────── */}
-      <div style={{
-        flexShrink: 0, paddingTop: 56, paddingBottom: 12,
-        paddingLeft: 28, paddingRight: 28,
-        borderBottom: `1px solid rgba(212,175,55,0.22)`,
-        display: "flex", alignItems: "center", gap: 20,
-      }}>
-        {/* Title block — centered */}
-        <div style={{ flex: 1, textAlign: "center" }}>
-          <h1 style={{
-            fontFamily: "'Playfair Display', serif",
-            fontSize: 30, fontWeight: 900, color: "#fff",
-            marginBottom: 5, lineHeight: 1.1,
-          }}>
-            Predators &amp; Invasive Threats
-          </h1>
-          <p style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", letterSpacing: "0.03em" }}>
-            The Hawaiian Coot evolved without terrestrial predators. Invasive species have had devastating effects.{" "}
-            <span style={{ color: "rgba(212,175,55,0.75)", fontStyle: "italic" }}>Hover or click a threat to explore its impact.</span>
-          </p>
-        </div>
-
-        {/* Threat level legend */}
-        <div style={{
-          flexShrink: 0, background: "rgba(255,255,255,0.04)", border: "1px solid rgba(212,175,55,0.18)",
-          borderRadius: 10, padding: "10px 16px", display: "flex", flexDirection: "column", gap: 6,
-        }}>
-          <p style={{ fontSize: 11, letterSpacing: "0.14em", color: GOLD, marginBottom: 2, fontWeight: 800 }}>THREAT LEVEL GUIDE</p>
-          {(["HIGH","MEDIUM","LOW"] as ThreatLevel[]).map(t => (
-            <div key={t} style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              <div style={{ width: 10, height: 10, borderRadius: "50%", background: THREAT_COLORS[t] }} />
-              <span style={{ fontSize: 12, color: "rgba(255,255,255,0.72)", letterSpacing: "0.05em" }}>
-                {t === "LOW" ? "Low Threat (Natural)" : t === "MEDIUM" ? "Medium Threat" : "High Threat"}
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
+      <motion.div
+        initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}
+        style={{
+          flexShrink: 0, paddingTop: 56, paddingBottom: 14,
+          borderBottom: `1px solid rgba(212,175,55,0.22)`,
+          textAlign: "center",
+        }}
+      >
+        <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: "2.8rem", color: GOLD, letterSpacing: "0.04em", lineHeight: 1.1 }}>
+          Predators &amp; Invasive Threats
+        </h1>
+        <p style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontSize: 15, color: "rgba(212,175,55,0.88)", marginTop: 6 }}>
+          The Hawaiian Coot evolved without terrestrial predators — the introduction of invasive species has had devastating effects.
+        </p>
+      </motion.div>
 
       {/* ── 2. MAIN BODY ──────────────────────────────────────────────── */}
       <div style={{ flex: 1, display: "flex", minHeight: 0 }}>
