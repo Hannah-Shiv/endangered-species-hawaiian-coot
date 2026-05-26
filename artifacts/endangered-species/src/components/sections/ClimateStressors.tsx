@@ -4,8 +4,8 @@ import { useRef, useState, useCallback, useEffect } from "react";
 import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
 } from "recharts";
-import wetlandBefore from "@/assets/wetland-before.png";
-import wetlandAfter from "@/assets/wetland-after.png";
+import wetlandBefore from "@assets/image_1779813893679.png";
+import wetlandAfter from "@assets/image_1779813900766.png";
 
 const temperatureData = [
   { year: "1960", temp: 0.0 },
@@ -127,11 +127,8 @@ function BeforeAfterSlider() {
             className="w-full h-full object-cover"
             draggable={false}
           />
-          {/* Green tint overlay for "healthy" look */}
-          <div
-            className="absolute inset-0"
-            style={{ background: "rgba(20, 80, 20, 0.08)" }}
-          />
+          {/* Green tint */}
+          <div className="absolute inset-0" style={{ background: "rgba(0,90,10,0.22)", mixBlendMode: "multiply" }} />
         </div>
 
         {/* AFTER image — full width, right side visible */}
@@ -139,39 +136,14 @@ function BeforeAfterSlider() {
           className="absolute inset-0"
           style={{ clipPath: `inset(0 0 0 ${sliderPos}%)` }}
         >
-          {/* Image — mild dim, no colour shift */}
           <img
             src={wetlandAfter}
             alt="Hawaiian wetland after projected sea level rise"
             className="w-full h-full object-cover"
-            style={{ filter: "brightness(0.62) saturate(0.78)" }}
             draggable={false}
           />
-          {/* Risen water body — covers bottom 65% of image */}
-          <div
-            className="absolute left-0 right-0 bottom-0"
-            style={{
-              height: "65%",
-              background:
-                "linear-gradient(to top, rgba(18,32,22,0.92) 0%, rgba(22,44,28,0.88) 30%, rgba(28,52,34,0.82) 55%, rgba(30,55,36,0.55) 75%, transparent 100%)",
-            }}
-          />
-          {/* Waterline surface shimmer */}
-          <div
-            className="absolute left-0 right-0"
-            style={{
-              bottom: "62%",
-              height: 6,
-              background:
-                "linear-gradient(to right, transparent 0%, rgba(160,200,160,0.25) 20%, rgba(200,230,200,0.45) 50%, rgba(160,200,160,0.25) 80%, transparent 100%)",
-              boxShadow: "0 0 18px 4px rgba(120,180,120,0.18)",
-            }}
-          />
-          {/* Subtle darkening top overlay for overall dimming */}
-          <div
-            className="absolute inset-0"
-            style={{ background: "rgba(0,0,0,0.22)" }}
-          />
+          {/* Red-brown tint */}
+          <div className="absolute inset-0" style={{ background: "rgba(140,20,0,0.28)", mixBlendMode: "multiply" }} />
         </div>
 
         {/* Divider line */}
@@ -214,24 +186,24 @@ function BeforeAfterSlider() {
             pointerEvents: "none",
             opacity: sliderPos > 10 ? 1 : 0,
             transition: "opacity 0.25s",
-            maxWidth: 210,
+            maxWidth: 240,
           }}
         >
           <div
-            className="flex items-center gap-2 px-3 py-1.5 rounded-full mb-2"
+            className="flex items-center gap-2 px-4 py-2 rounded-full mb-2"
             style={{
-              background: "rgba(0,0,0,0.72)",
-              border: "1px solid rgba(34,160,34,0.75)",
+              background: "rgba(0,0,0,0.75)",
+              border: "1.5px solid rgba(34,180,34,0.8)",
               display: "inline-flex",
             }}
           >
-            <span style={{ fontSize: 13 }}>🌿</span>
+            <span style={{ fontSize: 16 }}>🌿</span>
             <span
               style={{
                 fontFamily: "'Josefin Sans', sans-serif",
-                fontSize: 11,
-                letterSpacing: "0.14em",
-                color: "rgb(100,220,100)",
+                fontSize: 16,
+                letterSpacing: "0.16em",
+                color: "rgb(80,220,80)",
                 fontWeight: 700,
               }}
             >
@@ -242,9 +214,9 @@ function BeforeAfterSlider() {
             style={{
               fontFamily: "'Playfair Display', serif",
               fontStyle: "italic",
-              fontSize: 12,
-              color: "rgba(210,245,210,0.88)",
-              textShadow: "0 1px 6px rgba(0,0,0,1)",
+              fontSize: 13,
+              color: "rgba(210,250,210,0.92)",
+              textShadow: "0 1px 8px rgba(0,0,0,1)",
               lineHeight: 1.5,
               paddingLeft: 2,
             }}
@@ -260,24 +232,24 @@ function BeforeAfterSlider() {
             pointerEvents: "none",
             opacity: sliderPos < 90 ? 1 : 0,
             transition: "opacity 0.25s",
-            maxWidth: 210,
+            maxWidth: 240,
           }}
         >
           <div
-            className="flex items-center gap-2 px-3 py-1.5 rounded-full mb-2 ml-auto"
+            className="flex items-center gap-2 px-4 py-2 rounded-full mb-2 ml-auto"
             style={{
-              background: "rgba(0,0,0,0.72)",
-              border: "1px solid rgba(200,60,40,0.75)",
+              background: "rgba(0,0,0,0.75)",
+              border: "1.5px solid rgba(220,60,30,0.8)",
               display: "inline-flex",
             }}
           >
-            <span style={{ fontSize: 13 }}>🔥</span>
+            <span style={{ fontSize: 16 }}>🔥</span>
             <span
               style={{
                 fontFamily: "'Josefin Sans', sans-serif",
-                fontSize: 11,
-                letterSpacing: "0.14em",
-                color: "rgb(255,100,70)",
+                fontSize: 16,
+                letterSpacing: "0.16em",
+                color: "rgb(255,90,60)",
                 fontWeight: 700,
               }}
             >
@@ -288,9 +260,9 @@ function BeforeAfterSlider() {
             style={{
               fontFamily: "'Playfair Display', serif",
               fontStyle: "italic",
-              fontSize: 12,
-              color: "rgba(245,220,210,0.88)",
-              textShadow: "0 1px 6px rgba(0,0,0,1)",
+              fontSize: 13,
+              color: "rgba(255,215,210,0.92)",
+              textShadow: "0 1px 8px rgba(0,0,0,1)",
               lineHeight: 1.5,
               paddingRight: 2,
             }}
@@ -319,29 +291,40 @@ function BeforeAfterSlider() {
         </div>
       </div>
 
-      {/* Info cards below slider */}
+      {/* Dynamic info cards — crossfade based on slider position */}
       <div
-        className="grid grid-cols-1 md:grid-cols-2 gap-0 rounded-b-xl overflow-hidden"
-        style={{ border: "1px solid rgba(212,175,55,0.25)", borderTop: "none" }}
+        className="relative rounded-b-xl overflow-hidden"
+        style={{
+          border: "1px solid rgba(212,175,55,0.25)",
+          borderTop: "none",
+          minHeight: 120,
+        }}
       >
         {/* BEFORE cards */}
         <div
           className="grid grid-cols-3 gap-0"
-          style={{ background: "rgba(0,30,0,0.6)", borderRight: "1px solid rgba(212,175,55,0.2)" }}
+          style={{
+            background: "rgba(0,28,4,0.75)",
+            opacity: sliderPos >= 50 ? 1 : 0,
+            transition: "opacity 0.4s ease",
+            position: sliderPos >= 50 ? "relative" : "absolute",
+            inset: 0,
+            width: "100%",
+          }}
         >
-          {beforeCards.map((c) => (
+          {beforeCards.map((c, i) => (
             <div
               key={c.title}
               className="p-4 flex flex-col gap-1.5"
-              style={{ borderRight: "1px solid rgba(212,175,55,0.1)" }}
+              style={{ borderRight: i < 2 ? "1px solid rgba(212,175,55,0.12)" : "none" }}
             >
-              <span style={{ fontSize: 20 }}>{c.icon}</span>
+              <span style={{ fontSize: 22 }}>{c.icon}</span>
               <p
                 style={{
                   fontFamily: "'Josefin Sans', sans-serif",
-                  fontSize: 10,
+                  fontSize: 11,
                   letterSpacing: "0.1em",
-                  color: "rgb(100,220,100)",
+                  color: "rgb(80,220,80)",
                   fontWeight: 700,
                   textTransform: "uppercase",
                 }}
@@ -351,9 +334,9 @@ function BeforeAfterSlider() {
               <p
                 style={{
                   fontFamily: "'Playfair Display', serif",
-                  fontSize: 11,
-                  color: "rgba(220,240,220,0.75)",
-                  lineHeight: 1.5,
+                  fontSize: 12,
+                  color: "rgba(210,245,210,0.75)",
+                  lineHeight: 1.55,
                 }}
               >
                 {c.desc}
@@ -365,21 +348,28 @@ function BeforeAfterSlider() {
         {/* AFTER cards */}
         <div
           className="grid grid-cols-3 gap-0"
-          style={{ background: "rgba(0,10,40,0.75)" }}
+          style={{
+            background: "rgba(30,6,0,0.8)",
+            opacity: sliderPos < 50 ? 1 : 0,
+            transition: "opacity 0.4s ease",
+            position: sliderPos < 50 ? "relative" : "absolute",
+            inset: 0,
+            width: "100%",
+          }}
         >
-          {afterCards.map((c) => (
+          {afterCards.map((c, i) => (
             <div
               key={c.title}
               className="p-4 flex flex-col gap-1.5"
-              style={{ borderRight: "1px solid rgba(212,175,55,0.1)" }}
+              style={{ borderRight: i < 2 ? "1px solid rgba(212,175,55,0.12)" : "none" }}
             >
-              <span style={{ fontSize: 20 }}>{c.icon}</span>
+              <span style={{ fontSize: 22 }}>{c.icon}</span>
               <p
                 style={{
                   fontFamily: "'Josefin Sans', sans-serif",
-                  fontSize: 10,
+                  fontSize: 11,
                   letterSpacing: "0.1em",
-                  color: "rgb(255,100,80)",
+                  color: "rgb(255,90,60)",
                   fontWeight: 700,
                   textTransform: "uppercase",
                 }}
@@ -389,9 +379,9 @@ function BeforeAfterSlider() {
               <p
                 style={{
                   fontFamily: "'Playfair Display', serif",
-                  fontSize: 11,
-                  color: "rgba(200,210,255,0.75)",
-                  lineHeight: 1.5,
+                  fontSize: 12,
+                  color: "rgba(255,210,200,0.75)",
+                  lineHeight: 1.55,
                 }}
               >
                 {c.desc}
