@@ -5,10 +5,9 @@ import wetlandStressed from "@assets/image_1779819734890.png";
 
 // ── Palette ──────────────────────────────────────────────────────────────────
 const GOLD  = "rgba(212,175,55,1)";
-const GOLDF = "rgba(212,175,55,0.22)";
+const GOLDF = "rgba(212,175,55,0.2)";
 const RED   = "rgba(220,50,30,1)";
 const GREEN = "rgba(50,200,100,1)";
-const panel: React.CSSProperties = { background: "#000", border: `1px solid ${GOLDF}` };
 const spring = { type: "spring" as const, stiffness: 100, damping: 20 };
 
 // ── Data ─────────────────────────────────────────────────────────────────────
@@ -17,19 +16,19 @@ const BASE = { wetland: 28, nesting: 31, water: 68, population: 42 };
 const harmCards = [
   {
     id: "wetland-drainage", icon: "🌊", title: "Wetland Drainage",
-    desc: "Historical draining for agriculture and coastal development has eliminated ~70% of Hawaii's natural wetlands.",
+    desc: "Historical draining for agriculture has eliminated ~70% of Hawaii's natural wetlands.",
     effect: "Habitat loss destroys nesting grounds",
     delta: { wetland: -18, nesting: -12, water: -22, population: -18 },
   },
   {
     id: "predators", icon: "🦝", title: "Introduced Predators",
-    desc: "Mongoose, rats, and feral cats brought by human settlement decimate ground-nesting birds.",
+    desc: "Mongoose, rats, and feral cats brought by settlers decimate ground-nesting birds.",
     effect: "Predators threaten chicks",
     delta: { wetland: -6, nesting: -20, water: -4, population: -22 },
   },
   {
     id: "pollution", icon: "🏭", title: "Pollution & Disturbance",
-    desc: "Pesticide runoff contaminates food sources, while recreational activities and off-leash dogs disturb critical nesting sites.",
+    desc: "Pesticide runoff contaminates food sources while off-leash dogs disturb nesting sites.",
     effect: "Pollution damages food sources",
     delta: { wetland: -10, nesting: -8, water: -36, population: -10 },
   },
@@ -38,39 +37,38 @@ const harmCards = [
 const hopeCards = [
   {
     id: "refuge", icon: "🌿", title: "Refuge Creation",
-    desc: "National Wildlife Refuges protect key remaining habitats, managing water levels to maximize breeding success.",
+    desc: "National Wildlife Refuges protect key habitats, managing water levels for breeding success.",
     effect: "Protected habitats improve survival",
     delta: { wetland: 44, nesting: 28, water: 24, population: 36 },
   },
   {
     id: "taro", icon: "🌾", title: "Taro Farmer Partnerships",
-    desc: "Collaborations with traditional taro (loi) farmers help maintain agricultural wetlands as crucial secondary habitat.",
+    desc: "Collaborations with taro (loi) farmers maintain agricultural wetlands as crucial habitat.",
     effect: "Traditional agriculture supports wetlands",
     delta: { wetland: 34, nesting: 18, water: 20, population: 24 },
   },
   {
     id: "predator-control", icon: "🛡️", title: "Predator Control",
-    desc: "Active trapping and fencing programs around major refuges provide safe havens for chicks to reach adulthood.",
+    desc: "Active trapping and fencing programs create safe havens for chicks to reach adulthood.",
     effect: "Protection improves nesting success",
     delta: { wetland: 10, nesting: 46, water: 10, population: 34 },
   },
 ];
 
-// ── Take Action cards with full interactive spec ──────────────────────────────
 const helpCards = [
   {
     n: 1, icon: "🏞️",
     title: "Support Wildlife Refuges",
     desc: "Donate or volunteer at local Hawaii wildlife refuges.",
-    message: "Protected wildlife refuges provide safe nesting and feeding grounds essential for Hawaiian Coot survival.",
-    effect: "🛡️ Habitat Stability +15%",
+    message: "Protected refuges provide safe nesting and feeding grounds essential for Hawaiian Coot survival.",
+    effect: "🛡️ Habitat +15%",
     color: "rgba(100,200,100,1)",
     delta: { wetland: 15, nesting: 12, water: 5, population: 8 },
   },
   {
     n: 2, icon: "🐾",
     title: "Manage Pets",
-    desc: "Keep cats indoors and dogs on leash near wetland areas.",
+    desc: "Keep cats indoors and dogs on leash near wetlands.",
     message: "Keeping pets controlled near wetlands protects vulnerable chicks and nesting birds.",
     effect: "🐣 Chick Survival +18%",
     color: "rgba(100,160,255,1)",
@@ -81,7 +79,7 @@ const helpCards = [
     title: "Wetland Restoration",
     desc: "Join community workdays to restore and plant native vegetation.",
     message: "Restoring wetlands rebuilds critical feeding and nesting habitats for future generations.",
-    effect: "💧 Wetland Health +20%",
+    effect: "💧 Wetland +20%",
     color: "rgba(50,200,150,1)",
     delta: { wetland: 20, nesting: 8, water: 15, population: 12 },
   },
@@ -89,8 +87,8 @@ const helpCards = [
     n: 4, icon: "🐱",
     title: "Support TNR",
     desc: "Back trap-neuter-return programs for feral cat management.",
-    message: "Trap-neuter-return programs help reduce feral predator populations that threaten native birds.",
-    effect: "🦝 Predator Pressure −14%",
+    message: "TNR programs reduce feral predator populations that threaten native birds.",
+    effect: "🦝 Predator −14%",
     color: "rgba(220,160,80,1)",
     delta: { wetland: 3, nesting: 8, water: 3, population: 14 },
   },
@@ -98,8 +96,8 @@ const helpCards = [
     n: 5, icon: "🔭",
     title: "Report Wildlife",
     desc: "Contact Hawaii Wildlife Center if you spot injured waterbirds.",
-    message: "Reporting injured wildlife helps conservation teams respond quickly and protect endangered species.",
-    effect: "📈 Population Stability +6%",
+    message: "Reporting injured wildlife helps teams respond quickly to protect endangered species.",
+    effect: "📈 Population +6%",
     color: "rgba(160,120,255,1)",
     delta: { wetland: 2, nesting: 4, water: 2, population: 6 },
   },
@@ -119,13 +117,43 @@ type HoveredCard = {
   effect: string;
 } | null;
 
+// ── Reusable styled card shell ───────────────────────────────────────────────
+function SideCard({
+  color, active, onEnter, onLeave, children,
+}: {
+  color: string; active: boolean;
+  onEnter: () => void; onLeave: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <motion.div
+      onHoverStart={onEnter} onHoverEnd={onLeave}
+      animate={{
+        borderColor: active ? color.replace("1)", "0.9)") : color.replace("1)", "0.2)"),
+        background:  active ? color.replace("1)", "0.1)")  : "rgba(0,0,0,1)",
+        boxShadow:   active
+          ? `0 0 28px ${color.replace("1)", "0.35)")}, inset 0 0 40px ${color.replace("1)", "0.06)")}`
+          : "none",
+      }}
+      style={{
+        flex: 1, minHeight: 0,
+        border: `1px solid ${color.replace("1)", "0.2)")}`,
+        borderRadius: 10, padding: "12px 14px",
+        cursor: "default", overflow: "hidden",
+        display: "flex", flexDirection: "column",
+      }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
 // ── Component ─────────────────────────────────────────────────────────────────
 export function HumanImpact() {
-  const [hovered,       setHovered]       = useState<HoveredCard>(null);
-  const [activated,     setActivated]     = useState<Set<number>>(new Set());
-  const [justClicked,   setJustClicked]   = useState<number | null>(null);
+  const [hovered,     setHovered]     = useState<HoveredCard>(null);
+  const [activated,   setActivated]   = useState<Set<number>>(new Set());
+  const [justClicked, setJustClicked] = useState<number | null>(null);
 
-  // Sum deltas from all activated help cards
   const helpBoost = Array.from(activated).reduce(
     (acc, n) => {
       const c = helpCards[n - 1];
@@ -169,13 +197,13 @@ export function HumanImpact() {
       return next;
     });
     setJustClicked(n);
-    setTimeout(() => setJustClicked(null), 800);
+    setTimeout(() => setJustClicked(null), 700);
   }
 
   return (
     <div style={{
       height: "100%", display: "flex", flexDirection: "column",
-      padding: "80px 12px 6px", gap: 5, overflow: "hidden",
+      padding: "80px 14px 8px", gap: 6, overflow: "hidden",
       boxSizing: "border-box", background: "#000",
     }}>
 
@@ -187,54 +215,60 @@ export function HumanImpact() {
         <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: "2.8rem", color: GOLD, letterSpacing: "0.04em", lineHeight: 1.1 }}>
           Human Impact
         </h1>
-        <p style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontSize: 14, color: "rgba(212,175,55,0.88)", marginTop: 3 }}>
-          Our footprint has drastically reduced their habitat, but human intervention is now the only thing keeping them alive.
+        <p style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontSize: 15, color: "rgba(212,175,55,0.88)", marginTop: 4 }}>
+          Our footprint has drastically reduced their habitat — but human intervention is now the only thing keeping them alive.
         </p>
       </motion.div>
 
       {/* ── Harm | Ecosystem | Hope ── */}
-      <div style={{ flex: 3, minHeight: 0, display: "grid", gridTemplateColumns: "1fr 1.7fr 1fr", gap: 5 }}>
+      <div style={{ flex: 3, minHeight: 0, display: "grid", gridTemplateColumns: "1fr 1.65fr 1fr", gap: 6 }}>
 
-        {/* ── Harm ── */}
-        <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
-          <div style={{ flexShrink: 0, display: "flex", alignItems: "center", gap: 8, padding: "6px 12px", ...panel, borderRadius: 8, borderColor: "rgba(220,50,30,0.5)" }}>
-            <span style={{ fontSize: 18 }}>⚠️</span>
+        {/* ── HARM column ── */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+          {/* Header */}
+          <div style={{
+            flexShrink: 0, display: "flex", alignItems: "center", gap: 10,
+            padding: "8px 14px", borderRadius: 10,
+            background: "rgba(220,50,30,0.1)", border: "1px solid rgba(220,50,30,0.55)",
+            boxShadow: "0 0 18px rgba(220,50,30,0.15)",
+          }}>
+            <span style={{ fontSize: 22 }}>⚠️</span>
             <div>
-              <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 17, color: RED, fontWeight: 700, lineHeight: 1.1 }}>Harm</p>
-              <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 9.5, color: "rgba(255,255,255,0.5)", letterSpacing: "0.07em" }}>THREATS THAT DESTROY HABITAT</p>
+              <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 20, color: RED, fontWeight: 700, lineHeight: 1 }}>Harm</p>
+              <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 10, color: "rgba(255,255,255,0.5)", letterSpacing: "0.09em", marginTop: 2 }}>THREATS THAT DESTROY HABITAT</p>
             </div>
           </div>
 
           {harmCards.map(card => {
             const active = hovered?.id === card.id;
             return (
-              <motion.div key={card.id}
-                onHoverStart={() => setHovered({ type: "harm", id: card.id, delta: card.delta, effect: card.effect })}
-                onHoverEnd={() => setHovered(null)}
-                animate={{
-                  borderColor: active ? "rgba(220,50,30,0.95)" : "rgba(220,50,30,0.22)",
-                  background:  active ? "rgba(220,50,30,0.13)" : "rgba(0,0,0,1)",
-                  boxShadow:   active ? "0 0 22px rgba(220,50,30,0.35), inset 0 0 30px rgba(220,50,30,0.07)" : "none",
-                }}
-                style={{ flex: 1, minHeight: 0, border: "1px solid rgba(220,50,30,0.22)", borderRadius: 8, padding: "10px 12px", cursor: "default", overflow: "hidden" }}
+              <SideCard key={card.id} color={RED} active={active}
+                onEnter={() => setHovered({ type: "harm", id: card.id, delta: card.delta, effect: card.effect })}
+                onLeave={() => setHovered(null)}
               >
-                <div style={{ display: "flex", gap: 9, height: "100%" }}>
-                  <span style={{ fontSize: 24, flexShrink: 0, marginTop: 1 }}>{card.icon}</span>
+                <div style={{ display: "flex", gap: 10 }}>
+                  <span style={{ fontSize: 26, flexShrink: 0 }}>{card.icon}</span>
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 14, color: RED, fontWeight: 700, letterSpacing: "0.04em", marginBottom: 4 }}>{card.title}</p>
-                    <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 12.5, color: "rgba(255,255,255,0.74)", lineHeight: 1.5 }}>{card.desc}</p>
-                    <motion.p animate={{ opacity: active ? 1 : 0, y: active ? 0 : 4 }}
-                      style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11, color: RED, letterSpacing: "0.07em", marginTop: 6, fontWeight: 700 }}
+                    <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 16, color: RED, fontWeight: 700, letterSpacing: "0.03em", marginBottom: 5 }}>{card.title}</p>
+                    <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 13.5, color: "rgba(255,255,255,0.78)", lineHeight: 1.55 }}>{card.desc}</p>
+                    <motion.p
+                      animate={{ opacity: active ? 1 : 0, y: active ? 0 : 5 }}
+                      style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 12, color: RED, letterSpacing: "0.07em", marginTop: 7, fontWeight: 700 }}
                     >↳ {card.effect}</motion.p>
                   </div>
                 </div>
-              </motion.div>
+              </SideCard>
             );
           })}
         </div>
 
-        {/* ── Center ecosystem ── */}
-        <div style={{ ...panel, borderRadius: 10, overflow: "hidden", display: "flex", flexDirection: "column" }}>
+        {/* ── CENTER ecosystem ── */}
+        <div style={{
+          borderRadius: 12, overflow: "hidden", display: "flex", flexDirection: "column",
+          border: "1px solid rgba(212,175,55,0.2)", background: "#000",
+          boxShadow: "0 0 30px rgba(212,175,55,0.07)",
+        }}>
+          {/* Split image */}
           <div style={{ flex: 1, minHeight: 0, position: "relative", overflow: "hidden" }}>
             <img src={wetlandStressed as string} alt="Damaged wetland"
               style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 40%" }} />
@@ -243,50 +277,57 @@ export function HumanImpact() {
               <img src={wetlandHealthy as string} alt="Healthy wetland"
                 style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 40%" }} />
             </motion.div>
+
+            {/* Overlays */}
             <motion.div animate={{ opacity: hovered?.type === "harm" ? 0.55 : 0.1 }} transition={{ duration: 0.4 }}
               style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, rgba(200,30,10,0.9) 0%, rgba(200,30,10,0.2) 55%, transparent 100%)", pointerEvents: "none" }} />
             <motion.div animate={{ opacity: hovered?.type === "hope" ? 0.45 : 0.07 }} transition={{ duration: 0.4 }}
               style={{ position: "absolute", inset: 0, background: "linear-gradient(to left, rgba(30,180,80,0.85) 0%, rgba(30,180,80,0.15) 55%, transparent 100%)", pointerEvents: "none" }} />
-            {/* Help activated glow */}
-            <motion.div animate={{ opacity: activated.size > 0 ? Math.min(0.4, activated.size * 0.1) : 0 }} transition={{ duration: 0.6 }}
-              style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at center, rgba(50,200,100,0.35) 0%, transparent 70%)", pointerEvents: "none" }} />
+            <motion.div animate={{ opacity: activated.size > 0 ? Math.min(0.38, activated.size * 0.1) : 0 }} transition={{ duration: 0.7 }}
+              style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at center, rgba(50,200,100,0.4) 0%, transparent 70%)", pointerEvents: "none" }} />
+
+            {/* Divider */}
             <motion.div animate={{ left: `${dividerPct}%` }} transition={spring}
-              style={{ position: "absolute", top: 0, bottom: 0, width: 2, transform: "translateX(-1px)", background: "rgba(255,255,255,0.85)", boxShadow: "0 0 12px rgba(255,255,255,0.7)", zIndex: 5, pointerEvents: "none" }} />
+              style={{ position: "absolute", top: 0, bottom: 0, width: 2, transform: "translateX(-1px)", background: "rgba(255,255,255,0.9)", boxShadow: "0 0 14px rgba(255,255,255,0.8)", zIndex: 5, pointerEvents: "none" }} />
             <motion.div animate={{ left: `${dividerPct}%` }} transition={spring}
-              style={{ position: "absolute", top: "50%", transform: "translate(-50%,-50%)", width: 24, height: 24, borderRadius: "50%", background: "rgba(0,0,0,0.85)", border: "2px solid rgba(255,255,255,0.85)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 6, pointerEvents: "none" }}>
-              <span style={{ fontSize: 11, color: "white" }}>⟷</span>
+              style={{ position: "absolute", top: "50%", transform: "translate(-50%,-50%)", width: 28, height: 28, borderRadius: "50%", background: "rgba(0,0,0,0.9)", border: "2px solid rgba(255,255,255,0.9)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 6, pointerEvents: "none" }}>
+              <span style={{ fontSize: 12, color: "white" }}>⟷</span>
             </motion.div>
-            <div style={{ position: "absolute", top: 9, left: 11, zIndex: 4 }}>
-              <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 12, color: RED, letterSpacing: "0.12em", fontWeight: 700, textShadow: "0 1px 6px rgba(0,0,0,0.95)" }}>HARM</span>
+
+            {/* Corner labels */}
+            <div style={{ position: "absolute", top: 10, left: 12, zIndex: 4 }}>
+              <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, color: RED, letterSpacing: "0.14em", fontWeight: 700, textShadow: "0 2px 8px rgba(0,0,0,1)" }}>HARM</span>
             </div>
-            <div style={{ position: "absolute", top: 9, right: 11, zIndex: 4 }}>
-              <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 12, color: GREEN, letterSpacing: "0.12em", fontWeight: 700, textShadow: "0 1px 6px rgba(0,0,0,0.95)" }}>HOPE</span>
+            <div style={{ position: "absolute", top: 10, right: 12, zIndex: 4 }}>
+              <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, color: GREEN, letterSpacing: "0.14em", fontWeight: 700, textShadow: "0 2px 8px rgba(0,0,0,1)" }}>HOPE</span>
             </div>
+
+            {/* Effect tooltip */}
             <motion.div animate={{ opacity: hovered ? 1 : 0, y: hovered ? 0 : 6 }} transition={{ duration: 0.25 }}
-              style={{ position: "absolute", bottom: 10, left: "50%", transform: "translateX(-50%)", background: "rgba(0,0,0,0.9)", border: `1.5px solid ${hovered?.type === "harm" ? "rgba(220,50,30,0.8)" : "rgba(50,200,100,0.8)"}`, borderRadius: 6, padding: "5px 16px", whiteSpace: "nowrap", zIndex: 7, pointerEvents: "none" }}>
-              <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 12, color: hovered?.type === "harm" ? RED : GREEN, fontWeight: 700, letterSpacing: "0.07em" }}>{hovered?.effect ?? ""}</span>
+              style={{ position: "absolute", bottom: 12, left: "50%", transform: "translateX(-50%)", background: "rgba(0,0,0,0.92)", border: `1.5px solid ${hovered?.type === "harm" ? "rgba(220,50,30,0.85)" : "rgba(50,200,100,0.85)"}`, borderRadius: 7, padding: "6px 18px", whiteSpace: "nowrap", zIndex: 7, pointerEvents: "none" }}>
+              <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 12.5, color: hovered?.type === "harm" ? RED : GREEN, fontWeight: 700, letterSpacing: "0.07em" }}>{hovered?.effect ?? ""}</span>
             </motion.div>
             <motion.div animate={{ opacity: hovered ? 0 : 1 }} transition={{ duration: 0.2 }}
-              style={{ position: "absolute", bottom: 10, left: "50%", transform: "translateX(-50%)", background: "rgba(0,0,0,0.75)", border: "1px solid rgba(212,175,55,0.35)", borderRadius: 6, padding: "5px 14px", whiteSpace: "nowrap", zIndex: 7, pointerEvents: "none" }}>
-              <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11, color: "rgba(212,175,55,0.8)", letterSpacing: "0.08em" }}>👆 HOVER ANY CARD TO SEE THE IMPACT</span>
+              style={{ position: "absolute", bottom: 12, left: "50%", transform: "translateX(-50%)", background: "rgba(0,0,0,0.8)", border: "1px solid rgba(212,175,55,0.4)", borderRadius: 7, padding: "6px 16px", whiteSpace: "nowrap", zIndex: 7, pointerEvents: "none" }}>
+              <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 12, color: "rgba(212,175,55,0.85)", letterSpacing: "0.08em" }}>👆 HOVER ANY CARD TO SEE THE IMPACT</span>
             </motion.div>
           </div>
 
           {/* Meters */}
-          <div style={{ flexShrink: 0, padding: "7px 14px 9px", borderTop: "1px solid rgba(212,175,55,0.15)" }}>
-            <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 10, color: "rgba(212,175,55,0.55)", letterSpacing: "0.14em", textAlign: "center", marginBottom: 6 }}>ECOSYSTEM HEALTH</p>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6px 16px" }}>
+          <div style={{ flexShrink: 0, padding: "8px 16px 10px", borderTop: "1px solid rgba(212,175,55,0.15)" }}>
+            <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11, color: "rgba(212,175,55,0.6)", letterSpacing: "0.16em", textAlign: "center", marginBottom: 7 }}>ECOSYSTEM HEALTH</p>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "7px 18px" }}>
               {METERS.map(({ key, label, icon }) => {
                 const val = metrics[key];
                 const barColor = val < 30 ? "#e63333" : val < 55 ? "#ddaa22" : "#44cc88";
                 return (
                   <div key={key}>
-                    <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 2, alignItems: "center" }}>
-                      <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11, color: "rgba(255,255,255,0.7)", letterSpacing: "0.04em" }}>{icon} {label}</span>
-                      <motion.span animate={{ color: barColor }} style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11, fontWeight: 900 }}>{val}%</motion.span>
+                    <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 3, alignItems: "center" }}>
+                      <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 12, color: "rgba(255,255,255,0.75)", letterSpacing: "0.04em" }}>{icon} {label}</span>
+                      <motion.span animate={{ color: barColor }} style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 12, fontWeight: 900 }}>{val}%</motion.span>
                     </div>
-                    <div style={{ height: 6, background: "rgba(255,255,255,0.1)", borderRadius: 3, overflow: "hidden" }}>
-                      <motion.div animate={{ width: `${val}%`, backgroundColor: barColor }} transition={spring} style={{ height: "100%", borderRadius: 3 }} />
+                    <div style={{ height: 7, background: "rgba(255,255,255,0.1)", borderRadius: 4, overflow: "hidden" }}>
+                      <motion.div animate={{ width: `${val}%`, backgroundColor: barColor }} transition={spring} style={{ height: "100%", borderRadius: 4 }} />
                     </div>
                   </div>
                 );
@@ -295,117 +336,182 @@ export function HumanImpact() {
           </div>
         </div>
 
-        {/* ── Hope ── */}
-        <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
-          <div style={{ flexShrink: 0, display: "flex", alignItems: "center", gap: 8, padding: "6px 12px", ...panel, borderRadius: 8, borderColor: "rgba(50,200,100,0.5)" }}>
-            <span style={{ fontSize: 18 }}>🌿</span>
+        {/* ── HOPE column ── */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+          {/* Header */}
+          <div style={{
+            flexShrink: 0, display: "flex", alignItems: "center", gap: 10,
+            padding: "8px 14px", borderRadius: 10,
+            background: "rgba(50,200,100,0.1)", border: "1px solid rgba(50,200,100,0.55)",
+            boxShadow: "0 0 18px rgba(50,200,100,0.15)",
+          }}>
+            <span style={{ fontSize: 22 }}>🌿</span>
             <div>
-              <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 17, color: GREEN, fontWeight: 700, lineHeight: 1.1 }}>Hope</p>
-              <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 9.5, color: "rgba(255,255,255,0.5)", letterSpacing: "0.07em" }}>ACTIONS THAT PROTECT & RESTORE</p>
+              <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 20, color: GREEN, fontWeight: 700, lineHeight: 1 }}>Hope</p>
+              <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 10, color: "rgba(255,255,255,0.5)", letterSpacing: "0.09em", marginTop: 2 }}>ACTIONS THAT PROTECT & RESTORE</p>
             </div>
           </div>
 
           {hopeCards.map(card => {
             const active = hovered?.id === card.id;
             return (
-              <motion.div key={card.id}
-                onHoverStart={() => setHovered({ type: "hope", id: card.id, delta: card.delta, effect: card.effect })}
-                onHoverEnd={() => setHovered(null)}
-                animate={{
-                  borderColor: active ? "rgba(50,200,100,0.95)" : "rgba(50,200,100,0.22)",
-                  background:  active ? "rgba(50,200,100,0.11)" : "rgba(0,0,0,1)",
-                  boxShadow:   active ? "0 0 22px rgba(50,200,100,0.3), inset 0 0 30px rgba(50,200,100,0.06)" : "none",
-                }}
-                style={{ flex: 1, minHeight: 0, border: "1px solid rgba(50,200,100,0.22)", borderRadius: 8, padding: "10px 12px", cursor: "default", overflow: "hidden" }}
+              <SideCard key={card.id} color={GREEN} active={active}
+                onEnter={() => setHovered({ type: "hope", id: card.id, delta: card.delta, effect: card.effect })}
+                onLeave={() => setHovered(null)}
               >
-                <div style={{ display: "flex", gap: 9, height: "100%" }}>
-                  <span style={{ fontSize: 24, flexShrink: 0, marginTop: 1 }}>{card.icon}</span>
+                <div style={{ display: "flex", gap: 10 }}>
+                  <span style={{ fontSize: 26, flexShrink: 0 }}>{card.icon}</span>
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 14, color: GREEN, fontWeight: 700, letterSpacing: "0.04em", marginBottom: 4 }}>{card.title}</p>
-                    <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 12.5, color: "rgba(255,255,255,0.74)", lineHeight: 1.5 }}>{card.desc}</p>
-                    <motion.p animate={{ opacity: active ? 1 : 0, y: active ? 0 : 4 }}
-                      style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11, color: GREEN, letterSpacing: "0.07em", marginTop: 6, fontWeight: 700 }}
+                    <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 16, color: GREEN, fontWeight: 700, letterSpacing: "0.03em", marginBottom: 5 }}>{card.title}</p>
+                    <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 13.5, color: "rgba(255,255,255,0.78)", lineHeight: 1.55 }}>{card.desc}</p>
+                    <motion.p
+                      animate={{ opacity: active ? 1 : 0, y: active ? 0 : 5 }}
+                      style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 12, color: GREEN, letterSpacing: "0.07em", marginTop: 7, fontWeight: 700 }}
                     >↳ {card.effect}</motion.p>
                   </div>
                 </div>
-              </motion.div>
+              </SideCard>
             );
           })}
         </div>
       </div>
 
-      {/* ── How You Can Help ── */}
-      <div style={{ flex: 1, minHeight: 0, ...panel, borderRadius: 10, padding: "7px 10px 8px", display: "flex", flexDirection: "column", gap: 5 }}>
-        <div style={{ flexShrink: 0, display: "flex", alignItems: "center", gap: 8 }}>
-          <div style={{ flex: 1, height: 1, background: "rgba(212,175,55,0.22)" }} />
-          <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 16, color: GOLD, fontWeight: 700, letterSpacing: "0.05em" }}>
+      {/* ── HOW YOU CAN HELP ── */}
+      <div style={{
+        flex: 1, minHeight: 0,
+        border: "1px solid rgba(212,175,55,0.22)", borderRadius: 12,
+        padding: "8px 12px 10px",
+        display: "flex", flexDirection: "column", gap: 6,
+        background: "rgba(212,175,55,0.02)",
+        boxShadow: "0 0 24px rgba(212,175,55,0.06)",
+      }}>
+        {/* Section header */}
+        <div style={{ flexShrink: 0, display: "flex", alignItems: "center", gap: 10 }}>
+          <div style={{ flex: 1, height: 1, background: "rgba(212,175,55,0.25)" }} />
+          <span style={{ fontFamily: "'Playfair Display', serif", fontSize: 17, color: GOLD, fontWeight: 700, letterSpacing: "0.06em" }}>
             → How You Can Help ←
           </span>
-          {activated.size > 0 && (
-            <motion.span initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }}
-              style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 10, color: GREEN, letterSpacing: "0.06em", fontWeight: 700 }}>
-              {activated.size} ACTION{activated.size > 1 ? "S" : ""} TAKEN ✓
-            </motion.span>
-          )}
-          <div style={{ flex: 1, height: 1, background: "rgba(212,175,55,0.22)" }} />
+          <AnimatePresence>
+            {activated.size > 0 && (
+              <motion.span
+                initial={{ opacity: 0, scale: 0.75 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.75 }}
+                style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11, color: GREEN, letterSpacing: "0.07em", fontWeight: 700 }}
+              >
+                {activated.size}/{helpCards.length} ACTIONS TAKEN ✓
+              </motion.span>
+            )}
+          </AnimatePresence>
+          <div style={{ flex: 1, height: 1, background: "rgba(212,175,55,0.25)" }} />
         </div>
 
-        <div style={{ flex: 1, minHeight: 0, display: "flex", gap: 5 }}>
+        {/* Cards */}
+        <div style={{ flex: 1, minHeight: 0, display: "flex", gap: 7 }}>
           {helpCards.map(card => {
             const isActive  = activated.has(card.n);
             const isPulsing = justClicked === card.n;
             const c = card.color;
+            const cFaint  = c.replace(",1)", ",0.12)");
+            const cBorder = c.replace(",1)", ",0.8)");
+            const cGlow   = c.replace(",1)", ",0.28)");
+
             return (
               <motion.div key={card.n}
                 onClick={() => toggleHelp(card.n)}
                 animate={{
-                  borderColor: isActive ? c.replace("1)", "0.85)") : "rgba(212,175,55,0.22)",
-                  background:  isActive ? c.replace("rgba(", "rgba(").replace(",1)", ",0.09)") : "rgba(0,0,0,1)",
-                  boxShadow:   isActive ? `0 0 18px ${c.replace(",1)", ",0.25)")}, inset 0 0 20px ${c.replace(",1)", ",0.05)")}` : "none",
-                  scale:       isPulsing ? [1, 1.03, 1] : 1,
+                  borderColor: isActive ? cBorder : GOLDF,
+                  background:  isActive ? cFaint   : "rgba(0,0,0,1)",
+                  boxShadow:   isActive ? `0 0 20px ${cGlow}, inset 0 0 24px ${c.replace(",1)", ",0.06)")}` : "none",
+                  scale:       isPulsing ? [1, 1.04, 1] : 1,
                 }}
-                transition={{ scale: { duration: 0.4 }, default: { duration: 0.3 } }}
-                style={{ flex: 1, border: "1px solid rgba(212,175,55,0.22)", borderRadius: 9, padding: "8px 10px", cursor: "pointer", display: "flex", flexDirection: "column", overflow: "hidden" }}
+                transition={{ scale: { duration: 0.45 }, default: { duration: 0.3 } }}
+                style={{
+                  flex: 1, border: `1px solid ${GOLDF}`, borderRadius: 10,
+                  padding: "10px 10px 9px", cursor: "pointer",
+                  display: "flex", flexDirection: "column", alignItems: "center",
+                  textAlign: "center", overflow: "hidden",
+                }}
               >
-                {/* Header row */}
-                <div style={{ display: "flex", alignItems: "center", gap: 7, marginBottom: 5 }}>
-                  <div style={{ width: 20, height: 20, borderRadius: "50%", background: isActive ? c.replace(",1)", ",0.25)") : "rgba(212,175,55,0.15)", border: `1.5px solid ${isActive ? c : "rgba(212,175,55,0.5)"}`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, transition: "all 0.3s" }}>
-                    <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 10, color: isActive ? c : GOLD, fontWeight: 900, lineHeight: 1 }}>{isActive ? "✓" : card.n}</span>
-                  </div>
-                  <span style={{ fontSize: 19 }}>{card.icon}</span>
-                </div>
+                {/* Icon */}
+                <span style={{ fontSize: 22, marginBottom: 4 }}>{card.icon}</span>
 
                 {/* Title */}
-                <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 12.5, color: isActive ? c : GOLD, fontWeight: 700, letterSpacing: "0.04em", marginBottom: 3, transition: "color 0.3s" }}>{card.title}</p>
+                <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13.5, color: isActive ? c : GOLD, fontWeight: 700, letterSpacing: "0.04em", marginBottom: 4, lineHeight: 1.2 }}>
+                  {card.title}
+                </p>
 
                 {/* Desc */}
-                <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 11, color: "rgba(255,255,255,0.68)", lineHeight: 1.4, flex: 1 }}>{card.desc}</p>
+                <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 12, color: "rgba(255,255,255,0.7)", lineHeight: 1.45, flex: 1 }}>
+                  {card.desc}
+                </p>
 
-                {/* Educational message — shown when activated */}
+                {/* Educational message — slides in when active */}
                 <AnimatePresence>
                   {isActive && (
                     <motion.p
-                      key="msg"
-                      initial={{ opacity: 0, height: 0, marginTop: 0 }}
-                      animate={{ opacity: 1, height: "auto", marginTop: 4 }}
-                      exit={{ opacity: 0, height: 0, marginTop: 0 }}
-                      transition={{ duration: 0.35 }}
-                      style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontSize: 10.5, color: "rgba(255,255,255,0.78)", lineHeight: 1.4, overflow: "hidden" }}
-                    >{card.message}</motion.p>
+                      key="edu"
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.3 }}
+                      style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontSize: 11, color: "rgba(255,255,255,0.8)", lineHeight: 1.4, marginTop: 4, overflow: "hidden" }}
+                    >
+                      {card.message}
+                    </motion.p>
                   )}
                 </AnimatePresence>
 
-                {/* Effect badge */}
-                <div style={{ marginTop: 5, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <motion.span animate={{ color: isActive ? c : "rgba(212,175,55,0.5)", opacity: isActive ? 1 : 0.7 }}
-                    style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 10, fontWeight: 700, letterSpacing: "0.05em" }}>
-                    {card.effect}
+                {/* Effect line */}
+                <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11, color: isActive ? c : "rgba(212,175,55,0.45)", fontWeight: 700, letterSpacing: "0.05em", marginTop: 6, marginBottom: 8 }}>
+                  {card.effect}
+                </p>
+
+                {/* ── Centered checkbox button ── */}
+                <motion.div
+                  animate={{
+                    background: isActive ? c.replace(",1)", ",0.2)") : "rgba(0,0,0,0)",
+                    borderColor: isActive ? cBorder : "rgba(212,175,55,0.5)",
+                    boxShadow: isActive ? `0 0 12px ${cGlow}` : "none",
+                  }}
+                  style={{
+                    width: "100%", display: "flex", alignItems: "center", justifyContent: "center",
+                    gap: 8, padding: "6px 0", borderRadius: 7,
+                    border: "1.5px solid rgba(212,175,55,0.5)",
+                  }}
+                >
+                  {/* Checkbox box */}
+                  <motion.div
+                    animate={{
+                      background: isActive ? c : "rgba(0,0,0,0)",
+                      borderColor: isActive ? c : "rgba(212,175,55,0.6)",
+                      boxShadow: isActive ? `0 0 8px ${cGlow}` : "none",
+                    }}
+                    style={{
+                      width: 16, height: 16, borderRadius: 4,
+                      border: "1.5px solid rgba(212,175,55,0.6)",
+                      display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
+                    }}
+                  >
+                    <AnimatePresence>
+                      {isActive && (
+                        <motion.span
+                          key="check"
+                          initial={{ scale: 0, opacity: 0 }}
+                          animate={{ scale: 1, opacity: 1 }}
+                          exit={{ scale: 0, opacity: 0 }}
+                          style={{ fontSize: 10, color: "#000", fontWeight: 900, lineHeight: 1 }}
+                        >✓</motion.span>
+                      )}
+                    </AnimatePresence>
+                  </motion.div>
+
+                  {/* Label */}
+                  <motion.span
+                    animate={{ color: isActive ? c : "rgba(212,175,55,0.75)" }}
+                    style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11.5, fontWeight: 700, letterSpacing: "0.1em" }}
+                  >
+                    {isActive ? "ACTIVATED" : "TAKE ACTION"}
                   </motion.span>
-                  <motion.span animate={{ color: isActive ? c : "rgba(212,175,55,0.55)" }}
-                    style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 10, letterSpacing: "0.06em", fontWeight: isActive ? 700 : 400 }}>
-                    {isActive ? "ACTIVE ✓" : "Take Action →"}
-                  </motion.span>
-                </div>
+                </motion.div>
               </motion.div>
             );
           })}
@@ -414,7 +520,7 @@ export function HumanImpact() {
 
       {/* Footer */}
       <div style={{ flexShrink: 0, textAlign: "center" }}>
-        <span style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontSize: 11, color: "rgba(212,175,55,0.45)" }}>
+        <span style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontSize: 12, color: "rgba(212,175,55,0.45)" }}>
           ℹ️ Every choice matters. Together we can protect Hawaii's wetlands — and the future of the Hawaiian Coot.
         </span>
       </div>
