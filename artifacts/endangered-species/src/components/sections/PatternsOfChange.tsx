@@ -167,11 +167,9 @@ function TimelineScrubber({ currentYear, onChange }: { currentYear: number; onCh
       >
         {/* Filled progress */}
         <div style={{ position: "absolute", top: 0, left: 0, bottom: 0, width: `${pct}%`, background: "linear-gradient(to right, rgba(100,30,180,0.75), rgba(160,80,255,0.8))", borderRadius: "7px 0 0 7px", transition: dragging.current ? "none" : "width 0.1s ease" }} />
-        {/* D R A G letters spaced out horizontally */}
-        <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", gap: 10, pointerEvents: "none" }}>
-          {["D","R","A","G"].map((c, i) => (
-            <span key={i} style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 16, fontWeight: 900, letterSpacing: "0.05em", color: "rgba(255,255,255,0.9)", lineHeight: 1 }}>{c}</span>
-          ))}
+        {/* D R A G   T H I S   B A R */}
+        <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", pointerEvents: "none" }}>
+          <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 16, fontWeight: 900, color: "rgba(255,255,255,0.9)", lineHeight: 1, whiteSpace: "pre" }}>{"D R A G          T H I S          B A R"}</span>
         </div>
         {/* Thumb — vertical white line */}
         <div style={{ position: "absolute", top: 0, bottom: 0, left: `${pct}%`, width: 4, background: "rgba(220,160,255,1)", transform: "translateX(-50%)", borderRadius: 2, boxShadow: "0 0 10px rgba(180,100,255,0.9)", transition: dragging.current ? "none" : "left 0.1s ease", zIndex: 2 }} />
