@@ -180,34 +180,36 @@ function BeforeAfterSlider() {
           </svg>
         </div>
 
-        {/* BEFORE block — top-left corner */}
+        {/* BEFORE block — top-left corner, unified box */}
         <div
           className="absolute top-4 left-4"
-          style={{ pointerEvents: "none", opacity: sliderPos > 10 ? 1 : 0, transition: "opacity 0.25s", maxWidth: 280 }}
+          style={{ pointerEvents: "none", opacity: sliderPos > 10 ? 1 : 0, transition: "opacity 0.25s", maxWidth: 290 }}
         >
-          <div className="flex items-center gap-2 px-4 py-2 rounded-full mb-2"
-            style={{ background: "rgba(0,0,0,0.82)", border: "2px solid rgba(34,200,34,0.9)", display: "inline-flex" }}>
-            <span style={{ fontSize: 20 }}>🌿</span>
-            <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 20, letterSpacing: "0.18em", color: "rgb(80,240,80)", fontWeight: 700 }}>BEFORE</span>
+          <div style={{ background: "rgba(0,0,0,0.82)", border: "2px solid rgba(34,200,34,0.9)", borderRadius: 12, padding: "10px 16px 12px" }}>
+            <div className="flex items-center gap-2 mb-2">
+              <span style={{ fontSize: 20 }}>🌿</span>
+              <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 20, letterSpacing: "0.18em", color: "rgb(80,240,80)", fontWeight: 700 }}>BEFORE</span>
+            </div>
+            <p style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontSize: 16, color: "rgba(220,255,220,1)", lineHeight: 1.5, fontWeight: 600 }}>
+              Healthy Wetlands at Current Sea Levels
+            </p>
           </div>
-          <p style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontSize: 16, color: "rgba(220,255,220,1)", textShadow: "0 2px 10px rgba(0,0,0,1)", lineHeight: 1.5, paddingLeft: 2, fontWeight: 600 }}>
-            Healthy Wetlands at Current Sea Levels
-          </p>
         </div>
 
-        {/* AFTER block — top-right corner */}
+        {/* AFTER block — top-right corner, unified box */}
         <div
           className="absolute top-4 right-4 text-right"
-          style={{ pointerEvents: "none", opacity: sliderPos < 90 ? 1 : 0, transition: "opacity 0.25s", maxWidth: 280 }}
+          style={{ pointerEvents: "none", opacity: sliderPos < 90 ? 1 : 0, transition: "opacity 0.25s", maxWidth: 290 }}
         >
-          <div className="flex items-center gap-2 px-4 py-2 rounded-full mb-2 ml-auto"
-            style={{ background: "rgba(0,0,0,0.82)", border: "2px solid rgba(240,60,30,0.9)", display: "inline-flex" }}>
-            <span style={{ fontSize: 20 }}>🔥</span>
-            <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 20, letterSpacing: "0.18em", color: "rgb(255,90,60)", fontWeight: 700 }}>AFTER</span>
+          <div style={{ background: "rgba(0,0,0,0.82)", border: "2px solid rgba(240,60,30,0.9)", borderRadius: 12, padding: "10px 16px 12px" }}>
+            <div className="flex items-center gap-2 mb-2 justify-end">
+              <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 20, letterSpacing: "0.18em", color: "rgb(255,90,60)", fontWeight: 700 }}>AFTER</span>
+              <span style={{ fontSize: 20 }}>🔥</span>
+            </div>
+            <p style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontSize: 16, color: "rgba(255,220,215,1)", lineHeight: 1.5, fontWeight: 600 }}>
+              Projected Sea Level Rise (20–60 cm by 2100)
+            </p>
           </div>
-          <p style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontSize: 16, color: "rgba(255,220,215,1)", textShadow: "0 2px 10px rgba(0,0,0,1)", lineHeight: 1.5, paddingRight: 2, fontWeight: 600 }}>
-            Projected Sea Level Rise (20–60 cm by 2100)
-          </p>
         </div>
 
         {/* Drag hint — bottom center of image */}
@@ -238,9 +240,9 @@ function BeforeAfterSlider() {
           {beforeCards.map((c, i) => (
             <div key={c.title} className="p-5 flex flex-col gap-2"
               style={{ borderRight: i < 2 ? "1px solid rgba(212,175,55,0.15)" : "none" }}>
-              <span style={{ fontSize: 28 }}>{c.icon}</span>
-              <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 14, letterSpacing: "0.1em", color: "rgb(80,230,80)", fontWeight: 700, textTransform: "uppercase" }}>{c.title}</p>
-              <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 14, color: "rgba(210,250,210,0.9)", lineHeight: 1.55 }}>{c.desc}</p>
+              <span style={{ fontSize: 32 }}>{c.icon}</span>
+              <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 15, letterSpacing: "0.1em", color: "rgb(80,230,80)", fontWeight: 700, textTransform: "uppercase" }}>{c.title}</p>
+              <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 15, color: "rgba(210,250,210,0.9)", lineHeight: 1.55 }}>{c.desc}</p>
             </div>
           ))}
         </div>
@@ -260,9 +262,9 @@ function BeforeAfterSlider() {
           {afterCards.map((c, i) => (
             <div key={c.title} className="p-5 flex flex-col gap-2"
               style={{ borderRight: i < 2 ? "1px solid rgba(212,175,55,0.15)" : "none" }}>
-              <span style={{ fontSize: 28 }}>{c.icon}</span>
-              <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 14, letterSpacing: "0.1em", color: "rgb(255,90,60)", fontWeight: 700, textTransform: "uppercase" }}>{c.title}</p>
-              <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 14, color: "rgba(255,210,200,0.9)", lineHeight: 1.55 }}>{c.desc}</p>
+              <span style={{ fontSize: 32 }}>{c.icon}</span>
+              <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 15, letterSpacing: "0.1em", color: "rgb(255,90,60)", fontWeight: 700, textTransform: "uppercase" }}>{c.title}</p>
+              <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 15, color: "rgba(255,210,200,0.9)", lineHeight: 1.55 }}>{c.desc}</p>
             </div>
           ))}
         </div>
@@ -282,7 +284,7 @@ function BeforeAfterSlider() {
             style={{
               fontFamily: "'Playfair Display', serif",
               fontStyle: "italic",
-              fontSize: 13,
+              fontSize: 17,
               color: "rgba(255,230,150,0.9)",
               lineHeight: 1.6,
             }}
@@ -373,7 +375,8 @@ export function ClimateStressors() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12"
+          className="grid gap-8 mb-12"
+          style={{ gridTemplateColumns: "3fr 1fr" }}
         >
           <div
             style={{
@@ -391,7 +394,7 @@ export function ClimateStressors() {
                 color: "rgba(212,175,55,1)",
               }}
             >
-              Rising Temperatures (°C Anomaly)
+              Temperature Increase — °C
             </h3>
             <div className="h-[280px] w-full">
               <ResponsiveContainer width="100%" height="100%">
