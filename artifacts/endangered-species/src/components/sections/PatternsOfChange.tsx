@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { useState, useRef, useCallback, useEffect } from "react";
 import {
   ComposedChart, Area, Line, XAxis, YAxis, CartesianGrid,
-  Tooltip, ResponsiveContainer, Legend,
+  Tooltip, ResponsiveContainer, Legend, ReferenceLine,
 } from "recharts";
 import wetlandHealthy from "@assets/image_1779819729646.png";
 import wetlandStressed from "@assets/image_1779819734890.png";
@@ -115,10 +115,10 @@ function ChartTooltip({ active, payload, label }: any) {
   const rain = payload.find((p: any) => p.dataKey === "rainfall");
   const pop  = payload.find((p: any) => p.dataKey === "pop");
   return (
-    <div style={{ background: "#000", border: "1px solid rgba(212,175,55,0.45)", borderRadius: 7, padding: "8px 12px" }}>
-      <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, color: "rgba(212,175,55,1)", fontWeight: 700, marginBottom: 4 }}>{label}</p>
-      {rain && <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 12, color: "#5599ee", marginBottom: 2 }}>Rainfall: {rain.value} mm</p>}
-      {pop  && <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 12, color: "#e63333" }}>Population: ~{pop.value.toLocaleString()}</p>}
+    <div style={{ background: "rgba(0,0,0,0.95)", border: "2px solid rgba(212,175,55,0.85)", borderRadius: 10, padding: "12px 18px", boxShadow: "0 0 20px rgba(212,175,55,0.2)" }}>
+      <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 17, color: "rgba(212,175,55,1)", fontWeight: 900, marginBottom: 7, letterSpacing: "0.06em" }}>{label}</p>
+      {rain && <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 15, color: "rgba(50,180,255,1)", marginBottom: 4, fontWeight: 600 }}>💧 Rainfall: {rain.value} mm</p>}
+      {pop  && <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 15, color: "rgba(255,100,80,1)", fontWeight: 600 }}>🐦 Population: ~{pop.value.toLocaleString()}</p>}
     </div>
   );
 }
@@ -203,7 +203,7 @@ export function PatternsOfChange() {
         <h1 className="text-6xl mb-2" style={{ fontFamily: "'Playfair Display', serif", color: GOLD, letterSpacing: "0.04em" }}>
           Patterns of Change
         </h1>
-        <p style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontSize: 16, color: "rgba(212,175,55,0.8)" }}>
+        <p style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontSize: 16, color: "rgba(212,175,55,1)" }}>
           A story of near-extinction followed by gradual, fluctuating recovery dependent on wetland management.
         </p>
       </motion.div>
@@ -266,6 +266,14 @@ export function PatternsOfChange() {
                   stroke="#e63333" strokeWidth={2.5} dot={false}
                   activeDot={{ r: 6, fill: "#ff6644", stroke: "rgba(255,180,150,0.8)", strokeWidth: 2 }}
                 />
+                <ReferenceLine
+                  x={currentYear}
+                  yAxisId="rain"
+                  stroke="rgba(180,100,255,1)"
+                  strokeWidth={2}
+                  strokeDasharray="5 3"
+                  label={{ value: currentYear, position: "insideTopRight", fill: "rgba(220,160,255,1)", fontSize: 12, fontFamily: "'Josefin Sans', sans-serif", fontWeight: 900, dy: -4 }}
+                />
               </ComposedChart>
             </ResponsiveContainer>
           </div>
@@ -301,7 +309,7 @@ export function PatternsOfChange() {
               </div>
             ))}
           </div>
-          <p style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontSize: 13, color: "rgba(212,175,55,0.45)", marginTop: 6, flexShrink: 0 }}>
+          <p style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontSize: 13, color: "rgba(212,175,55,0.9)", marginTop: 6, flexShrink: 0 }}>
             ☝️ Click any event to jump to that year.
           </p>
         </div>
