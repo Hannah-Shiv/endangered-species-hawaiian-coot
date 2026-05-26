@@ -96,16 +96,16 @@ export function Habitat() {
         .vslider::-webkit-slider-thumb{
           -webkit-appearance:none;width:30px;height:5px;border-radius:3px;
           border:none;
-          background:rgba(212,175,55,1);
+          background:rgba(147,51,234,1);
           cursor:pointer;margin-left:0;
-          box-shadow:0 0 10px rgba(212,175,55,0.85)}
+          box-shadow:0 0 10px rgba(147,51,234,0.85)}
         .vslider::-moz-range-track{
           width:30px;border-radius:15px;
           background:linear-gradient(to top,rgba(34,197,94,0.9),rgba(212,175,55,0.9),rgba(239,120,68,0.9),rgba(239,68,68,1))}
         .vslider::-moz-range-thumb{
           width:30px;height:5px;border-radius:3px;
-          border:none;background:rgba(212,175,55,1);cursor:pointer;
-          box-shadow:0 0 10px rgba(212,175,55,0.85)}
+          border:none;background:rgba(147,51,234,1);cursor:pointer;
+          box-shadow:0 0 10px rgba(147,51,234,0.85)}
       `}</style>
 
       <div style={{
@@ -199,7 +199,7 @@ export function Habitat() {
                 fontFamily:"'Josefin Sans',sans-serif", fontSize:"9px",
                 fontWeight:900, letterSpacing:"0.14em", textTransform:"uppercase",
                 color:"#000000",
-              }}>DRAG THIS BAR</span>
+              }}>D R A G   T H I S   B A R</span>
             </div>
 
             <span style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:"9px",letterSpacing:"0.05em",textTransform:"uppercase",color:"rgba(34,197,94,0.9)",textAlign:"center",lineHeight:1.2,flexShrink:0}}>
@@ -238,7 +238,7 @@ export function Habitat() {
                   const tempVal = Math.round(d.tempLow + f*(d.tempHigh-d.tempLow) + deg*9*f);
                   return <g key={i}>
                     <line x1="38" y1={ty} x2="52" y2={ty} stroke="rgba(255,255,255,0.35)" strokeWidth="2"/>
-                    <text x="57" y={ty+13} fill="rgba(255,255,255,0.9)" fontSize="34" fontFamily="'Josefin Sans'" fontWeight="700">{tempVal}°</text>
+                    <text x="57" y={ty+13} fill="rgba(255,255,255,0.9)" fontSize="32" fontFamily="'Josefin Sans'" fontWeight="700">{tempVal}°</text>
                   </g>;
                 })}
                 {/* Tube */}
