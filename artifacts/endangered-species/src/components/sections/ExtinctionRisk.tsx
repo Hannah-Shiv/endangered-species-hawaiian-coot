@@ -846,26 +846,31 @@ function HabitatContent() {
   return (
     <div style={{ padding: "32px 40px 48px", maxWidth: 1100, margin: "0 auto" }}>
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 22 }}>
-        <div style={{ borderRadius: 16, border: `1px solid ${BORDER}`, background: CARD_BG, padding: "26px 28px" }}>
+
+        {/* Left — Wetland Loss */}
+        <div style={{ borderRadius: 16, border: `1px solid ${BORDER}`, background: CARD_BG, padding: "28px 30px" }}>
           <SectionLabel>WETLAND LOSS TIMELINE</SectionLabel>
-          <div style={{ marginTop: 18, display: "flex", flexDirection: "column", gap: 12 }}>
+          <div style={{ marginTop: 20, display: "flex", flexDirection: "column", gap: 14 }}>
             {[
-              { label: "Historical wetlands (1800s)", value: "~900,000 acres", color: GREEN  },
+              { label: "Historical wetlands (1800s)", value: "~900,000 acres", color: GREEN   },
               { label: "Remaining today",             value: "~378,000 acres (42%)", color: AMBER  },
               { label: "Protected refuge wetlands",   value: "~5,000 acres",    color: GOLD   },
-              { label: "Wetlands lost since 1900",    value: "> 58%",           color: CRIMSON},
+              { label: "Wetlands lost since 1900",    value: "> 58%",           color: CRIMSON },
             ].map((s, i) => (
-              <motion.div key={i} initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.1 }}
-                style={{ padding: "16px 18px", borderRadius: 12, border: `1px solid ${s.color}30`, background: `${s.color}0a` }}>
-                <p style={{ fontFamily: FF_SANS, fontSize: 12, color: "rgba(255,255,255,0.5)", margin: "0 0 4px" }}>{s.label}</p>
-                <p style={{ fontFamily: FF_SERIF, fontSize: 24, color: s.color, margin: 0 }}>{s.value}</p>
+              <motion.div key={i} initial={{ opacity: 0, x: -14 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.09 }}
+                style={{ padding: "18px 20px", borderRadius: 13, border: `1px solid ${s.color}40`, background: `${s.color}0e`, position: "relative", overflow: "hidden" }}>
+                <div style={{ position: "absolute", top: 0, left: 0, width: "50%", height: "100%", background: `radial-gradient(ellipse at 0% 50%, ${s.color}12, transparent 70%)`, pointerEvents: "none" }} />
+                <p style={{ fontFamily: FF_SANS, fontSize: 14, fontWeight: 700, color: "rgba(255,255,255,0.82)", margin: "0 0 6px", letterSpacing: "0.02em" }}>{s.label}</p>
+                <p style={{ fontFamily: FF_SERIF, fontSize: 30, color: s.color, margin: 0, lineHeight: 1 }}>{s.value}</p>
               </motion.div>
             ))}
           </div>
         </div>
-        <div style={{ borderRadius: 16, border: `1px solid ${BORDER}`, background: CARD_BG, padding: "26px 28px" }}>
+
+        {/* Right — Wetland Types */}
+        <div style={{ borderRadius: 16, border: `1px solid ${BORDER}`, background: CARD_BG, padding: "28px 30px" }}>
           <SectionLabel>REMAINING WETLAND TYPES</SectionLabel>
-          <div style={{ marginTop: 20, display: "flex", flexDirection: "column", gap: 18 }}>
+          <div style={{ marginTop: 22, display: "flex", flexDirection: "column", gap: 24 }}>
             {[
               { type: "Coastal Wetlands", pct: 38, desc: "Brackish coastal ponds, estuaries, and salt flats used for foraging" },
               { type: "Freshwater Ponds", pct: 28, desc: "Inland shallow ponds and reservoirs — primary coot habitat" },
@@ -873,19 +878,21 @@ function HabitatContent() {
               { type: "Managed Refuge",   pct: 16, desc: "Actively managed wetland cells within National Wildlife Refuges" },
             ].map((w, i) => (
               <div key={i}>
-                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 5 }}>
-                  <span style={{ fontFamily: FF_SANS, fontSize: 14, color: "rgba(255,255,255,0.85)" }}>{w.type}</span>
-                  <span style={{ fontFamily: FF_SANS, fontSize: 14, fontWeight: 800, color: GREEN }}>{w.pct}%</span>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 8 }}>
+                  <span style={{ fontFamily: FF_SANS, fontSize: 17, fontWeight: 700, color: "rgba(255,255,255,0.95)" }}>{w.type}</span>
+                  <span style={{ fontFamily: FF_SERIF, fontSize: 22, fontWeight: 700, color: GREEN }}>{w.pct}%</span>
                 </div>
-                <div style={{ height: 5, borderRadius: 999, background: "rgba(255,255,255,0.07)", overflow: "hidden", marginBottom: 5 }}>
-                  <motion.div initial={{ width: 0 }} animate={{ width: `${w.pct}%` }} transition={{ duration: 1.1, delay: 0.3 + i * 0.1 }}
-                    style={{ height: "100%", background: GREEN, borderRadius: 999 }} />
+                <div style={{ height: 10, borderRadius: 999, background: "rgba(255,255,255,0.09)", overflow: "hidden", marginBottom: 9 }}>
+                  <motion.div initial={{ width: 0 }} animate={{ width: `${w.pct}%` }}
+                    transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.25 + i * 0.1 }}
+                    style={{ height: "100%", background: `linear-gradient(90deg, ${GREEN}cc, ${GREEN})`, borderRadius: 999 }} />
                 </div>
-                <p style={{ fontFamily: FF_SANS, fontSize: 12, color: "rgba(255,255,255,0.42)", margin: 0 }}>{w.desc}</p>
+                <p style={{ fontFamily: FF_SANS, fontSize: 14, color: "rgba(255,255,255,0.75)", margin: 0, lineHeight: 1.55 }}>{w.desc}</p>
               </div>
             ))}
           </div>
         </div>
+
       </motion.div>
     </div>
   );
