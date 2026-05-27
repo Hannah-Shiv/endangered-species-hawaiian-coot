@@ -602,6 +602,167 @@ function ThreatsContent() {
   );
 }
 
+// ─── Population tab — live interactive chart ──────────────────────────────────
+function PopTrendChart() {
+  const W = 480, H = 280;
+  const pad = { l: 52, r: 20, t: 24, b: 36 };
+  const maxPop = 10000;
+  const xS = (y: number) => pad.l + (y - 1990) / (2024 - 1990) * (W - pad.l - pad.r);
+  const yS = (p: number) => pad.t + (1 - p / maxPop) * (H - pad.t - pad.b);
+
+  const svgRef = useRef<SVGSVGElement>(null);
+  const [hovered, setHovered] = useState<typeof POP_DATA[0] | null>(null);
+  const inView = useInView(svgRef, { once: true });
+
+  const pathD = POP_DATA.map((d, i) =>
+    `${i === 0 ? "M" : "L"} ${xS(d.year).toFixed(1)} ${yS(d.pop).toFixed(1)}`
+  ).join(" ");
+  const fillD = [
+    `M ${xS(POP_DATA[0].year).toFixed(1)} ${(H - pad.b).toFixed(1)}`,
+    ...POP_DATA.map(d => `L ${xS(d.year).toFixed(1)} ${yS(d.pop).toFixed(1)}`),
+    `L ${xS(POP_DATA[POP_DATA.length - 1].year).toFixed(1)} ${(H - pad.b).toFixed(1)} Z`,
+  ].join(" ");
+  const last = POP_DATA[POP_DATA.length - 1];
+
+  const POINT_LABELS: Record<number, string> = {
+    1990: "Historic High", 1995: "Declining", 2000: "Declining", 2005: "Downlisted",
+    2010: "Critical Low", 2015: "Record Low", 2018: "Recovery Begins",
+    2021: "Stabilizing", 2024: "Current",
+  };
+
+  const handleMouseMove = (e: React.MouseEvent<SVGRectElement>) => {
+    if (!svgRef.current) return;
+    const rect = svgRef.current.getBoundingClientRect();
+    const mx = (e.clientX - rect.left) * (W / rect.width);
+    let nearest = POP_DATA[0], minDist = Infinity;
+    for (const d of POP_DATA) {
+      const dist = Math.abs(xS(d.year) - mx);
+      if (dist < minDist) { minDist = dist; nearest = d; }
+    }
+    setHovered(nearest);
+  };
+
+  return (
+    <div style={{ position: "relative" }}>
+      <div style={{ position: "absolute", top: 0, right: 0, display: "flex", alignItems: "center", gap: 5, zIndex: 2 }}>
+        <motion.div animate={{ opacity: [1, 0.2, 1] }} transition={{ duration: 1.4, repeat: Infinity }}
+          style={{ width: 8, height: 8, borderRadius: "50%", background: CRIMSON, boxShadow: `0 0 8px ${CRIMSON}` }} />
+        <span style={{ fontFamily: FF_SANS, fontSize: 11, fontWeight: 800, color: CRIMSON, letterSpacing: "0.12em" }}>LIVE DATA</span>
+      </div>
+
+      <svg ref={svgRef} width={W} height={H} viewBox={`0 0 ${W} ${H}`}
+        style={{ display: "block", overflow: "visible", width: "100%" }}>
+        <defs>
+          <linearGradient id="popGrad2" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor={CRIMSON} stopOpacity="0.3" />
+            <stop offset="100%" stopColor={CRIMSON} stopOpacity="0" />
+          </linearGradient>
+        </defs>
+
+        {/* Grid lines + Y-axis labels */}
+        {[0, 2500, 5000, 7500, 10000].map(v => (
+          <g key={v}>
+            <line x1={pad.l} y1={yS(v)} x2={W - pad.r} y2={yS(v)}
+              stroke={hovered ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.11)"} strokeWidth={1} />
+            <text x={pad.l - 6} y={yS(v) + 4} textAnchor="end"
+              fill="rgba(255,255,255,0.75)" fontSize={11} fontFamily={FF_SANS} fontWeight="bold">
+              {v >= 1000 ? `${v / 1000}K` : v}
+            </text>
+          </g>
+        ))}
+
+        {/* Area fill */}
+        <motion.path d={fillD} fill="url(#popGrad2)"
+          initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}}
+          transition={{ duration: 1.2, delay: 0.4 }} />
+
+        {/* Hover crosshair */}
+        {hovered && (
+          <line x1={xS(hovered.year)} y1={pad.t} x2={xS(hovered.year)} y2={H - pad.b}
+            stroke={GOLD} strokeWidth={1.5} strokeDasharray="4 3" strokeOpacity={0.75} />
+        )}
+
+        {/* Animated line draw */}
+        <motion.path d={pathD} fill="none" stroke={CRIMSON} strokeWidth={3}
+          strokeLinecap="round" strokeLinejoin="round"
+          initial={{ pathLength: 0, opacity: 0 }}
+          animate={inView ? { pathLength: 1, opacity: 1 } : {}}
+          transition={{ duration: 2.2, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
+        />
+
+        {/* Data dots */}
+        {POP_DATA.map(d => (
+          <circle key={d.year}
+            cx={xS(d.year)} cy={yS(d.pop)}
+            r={hovered?.year === d.year ? 7 : 4}
+            fill={hovered?.year === d.year ? "#fff" : CRIMSON}
+            stroke={CRIMSON} strokeWidth={2}
+            style={{ transition: "r 0.12s ease, fill 0.12s ease" }}
+          />
+        ))}
+
+        {/* Pulsing ring on latest point */}
+        {!hovered && (
+          <>
+            <motion.circle cx={xS(last.year)} cy={yS(last.pop)}
+              fill="none" stroke={CRIMSON} strokeWidth={2}
+              animate={{ r: [6, 18], opacity: [0.8, 0] }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeOut" }} />
+            <circle cx={xS(last.year)} cy={yS(last.pop)} r={5} fill={CRIMSON} />
+            <rect x={xS(last.year) - 30} y={yS(last.pop) - 24} width={60} height={19} rx={5} fill="rgba(220,50,30,0.93)" />
+            <text x={xS(last.year)} y={yS(last.pop) - 11} textAnchor="middle"
+              fill="#fff" fontSize={11} fontFamily={FF_SANS} fontWeight="bold">~3,200</text>
+          </>
+        )}
+
+        {/* Hover tooltip */}
+        {hovered && (() => {
+          const tx = xS(hovered.year);
+          const ty = yS(hovered.pop);
+          const flipLeft = tx > W * 0.72;
+          const tX = flipLeft ? tx - 84 : tx + 12;
+          const label = POINT_LABELS[hovered.year] ?? "Data Point";
+          const isWarning = hovered.year === 2015 || hovered.year === 2010;
+          return (
+            <g>
+              <circle cx={tx} cy={ty} r={7} fill="#fff" stroke={CRIMSON} strokeWidth={2.5} />
+              <rect x={tX} y={ty - 42} width={76} height={56} rx={9}
+                fill="rgba(6,4,8,0.97)" stroke={isWarning ? AMBER : CRIMSON} strokeWidth={1.5} />
+              <text x={tX + 38} y={ty - 26} textAnchor="middle"
+                fill={isWarning ? AMBER : CRIMSON} fontSize={12} fontFamily={FF_SANS} fontWeight="bold">
+                {hovered.year}
+              </text>
+              <text x={tX + 38} y={ty - 8} textAnchor="middle"
+                fill="#fff" fontSize={16} fontFamily={FF_SERIF} fontWeight="bold">
+                {hovered.pop.toLocaleString()}
+              </text>
+              <text x={tX + 38} y={ty + 8} textAnchor="middle"
+                fill="rgba(255,255,255,0.52)" fontSize={9.5} fontFamily={FF_SANS}>
+                {label}
+              </text>
+            </g>
+          );
+        })()}
+
+        {/* X-axis year labels */}
+        {POP_DATA.map(d => (
+          <text key={d.year} x={xS(d.year)} y={H - pad.b + 20} textAnchor="middle"
+            fill={hovered?.year === d.year ? GOLD : "rgba(255,255,255,0.7)"}
+            fontSize={11} fontFamily={FF_SANS} fontWeight="bold"
+            style={{ transition: "fill 0.12s" }}>
+            {d.year}
+          </text>
+        ))}
+
+        {/* Transparent mouse-capture overlay — must be last */}
+        <rect x={0} y={0} width={W} height={H} fill="transparent" style={{ cursor: "crosshair" }}
+          onMouseMove={handleMouseMove}
+          onMouseLeave={() => setHovered(null)} />
+      </svg>
+    </div>
+  );
+}
+
 // ─── Population tab ───────────────────────────────────────────────────────────
 function PopulationContent() {
   return (
@@ -609,44 +770,22 @@ function PopulationContent() {
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ display: "grid", gridTemplateColumns: "1.6fr 1fr", gap: 22 }}>
         <div style={{ borderRadius: 16, border: `1px solid ${BORDER}`, background: CARD_BG, padding: "26px 30px" }}>
           <SectionLabel>POPULATION TRAJECTORY 1990 – 2024</SectionLabel>
-          <p style={{ fontFamily: FF_SANS, fontSize: 14, color: "rgba(255,255,255,0.5)", margin: "8px 0 22px", lineHeight: 1.6 }}>From ~8,800 birds to a low of ~2,300, now recovering to ~3,200 thanks to refuge protection.</p>
-          <svg width="100%" viewBox="0 0 480 165" style={{ display: "block", overflow: "visible" }}>
-            <defs>
-              <linearGradient id="popGrad2" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor={CRIMSON} stopOpacity="0.26" />
-                <stop offset="100%" stopColor={CRIMSON} stopOpacity="0" />
-              </linearGradient>
-            </defs>
-            {[0,2500,5000,7500,10000].map(v => {
-              const y2 = 12 + (1 - v/10000) * 122;
-              return <g key={v}>
-                <line x1={52} y1={y2} x2={470} y2={y2} stroke="rgba(255,255,255,0.07)" strokeWidth={1} />
-                <text x={46} y={y2+4} textAnchor="end" fill="rgba(255,255,255,0.32)" fontSize={11} fontFamily={FF_SANS}>{v>=1000?`${v/1000}K`:v}</text>
-              </g>;
-            })}
-            <polygon points={[`52,134`, ...POP_DATA.map(d => `${52+(d.year-1990)/(2024-1990)*418},${12+(1-d.pop/10000)*122}`), `470,134`].join(" ")} fill="url(#popGrad2)" />
-            <polyline points={POP_DATA.map(d => `${52+(d.year-1990)/(2024-1990)*418},${12+(1-d.pop/10000)*122}`).join(" ")} fill="none" stroke={CRIMSON} strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" />
-            {POP_DATA.map((d, i) => {
-              const cx2 = 52+(d.year-1990)/(2024-1990)*418;
-              const cy2 = 12+(1-d.pop/10000)*122;
-              return <g key={i}>
-                <circle cx={cx2} cy={cy2} r={4} fill={CRIMSON} />
-                <text x={cx2} y={155} textAnchor="middle" fill="rgba(255,255,255,0.35)" fontSize={11} fontFamily={FF_SANS}>{d.year}</text>
-              </g>;
-            })}
-          </svg>
+          <p style={{ fontFamily: FF_SANS, fontSize: 14, color: "rgba(255,255,255,0.72)", margin: "8px 0 22px", lineHeight: 1.6 }}>
+            From ~8,800 birds to a low of ~2,300, now recovering to ~3,200 thanks to refuge protection.
+          </p>
+          <PopTrendChart />
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
           {[
-            { label: "1970s Low",  value: "~1,800", note: "Near-extinction; ESA listing",          color: CRIMSON },
-            { label: "1990s Peak", value: "~8,800", note: "Best count in modern records",          color: GREEN  },
-            { label: "2015 Low",   value: "~2,300", note: "Drought + habitat pressure",            color: AMBER  },
-            { label: "2024 Count", value: "~3,200", note: "Partial recovery underway",             color: GOLD   },
+            { label: "1970s Low",  value: "~1,800", note: "Near-extinction; ESA listing",  color: CRIMSON },
+            { label: "1990s Peak", value: "~8,800", note: "Best count in modern records",  color: GREEN  },
+            { label: "2015 Low",   value: "~2,300", note: "Drought + habitat pressure",    color: AMBER  },
+            { label: "2024 Count", value: "~3,200", note: "Partial recovery underway",     color: GOLD   },
           ].map(s => (
-            <div key={s.label} style={{ borderRadius: 12, border: `1px solid ${s.color}30`, background: `${s.color}0a`, padding: "16px 18px" }}>
-              <p style={{ fontFamily: FF_SANS, fontSize: 12, color: "rgba(255,255,255,0.45)", margin: "0 0 3px", letterSpacing: "0.1em" }}>{s.label.toUpperCase()}</p>
-              <p style={{ fontFamily: FF_SERIF, fontSize: 32, color: s.color, margin: 0, lineHeight: 1 }}>{s.value}</p>
-              <p style={{ fontFamily: FF_SANS, fontSize: 13, color: "rgba(255,255,255,0.52)", margin: "5px 0 0" }}>{s.note}</p>
+            <div key={s.label} style={{ borderRadius: 12, border: `1px solid ${s.color}38`, background: `${s.color}0d`, padding: "16px 18px" }}>
+              <p style={{ fontFamily: FF_SANS, fontSize: 12, color: "rgba(255,255,255,0.82)", margin: "0 0 3px", letterSpacing: "0.1em", fontWeight: 700 }}>{s.label.toUpperCase()}</p>
+              <p style={{ fontFamily: FF_SERIF, fontSize: 34, color: s.color, margin: 0, lineHeight: 1 }}>{s.value}</p>
+              <p style={{ fontFamily: FF_SANS, fontSize: 13, color: "rgba(255,255,255,0.68)", margin: "5px 0 0" }}>{s.note}</p>
             </div>
           ))}
         </div>
