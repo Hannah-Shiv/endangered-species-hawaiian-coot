@@ -900,40 +900,92 @@ function HabitatContent() {
 
 // ─── Conservation tab ─────────────────────────────────────────────────────────
 function ConservationContent() {
-  const milestones = [
-    { year: "1970", event: "Hawaiian Coot listed under the Endangered Species Act",         type: "law"       },
-    { year: "1972", event: "Hanalei National Wildlife Refuge established on Kauaʻi",        type: "refuge"    },
-    { year: "1978", event: "James Campbell NWR established on Oʻahu north shore",           type: "refuge"    },
-    { year: "1992", event: "Keālia Pond NWR established on Maui south shore",               type: "refuge"    },
-    { year: "2005", event: "Hawaiian Coot downlisted from Endangered to Vulnerable",        type: "milestone" },
-    { year: "2010", event: "Predator control fencing expanded to 80% of key nesting sites", type: "action"    },
-    { year: "2019", event: "Population exceeds 3,000 for first time since early 2000s",     type: "milestone" },
-    { year: "2024", event: "Ongoing wetland restoration targets an additional 1,200 acres", type: "action"    },
-  ];
   const colors: Record<string, string> = { law: CRIMSON, refuge: GREEN, milestone: GOLD, action: AMBER };
+  const typeLabel: Record<string, string> = { law: "Federal Law", refuge: "Refuge", milestone: "Milestone", action: "Active Program" };
+
+  const milestones = [
+    { year: "1970", event: "Hawaiian Coot listed under the Endangered Species Act",          type: "law"       },
+    { year: "1972", event: "Hanalei National Wildlife Refuge established on Kauaʻi",         type: "refuge"    },
+    { year: "1978", event: "James Campbell NWR established on Oʻahu's north shore",          type: "refuge"    },
+    { year: "1992", event: "Keālia Pond NWR established on Maui's south shore",              type: "refuge"    },
+    { year: "2005", event: "Hawaiian Coot downlisted from Endangered to Vulnerable",         type: "milestone" },
+    { year: "2010", event: "Predator control fencing expanded to 80% of key nesting sites",  type: "action"    },
+    { year: "2019", event: "Population exceeds 3,000 for first time since early 2000s",      type: "milestone" },
+    { year: "2024", event: "Wetland restoration targets an additional 1,200 protected acres",type: "action"    },
+  ];
+
+  const summary = [
+    { value: "54",  unit: "yrs",    label: "of active protection" },
+    { value: "4",   unit: "",       label: "wildlife refuges established" },
+    { value: "1",   unit: "",       label: "successful downlisting" },
+    { value: "3.2K",unit: "birds",  label: "counted in 2024" },
+  ];
 
   return (
-    <div style={{ padding: "32px 40px 48px", maxWidth: 900, margin: "0 auto" }}>
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-        <p style={{ fontFamily: FF_SANS, fontSize: 14, color: "rgba(255,255,255,0.5)", margin: "0 0 28px", lineHeight: 1.65 }}>
-          Conservation milestones that have shaped the Hawaiian Coot's partial recovery over five decades.
-        </p>
-        <div style={{ position: "relative", paddingLeft: 36 }}>
-          <div style={{ position: "absolute", left: 9, top: 0, bottom: 0, width: 2, background: `linear-gradient(180deg, ${GOLD}55, transparent)` }} />
-          {milestones.map((m, i) => (
-            <motion.div key={i} initial={{ opacity: 0, x: -14 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.07 }}
-              style={{ marginBottom: 18, position: "relative" }}>
-              <div style={{ position: "absolute", left: -30, top: 8, width: 12, height: 12, borderRadius: "50%", background: colors[m.type], boxShadow: `0 0 12px ${colors[m.type]}66` }} />
-              <div style={{ padding: "16px 20px", borderRadius: 12, border: `1px solid ${colors[m.type]}26`, background: `${colors[m.type]}0a` }}>
-                <div style={{ display: "flex", alignItems: "baseline", gap: 12, marginBottom: 6 }}>
-                  <span style={{ fontFamily: FF_SERIF, fontSize: 22, color: colors[m.type] }}>{m.year}</span>
-                  <span style={{ fontFamily: FF_SANS, fontSize: 10, color: "rgba(255,255,255,0.3)", letterSpacing: "0.12em", textTransform: "uppercase" }}>{m.type}</span>
-                </div>
-                <p style={{ fontFamily: FF_SANS, fontSize: 14, color: "rgba(255,255,255,0.78)", margin: 0, lineHeight: 1.65 }}>{m.event}</p>
+    <div style={{ padding: "28px 40px 48px", maxWidth: 1100, margin: "0 auto" }}>
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+
+        {/* Summary stat row */}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 14 }}>
+          {summary.map((s, i) => (
+            <motion.div key={i}
+              initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.07, ease: [0.16, 1, 0.3, 1] }}
+              style={{ borderRadius: 14, border: `1px solid ${BORDER}`, background: CARD_BG, padding: "18px 20px", textAlign: "center" }}>
+              <div style={{ display: "flex", alignItems: "baseline", justifyContent: "center", gap: 5 }}>
+                <span style={{ fontFamily: FF_SERIF, fontSize: 40, fontWeight: 700, color: GOLD, lineHeight: 1 }}>{s.value}</span>
+                {s.unit && <span style={{ fontFamily: FF_SANS, fontSize: 15, fontWeight: 700, color: "rgba(255,255,255,0.7)" }}>{s.unit}</span>}
               </div>
+              <p style={{ fontFamily: FF_SANS, fontSize: 13, color: "rgba(255,255,255,0.72)", margin: "6px 0 0", lineHeight: 1.4 }}>{s.label}</p>
             </motion.div>
           ))}
         </div>
+
+        {/* 2 × 4 milestone cards grid */}
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+          {milestones.map((m, i) => {
+            const c = colors[m.type];
+            return (
+              <motion.div key={i}
+                initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 + i * 0.06, ease: [0.16, 1, 0.3, 1] }}
+                style={{
+                  borderRadius: 14,
+                  border: `1px solid ${c}40`,
+                  background: `${c}0c`,
+                  padding: "20px 22px 20px 20px",
+                  display: "flex",
+                  gap: 18,
+                  alignItems: "flex-start",
+                  position: "relative",
+                  overflow: "hidden",
+                }}>
+                {/* Left color bar */}
+                <div style={{ width: 3, borderRadius: 99, background: c, flexShrink: 0, alignSelf: "stretch", minHeight: 40 }} />
+
+                <div style={{ flex: 1 }}>
+                  {/* Year + type badge */}
+                  <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
+                    <span style={{ fontFamily: FF_SERIF, fontSize: 34, fontWeight: 700, color: c, lineHeight: 1 }}>{m.year}</span>
+                    <span style={{
+                      fontFamily: FF_SANS, fontSize: 11, fontWeight: 800,
+                      color: c, background: `${c}1e`,
+                      border: `1px solid ${c}50`,
+                      borderRadius: 6, padding: "3px 8px",
+                      letterSpacing: "0.08em", textTransform: "uppercase",
+                    }}>{typeLabel[m.type]}</span>
+                  </div>
+                  {/* Event text */}
+                  <p style={{ fontFamily: FF_SANS, fontSize: 15, fontWeight: 500, color: "rgba(255,255,255,0.92)", margin: 0, lineHeight: 1.55 }}>{m.event}</p>
+                </div>
+
+                {/* Corner glow */}
+                <div style={{ position: "absolute", top: 0, right: 0, width: "40%", height: "100%", background: `radial-gradient(ellipse at 100% 0%, ${c}10, transparent 70%)`, pointerEvents: "none" }} />
+              </motion.div>
+            );
+          })}
+        </div>
+
       </motion.div>
     </div>
   );
