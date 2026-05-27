@@ -643,15 +643,15 @@ function PopTrendChart() {
   };
 
   return (
-    <div style={{ position: "relative" }}>
+    <div style={{ position: "relative", flex: 1, minHeight: 0, display: "flex", flexDirection: "column" }}>
       <div style={{ position: "absolute", top: 0, right: 0, display: "flex", alignItems: "center", gap: 5, zIndex: 2 }}>
         <motion.div animate={{ opacity: [1, 0.2, 1] }} transition={{ duration: 1.4, repeat: Infinity }}
           style={{ width: 8, height: 8, borderRadius: "50%", background: CRIMSON, boxShadow: `0 0 8px ${CRIMSON}` }} />
         <span style={{ fontFamily: FF_SANS, fontSize: 11, fontWeight: 800, color: CRIMSON, letterSpacing: "0.12em" }}>LIVE DATA</span>
       </div>
 
-      <svg ref={svgRef} width={W} height={H} viewBox={`0 0 ${W} ${H}`}
-        style={{ display: "block", overflow: "visible", width: "100%" }}>
+      <svg ref={svgRef} viewBox={`0 0 ${W} ${H}`}
+        style={{ display: "block", overflow: "visible", width: "100%", height: "100%", flex: 1, minHeight: 260 }}>
         <defs>
           <linearGradient id="popGrad2" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor={CRIMSON} stopOpacity="0.3" />
@@ -777,9 +777,9 @@ function PopulationContent() {
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ display: "flex", flexDirection: "column", gap: 24 }}>
 
         {/* Chart — full width */}
-        <div style={{ borderRadius: 16, border: `1px solid ${BORDER}`, background: CARD_BG, padding: "26px 30px" }}>
+        <div style={{ borderRadius: 16, border: `1px solid ${BORDER}`, background: CARD_BG, padding: "26px 30px", display: "flex", flexDirection: "column", minHeight: 420 }}>
           <SectionLabel>POPULATION TRAJECTORY 1990 – 2024</SectionLabel>
-          <p style={{ fontFamily: FF_SANS, fontSize: 15, color: "rgba(255,255,255,0.88)", margin: "8px 0 22px", lineHeight: 1.65 }}>
+          <p style={{ fontFamily: FF_SANS, fontSize: 15, color: "rgba(255,255,255,0.88)", margin: "8px 0 18px", lineHeight: 1.65 }}>
             From ~8,800 birds to a record low of ~2,300, now recovering to ~3,200 thanks to refuge protection and active management.
           </p>
           <PopTrendChart />
