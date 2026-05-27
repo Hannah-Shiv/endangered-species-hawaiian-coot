@@ -5,7 +5,6 @@
 // ─────────────────────────────────────────────────────────────────────────────
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
-import { ExternalLink } from "lucide-react";
 
 export function Sources() {
   const sources = [
@@ -114,19 +113,30 @@ export function Sources() {
                 transition={{ delay: idx * 0.08 }}
                 style={{ minHeight: 0 }}
               >
-                <Card className="bg-card/30 border-border hover:bg-card/50 transition-colors h-full">
-                  <CardContent className="p-4 flex justify-between items-start group h-full">
-                    <div>
-                      <h3 className="text-base font-bold text-primary group-hover:text-accent transition-colors">{source.title}</h3>
-                      <p className="text-muted-foreground text-sm mt-1">{source.desc}</p>
-                    </div>
-                    {source.url && (
-                      <a href={source.url} target="_blank" rel="noreferrer" className="text-muted-foreground hover:text-foreground shrink-0 p-1 pt-0" data-testid={`link-source-${idx}`}>
-                        <ExternalLink size={16} />
-                      </a>
-                    )}
-                  </CardContent>
-                </Card>
+                {source.url ? (
+                  <a
+                    href={source.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="block h-full"
+                    data-testid={`link-source-${idx}`}
+                    style={{ textDecoration: "none" }}
+                  >
+                    <Card className="bg-card/30 border-border hover:bg-card/60 hover:border-primary/50 transition-colors h-full cursor-pointer">
+                      <CardContent className="p-4 h-full">
+                        <h3 className="text-lg font-bold text-primary">{source.title}</h3>
+                        <p className="text-muted-foreground text-base mt-1">{source.desc}</p>
+                      </CardContent>
+                    </Card>
+                  </a>
+                ) : (
+                  <Card className="bg-card/30 border-border h-full">
+                    <CardContent className="p-4 h-full">
+                      <h3 className="text-lg font-bold text-primary">{source.title}</h3>
+                      <p className="text-muted-foreground text-base mt-1">{source.desc}</p>
+                    </CardContent>
+                  </Card>
+                )}
               </motion.div>
             ))}
           </div>
