@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import cootPhoto from "@assets/image_1779651061989.png";
+import cootPhoto from "@assets/image_1779896662127.png";
 import navBg from "@assets/image_1779671102911.png";
 import { DomeNav } from "@/components/DomeNav";
 import { RadialLanding } from "@/components/RadialLanding";
@@ -54,8 +54,8 @@ function CinematicSplash({ onStart }: { onStart: () => void }) {
         style={{
           position: "absolute",
           pointerEvents: "none",
-          // targets the "click anywhere" pill — roughly left 38%, vertical 54-64%
-          left: "4%", top: "52%",
+          // targets the "click anywhere" pill in new image — center-left, ~60-72% vertical
+          left: "4%", top: "58%",
           width: "46%", height: "14%",
           borderRadius: "50%",
           background: "radial-gradient(ellipse, rgba(255,224,60,0.28) 0%, transparent 70%)",
