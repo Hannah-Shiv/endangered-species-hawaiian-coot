@@ -99,16 +99,32 @@ export function Sources() {
             <p className="mt-2">Conservation Organizations: James Campbell NWR, Kealia Pond NWR, Hawaii Wildlife Fund, The Nature Conservancy Hawaii.</p>
           </div>
 
-          {/* ── Developer credit ── */}
+          {/* ── Project credit ── */}
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.7, duration: 0.6 }}
             className="rounded-2xl border border-border bg-card/40 p-8 text-center"
           >
-            <p className="text-xs tracking-widest text-muted-foreground mb-3 font-semibold uppercase">Science Project</p>
-            <h2 className="text-3xl font-serif text-primary mb-1">Hannah Shiv</h2>
-            <p className="text-lg text-muted-foreground mb-4">Developer &amp; Researcher</p>
+            <p className="text-xs tracking-widest text-muted-foreground mb-4 font-semibold uppercase">
+              Science Project — Endangered Species — Hawaiian Coot
+            </p>
+
+            <div className="flex flex-col gap-2 mb-6">
+              <div>
+                <span className="text-2xl font-serif" style={{ color: "rgba(212,175,55,1)" }}>Hannah Shiv</span>
+                <span className="text-muted-foreground text-sm ml-3">Developer &amp; Student Researcher</span>
+              </div>
+              <div>
+                <span className="text-2xl font-serif" style={{ color: "rgba(212,175,55,0.85)" }}>Chloe Pan</span>
+                <span className="text-muted-foreground text-sm ml-3">Student Researcher</span>
+              </div>
+              <div>
+                <span className="text-2xl font-serif" style={{ color: "rgba(212,175,55,0.85)" }}>Bahram Ostad</span>
+                <span className="text-muted-foreground text-sm ml-3">Student Researcher</span>
+              </div>
+            </div>
+
             <div className="flex justify-center gap-6 text-sm text-muted-foreground flex-wrap">
               <span>🏫 Cooper Middle School</span>
               <span>🔬 Life Science</span>
