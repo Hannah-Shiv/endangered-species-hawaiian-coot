@@ -214,18 +214,20 @@ export function Adaptations() {
           {/* LEFT HALF — Scene image + detail overlay */}
           <div style={{ flex: 1, position: "relative", overflow: "hidden", borderRight: "1px solid rgba(0,200,120,0.1)" }}>
 
-            {/* Scene image */}
-            <AnimatePresence>
-              <motion.img
-                key={sceneIdx}
-                src={SCENES[sceneIdx].img}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.8 }}
-                style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+            {/* Scene images — all stacked, CSS cross-fade */}
+            {SCENES.map((sc, i) => (
+              <img
+                key={i}
+                src={sc.img}
+                alt={sc.name}
+                style={{
+                  position: "absolute", inset: 0, width: "100%", height: "100%",
+                  objectFit: "cover", display: "block",
+                  opacity: sceneIdx === i ? 1 : 0,
+                  transition: "opacity 0.7s ease",
+                }}
               />
-            </AnimatePresence>
+            ))}
 
             {/* Bottom gradient */}
             <div style={{
