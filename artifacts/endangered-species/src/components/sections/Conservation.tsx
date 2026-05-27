@@ -535,14 +535,14 @@ export function Conservation() {
                   </div>
                 </div>
 
-                {/* Photo placeholders — swap for real James Campbell photos */}
+                {/* James Campbell refuge photos */}
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
-                  {["Habitat", "Wildlife"].map(label => (
-                    <div key={label} style={{ aspectRatio: "4/3", borderRadius: 8, background: "rgba(30,65,30,0.35)", border: `1px dashed rgba(212,175,55,0.2)`, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", gap: 4 }}>
-                      <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 10, color: "rgba(255,255,255,0.25)", margin: 0, letterSpacing: "0.08em" }}>{label.toUpperCase()} PHOTO</p>
-                      <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 9, color: "rgba(255,255,255,0.15)", margin: 0 }}>Image coming soon</p>
-                    </div>
-                  ))}
+                  <div style={{ aspectRatio: "4/3", borderRadius: 8, overflow: "hidden" }}>
+                    <img src="/campbell-habitat.png" alt="James Campbell NWR habitat" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+                  </div>
+                  <div style={{ aspectRatio: "4/3", borderRadius: 8, overflow: "hidden" }}>
+                    <img src="/campbell-coot.png" alt="Hawaiian Coot at James Campbell NWR" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+                  </div>
                 </div>
 
                 <a href="https://www.fws.gov/refuge/james-campbell" target="_blank" rel="noreferrer" style={{ textDecoration: "none" }}>
