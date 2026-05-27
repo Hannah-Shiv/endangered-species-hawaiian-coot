@@ -1,3 +1,8 @@
+// ─── Conservation & Solutions ─────────────────────────────────────────────────
+// Overview of active conservation programs protecting the Hawaiian Coot.
+// Shows: organization cards (USFWS, Hawaii DLNR, etc.), recovery progress bars,
+// and action items visitors can take to help.
+// ─────────────────────────────────────────────────────────────────────────────
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";

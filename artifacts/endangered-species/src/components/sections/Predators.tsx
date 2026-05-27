@@ -1,3 +1,9 @@
+// ─── Predators & Invasive Threats ─────────────────────────────────────────────
+// Gallery of 6 invasive threat species affecting the Hawaiian Coot.
+// Shows: 2×3 thumbnail grid, full-screen scene panel, ecological impact stats,
+// "What You Can Do" checklist, and ecosystem health overview bar.
+// Each predator has a threat level (HIGH/MEDIUM/LOW) and ecosystem delta metrics.
+// ─────────────────────────────────────────────────────────────────────────────
 import { motion, AnimatePresence, useSpring } from "framer-motion";
 import { useState, useEffect } from "react";
 import healthyImg from "@assets/image_1779842553544.png";

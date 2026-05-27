@@ -1,3 +1,8 @@
+// ─── Food Web ─────────────────────────────────────────────────────────────────
+// Interactive wetland food web diagram for the Hawaiian Coot.
+// Shows: 11 species nodes connected by energy-flow arrows.
+// Click any node to highlight its feeding relationships.
+// ─────────────────────────────────────────────────────────────────────────────
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 

@@ -1,3 +1,9 @@
+// ─── Evolution ────────────────────────────────────────────────────────────────
+// Evolutionary timeline displayed as a circular clock diagram.
+// Shows: 12 adaptation milestones arranged at clock positions (1–12).
+// Click any node to see detail: era, description, and significance.
+// SVG geometry uses polar coordinates centered at (300, 300) in a 600×600 canvas.
+// ─────────────────────────────────────────────────────────────────────────────
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import cootImg from "@assets/image_1779676899308.png";

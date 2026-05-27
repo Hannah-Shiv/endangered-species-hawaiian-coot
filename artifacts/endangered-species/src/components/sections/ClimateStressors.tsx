@@ -1,3 +1,8 @@
+// ─── Climate Stressors ────────────────────────────────────────────────────────
+// Explores how climate change threatens Hawaiian Coot habitat.
+// Shows: temperature anomaly area chart (1960–2024), before/after wetland photos,
+// sea-level rise risk cards, and a draggable comparison slider.
+// ─────────────────────────────────────────────────────────────────────────────
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { useRef, useState, useCallback, useEffect } from "react";

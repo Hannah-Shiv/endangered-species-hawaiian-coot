@@ -1,3 +1,8 @@
+// ─── Extinction Risk ──────────────────────────────────────────────────────────
+// Displays the Hawaiian Coot's IUCN Red List status (Vulnerable).
+// Shows: threat matrix with progress bars, population timeline, and risk factors.
+// Previously listed as Endangered — downlisted after partial recovery.
+// ─────────────────────────────────────────────────────────────────────────────
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";

@@ -1,3 +1,8 @@
+// ─── Sources & Credits ────────────────────────────────────────────────────────
+// Academic references, citations, and project credits page.
+// Lists 6 scientific sources with external links, image credits,
+// and developer / project attribution for Hannah Shiv.
+// ─────────────────────────────────────────────────────────────────────────────
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { ExternalLink } from "lucide-react";
@@ -37,7 +42,7 @@ export function Sources() {
   return (
     <div className="w-full min-h-screen pt-24 pb-12 px-6 md:px-12 bg-background overflow-y-auto">
       <div className="max-w-4xl mx-auto">
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
@@ -47,6 +52,7 @@ export function Sources() {
             The data and scientific information presented in this exhibit are derived from leading conservation organizations and peer-reviewed literature.
           </p>
 
+          {/* ── Citation cards ── */}
           <div className="space-y-4 mb-16">
             {sources.map((source, idx) => (
               <motion.div
@@ -72,10 +78,29 @@ export function Sources() {
             ))}
           </div>
 
-          <div className="border-t border-border pt-8 text-center text-sm text-muted-foreground">
+          {/* ── Image & org credits ── */}
+          <div className="border-t border-border pt-8 mb-10 text-center text-sm text-muted-foreground">
             <p>Image Credits: AI-generated images used for educational purposes.</p>
             <p className="mt-2">Conservation Organizations: James Campbell NWR, Kealia Pond NWR, Hawaii Wildlife Fund, The Nature Conservancy Hawaii.</p>
           </div>
+
+          {/* ── Developer credit ── */}
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7, duration: 0.6 }}
+            className="rounded-2xl border border-border bg-card/40 p-8 text-center"
+          >
+            <p className="text-xs tracking-widest text-muted-foreground mb-3 font-semibold uppercase">Science Project</p>
+            <h2 className="text-3xl font-serif text-primary mb-1">Hannah Shiv</h2>
+            <p className="text-lg text-muted-foreground mb-4">Developer &amp; Researcher</p>
+            <div className="flex justify-center gap-6 text-sm text-muted-foreground flex-wrap">
+              <span>🏫 Cooper Middle School</span>
+              <span>🔬 Life Science</span>
+              <span>📅 2025–2026</span>
+            </div>
+          </motion.div>
+
         </motion.div>
       </div>
     </div>

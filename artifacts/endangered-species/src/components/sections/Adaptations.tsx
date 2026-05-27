@@ -1,3 +1,12 @@
+// ─── Endemic Adaptations ──────────────────────────────────────────────────────
+// Interactive adaptation explorer split into Physical (3) and Behavioral (2).
+// Left sidebar: grouped buttons with image thumbnails and colored accent bars.
+// Center left: scene image panel (5 wetland scenes selectable from bottom bar).
+//   Clicking any adaptation overlays a close-up photo + detail text on this panel.
+// Center right top: 3 full-bleed physical adaptation cards (lobed feet, shield, plumage).
+// Center right bottom: 2 full-bleed behavioral cards (nest defense, floating nest).
+// Bottom bar: survival stats, ecosystem health, wetland scene carousel.
+// ─────────────────────────────────────────────────────────────────────────────
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 

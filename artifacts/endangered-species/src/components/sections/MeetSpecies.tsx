@@ -1,3 +1,7 @@
+// ─── Meet the Species ─────────────────────────────────────────────────────────
+// Introductory page for the Hawaiian Coot (Fulica alai).
+// Shows: species portrait, scientific classification chart, and 5 key facts.
+// ─────────────────────────────────────────────────────────────────────────────
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import portraitImg from "@/assets/species-portrait.png";

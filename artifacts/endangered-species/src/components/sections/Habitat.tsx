@@ -1,3 +1,9 @@
+// ─── Habitat ──────────────────────────────────────────────────────────────────
+// Interactive island habitat explorer for the Hawaiian Coot.
+// Shows: 4 Hawaiian islands (Oahu, Maui, Kauai, Hawaii Island) with climate
+// stats, key nesting sites, wetland quality, food availability, and nesting %.
+// Animated rain effect changes based on each island's rainfall range.
+// ─────────────────────────────────────────────────────────────────────────────
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import habitatImg from "@/assets/habitat.png";

@@ -1,3 +1,8 @@
+// ─── Patterns of Change ───────────────────────────────────────────────────────
+// Population trend analysis for the Hawaiian Coot from 1970 to 2024.
+// Shows: combined Recharts graph with rainfall (area) + population (line),
+// key event annotations (DDT ban, Refuge Act, drought), and two wetland photos.
+// ─────────────────────────────────────────────────────────────────────────────
 import { motion } from "framer-motion";
 import { useState, useRef, useCallback, useEffect } from "react";
 import {

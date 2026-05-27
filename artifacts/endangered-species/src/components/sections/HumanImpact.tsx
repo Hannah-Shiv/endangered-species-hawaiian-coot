@@ -1,3 +1,9 @@
+// ─── Human Impact ─────────────────────────────────────────────────────────────
+// Dual "Harm vs Hope" interactive panel showing human effects on the coot.
+// HARM cards: wetland drainage, predators, pollution, urbanization.
+// HOPE cards: refuge creation, predator control, wetland restoration, outreach.
+// Selecting cards updates 4 live ecosystem health meters with animated counters.
+// ─────────────────────────────────────────────────────────────────────────────
 import { motion, AnimatePresence, useSpring } from "framer-motion";
 import { useState, useEffect } from "react";
 import wetlandHealthy from "@assets/image_1779819729646.png";
