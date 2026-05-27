@@ -312,7 +312,7 @@ export function MeetSpecies() {
 
             {/* Card footer */}
             <div style={{ padding: "14px 26px", background: `${GOLD}06`, display: "flex", alignItems: "center", gap: 10 }}>
-              <span style={{ fontFamily: FF_SERIF, fontStyle: "italic", fontSize: 15, color: "rgba(255,255,255,0.72)" }}>
+              <span style={{ fontFamily: FF_SERIF, fontSize: 15, color: "rgba(255,255,255,0.72)" }}>
                 Fulica alai in its natural wetland habitat — National Wildlife Refuge footage
               </span>
             </div>
