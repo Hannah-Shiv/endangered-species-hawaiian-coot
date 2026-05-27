@@ -209,6 +209,78 @@ function LightboxModal({ src, alt, onClose }: { src: string; alt: string; onClos
   );
 }
 
+// ─── Carousel Modal ───────────────────────────────────────────────────────────
+type CarouselPhoto = { src: string; alt: string };
+function CarouselModal({ photos, startIndex, onClose }: { photos: CarouselPhoto[]; startIndex: number; onClose: () => void }) {
+  const [idx, setIdx] = useState(startIndex);
+  const prev = useCallback(() => setIdx(i => (i - 1 + photos.length) % photos.length), [photos.length]);
+  const next = useCallback(() => setIdx(i => (i + 1) % photos.length), [photos.length]);
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+      if (e.key === "ArrowLeft") prev();
+      if (e.key === "ArrowRight") next();
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [onClose, prev, next]);
+  const current = photos[idx];
+  return (
+    <motion.div
+      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+      transition={{ duration: 0.25 }}
+      onClick={onClose}
+      style={{ position: "fixed", inset: 0, zIndex: 99999, background: "rgba(0,0,0,0.96)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "24px 80px" }}
+    >
+      {/* Close */}
+      <button onClick={onClose} style={{ position: "fixed", top: 22, right: 26, background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.22)", borderRadius: "50%", width: 42, height: 42, color: "#fff", fontSize: 18, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1 }}>✕</button>
+
+      {/* Counter */}
+      <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 12, color: "rgba(255,255,255,0.45)", letterSpacing: "0.12em", margin: "0 0 14px", position: "fixed", top: 28, left: "50%", transform: "translateX(-50%)" }}>
+        {idx + 1} / {photos.length}
+      </p>
+
+      {/* Main image */}
+      <AnimatePresence mode="wait">
+        <motion.img
+          key={idx}
+          src={current.src} alt={current.alt}
+          initial={{ opacity: 0, scale: 0.96, x: 20 }}
+          animate={{ opacity: 1, scale: 1, x: 0 }}
+          exit={{ opacity: 0, scale: 0.96, x: -20 }}
+          transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          onClick={e => e.stopPropagation()}
+          style={{ maxWidth: "82vw", maxHeight: "78vh", borderRadius: 12, objectFit: "contain", boxShadow: "0 0 80px rgba(0,0,0,0.9)", cursor: "default" }}
+        />
+      </AnimatePresence>
+
+      {/* Caption */}
+      <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, color: "rgba(255,255,255,0.6)", margin: "16px 0 0", letterSpacing: "0.04em", textAlign: "center" }}>{current.alt}</p>
+
+      {/* Dot strip */}
+      <div style={{ display: "flex", gap: 8, marginTop: 18 }} onClick={e => e.stopPropagation()}>
+        {photos.map((_, i) => (
+          <button key={i} onClick={() => setIdx(i)} style={{ width: i === idx ? 24 : 8, height: 8, borderRadius: 999, border: "none", cursor: "pointer", background: i === idx ? GOLD : "rgba(255,255,255,0.25)", transition: "all 0.25s", padding: 0 }} />
+        ))}
+      </div>
+
+      {/* Prev / Next arrows */}
+      <button
+        onClick={e => { e.stopPropagation(); prev(); }}
+        style={{ position: "fixed", left: 20, top: "50%", transform: "translateY(-50%)", background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.18)", borderRadius: "50%", width: 52, height: 52, color: "#fff", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", backdropFilter: "blur(6px)", transition: "background 0.2s" }}
+        onMouseEnter={e => (e.currentTarget.style.background = "rgba(212,175,55,0.25)")}
+        onMouseLeave={e => (e.currentTarget.style.background = "rgba(255,255,255,0.08)")}
+      ><ChevronLeft size={26} /></button>
+      <button
+        onClick={e => { e.stopPropagation(); next(); }}
+        style={{ position: "fixed", right: 20, top: "50%", transform: "translateY(-50%)", background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.18)", borderRadius: "50%", width: 52, height: 52, color: "#fff", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", backdropFilter: "blur(6px)", transition: "background 0.2s" }}
+        onMouseEnter={e => (e.currentTarget.style.background = "rgba(212,175,55,0.25)")}
+        onMouseLeave={e => (e.currentTarget.style.background = "rgba(255,255,255,0.08)")}
+      ><ChevronRight size={26} /></button>
+    </motion.div>
+  );
+}
+
 // ─── Org Card ─────────────────────────────────────────────────────────────────
 function OrgCard({ org, delay }: { org: typeof ORGS[0]; delay: number }) {
   const [hovered, setHovered] = useState(false);
@@ -445,6 +517,7 @@ function BeforeAfterSlider() {
 export function Conservation() {
   const [selectedLoc, setSelectedLoc] = useState<string | null>("campbell");
   const [lightbox, setLightbox] = useState<{ src: string; alt: string } | null>(null);
+  const [carousel, setCarousel] = useState<{ photos: CarouselPhoto[]; index: number } | null>(null);
   const locData = LOCATIONS.find(l => l.id === selectedLoc);
 
   return (
@@ -452,6 +525,10 @@ export function Conservation() {
     {/* Lightbox */}
     <AnimatePresence>
       {lightbox && <LightboxModal src={lightbox.src} alt={lightbox.alt} onClose={() => setLightbox(null)} />}
+    </AnimatePresence>
+    {/* Carousel */}
+    <AnimatePresence>
+      {carousel && <CarouselModal photos={carousel.photos} startIndex={carousel.index} onClose={() => setCarousel(null)} />}
     </AnimatePresence>
 
     <div className="w-full min-h-screen pt-24 pb-16 px-6 md:px-12 bg-background overflow-y-auto">
@@ -762,20 +839,35 @@ export function Conservation() {
 
                   {/* Photos */}
                   {(locData.id === "campbell" || locData.id === "hanalei") && (() => {
-                    const photos = locData.id === "campbell"
-                      ? [{ src: "/campbell-habitat.png", alt: "James Campbell NWR habitat" }, { src: "/campbell-coot.png", alt: "Hawaiian Coot at James Campbell NWR" }]
-                      : [{ src: "/hanalei-valley.png", alt: "Hanalei Valley overlook" }, { src: "/hanalei-wetland.png", alt: "Hanalei River wetland" }, { src: "/hanalei-sign.png", alt: "Hanalei NWR entrance sign" }];
-                    const cols = photos.length === 3 ? "1fr 1fr 1fr" : "1fr 1fr";
+                    const photos: CarouselPhoto[] = locData.id === "campbell"
+                      ? [{ src: "/campbell-habitat.png", alt: "James Campbell NWR wetland habitat" }, { src: "/campbell-coot.png", alt: "Hawaiian Coot at James Campbell NWR" }]
+                      : [
+                          { src: "/hanalei-1.png", alt: "Hanalei NWR information panels" },
+                          { src: "/hanalei-2.png", alt: "Hanalei Valley from the overlook" },
+                          { src: "/hanalei-3.png", alt: "Taro fields at golden hour, Hanalei Valley" },
+                          { src: "/hanalei-4.png", alt: "Endangered Birds of the Hanalei NWR interpretive sign" },
+                          { src: "/hanalei-5.png", alt: "Hanalei NWR visitor kiosk" },
+                          { src: "/hanalei-6.png", alt: "Hawaiian Coot in taro fields at Hanalei" },
+                        ];
+                    const openCarousel = (i: number) => setCarousel({ photos, index: i });
+                    // Show a 3-col grid for Hanalei (6 photos → 2 rows), 2-col for Campbell
+                    const cols = locData.id === "hanalei" ? "1fr 1fr 1fr" : "1fr 1fr";
+                    const ratio = locData.id === "hanalei" ? "4/3" : "4/3";
                     return (
-                      <div style={{ display: "grid", gridTemplateColumns: cols, gap: 8 }}>
-                        {photos.map(img => (
-                          <div key={img.src} onClick={() => setLightbox(img)}
-                            style={{ aspectRatio: photos.length === 3 ? "3/2" : "4/3", borderRadius: 8, overflow: "hidden", cursor: "zoom-in" }}
+                      <div style={{ display: "grid", gridTemplateColumns: cols, gap: 6 }}>
+                        {photos.map((img, i) => (
+                          <div key={img.src} onClick={() => openCarousel(i)}
+                            style={{ aspectRatio: ratio, borderRadius: 8, overflow: "hidden", cursor: "zoom-in", position: "relative" }}
                           >
                             <img src={img.src} alt={img.alt}
-                              style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", transition: "transform 0.3s ease" }}
-                              onMouseEnter={e => (e.currentTarget.style.transform = "scale(1.07)")}
+                              style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", transition: "transform 0.35s ease" }}
+                              onMouseEnter={e => (e.currentTarget.style.transform = "scale(1.08)")}
                               onMouseLeave={e => (e.currentTarget.style.transform = "scale(1)")}
+                            />
+                            {/* hover overlay hint */}
+                            <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0)", transition: "background 0.2s" }}
+                              onMouseEnter={e => (e.currentTarget.style.background = "rgba(212,175,55,0.08)")}
+                              onMouseLeave={e => (e.currentTarget.style.background = "rgba(0,0,0,0)")}
                             />
                           </div>
                         ))}
