@@ -68,9 +68,9 @@ const PROGRESS_BARS = [
 
 // ─── Dashboard trend data ─────────────────────────────────────────────────────
 const TRENDS = [
-  { label: "Population Trend", status: "Increasing", detail: "+120 birds from last year", color: "#4ade80", Icon: TrendingUp, data: [30,38,35,42,40,48,52,58,55,62,66,70] },
-  { label: "Wetland Health", status: "Moderate", detail: "Ongoing restoration in 5 major sites", color: GOLD, Icon: Droplets, data: [50,48,52,49,53,51,54,52,56,53,57,55] },
-  { label: "Invasive Predators", status: "Ongoing Threat", detail: "Feral cats & mongooses present", color: RED, Icon: AlertTriangle, data: [70,68,72,65,69,66,63,67,64,62,65,63] },
+  { label: "Population Trend", status: "Increasing", badge: "↑ RISING", detail: "+120 birds from last year", color: "#4ade80", Icon: TrendingUp, data: [30,38,35,42,40,48,52,58,55,62,66,70] },
+  { label: "Wetland Health",   status: "Moderate",   badge: "~ STABLE", detail: "Ongoing restoration in 5 major sites", color: "rgba(212,175,55,1)", Icon: Droplets, data: [50,48,52,49,53,51,54,52,56,53,57,55] },
+  { label: "Invasive Predators", status: "Active Threat", badge: "⚠ THREAT", detail: "Feral cats & mongooses present", color: "rgba(248,80,50,1)", Icon: AlertTriangle, data: [70,68,72,65,69,66,63,67,64,62,65,63] },
 ];
 
 // ─── Hawaii map locations ──────────────────────────────────────────────────────
@@ -104,16 +104,34 @@ function AnimatedCounter({ target, suffix = "" }: { target: number; suffix?: str
 
 // ─── Sparkline ────────────────────────────────────────────────────────────────
 function Sparkline({ data, color }: { data: number[]; color: string }) {
-  const W = 110; const H = 36;
+  const W = 140; const H = 56;
+  const pad = 4;
   const min = Math.min(...data); const max = Math.max(...data);
   const pts = data.map((v, i) => {
-    const x = (i / (data.length - 1)) * W;
-    const y = H - ((v - min) / (max - min + 0.001)) * H;
-    return `${x.toFixed(1)},${y.toFixed(1)}`;
-  }).join(" ");
+    const x = pad + (i / (data.length - 1)) * (W - pad * 2);
+    const y = pad + (H - pad * 2) - ((v - min) / (max - min + 0.001)) * (H - pad * 2);
+    return { x, y };
+  });
+  const linePts = pts.map(p => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(" ");
+  const last = pts[pts.length - 1];
+  const fillPts = [
+    `${pts[0].x},${H}`,
+    ...pts.map(p => `${p.x.toFixed(1)},${p.y.toFixed(1)}`),
+    `${last.x},${H}`,
+  ].join(" ");
+  const id = `sg-${color.replace(/[^a-z0-9]/gi, "")}`;
   return (
-    <svg width={W} height={H} style={{ display: "block" }}>
-      <polyline points={pts} fill="none" stroke={color} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
+    <svg width={W} height={H} style={{ display: "block", flexShrink: 0 }}>
+      <defs>
+        <linearGradient id={id} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor={color} stopOpacity="0.28" />
+          <stop offset="100%" stopColor={color} stopOpacity="0" />
+        </linearGradient>
+      </defs>
+      <polygon points={fillPts} fill={`url(#${id})`} />
+      <polyline points={linePts} fill="none" stroke={color} strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" />
+      <circle cx={last.x} cy={last.y} r={4} fill={color} />
+      <circle cx={last.x} cy={last.y} r={7} fill={color} fillOpacity={0.22} />
     </svg>
   );
 }
@@ -499,26 +517,67 @@ export function Conservation() {
           {/* Conservation Dashboard */}
           <motion.div
             initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4, duration: 0.7 }}
-            style={{ borderRadius: 14, border: `1px solid ${BORDER}`, background: CARD_BG, padding: "24px 28px" }}
+            style={{ borderRadius: 14, border: `1px solid ${BORDER}`, background: CARD_BG, padding: "24px 28px", display: "flex", flexDirection: "column" }}
           >
-            <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 14, fontWeight: 800, color: GOLD, margin: "0 0 18px", letterSpacing: "0.08em", textShadow: "0 0 18px rgba(212,175,55,0.35)" }}>✦ CONSERVATION DASHBOARD</p>
-            <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+            {/* Header */}
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20 }}>
+              <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 14, fontWeight: 800, color: GOLD, margin: 0, letterSpacing: "0.08em", textShadow: "0 0 18px rgba(212,175,55,0.35)" }}>✦ CONSERVATION DASHBOARD</p>
+              <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 10, color: "rgba(255,255,255,0.3)", letterSpacing: "0.08em" }}>2024 DATA</span>
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
               {TRENDS.map(t => (
-                <div key={t.label} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "16px 18px", borderRadius: 10, border: `1px solid rgba(212,175,55,0.18)`, background: "rgba(212,175,55,0.05)" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                    <t.Icon size={20} color={t.color} />
-                    <div>
-                      <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, color: "rgba(255,255,255,0.4)", margin: 0, letterSpacing: "0.06em" }}>{t.label.toUpperCase()}</p>
-                      <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 18, fontWeight: 700, color: t.color, margin: "2px 0 0" }}>{t.status}</p>
-                      <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, color: "rgba(255,255,255,0.42)", margin: 0, marginTop: 2 }}>{t.detail}</p>
-                    </div>
+                <div
+                  key={t.label}
+                  style={{
+                    display: "flex", alignItems: "center", gap: 14,
+                    padding: "16px 18px 16px 0",
+                    borderRadius: 12,
+                    background: `linear-gradient(135deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 100%)`,
+                    borderLeft: `4px solid ${t.color}`,
+                    paddingLeft: 16,
+                    boxShadow: `inset 0 0 40px ${t.color}0d`,
+                    position: "relative", overflow: "hidden",
+                  }}
+                >
+                  {/* Subtle color wash behind each row */}
+                  <div style={{ position: "absolute", inset: 0, background: `${t.color}09`, borderRadius: 12, pointerEvents: "none" }} />
+
+                  {/* Icon circle */}
+                  <div style={{
+                    width: 48, height: 48, borderRadius: "50%", flexShrink: 0,
+                    background: `${t.color}1a`,
+                    border: `1.5px solid ${t.color}55`,
+                    boxShadow: `0 0 18px ${t.color}33`,
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    position: "relative", zIndex: 1,
+                  }}>
+                    <t.Icon size={22} color={t.color} />
                   </div>
-                  <Sparkline data={t.data} color={t.color} />
+
+                  {/* Text */}
+                  <div style={{ flex: 1, minWidth: 0, position: "relative", zIndex: 1 }}>
+                    <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11, color: "rgba(255,255,255,0.45)", margin: 0, letterSpacing: "0.1em" }}>{t.label.toUpperCase()}</p>
+                    <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 20, fontWeight: 700, color: t.color, margin: "2px 0 0", lineHeight: 1.15, textShadow: `0 0 20px ${t.color}55` }}>{t.status}</p>
+                    <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 12, color: "rgba(255,255,255,0.5)", margin: "3px 0 0" }}>{t.detail}</p>
+                  </div>
+
+                  {/* Sparkline + badge */}
+                  <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 6, flexShrink: 0, position: "relative", zIndex: 1 }}>
+                    <span style={{
+                      fontFamily: "'Josefin Sans', sans-serif", fontSize: 10, fontWeight: 800,
+                      letterSpacing: "0.1em", padding: "3px 10px", borderRadius: 999,
+                      background: `${t.color}22`, border: `1px solid ${t.color}66`,
+                      color: t.color,
+                    }}>{t.badge}</span>
+                    <Sparkline data={t.data} color={t.color} />
+                  </div>
                 </div>
               ))}
             </div>
-            <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 10, color: "rgba(255,255,255,0.25)", margin: "14px 0 0", textAlign: "right" }}>
-              Data Source: DOFAW, USFWS, TNC
+
+            <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 10, color: "rgba(255,255,255,0.22)", margin: "14px 0 0", textAlign: "right", letterSpacing: "0.06em" }}>
+              SOURCE: DOFAW · USFWS · TNC
             </p>
           </motion.div>
         </div>
