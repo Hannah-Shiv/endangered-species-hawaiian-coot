@@ -276,6 +276,18 @@
   50% { opacity: 1; }
 }
 
+/* Threat info button pulse */
+@keyframes threat-btn-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(212,175,55,0.55), 0 0 6px rgba(212,175,55,0.3); border-color: rgba(212,175,55,0.7); }
+  50%       { box-shadow: 0 0 0 5px rgba(212,175,55,0), 0 0 14px rgba(212,175,55,0.6); border-color: rgba(212,175,55,1); }
+}
+.threat-info-btn {
+  animation: threat-btn-pulse 2s ease-in-out infinite;
+}
+.threat-info-btn:hover {
+  animation: none;
+}
+
 /* Hide all scrollbars site-wide — cinematic experience */
 * {
   scrollbar-width: none;

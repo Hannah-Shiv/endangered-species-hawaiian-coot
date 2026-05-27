@@ -78,25 +78,26 @@ function ThreatBar({ t, delay }: { t: typeof THREATS[0]; delay: number }) {
   const [open, setOpen] = useState(false);
 
   return (
-    <div ref={ref} style={{ borderBottom: "1px solid rgba(255,255,255,0.07)", paddingBottom: 14, marginBottom: 6 }}>
+    <div ref={ref} style={{ paddingBottom: 14, marginBottom: 6 }}>
       <div style={{ display: "flex", alignItems: "flex-start", gap: 14, marginBottom: 9 }}>
         <div style={{ width: 40, height: 40, borderRadius: "50%", background: `${t.color}18`, border: `1.5px solid ${t.color}44`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 2 }}>
           <t.Icon size={18} color={t.color} />
         </div>
         <div style={{ flex: 1, minWidth: 0 }}>
-          <p style={{ fontFamily: FF_SANS, fontSize: 15, fontWeight: 800, color: "rgba(255,255,255,0.95)", margin: 0, letterSpacing: "0.04em" }}>{t.label}</p>
-          <p style={{ fontFamily: FF_SANS, fontSize: 13, color: "rgba(255,255,255,0.52)", margin: "3px 0 0", lineHeight: 1.5 }}>{t.desc}</p>
+          <p style={{ fontFamily: FF_SANS, fontSize: 16, fontWeight: 800, color: "rgba(255,255,255,0.95)", margin: 0, letterSpacing: "0.04em" }}>{t.label}</p>
+          <p style={{ fontFamily: FF_SANS, fontSize: 14, color: "rgba(255,255,255,0.62)", margin: "3px 0 0", lineHeight: 1.5 }}>{t.desc}</p>
         </div>
         <div style={{ textAlign: "right", flexShrink: 0 }}>
-          <p style={{ fontFamily: FF_SANS, fontSize: 12, fontWeight: 800, color: t.color, margin: 0, letterSpacing: "0.1em" }}>{t.severity}</p>
-          <p style={{ fontFamily: FF_SERIF, fontSize: 20, color: t.color, margin: 0, lineHeight: 1.1 }}>{t.pct}%</p>
+          <p style={{ fontFamily: FF_SANS, fontSize: 13, fontWeight: 800, color: t.color, margin: 0, letterSpacing: "0.1em" }}>{t.severity}</p>
+          <p style={{ fontFamily: FF_SERIF, fontSize: 21, color: t.color, margin: 0, lineHeight: 1.1 }}>{t.pct}%</p>
         </div>
         <button onClick={() => setOpen(o => !o)}
-          style={{ background: "none", border: "1px solid rgba(255,255,255,0.22)", borderRadius: "50%", width: 30, height: 30, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", flexShrink: 0, marginTop: 4, color: "rgba(255,255,255,0.5)", transition: "all 0.2s" }}
-          onMouseEnter={e => { e.currentTarget.style.borderColor = t.color; e.currentTarget.style.color = t.color; }}
-          onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.22)"; e.currentTarget.style.color = "rgba(255,255,255,0.5)"; }}
+          className={open ? undefined : "threat-info-btn"}
+          style={{ background: open ? `${t.color}18` : "none", border: `1.5px solid ${open ? t.color : "rgba(212,175,55,0.7)"}`, borderRadius: "50%", width: 32, height: 32, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", flexShrink: 0, marginTop: 4, color: open ? t.color : GOLD, transition: "background 0.2s, color 0.2s" }}
+          onMouseEnter={e => { e.currentTarget.style.background = `${t.color}28`; e.currentTarget.style.color = t.color; e.currentTarget.style.borderColor = t.color; }}
+          onMouseLeave={e => { e.currentTarget.style.background = open ? `${t.color}18` : "none"; e.currentTarget.style.color = open ? t.color : GOLD; e.currentTarget.style.borderColor = open ? t.color : "rgba(212,175,55,0.7)"; }}
         >
-          {open ? <X size={13} /> : <Info size={13} />}
+          {open ? <X size={14} /> : <Info size={14} />}
         </button>
       </div>
       <div style={{ height: 6, borderRadius: 999, background: "rgba(255,255,255,0.07)", overflow: "hidden" }}>
@@ -111,11 +112,13 @@ function ThreatBar({ t, delay }: { t: typeof THREATS[0]; delay: number }) {
         {open && (
           <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.3 }} style={{ overflow: "hidden" }}>
             <div style={{ marginTop: 12, padding: "14px 16px", borderRadius: 10, background: `${t.color}0c`, border: `1px solid ${t.color}28` }}>
-              <p style={{ fontFamily: FF_SANS, fontSize: 13, color: "rgba(255,255,255,0.75)", margin: 0, lineHeight: 1.75 }}>{t.detail}</p>
+              <p style={{ fontFamily: FF_SANS, fontSize: 14, color: "rgba(255,255,255,0.82)", margin: 0, lineHeight: 1.75 }}>{t.detail}</p>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
+      {/* Gold fading divider */}
+      <div style={{ marginTop: 14, height: 1, background: "linear-gradient(90deg, transparent 0%, rgba(212,175,55,0.45) 20%, rgba(212,175,55,0.45) 80%, transparent 100%)" }} />
     </div>
   );
 }
@@ -329,7 +332,7 @@ function OverviewContent() {
           style={{ borderRadius: 16, border: `1px solid ${BORDER}`, background: CARD_BG, padding: "26px 28px" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20 }}>
             <SectionLabel>THREAT MATRIX</SectionLabel>
-            <span style={{ fontFamily: FF_SANS, fontSize: 11, color: "rgba(255,255,255,0.28)", letterSpacing: "0.08em" }}>CLICK ⓘ FOR DETAILS</span>
+            <span style={{ fontFamily: FF_SANS, fontSize: 11, color: GOLD, letterSpacing: "0.08em", opacity: 0.9 }}>CLICK ⓘ FOR DETAILS</span>
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
             {THREATS.map((t, i) => <ThreatBar key={t.id} t={t} delay={0.1 + i * 0.08} />)}
