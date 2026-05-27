@@ -124,8 +124,8 @@ function ThreatBar({ t, delay }: { t: typeof THREATS[0]; delay: number }) {
 
 // ─── Population SVG chart — live interactive ──────────────────────────────────
 function PopChart() {
-  const W = 300, H = 200;
-  const pad = { l: 42, r: 16, t: 14, b: 30 };
+  const W = 300, H = 240;
+  const pad = { l: 46, r: 16, t: 16, b: 32 };
   const maxPop = 10000;
   const xS = (y: number) => pad.l + (y - 1990) / (2024 - 1990) * (W - pad.l - pad.r);
   const yS = (p: number) => pad.t + (1 - p / maxPop) * (H - pad.t - pad.b);
@@ -187,9 +187,9 @@ function PopChart() {
         {[0, 2500, 5000, 7500, 10000].map(v => (
           <g key={v}>
             <line x1={pad.l} y1={yS(v)} x2={W - pad.r} y2={yS(v)}
-              stroke={hovered ? "rgba(255,255,255,0.05)" : "rgba(255,255,255,0.07)"} strokeWidth={1} />
+              stroke={hovered ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.12)"} strokeWidth={1} />
             <text x={pad.l - 5} y={yS(v) + 4} textAnchor="end"
-              fill="rgba(255,255,255,0.3)" fontSize={9} fontFamily={FF_SANS}>
+              fill="rgba(255,255,255,0.72)" fontSize={10} fontFamily={FF_SANS} fontWeight="bold">
               {v >= 1000 ? `${v / 1000}K` : v}
             </text>
           </g>
@@ -275,8 +275,8 @@ function PopChart() {
         {/* Year axis labels */}
         {[1990, 2000, 2010, 2020, 2024].map(y => (
           <text key={y} x={xS(y)} y={H - pad.b + 16} textAnchor="middle"
-            fill={hovered?.year === y ? GOLD : "rgba(255,255,255,0.3)"}
-            fontSize={9.5} fontFamily={FF_SANS}
+            fill={hovered?.year === y ? GOLD : "rgba(255,255,255,0.72)"}
+            fontSize={10} fontFamily={FF_SANS} fontWeight="bold"
             style={{ transition: "fill 0.12s" }}
           >{y}</text>
         ))}
@@ -534,30 +534,35 @@ function OverviewContent() {
         </motion.div>
       </div>
 
-      {/* Bottom 4 cards */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1.1fr", gap: 16 }}>
+      {/* Bottom 2×2 grid */}
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
 
         <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.22 }}
-          style={{ borderRadius: 16, border: `1px solid ${BORDER}`, background: CARD_BG, padding: "20px 20px 16px" }}>
+          style={{ borderRadius: 16, border: `1px solid ${BORDER}`, background: CARD_BG, padding: "20px 24px 18px" }}>
           <SectionLabel>POPULATION TREND</SectionLabel>
           <div style={{ marginTop: 14 }}><PopChart /></div>
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.3 }}
-          style={{ borderRadius: 16, border: `1px solid ${BORDER}`, background: CARD_BG, padding: "20px 20px 16px", display: "flex", flexDirection: "column", alignItems: "center" }}>
+          style={{ borderRadius: 16, border: `1px solid ${BORDER}`, background: CARD_BG, padding: "20px 24px 18px", display: "flex", flexDirection: "column", alignItems: "center" }}>
           <div style={{ alignSelf: "flex-start" }}><SectionLabel>HABITAT STATUS</SectionLabel></div>
-          <div style={{ marginTop: 12 }}><DonutChart pct={42} color={GREEN} label="of historical" /></div>
-          <p style={{ fontFamily: FF_SANS, fontSize: 13, color: "rgba(255,255,255,0.52)", margin: "6px 0 0", textAlign: "center" }}>wetlands remain</p>
+          <div style={{ marginTop: 16, flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+            <DonutChart pct={42} color={GREEN} label="of historical" />
+            <p style={{ fontFamily: FF_SANS, fontSize: 15, fontWeight: 700, color: "rgba(255,255,255,0.88)", margin: "10px 0 0", textAlign: "center" }}>wetlands remain</p>
+            <p style={{ fontFamily: FF_SANS, fontSize: 13, color: "rgba(255,255,255,0.6)", margin: "6px 0 0", textAlign: "center", lineHeight: 1.6 }}>
+              Only <span style={{ color: GREEN, fontWeight: 800 }}>42%</span> of historical Hawaiian wetland habitat survives today
+            </p>
+          </div>
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.36 }}
-          style={{ borderRadius: 16, border: `1px solid ${BORDER}`, background: CARD_BG, padding: "20px 20px 16px" }}>
+          style={{ borderRadius: 16, border: `1px solid ${BORDER}`, background: CARD_BG, padding: "20px 24px 18px" }}>
           <SectionLabel>THREAT SIMULATOR</SectionLabel>
           <div style={{ marginTop: 14 }}><ThreatSim /></div>
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.42 }}
-          style={{ borderRadius: 16, border: `1px solid ${BORDER}`, overflow: "hidden", position: "relative", minHeight: 220 }}>
+          style={{ borderRadius: 16, border: `1px solid ${BORDER}`, overflow: "hidden", position: "relative", minHeight: 280 }}>
           <RefugeCarousel />
         </motion.div>
       </div>
