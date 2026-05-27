@@ -17,10 +17,25 @@ export function Conservation() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <h1 className="text-5xl font-serif text-primary mb-6">Conservation & Solutions</h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mb-12">
-            Protecting the Hawaiian Coot requires constant vigilance: managing water, eliminating predators, and protecting land.
-          </p>
+          <div className="mb-10 text-center">
+            <h1
+              className="text-6xl mb-3"
+              style={{ fontFamily: "'Playfair Display', serif", color: "rgba(212,175,55,1)", letterSpacing: "0.04em" }}
+            >
+              Conservation &amp; Solutions
+            </h1>
+            <p
+              style={{
+                fontFamily: "'Playfair Display', serif",
+                fontStyle: "italic",
+                fontSize: 20,
+                color: "rgba(212,175,55,0.88)",
+                margin: "0 auto",
+              }}
+            >
+              Protecting the Hawaiian Coot requires constant vigilance: managing water, eliminating predators, and protecting land.
+            </p>
+          </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
             <Card className="bg-card/50 border-border hover:border-primary/50 transition-colors">

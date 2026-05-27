@@ -11,19 +11,38 @@ export function ExtinctionRisk() {
   return (
     <div className="w-full min-h-screen pt-24 pb-12 px-6 md:px-12 bg-background overflow-y-auto">
       <div className="max-w-5xl mx-auto">
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-16"
+          className="text-center mb-12"
         >
-          <div className="inline-block px-4 py-1 mb-6 rounded-full bg-secondary text-secondary-foreground font-bold tracking-widest text-sm border border-secondary/50">
-            IUCN RED LIST STATUS
-          </div>
-          <h1 className="text-6xl md:text-8xl font-serif text-destructive mb-4 tracking-tighter">VULNERABLE</h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <h1
+            className="text-6xl mb-3"
+            style={{ fontFamily: "'Playfair Display', serif", color: "rgba(212,175,55,1)", letterSpacing: "0.04em" }}
+          >
+            Extinction Risk
+          </h1>
+          <p
+            style={{
+              fontFamily: "'Playfair Display', serif",
+              fontStyle: "italic",
+              fontSize: 20,
+              color: "rgba(212,175,55,0.88)",
+              margin: "0 auto 24px",
+            }}
+          >
             Downlisted from Endangered after partial recovery, but still entirely dependent on conservation management.
           </p>
+          <div className="inline-block px-4 py-1 rounded-full bg-secondary text-secondary-foreground font-bold tracking-widest text-sm border border-secondary/50">
+            IUCN RED LIST STATUS
+          </div>
+          <div
+            className="font-serif tracking-tighter mt-4"
+            style={{ fontSize: "5rem", color: "rgba(220,50,30,1)", lineHeight: 1 }}
+          >
+            VULNERABLE
+          </div>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">

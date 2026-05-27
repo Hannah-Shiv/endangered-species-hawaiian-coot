@@ -47,10 +47,25 @@ export function Sources() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          <h1 className="text-5xl font-serif text-foreground mb-4">Sources & Citations</h1>
-          <p className="text-xl text-muted-foreground mb-12">
-            The data and scientific information presented in this exhibit are derived from leading conservation organizations and peer-reviewed literature.
-          </p>
+          <div className="mb-10 text-center">
+            <h1
+              className="text-6xl mb-3"
+              style={{ fontFamily: "'Playfair Display', serif", color: "rgba(212,175,55,1)", letterSpacing: "0.04em" }}
+            >
+              Sources &amp; Citations
+            </h1>
+            <p
+              style={{
+                fontFamily: "'Playfair Display', serif",
+                fontStyle: "italic",
+                fontSize: 20,
+                color: "rgba(212,175,55,0.88)",
+                margin: "0 auto",
+              }}
+            >
+              The data and scientific information presented in this exhibit are derived from leading conservation organizations and peer-reviewed literature.
+            </p>
+          </div>
 
           {/* ── Citation cards ── */}
           <div className="space-y-4 mb-16">
