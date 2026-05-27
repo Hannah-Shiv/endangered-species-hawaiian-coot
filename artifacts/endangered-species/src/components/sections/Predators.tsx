@@ -187,18 +187,18 @@ function DashBar({ value, label, icon, barColor }: { value: number; label: strin
 
   return (
     <div>
-      <div style={{ display: "flex", alignItems: "center", gap: 5, marginBottom: 5 }}>
-        <span style={{ fontSize: 17 }}>{icon}</span>
-        <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 14, color: "rgba(255,255,255,0.78)", letterSpacing: "0.04em" }}>{label}</span>
+      <div style={{ display: "flex", alignItems: "center", gap: 5, marginBottom: 6 }}>
+        <span style={{ fontSize: 19 }}>{icon}</span>
+        <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 15.5, color: "rgba(255,255,255,0.85)", letterSpacing: "0.04em" }}>{label}</span>
       </div>
-      <div style={{ height: 9, background: "rgba(255,255,255,0.08)", borderRadius: 4, overflow: "visible", position: "relative" }}>
+      <div style={{ height: 10, background: "rgba(255,255,255,0.08)", borderRadius: 4, overflow: "visible", position: "relative" }}>
         <motion.div
           animate={{ width: `${value}%`, backgroundColor: barColor }}
           transition={{ type: "spring", stiffness: 55, damping: 18 }}
           style={{ height: "100%", borderRadius: 4, position: "absolute", top: 0, left: 0, boxShadow: `0 0 8px ${barColor}88` }}
         />
       </div>
-      <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 15.5, fontWeight: 800, color: barColor, display: "block", marginTop: 4 }}>
+      <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 17, fontWeight: 800, color: barColor, display: "block", marginTop: 5 }}>
         {display}%
       </span>
     </div>
@@ -225,7 +225,7 @@ function ThreatGauge({ threat, color }: { threat: ThreatLevel; color: string }) 
 
   return (
     <div style={{ textAlign: "center" }}>
-      <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11, letterSpacing: "0.15em", color: "rgba(255,255,255,0.5)", marginBottom: 2 }}>OVERALL THREAT LEVEL</p>
+      <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11, letterSpacing: "0.15em", color: "rgba(255,255,255,0.92)", marginBottom: 2, textShadow: "0 0 10px rgba(255,255,255,0.4)", fontWeight: 800 }}>OVERALL THREAT LEVEL</p>
       <svg width="116" height="68" viewBox="0 0 116 68" style={{ display: "block", margin: "0 auto" }}>
         <defs>
           <linearGradient id="gaugeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -563,7 +563,7 @@ export function Predators() {
 
         {/* CENTER: Ecosystem Health Overview (biggest — flex:2) */}
         <div style={{
-          flex: 2, padding: "12px 22px",
+          flex: 4, padding: "12px 22px",
           borderRight: "1px solid rgba(255,255,255,0.07)",
           display: "flex", flexDirection: "column",
         }}>
@@ -588,11 +588,11 @@ export function Predators() {
 
         {/* RIGHT: What You Can Do */}
         <div style={{
-          flex: 1, padding: "12px 16px",
+          flex: 1, padding: "12px 18px 12px 14px",
           overflowY: "auto",
-          display: "flex", flexDirection: "column",
+          display: "flex", flexDirection: "column", alignItems: "flex-end",
         }}>
-          <p style={{ fontSize: 13, letterSpacing: "0.16em", color: "rgba(255,255,255,0.5)", marginBottom: 9, fontWeight: 700, flexShrink: 0 }}>
+          <p style={{ fontSize: 13, letterSpacing: "0.16em", color: "rgba(255,255,255,0.92)", marginBottom: 9, fontWeight: 800, flexShrink: 0, textAlign: "right", textShadow: "0 0 10px rgba(255,255,255,0.3)" }}>
             WHAT YOU CAN DO
           </p>
           <AnimatePresence mode="wait">
@@ -600,18 +600,18 @@ export function Predators() {
               key={p.id + "-act"}
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
               transition={{ duration: 0.35 }}
-              style={{ display: "flex", flexDirection: "column", gap: 9 }}
+              style={{ display: "flex", flexDirection: "column", gap: 9, alignItems: "flex-end", width: "100%" }}
             >
               {p.actions.map((act, i) => (
-                <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 9 }}>
+                <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 9, justifyContent: "flex-end" }}>
+                  <span style={{ fontSize: 14.5, color: "rgba(255,255,255,0.85)", lineHeight: 1.5, textAlign: "right" }}>{act}</span>
                   <div style={{
-                    width: 20, height: 20, borderRadius: 5, flexShrink: 0, marginTop: 1,
+                    width: 22, height: 22, borderRadius: 5, flexShrink: 0, marginTop: 1,
                     background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.18)",
                     display: "flex", alignItems: "center", justifyContent: "center",
                   }}>
-                    <span style={{ fontSize: 11 }}>✓</span>
+                    <span style={{ fontSize: 12 }}>✓</span>
                   </div>
-                  <span style={{ fontSize: 13.5, color: "rgba(255,255,255,0.78)", lineHeight: 1.5 }}>{act}</span>
                 </div>
               ))}
             </motion.div>
