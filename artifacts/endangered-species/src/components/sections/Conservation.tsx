@@ -14,10 +14,10 @@ import { TrendingUp, Droplets, AlertTriangle, ExternalLink, MapPin, ChevronLeft,
 
 // ─── Palette ─────────────────────────────────────────────────────────────────
 const GOLD = "rgba(212,175,55,1)";
-const GOLD_DIM = "rgba(212,175,55,0.45)";
+const GOLD_DIM = "rgba(212,175,55,0.65)";
 const RED = "rgba(200,30,10,0.9)";
-const CARD_BG = "rgba(18,6,2,0.85)";
-const BORDER = "rgba(212,175,55,0.22)";
+const CARD_BG = "rgba(28,12,4,0.96)";
+const BORDER = "rgba(212,175,55,0.42)";
 
 // ─── Org data ─────────────────────────────────────────────────────────────────
 const ORGS = [
@@ -211,7 +211,7 @@ function OrgCard({ org, delay }: { org: typeof ORGS[0]; delay: number }) {
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
           {/* Icon circle */}
-          <div style={{ width: 44, height: 44, borderRadius: "50%", background: `rgba(200,30,10,0.18)`, border: `1px solid rgba(200,30,10,0.45)`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, flexShrink: 0 }}>
+          <div style={{ width: 46, height: 46, borderRadius: "50%", background: `rgba(212,175,55,0.14)`, border: `1px solid rgba(212,175,55,0.55)`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22, flexShrink: 0, boxShadow: "0 0 14px rgba(212,175,55,0.15)" }}>
             {org.icon}
           </div>
           <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 18, fontWeight: 800, color: "rgba(255,255,255,0.95)", margin: 0, lineHeight: 1.3 }}>{org.name}</p>
@@ -466,7 +466,7 @@ export function Conservation() {
           {ORGS.map((org, i) => <OrgCard key={org.id} org={org} delay={i * 0.1} />)}
         </div>
 
-        <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11, color: "rgba(255,255,255,0.3)", textAlign: "center", letterSpacing: "0.08em", marginBottom: 28 }}>
+        <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, color: "rgba(212,175,55,0.65)", textAlign: "center", letterSpacing: "0.1em", marginBottom: 28 }}>
           ✦ Hover over a card to learn more ✦
         </p>
 
@@ -479,12 +479,12 @@ export function Conservation() {
             style={{ borderRadius: 14, border: `1px solid ${BORDER}`, background: CARD_BG, padding: "24px 28px" }}
           >
             <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}>
-              <div style={{ width: 32, height: 32, borderRadius: 8, background: "rgba(200,30,10,0.2)", border: `1px solid rgba(200,30,10,0.4)`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <TrendingUp size={16} color={RED} />
+              <div style={{ width: 36, height: 36, borderRadius: 8, background: "rgba(212,175,55,0.15)", border: `1px solid rgba(212,175,55,0.55)`, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 0 12px rgba(212,175,55,0.18)" }}>
+                <TrendingUp size={18} color={GOLD} />
               </div>
               <div>
-                <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, fontWeight: 800, color: "rgba(255,255,255,0.9)", margin: 0, letterSpacing: "0.06em" }}>RECOVERY PROGRESS METRICS</p>
-                <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11, color: "rgba(255,255,255,0.35)", margin: 0 }}>Our progress toward a stable future for the Hawaiian Coot.</p>
+                <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 14, fontWeight: 800, color: GOLD, margin: 0, letterSpacing: "0.08em", textShadow: "0 0 18px rgba(212,175,55,0.35)" }}>RECOVERY PROGRESS METRICS</p>
+                <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 12, color: "rgba(255,255,255,0.55)", margin: 0 }}>Our progress toward a stable future for the Hawaiian Coot.</p>
               </div>
             </div>
             {PROGRESS_BARS.map(p => <ProgressBar key={p.label} label={p.label} sub={p.sub} pct={p.pct} suffix={p.suffix} icon={p.icon} />)}
@@ -498,10 +498,10 @@ export function Conservation() {
             initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.4, duration: 0.7 }}
             style={{ borderRadius: 14, border: `1px solid ${BORDER}`, background: CARD_BG, padding: "24px 28px" }}
           >
-            <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, fontWeight: 800, color: "rgba(255,255,255,0.9)", margin: "0 0 18px", letterSpacing: "0.06em" }}>CONSERVATION DASHBOARD</p>
+            <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 14, fontWeight: 800, color: GOLD, margin: "0 0 18px", letterSpacing: "0.08em", textShadow: "0 0 18px rgba(212,175,55,0.35)" }}>✦ CONSERVATION DASHBOARD</p>
             <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
               {TRENDS.map(t => (
-                <div key={t.label} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "16px 18px", borderRadius: 10, border: `1px solid rgba(255,255,255,0.07)`, background: "rgba(255,255,255,0.025)" }}>
+                <div key={t.label} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "16px 18px", borderRadius: 10, border: `1px solid rgba(212,175,55,0.18)`, background: "rgba(212,175,55,0.05)" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
                     <t.Icon size={20} color={t.color} />
                     <div>
@@ -528,11 +528,11 @@ export function Conservation() {
           {/* Map panel */}
           <div style={{ borderRadius: 14, border: `1px solid ${BORDER}`, background: CARD_BG, padding: "20px 22px" }}>
             <div style={{ marginBottom: 14 }}>
-              <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, fontWeight: 800, color: "rgba(255,255,255,0.9)", margin: "0 0 2px", letterSpacing: "0.06em" }}>
-                <MapPin size={13} style={{ display: "inline", marginRight: 6, verticalAlign: "middle" }} />
+              <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 14, fontWeight: 800, color: GOLD, margin: "0 0 4px", letterSpacing: "0.08em", textShadow: "0 0 18px rgba(212,175,55,0.35)" }}>
+                <MapPin size={14} style={{ display: "inline", marginRight: 6, verticalAlign: "middle", color: GOLD }} />
                 HAWAIʻI WETLAND STRONGHOLDS
               </p>
-              <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11, color: "rgba(255,255,255,0.35)", margin: 0 }}>Click a location on the map to explore details.</p>
+              <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 12, color: "rgba(255,255,255,0.55)", margin: 0 }}>Click a location on the map to explore details.</p>
             </div>
             <HawaiiMap selected={selectedLoc} onSelect={setSelectedLoc} />
           </div>
@@ -627,15 +627,15 @@ export function Conservation() {
         >
           {/* Slider */}
           <div style={{ borderRadius: 14, border: `1px solid ${BORDER}`, background: CARD_BG, padding: "20px 22px" }}>
-            <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, fontWeight: 800, color: "rgba(255,255,255,0.9)", margin: "0 0 4px", letterSpacing: "0.06em" }}>RESTORATION IN ACTION</p>
-            <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11, color: "rgba(255,255,255,0.35)", margin: "0 0 14px" }}>Drag to see the difference conservation makes.</p>
+            <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 14, fontWeight: 800, color: GOLD, margin: "0 0 4px", letterSpacing: "0.08em", textShadow: "0 0 18px rgba(212,175,55,0.35)" }}>✦ RESTORATION IN ACTION</p>
+            <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 12, color: "rgba(255,255,255,0.55)", margin: "0 0 14px" }}>Drag to see the difference conservation makes.</p>
             <BeforeAfterSlider />
           </div>
 
           {/* You Can Help */}
           <div style={{ borderRadius: 14, border: `1px solid ${BORDER}`, background: CARD_BG, padding: "20px 22px" }}>
-            <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, fontWeight: 800, color: "rgba(255,255,255,0.9)", margin: "0 0 4px", letterSpacing: "0.06em" }}>YOU CAN HELP</p>
-            <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11, color: "rgba(255,255,255,0.35)", margin: "0 0 20px" }}>Every action counts toward protecting Hawaii's wetlands.</p>
+            <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 14, fontWeight: 800, color: GOLD, margin: "0 0 4px", letterSpacing: "0.08em", textShadow: "0 0 18px rgba(212,175,55,0.35)" }}>✦ YOU CAN HELP</p>
+            <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 12, color: "rgba(255,255,255,0.55)", margin: "0 0 20px" }}>Every action counts toward protecting Hawaii's wetlands.</p>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
               {[
                 { icon: "❤️", label: "Donate", desc: "Support habitat restoration and research." },
@@ -643,10 +643,10 @@ export function Conservation() {
                 { icon: "📢", label: "Spread Awareness", desc: "Share knowledge and inspire others to care." },
                 { icon: "🔭", label: "Report Sightings", desc: "Help track coot populations in your area." },
               ].map(item => (
-                <div key={item.label} style={{ padding: "14px 14px", borderRadius: 10, border: `1px solid rgba(212,175,55,0.18)`, background: "rgba(212,175,55,0.04)", display: "flex", flexDirection: "column", gap: 6, alignItems: "center", textAlign: "center" }}>
-                  <span style={{ fontSize: 26 }}>{item.icon}</span>
-                  <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, fontWeight: 700, color: GOLD, margin: 0 }}>{item.label}</p>
-                  <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11, color: "rgba(255,255,255,0.45)", margin: 0, lineHeight: 1.5 }}>{item.desc}</p>
+                <div key={item.label} style={{ padding: "16px 14px", borderRadius: 10, border: `1px solid rgba(212,175,55,0.42)`, background: "rgba(212,175,55,0.1)", display: "flex", flexDirection: "column", gap: 6, alignItems: "center", textAlign: "center", boxShadow: "0 0 14px rgba(212,175,55,0.06)" }}>
+                  <span style={{ fontSize: 28 }}>{item.icon}</span>
+                  <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 14, fontWeight: 800, color: GOLD, margin: 0, textShadow: "0 0 10px rgba(212,175,55,0.4)" }}>{item.label}</p>
+                  <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 12, color: "rgba(255,255,255,0.6)", margin: 0, lineHeight: 1.5 }}>{item.desc}</p>
                 </div>
               ))}
             </div>
@@ -658,7 +658,7 @@ export function Conservation() {
           initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.9, duration: 1 }}
           style={{ textAlign: "center", padding: "28px 40px", borderTop: `1px solid ${BORDER}`, margin: 0 }}
         >
-          <span style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontSize: "clamp(16px, 1.6vw, 22px)", color: "rgba(255,255,255,0.65)", lineHeight: 1.6 }}>
+          <span style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontSize: "clamp(17px, 1.6vw, 23px)", color: "rgba(255,255,255,0.82)", lineHeight: 1.6 }}>
             "When we protect wetlands, we protect life. Together, we can secure a future for the Hawaiian Coot."
           </span>
         </motion.blockquote>
