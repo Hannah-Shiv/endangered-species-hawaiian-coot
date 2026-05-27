@@ -624,10 +624,10 @@ export function ExtinctionRisk() {
             <h1 style={{ fontFamily: FF_SERIF, fontSize: "clamp(38px, 5vw, 56px)", color: GOLD, margin: 0, letterSpacing: "0.04em", textShadow: "0 0 48px rgba(212,175,55,0.55)" }}>
               Extinction Risk
             </h1>
-            <p style={{ fontFamily: FF_SERIF, fontStyle: "italic", fontSize: 15, color: "rgba(212,175,55,0.75)", margin: "8px 0 16px" }}>
+            <p style={{ fontFamily: FF_SERIF, fontStyle: "italic", fontSize: 16, color: "rgba(212,175,55,0.95)", margin: "8px 0 16px" }}>
               Downlisted from Endangered after partial recovery, but still entirely dependent on conservation management.
             </p>
-            <span style={{ fontFamily: FF_SANS, fontSize: 11, fontWeight: 800, letterSpacing: "0.2em", color: "rgba(255,255,255,0.5)", display: "block", marginBottom: 8 }}>
+            <span style={{ fontFamily: FF_SANS, fontSize: 12, fontWeight: 800, letterSpacing: "0.2em", color: "rgba(255,255,255,0.88)", display: "block", marginBottom: 8 }}>
               IUCN RED LIST STATUS
             </span>
             <p style={{ fontFamily: FF_SERIF, fontSize: "clamp(44px, 7vw, 68px)", color: CRIMSON, margin: 0, letterSpacing: "0.06em", lineHeight: 1, textShadow: `0 0 44px ${CRIMSON}66` }}>
