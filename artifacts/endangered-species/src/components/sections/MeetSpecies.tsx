@@ -68,7 +68,7 @@ export function MeetSpecies() {
             className="relative mt-16 lg:mt-0"
           >
             <div className="aspect-square rounded-2xl overflow-hidden border-2 shadow-2xl relative" style={{ borderColor: "rgba(193,18,31,0.5)" }}>
-              <img src={portraitImg} alt="Hawaiian Coot Portrait" className="w-full h-full object-cover" />
+              <img src={portraitImg} alt="Hawaiian Coot Portrait" className="w-full h-full object-cover" data-lightbox style={{ cursor: "zoom-in" }} />
               <div className="absolute inset-0 bg-gradient-to-t from-background/95 to-transparent flex flex-col justify-end p-8">
                 <div className="grid grid-cols-2 gap-4 text-center" style={{ gridAutoRows: "1fr" }}>
                   {[
@@ -94,7 +94,7 @@ export function MeetSpecies() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6 }}
         >
-          <img src={sciClassImg} alt="Scientific Classification" className="w-full rounded-xl" />
+          <img src={sciClassImg} alt="Scientific Classification" className="w-full rounded-xl" data-lightbox style={{ cursor: "zoom-in" }} />
         </motion.div>
 
       </div>

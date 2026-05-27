@@ -164,6 +164,7 @@ export function Sources() {
           <img
             src="/credits-card.png"
             alt="Project credits — Hawaiian Coot science project by Hannah Shiv, Chloe Pan, Bahram Ostad. Life Science Teacher: Ms. Calliandra Harris, Cooper Middle School 2025–2026."
+            data-lightbox
             style={{
               width: "100%",
               height: "100%",
@@ -171,6 +172,7 @@ export function Sources() {
               objectPosition: "center",
               borderRadius: 16,
               display: "block",
+              cursor: "zoom-in",
             }}
           />
         </motion.div>
