@@ -1,6 +1,6 @@
 import { motion, AnimatePresence, useSpring } from "framer-motion";
 import { useState, useEffect } from "react";
-import healthyImg from "@assets/image_1779835298098.png";
+import healthyImg from "@assets/image_1779842553544.png";
 import ratsImg    from "@assets/image_1779842417676.png";
 import dogsImg    from "@assets/image_1779842303114.png";
 import frogsImg     from "@assets/image_1779842207715.png";
@@ -39,7 +39,7 @@ type Predator = {
 // ── Data ──────────────────────────────────────────────────────────────────────
 const PREDATORS: Predator[] = [
   {
-    id: "healthy", num: 0, name: "Healthy Habitat", threat: "LOW", color: "#33ee88",
+    id: "healthy", num: 0, name: "Healthy Habitat", threat: "LOW", color: "#33ee88", imgFit: "cover",
     sideIcon: "🌿",
     sideDesc: "A thriving Hawaiian wetland — coots nest peacefully, eggs are safe, and the ecosystem is in natural balance.",
     image: healthyImg as string,
