@@ -25,8 +25,10 @@ type Adaptation = {
   type:     "PHYSICAL" | "BEHAVIORAL";
   icon:     string;
   color:    string;
-  cx:       number;
+  cx:       number;   // thumbnail card position
   cy:       number;
+  ax:       number;   // anchor on bird body
+  ay:       number;
   image:    string;
   headline: string;
   desc:     string;
@@ -49,7 +51,8 @@ const STAT_LABELS: Array<{ key: StatKey; label: string }> = [
 const PHYSICAL: Adaptation[] = [
   {
     id: "lobed-feet", name: "Lobed Feet", type: "PHYSICAL", icon: "🦆", color: "#00e88a",
-    cx: 20, cy: 47,
+    cx: 17, cy: 78,   // thumbnail: bottom-left
+    ax: 47, ay: 82,   // anchor: feet at bottom of bird
     image: lobedFeetImg as string,
     headline: "Walking on Water",
     desc: "Unique lobed toes act as paddles for swimming AND spread weight for walking on floating vegetation.",
@@ -58,7 +61,8 @@ const PHYSICAL: Adaptation[] = [
   },
   {
     id: "frontal-shield", name: "White Frontal Shield", type: "PHYSICAL", icon: "🛡️", color: "#00d4ff",
-    cx: 50, cy: 11,
+    cx: 50, cy: 8,    // thumbnail: top-center
+    ax: 46, ay: 26,   // anchor: forehead/beak area
     image: frontalShieldImg as string,
     headline: "Social Signaling",
     desc: "Highly visible white plate used for communication, mate selection, and territorial signaling; unique among Hawaiian birds.",
@@ -67,7 +71,8 @@ const PHYSICAL: Adaptation[] = [
   },
   {
     id: "plumage", name: "Dense Waterproof Plumage", type: "PHYSICAL", icon: "🪶", color: "#90c8e8",
-    cx: 80, cy: 47,
+    cx: 84, cy: 44,   // thumbnail: right-center
+    ax: 63, ay: 52,   // anchor: body/flank area
     image: plumageImg as string,
     headline: "Storm Survival",
     desc: "Oil gland preening keeps feathers water-repellent, enabling all-weather survival even in heavy storms.",
@@ -79,7 +84,7 @@ const PHYSICAL: Adaptation[] = [
 const BEHAVIORAL: Adaptation[] = [
   {
     id: "nest-defense", name: "Aggressive Nest Defense", type: "BEHAVIORAL", icon: "⚔️", color: "#ff5533",
-    cx: 0, cy: 0,
+    cx: 0, cy: 0, ax: 0, ay: 0,
     image: nestDefenseImg as string,
     headline: "Fearless Guardian",
     desc: "Attacks intruders far larger than itself — documented confronting dogs, herons, and even humans near nests.",
@@ -88,7 +93,7 @@ const BEHAVIORAL: Adaptation[] = [
   },
   {
     id: "floating-nest", name: "Floating Nest Building", type: "BEHAVIORAL", icon: "🪹", color: "#d4af37",
-    cx: 0, cy: 0,
+    cx: 0, cy: 0, ax: 0, ay: 0,
     image: floatingNestImg as string,
     headline: "Nature's Float",
     desc: "Builds floating reed platforms that rise with water levels, protecting eggs from flooding and ground predators.",
@@ -344,7 +349,7 @@ export function Adaptations() {
                 </p>
               </div>
 
-              {/* Static SVG lines */}
+              {/* Curved bezier connectors + anchor dots */}
               <svg
                 style={{ position: "absolute", inset: 0, width: "100%", height: "100%", zIndex: 1, pointerEvents: "none" }}
                 viewBox="0 0 100 100"
@@ -352,16 +357,28 @@ export function Adaptations() {
               >
                 {PHYSICAL.map(ad => {
                   const isActive = selectedId === ad.id;
+                  // control point: midway between anchor and thumbnail, pulled slightly outward
+                  const cpx = (ad.ax + ad.cx) / 2;
+                  const cpy = (ad.ay + ad.cy) / 2;
+                  const d = `M ${ad.ax} ${ad.ay} Q ${cpx} ${cpy} ${ad.cx} ${ad.cy}`;
                   return (
-                    <line
-                      key={ad.id}
-                      x1="50" y1="52"
-                      x2={ad.cx} y2={ad.cy}
-                      stroke={ad.color}
-                      strokeWidth={isActive ? "0.6" : "0.3"}
-                      strokeOpacity={isActive ? 0.9 : 0.35}
-                      style={{ filter: isActive ? `drop-shadow(0 0 3px ${ad.color})` : "none" }}
-                    />
+                    <g key={ad.id}>
+                      <path
+                        d={d}
+                        fill="none"
+                        stroke={ad.color}
+                        strokeWidth={isActive ? "0.55" : "0.28"}
+                        strokeOpacity={isActive ? 0.95 : 0.4}
+                        strokeDasharray={isActive ? "none" : "2 1.5"}
+                        style={{ filter: isActive ? `drop-shadow(0 0 2px ${ad.color})` : "none" }}
+                      />
+                      {/* Small dot at anchor point on bird */}
+                      <circle
+                        cx={ad.ax} cy={ad.ay} r="1.2"
+                        fill={ad.color}
+                        fillOpacity={isActive ? 0.95 : 0.5}
+                      />
+                    </g>
                   );
                 })}
               </svg>
@@ -579,9 +596,10 @@ export function Adaptations() {
           </div>
         </div>
 
-        {/* Ecosystem health */}
+        {/* Ecosystem health — padded right to clear DomeNav X button */}
         <div style={{
           width: 104, flexShrink: 0, padding: "10px 10px 12px",
+          paddingRight: 62,
           display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 3,
         }}>
           <p style={{ fontSize: 9, letterSpacing: "0.12em", color: "rgba(255,255,255,0.35)", fontWeight: 700, margin: 0 }}>ECOSYSTEM HEALTH</p>
