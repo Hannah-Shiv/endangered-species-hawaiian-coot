@@ -340,14 +340,46 @@ function BeforeAfterSlider() {
         <ChevronRight size={12} />
       </div>
 
-      {/* BEFORE label */}
-      <div style={{ position: "absolute", bottom: 12, left: 14, background: "rgba(0,0,0,0.7)", padding: "4px 12px", borderRadius: 999, fontFamily: "'Josefin Sans', sans-serif", fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.9)", letterSpacing: "0.1em" }}>
-        BEFORE
+      {/* BEFORE label — fades out as slider sweeps left past it */}
+      <div style={{
+        position: "absolute", bottom: 16, left: 16, zIndex: 7,
+        opacity: Math.min(1, Math.max(0, (pos - 8) / 18)),
+        transition: "opacity 0.1s",
+        pointerEvents: "none",
+      }}>
+        <div style={{
+          background: "rgba(120,30,10,0.88)",
+          border: "2px solid rgba(220,80,50,0.9)",
+          padding: "7px 18px", borderRadius: 8,
+          fontFamily: "'Josefin Sans', sans-serif",
+          fontSize: 15, fontWeight: 900,
+          color: "#fff", letterSpacing: "0.18em",
+          textShadow: "0 1px 8px rgba(0,0,0,0.8)",
+          boxShadow: "0 2px 16px rgba(0,0,0,0.5)",
+        }}>
+          ✕ BEFORE
+        </div>
       </div>
 
-      {/* AFTER label */}
-      <div style={{ position: "absolute", bottom: 12, right: 14, background: "rgba(0,0,0,0.7)", padding: "4px 12px", borderRadius: 999, fontFamily: "'Josefin Sans', sans-serif", fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.9)", letterSpacing: "0.1em" }}>
-        AFTER
+      {/* AFTER label — fades out as slider sweeps right past it */}
+      <div style={{
+        position: "absolute", bottom: 16, right: 16, zIndex: 7,
+        opacity: Math.min(1, Math.max(0, (92 - pos) / 18)),
+        transition: "opacity 0.1s",
+        pointerEvents: "none",
+      }}>
+        <div style={{
+          background: "rgba(10,80,40,0.88)",
+          border: "2px solid rgba(60,180,80,0.9)",
+          padding: "7px 18px", borderRadius: 8,
+          fontFamily: "'Josefin Sans', sans-serif",
+          fontSize: 15, fontWeight: 900,
+          color: "#fff", letterSpacing: "0.18em",
+          textShadow: "0 1px 8px rgba(0,0,0,0.8)",
+          boxShadow: "0 2px 16px rgba(0,0,0,0.5)",
+        }}>
+          ✓ AFTER
+        </div>
       </div>
     </div>
   );
