@@ -838,21 +838,29 @@ export function Conservation() {
                   </div>
 
                   {/* Photos */}
-                  {(locData.id === "campbell" || locData.id === "hanalei") && (() => {
+                  {(locData.id === "campbell" || locData.id === "hanalei" || locData.id === "kealia") && (() => {
                     const photos: CarouselPhoto[] = locData.id === "campbell"
                       ? [{ src: "/campbell-habitat.png", alt: "James Campbell NWR wetland habitat" }, { src: "/campbell-coot.png", alt: "Hawaiian Coot at James Campbell NWR" }]
-                      : [
+                      : locData.id === "hanalei"
+                      ? [
                           { src: "/hanalei-1.png", alt: "Hanalei NWR information panels" },
                           { src: "/hanalei-2.png", alt: "Hanalei Valley from the overlook" },
                           { src: "/hanalei-3.png", alt: "Taro fields at golden hour, Hanalei Valley" },
                           { src: "/hanalei-4.png", alt: "Endangered Birds of the Hanalei NWR interpretive sign" },
                           { src: "/hanalei-5.png", alt: "Hanalei NWR visitor kiosk" },
                           { src: "/hanalei-6.png", alt: "Hawaiian Coot in taro fields at Hanalei" },
+                        ]
+                      : [
+                          { src: "/kealia-1.png", alt: "Keālia Pond NWR entrance sculpture" },
+                          { src: "/kealia-2.png", alt: "Boardwalk trail through Keālia Pond NWR" },
+                          { src: "/kealia-3.png", alt: "Waipuilani Stream outlet at Keālia Pond" },
+                          { src: "/kealia-4.png", alt: "Hawaiian Coot swimming at Keālia Pond" },
+                          { src: "/kealia-5.png", alt: "Flock of Hawaiian Coots at Keālia Pond wetland" },
+                          { src: "/kealia-6.png", alt: "Keālia Pond NWR sign with pond and mountains" },
                         ];
                     const openCarousel = (i: number) => setCarousel({ photos, index: i });
-                    // Show a 3-col grid for Hanalei (6 photos → 2 rows), 2-col for Campbell
-                    const cols = locData.id === "hanalei" ? "1fr 1fr 1fr" : "1fr 1fr";
-                    const ratio = locData.id === "hanalei" ? "4/3" : "4/3";
+                    const cols = photos.length >= 6 ? "1fr 1fr 1fr" : "1fr 1fr";
+                    const ratio = "4/3";
                     return (
                       <div style={{ display: "grid", gridTemplateColumns: cols, gap: 6 }}>
                         {photos.map((img, i) => (
