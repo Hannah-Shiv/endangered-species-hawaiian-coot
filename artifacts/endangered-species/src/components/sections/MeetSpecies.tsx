@@ -56,8 +56,8 @@ function MatrixLine({ text, delayOffset }: { text: string; delayOffset: number }
           fontSize: "clamp(16px, 2.2vw, 28px)",
           letterSpacing: "0.10em",
           color: locked
-            ? "rgba(212,175,55,1)"
-            : `rgba(212,175,55,${(0.2 + Math.random() * 0.4).toFixed(2)})`,
+            ? "rgba(92,8,8,1)"
+            : `rgba(92,8,8,${(0.2 + Math.random() * 0.4).toFixed(2)})`,
           display: "inline-block",
           minWidth: ch === " " ? "0.55em" : undefined,
         }}>{ch}</span>
@@ -71,13 +71,13 @@ function MatrixDecode() {
     <div style={{
       position: "absolute", top: "7%", left: "4%",
       pointerEvents: "none",
-      background: "rgba(60,4,4,0.82)",
-      border: "2px solid rgba(92,8,8,0.9)",
+      background: "rgba(212,175,55,0.88)",
+      border: "2px solid rgba(212,175,55,1)",
       borderRadius: 10,
       padding: "14px 22px",
       display: "flex", flexDirection: "column", gap: 10,
       backdropFilter: "blur(4px)",
-      boxShadow: "0 0 28px rgba(92,8,8,0.5), inset 0 0 20px rgba(60,4,4,0.4)",
+      boxShadow: "0 0 32px rgba(212,175,55,0.55), inset 0 0 20px rgba(180,145,30,0.3)",
     }}>
       {FINAL_LINES.map((line, i) => (
         <MatrixLine key={line} text={line} delayOffset={i * 600} />
