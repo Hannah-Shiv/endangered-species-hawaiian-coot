@@ -614,7 +614,7 @@ export function ExtinctionRisk() {
           style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 40%", filter: "brightness(0.92)" }}
         />
         {/* Horizontal vignette: left + right thirds stay bright, center third darkened for text legibility */}
-        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.05) 22%, rgba(0,0,0,0.82) 34%, rgba(0,0,0,0.90) 50%, rgba(0,0,0,0.82) 66%, rgba(0,0,0,0.05) 78%, rgba(0,0,0,0) 100%)" }} />
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,0.88) 40%, rgba(0,0,0,0.92) 50%, rgba(0,0,0,0.88) 60%, rgba(0,0,0,0) 70%, rgba(0,0,0,0) 100%)" }} />
         {/* Soft bottom fade into the tab bar */}
         <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, rgba(0,0,0,0.18) 0%, transparent 40%, rgba(0,0,0,0.55) 100%)" }} />
 
