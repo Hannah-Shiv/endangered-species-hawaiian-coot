@@ -1,7 +1,7 @@
 import { motion, AnimatePresence, useSpring } from "framer-motion";
 import { useState, useEffect } from "react";
 import healthyImg from "@assets/image_1779835298098.png";
-import ratsImg    from "@assets/image_1779835596663.png";
+import ratsImg    from "@assets/image_1779842417676.png";
 import dogsImg    from "@assets/image_1779842303114.png";
 import frogsImg     from "@assets/image_1779842207715.png";
 import mongooseImg   from "@assets/image_1779842173926.png";
@@ -81,7 +81,7 @@ const PREDATORS: Predator[] = [
     banner: "Invasive predators are one of the greatest threats to the Hawaiian Coot. Your actions can help protect their future.",
   },
   {
-    id: "rats", num: 2, name: "Rats & Feral Cats", threat: "HIGH", color: "#ff3344",
+    id: "rats", num: 2, name: "Rats & Feral Cats", threat: "HIGH", color: "#ff3344", imgFit: "cover",
     sideIcon: "🐀",
     sideDesc: "Nocturnal nest raiders and direct predators that are widespread throughout the Hawaiian Islands.",
     image: ratsImg as string,
