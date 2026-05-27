@@ -883,9 +883,12 @@ function HabitatContent() {
                   <span style={{ fontFamily: FF_SERIF, fontSize: 22, fontWeight: 700, color: GREEN }}>{w.pct}%</span>
                 </div>
                 <div style={{ height: 10, borderRadius: 999, background: "rgba(255,255,255,0.09)", overflow: "hidden", marginBottom: 9 }}>
-                  <motion.div initial={{ width: 0 }} animate={{ width: `${w.pct}%` }}
-                    transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.25 + i * 0.1 }}
-                    style={{ height: "100%", background: `linear-gradient(90deg, ${GREEN}cc, ${GREEN})`, borderRadius: 999 }} />
+                  <motion.div
+                    initial={{ width: 0 }}
+                    whileInView={{ width: `${w.pct}%` }}
+                    viewport={{ once: false, amount: 0.5 }}
+                    transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.1 + i * 0.1 }}
+                    style={{ height: "100%", background: GREEN, borderRadius: 999 }} />
                 </div>
                 <p style={{ fontFamily: FF_SANS, fontSize: 14, color: "rgba(255,255,255,0.75)", margin: 0, lineHeight: 1.55 }}>{w.desc}</p>
               </div>
