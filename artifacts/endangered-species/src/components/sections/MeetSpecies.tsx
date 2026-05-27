@@ -297,7 +297,7 @@ export function MeetSpecies() {
                     exit={{ opacity: 0, y: -8 }}
                     transition={{ duration: 1.1, ease: EASE_IN }}
                     style={{
-                      ...overlayText("clamp(16px, 2.1vw, 27px)", true),
+                      ...overlayText("clamp(32px, 4.8vw, 62px)", true),
                       textAlign: "center",
                       maxWidth: "78%",
                     }}>
