@@ -138,58 +138,53 @@ export function Sources() {
                 <div style={{ height: 1, flex: 1, maxWidth: 80, background: "linear-gradient(to left, transparent, rgba(200,30,10,0.6))" }} />
               </div>
 
-              {/* Team member cards — all glow */}
+              {/* Team member cards — all identical */}
               <div style={{ display: "flex", justifyContent: "center", gap: 14, flexWrap: "wrap", marginBottom: 36 }}>
                 {[
-                  { name: "Hannah Shiv",  role: "Developer & Student Researcher", glowColor: "212,175,55",  roleColor: "rgba(220,60,30,0.95)"  },
-                  { name: "Chloe Pan",    role: "Student Researcher",             glowColor: "255,255,255", roleColor: "rgba(180,180,180,0.85)" },
-                  { name: "Bahram Ostad", role: "Student Researcher",             glowColor: "255,255,255", roleColor: "rgba(180,180,180,0.85)" },
-                ].map((member) => {
-                  const isHannah = member.name === "Hannah Shiv";
-                  return (
+                  { name: "Hannah Shiv",  role: "Developer & Student Researcher" },
+                  { name: "Chloe Pan",    role: "Student Researcher"             },
+                  { name: "Bahram Ostad", role: "Student Researcher"             },
+                ].map((member) => (
                   <div
                     key={member.name}
                     style={{
                       width: 200,
                       borderRadius: 14,
-                      border: `1px solid rgba(${member.glowColor},${isHannah ? "0.65" : "0.25"})`,
-                      background: isHannah
-                        ? "linear-gradient(145deg, rgba(212,175,55,0.13), rgba(200,30,10,0.07))"
-                        : "linear-gradient(145deg, rgba(255,255,255,0.07), rgba(255,255,255,0.03))",
+                      border: "1px solid rgba(212,175,55,0.55)",
+                      background: "linear-gradient(145deg, rgba(212,175,55,0.1), rgba(200,30,10,0.06))",
                       padding: "24px 18px 22px",
                       display: "flex", flexDirection: "column", alignItems: "center", gap: 9,
-                      boxShadow: `0 0 28px rgba(${member.glowColor},${isHannah ? "0.18" : "0.1"}), 0 0 8px rgba(${member.glowColor},${isHannah ? "0.12" : "0.06"})`,
+                      boxShadow: "0 0 28px rgba(212,175,55,0.15), 0 0 8px rgba(212,175,55,0.08)",
                     }}
                   >
                     {/* Glowing accent dot */}
                     <div style={{
                       width: 11, height: 11, borderRadius: "50%",
-                      background: `rgba(${member.glowColor},1)`,
-                      boxShadow: `0 0 14px rgba(${member.glowColor},0.9), 0 0 28px rgba(${member.glowColor},0.4)`,
+                      background: "rgba(212,175,55,1)",
+                      boxShadow: "0 0 14px rgba(212,175,55,0.9), 0 0 28px rgba(212,175,55,0.4)",
                       marginBottom: 4,
                     }} />
                     <p style={{
                       fontFamily: "'Playfair Display', serif",
                       fontSize: 21,
-                      color: isHannah ? "rgba(212,175,55,1)" : "rgba(255,255,255,0.95)",
+                      color: "rgba(212,175,55,1)",
                       margin: 0, lineHeight: 1.2,
-                      textShadow: `0 0 22px rgba(${member.glowColor},0.55)`,
+                      textShadow: "0 0 22px rgba(212,175,55,0.55)",
                     }}>
                       {member.name}
                     </p>
-                    <div style={{ height: 1, width: 44, background: `rgba(${member.glowColor},${isHannah ? "0.45" : "0.25"})` }} />
+                    <div style={{ height: 1, width: 44, background: "rgba(212,175,55,0.4)" }} />
                     <p style={{
                       fontFamily: "'Josefin Sans', sans-serif",
                       fontSize: 12, letterSpacing: "0.07em",
-                      color: member.roleColor,
+                      color: "rgba(220,60,30,0.9)",
                       margin: 0, lineHeight: 1.45, textAlign: "center",
                       textTransform: "uppercase", fontWeight: 700,
                     }}>
                       {member.role}
                     </p>
                   </div>
-                  );
-                })}
+                ))}
               </div>
 
               {/* School info pills */}
