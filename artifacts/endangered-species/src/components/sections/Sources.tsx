@@ -101,35 +101,122 @@ export function Sources() {
 
           {/* ── Project credit ── */}
           <motion.div
-            initial={{ opacity: 0, y: 12 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.7, duration: 0.6 }}
-            className="rounded-2xl border border-border bg-card/40 p-8 text-center"
+            transition={{ delay: 0.7, duration: 0.7 }}
+            style={{
+              borderRadius: 20,
+              border: "1px solid rgba(212,175,55,0.35)",
+              background: "linear-gradient(135deg, rgba(20,14,0,0.95) 0%, rgba(10,8,2,0.98) 100%)",
+              boxShadow: "0 0 40px rgba(212,175,55,0.08), inset 0 1px 0 rgba(212,175,55,0.15)",
+              overflow: "hidden",
+            }}
           >
-            <p className="text-xs tracking-widest text-muted-foreground mb-4 font-semibold uppercase">
-              Science Project — Endangered Species — Hawaiian Coot
-            </p>
+            {/* Gold top bar */}
+            <div style={{ height: 3, background: "linear-gradient(90deg, transparent, rgba(212,175,55,0.8), rgba(212,175,55,1), rgba(212,175,55,0.8), transparent)" }} />
 
-            <div className="flex flex-col gap-2 mb-6">
-              <div>
-                <span className="text-2xl font-serif" style={{ color: "rgba(212,175,55,1)" }}>Hannah Shiv</span>
-                <span className="text-muted-foreground text-sm ml-3">Developer &amp; Student Researcher</span>
+            <div style={{ padding: "36px 48px 40px", textAlign: "center" }}>
+
+              {/* Eyebrow label */}
+              <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11, letterSpacing: "0.22em", color: "rgba(212,175,55,0.5)", fontWeight: 700, marginBottom: 6 }}>
+                SCIENCE PROJECT · ENDANGERED SPECIES
+              </p>
+
+              {/* Project title */}
+              <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 22, color: "rgba(212,175,55,0.95)", fontStyle: "italic", marginBottom: 28 }}>
+                Hawaiian Coot — <em>Fulica alai</em>
+              </p>
+
+              {/* Decorative divider */}
+              <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 28, justifyContent: "center" }}>
+                <div style={{ height: 1, width: 60, background: "linear-gradient(to right, transparent, rgba(212,175,55,0.4))" }} />
+                <span style={{ color: "rgba(212,175,55,0.6)", fontSize: 14 }}>✦</span>
+                <div style={{ height: 1, width: 60, background: "linear-gradient(to left, transparent, rgba(212,175,55,0.4))" }} />
               </div>
-              <div>
-                <span className="text-2xl font-serif" style={{ color: "rgba(212,175,55,0.85)" }}>Chloe Pan</span>
-                <span className="text-muted-foreground text-sm ml-3">Student Researcher</span>
+
+              {/* Team member cards */}
+              <div style={{ display: "flex", justifyContent: "center", gap: 16, flexWrap: "wrap", marginBottom: 32 }}>
+                {[
+                  { name: "Hannah Shiv",   initials: "HS", role: "Developer & Student Researcher", lead: true },
+                  { name: "Chloe Pan",     initials: "CP", role: "Student Researcher",             lead: false },
+                  { name: "Bahram Ostad",  initials: "BO", role: "Student Researcher",             lead: false },
+                ].map((member) => (
+                  <div
+                    key={member.name}
+                    style={{
+                      width: 180,
+                      borderRadius: 14,
+                      border: `1px solid rgba(212,175,55,${member.lead ? "0.35" : "0.18"})`,
+                      background: `rgba(212,175,55,${member.lead ? "0.07" : "0.03"})`,
+                      padding: "20px 16px 18px",
+                      display: "flex", flexDirection: "column", alignItems: "center", gap: 10,
+                    }}
+                  >
+                    {/* Avatar circle */}
+                    <div style={{
+                      width: 52, height: 52, borderRadius: "50%",
+                      background: `rgba(212,175,55,${member.lead ? "0.18" : "0.1"})`,
+                      border: `2px solid rgba(212,175,55,${member.lead ? "0.6" : "0.3"})`,
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                    }}>
+                      <span style={{
+                        fontFamily: "'Playfair Display', serif",
+                        fontSize: 18, fontWeight: 700,
+                        color: `rgba(212,175,55,${member.lead ? "1" : "0.75"})`,
+                      }}>
+                        {member.initials}
+                      </span>
+                    </div>
+                    <p style={{
+                      fontFamily: "'Playfair Display', serif",
+                      fontSize: 17,
+                      color: `rgba(212,175,55,${member.lead ? "1" : "0.8"})`,
+                      margin: 0, lineHeight: 1.2,
+                    }}>
+                      {member.name}
+                    </p>
+                    <p style={{
+                      fontFamily: "'Josefin Sans', sans-serif",
+                      fontSize: 10.5, letterSpacing: "0.06em",
+                      color: "rgba(255,255,255,0.4)",
+                      margin: 0, lineHeight: 1.4, textAlign: "center",
+                      textTransform: "uppercase",
+                    }}>
+                      {member.role}
+                    </p>
+                  </div>
+                ))}
               </div>
-              <div>
-                <span className="text-2xl font-serif" style={{ color: "rgba(212,175,55,0.85)" }}>Bahram Ostad</span>
-                <span className="text-muted-foreground text-sm ml-3">Student Researcher</span>
+
+              {/* School info pills */}
+              <div style={{ display: "flex", justifyContent: "center", gap: 10, flexWrap: "wrap" }}>
+                {[
+                  { icon: "🏫", text: "Cooper Middle School" },
+                  { icon: "🔬", text: "Life Science" },
+                  { icon: "📅", text: "2025–2026" },
+                ].map((item) => (
+                  <div
+                    key={item.text}
+                    style={{
+                      display: "flex", alignItems: "center", gap: 7,
+                      padding: "7px 16px",
+                      borderRadius: 999,
+                      border: "1px solid rgba(212,175,55,0.2)",
+                      background: "rgba(212,175,55,0.05)",
+                    }}
+                  >
+                    <span style={{ fontSize: 15 }}>{item.icon}</span>
+                    <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, color: "rgba(255,255,255,0.55)", letterSpacing: "0.04em" }}>
+                      {item.text}
+                    </span>
+                  </div>
+                ))}
               </div>
+
             </div>
 
-            <div className="flex justify-center gap-6 text-sm text-muted-foreground flex-wrap">
-              <span>🏫 Cooper Middle School</span>
-              <span>🔬 Life Science</span>
-              <span>📅 2025–2026</span>
-            </div>
+            {/* Gold bottom bar */}
+            <div style={{ height: 3, background: "linear-gradient(90deg, transparent, rgba(212,175,55,0.5), rgba(212,175,55,0.8), rgba(212,175,55,0.5), transparent)" }} />
           </motion.div>
 
         </motion.div>
