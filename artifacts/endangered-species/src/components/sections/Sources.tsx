@@ -1,6 +1,7 @@
-// ─── Sources & Credits ────────────────────────────────────────────────────────
+// ─── Sources & Citations ────────────────────────────────────────────────────────
 // Academic references, citations, and project credits page.
-// No-scroll layout: citations left, credits image right, all within one viewport.
+// No-scroll layout: compact citations on the left, credits image on the right.
+// Header matches the style used across all other section pages.
 // ─────────────────────────────────────────────────────────────────────────────
 import { motion } from "framer-motion";
 import { ExternalLink } from "lucide-react";
@@ -39,69 +40,68 @@ export function Sources() {
 
   return (
     <div
+      className="w-full"
       style={{
-        width: "100%",
         height: "100vh",
         overflow: "hidden",
-        paddingTop: 80,
-        paddingBottom: 20,
-        paddingLeft: 40,
-        paddingRight: 40,
-        boxSizing: "border-box",
+        background: "#000000",
         display: "flex",
         flexDirection: "column",
-        gap: 16,
+        paddingTop: 88,
+        paddingBottom: 24,
+        paddingLeft: 48,
+        paddingRight: 48,
+        boxSizing: "border-box",
+        gap: 20,
       }}
     >
-      {/* ── Header ── */}
+      {/* ── Header — matches all other pages ── */}
       <motion.div
-        initial={{ opacity: 0, y: -12 }}
+        initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
+        transition={{ duration: 0.8 }}
         style={{ textAlign: "center", flexShrink: 0 }}
       >
-        <h1 style={{
-          fontFamily: "'Playfair Display', serif",
-          fontSize: "clamp(2rem, 3.5vw, 3rem)",
-          color: "rgba(212,175,55,1)",
-          letterSpacing: "0.04em",
-          margin: "0 0 4px",
-          lineHeight: 1.1,
-        }}>
+        <h1
+          className="text-6xl mb-3"
+          style={{ fontFamily: "'Playfair Display', serif", color: "rgba(212,175,55,1)", letterSpacing: "0.04em" }}
+        >
           Sources &amp; Citations
         </h1>
-        <p style={{
-          fontFamily: "'Playfair Display', serif",
-          fontStyle: "italic",
-          fontSize: "clamp(0.75rem, 1.1vw, 1rem)",
-          color: "rgba(212,175,55,0.7)",
-          margin: 0,
-        }}>
+        <p
+          style={{
+            fontFamily: "'Playfair Display', serif",
+            fontStyle: "italic",
+            fontSize: 20,
+            color: "rgba(212,175,55,0.88)",
+            margin: "0 auto",
+          }}
+        >
           Data sourced from leading conservation organizations and peer-reviewed literature.
         </p>
       </motion.div>
 
-      {/* ── Body: citations left, image right ── */}
-      <div style={{ flex: 1, display: "flex", gap: 24, minHeight: 0 }}>
+      {/* ── Body: citations left · image right ── */}
+      <div style={{ flex: 1, display: "flex", gap: 28, minHeight: 0 }}>
 
-        {/* Left — citation cards */}
+        {/* Left — citations */}
         <motion.div
-          initial={{ opacity: 0, x: -16 }}
+          initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.7, delay: 0.15 }}
+          transition={{ duration: 0.7, delay: 0.2 }}
           style={{
-            flex: "0 0 44%",
+            flex: "0 0 42%",
             display: "flex",
             flexDirection: "column",
-            gap: 8,
+            gap: 10,
             minHeight: 0,
           }}
         >
-          {/* 2-column citation grid */}
+          {/* 2-column grid */}
           <div style={{
             display: "grid",
             gridTemplateColumns: "1fr 1fr",
-            gap: 8,
+            gap: 10,
             flex: 1,
             minHeight: 0,
           }}>
@@ -110,12 +110,12 @@ export function Sources() {
                 key={idx}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 + idx * 0.07 }}
+                transition={{ delay: 0.25 + idx * 0.07 }}
                 style={{
                   borderRadius: 10,
-                  border: "1px solid rgba(212,175,55,0.2)",
-                  background: "rgba(212,175,55,0.04)",
-                  padding: "10px 12px",
+                  border: "1px solid rgba(212,175,55,0.35)",
+                  background: "rgba(212,175,55,0.07)",
+                  padding: "12px 14px",
                   display: "flex",
                   justifyContent: "space-between",
                   alignItems: "flex-start",
@@ -125,20 +125,20 @@ export function Sources() {
                 <div style={{ minWidth: 0 }}>
                   <p style={{
                     fontFamily: "'Josefin Sans', sans-serif",
-                    fontSize: "clamp(0.65rem, 0.85vw, 0.8rem)",
+                    fontSize: 13,
                     fontWeight: 700,
-                    color: "rgba(212,175,55,0.95)",
-                    margin: "0 0 3px",
+                    color: "rgba(212,175,55,1)",
+                    margin: "0 0 4px",
                     lineHeight: 1.3,
                   }}>
                     {source.title}
                   </p>
                   <p style={{
                     fontFamily: "'Josefin Sans', sans-serif",
-                    fontSize: "clamp(0.58rem, 0.75vw, 0.7rem)",
-                    color: "rgba(255,255,255,0.45)",
+                    fontSize: 11,
+                    color: "rgba(255,255,255,0.6)",
                     margin: 0,
-                    lineHeight: 1.35,
+                    lineHeight: 1.4,
                   }}>
                     {source.desc}
                   </p>
@@ -148,7 +148,7 @@ export function Sources() {
                     href={source.url}
                     target="_blank"
                     rel="noreferrer"
-                    style={{ color: "rgba(212,175,55,0.45)", flexShrink: 0, paddingTop: 2 }}
+                    style={{ color: "rgba(212,175,55,0.5)", flexShrink: 0, paddingTop: 2 }}
                     data-testid={`link-source-${idx}`}
                   >
                     <ExternalLink size={14} />
@@ -158,25 +158,25 @@ export function Sources() {
             ))}
           </div>
 
-          {/* Small image credit note */}
+          {/* Image credit note */}
           <p style={{
             fontFamily: "'Josefin Sans', sans-serif",
-            fontSize: "clamp(0.58rem, 0.7vw, 0.68rem)",
-            color: "rgba(255,255,255,0.28)",
+            fontSize: 11,
+            color: "rgba(255,255,255,0.3)",
             margin: 0,
-            letterSpacing: "0.04em",
+            letterSpacing: "0.03em",
             flexShrink: 0,
           }}>
-            Image Credits: Few images generated for educational purposes. &nbsp;·&nbsp; Conservation Orgs: James Campbell NWR, Kealia Pond NWR, Hawaii Wildlife Fund, The Nature Conservancy Hawaii.
+            Image Credits: Few images generated for educational purposes.&nbsp; · &nbsp;Conservation Orgs: James Campbell NWR, Kealia Pond NWR, Hawaii Wildlife Fund, The Nature Conservancy Hawaii.
           </p>
         </motion.div>
 
         {/* Right — credits image */}
         <motion.div
-          initial={{ opacity: 0, x: 16 }}
+          initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.7, delay: 0.25 }}
-          style={{ flex: 1, minHeight: 0, display: "flex", alignItems: "stretch" }}
+          transition={{ duration: 0.7, delay: 0.3 }}
+          style={{ flex: 1, minHeight: 0, display: "flex" }}
         >
           <img
             src="/credits-card.png"
