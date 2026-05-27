@@ -994,29 +994,57 @@ function ConservationContent() {
 // ─── What You Can Do tab ──────────────────────────────────────────────────────
 function ActionContent() {
   const actions = [
-    { icon: "🔭", title: "Report Sightings",      desc: "Submit observations to eBird or iNaturalist. Citizen science data directly informs USFWS population assessments.", link: "https://ebird.org",                     cta: "Open eBird →"    },
-    { icon: "🌿", title: "Restore Native Plants",  desc: "Volunteer with the Hawaii Wildlife Fund or TNC to restore native wetland vegetation around refuge borders.",          link: "https://www.hwf.org",                    cta: "Join HWF →"      },
-    { icon: "🏞", title: "Visit Respectfully",     desc: "Stay on designated trails, keep dogs leashed, never approach nesting birds. Give wildlife space at refuges.",       link: "https://www.fws.gov",                    cta: "Find Refuges →"  },
-    { icon: "💰", title: "Donate to Recovery",     desc: "Support USFWS, TNC Hawaii, and Hawaii Wildlife Fund programs that fund predator control and habitat restoration.",   link: "https://www.tnc.org",                    cta: "Donate →"        },
-    { icon: "📢", title: "Advocate for Wetlands",  desc: "Contact your state legislators in support of wetland protection laws and waterbird conservation funding.",          link: "https://www.capitol.hawaii.gov",         cta: "Contact Reps →"  },
-    { icon: "📚", title: "Educate Others",          desc: "Share this page and spread awareness. Conservation begins with understanding the stakes.",                           link: "#",                                      cta: "Share This Page" },
+    { icon: "🔭", title: "Report Sightings",     desc: "Submit observations to eBird or iNaturalist. Citizen science data directly informs USFWS population assessments.", link: "https://ebird.org",             cta: "Open eBird →",    color: GOLD                    },
+    { icon: "🌿", title: "Restore Native Plants", desc: "Volunteer with the Hawaii Wildlife Fund or TNC to restore native wetland vegetation around refuge borders.",         link: "https://www.hwf.org",           cta: "Join HWF →",      color: GREEN                   },
+    { icon: "🏞", title: "Visit Respectfully",    desc: "Stay on designated trails, keep dogs leashed, never approach nesting birds. Give wildlife space at refuges.",      link: "https://www.fws.gov",           cta: "Find Refuges →",  color: AMBER                   },
+    { icon: "💰", title: "Donate to Recovery",    desc: "Support USFWS, TNC Hawaii, and Hawaii Wildlife Fund programs that fund predator control and habitat restoration.",  link: "https://www.tnc.org",           cta: "Donate →",        color: CRIMSON                 },
+    { icon: "📢", title: "Advocate for Wetlands", desc: "Contact your state legislators in support of wetland protection laws and waterbird conservation funding.",         link: "https://www.capitol.hawaii.gov",cta: "Contact Reps →",  color: "rgba(139,92,246,1)"    },
+    { icon: "📚", title: "Educate Others",         desc: "Share this page and spread awareness. Conservation begins with understanding the stakes.",                          link: "#",                             cta: "Share This Page", color: "rgba(56,189,248,1)"    },
   ];
 
   return (
     <div style={{ padding: "32px 40px 48px", maxWidth: 1100, margin: "0 auto" }}>
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-        <p style={{ fontFamily: FF_SERIF, fontStyle: "italic", fontSize: 18, color: "rgba(212,175,55,0.72)", margin: "0 0 28px", textAlign: "center" }}>
-          "Conservation works. Protection, habitat restoration, and community efforts give the Hawaiian Coot a future."
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+        <p style={{ fontFamily: FF_SERIF, fontStyle: "italic", fontSize: 20, color: "rgba(212,175,55,0.88)", margin: 0, textAlign: "center", lineHeight: 1.6 }}>
+          "Conservation works. Protection, habitat restoration, and community effort give the Hawaiian Coot a future."
         </p>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 16 }}>
           {actions.map((a, i) => (
-            <motion.div key={i} initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.08 }}
-              style={{ borderRadius: 14, border: `1px solid ${BORDER}`, background: CARD_BG, padding: "22px 22px" }}>
-              <p style={{ fontSize: 30, margin: "0 0 10px" }}>{a.icon}</p>
-              <p style={{ fontFamily: FF_SANS, fontSize: 15, fontWeight: 800, color: GOLD, margin: "0 0 8px", letterSpacing: "0.04em" }}>{a.title}</p>
-              <p style={{ fontFamily: FF_SANS, fontSize: 13, color: "rgba(255,255,255,0.62)", margin: "0 0 16px", lineHeight: 1.7 }}>{a.desc}</p>
+            <motion.div key={i}
+              initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
+              whileHover={{ y: -5, boxShadow: `0 8px 48px ${a.color}44` }}
+              style={{
+                borderRadius: 16,
+                border: `1px solid ${a.color}42`,
+                background: `${a.color}0d`,
+                padding: "26px 24px",
+                cursor: "default",
+                position: "relative",
+                overflow: "hidden",
+              }}>
+              {/* Corner glow */}
+              <div style={{ position: "absolute", top: 0, left: 0, width: "70%", height: "70%", background: `radial-gradient(ellipse at 0% 0%, ${a.color}15, transparent 70%)`, pointerEvents: "none" }} />
+
+              {/* Icon */}
+              <p style={{ fontSize: 36, margin: "0 0 12px", lineHeight: 1 }}>{a.icon}</p>
+
+              {/* Title */}
+              <p style={{ fontFamily: FF_SANS, fontSize: 17, fontWeight: 800, color: a.color, margin: "0 0 10px", letterSpacing: "0.03em" }}>{a.title}</p>
+
+              {/* Description */}
+              <p style={{ fontFamily: FF_SANS, fontSize: 15, color: "rgba(255,255,255,0.88)", margin: "0 0 18px", lineHeight: 1.7 }}>{a.desc}</p>
+
+              {/* CTA */}
               <a href={a.link} target="_blank" rel="noreferrer"
-                style={{ fontFamily: FF_SANS, fontSize: 12, fontWeight: 800, color: GOLD, letterSpacing: "0.1em", textDecoration: "none", padding: "8px 16px", borderRadius: 8, border: `1px solid rgba(212,175,55,0.42)`, background: "rgba(212,175,55,0.09)", display: "inline-block" }}>
+                style={{
+                  fontFamily: FF_SANS, fontSize: 14, fontWeight: 800,
+                  color: a.color, letterSpacing: "0.08em", textDecoration: "none",
+                  padding: "9px 18px", borderRadius: 9,
+                  border: `1px solid ${a.color}55`,
+                  background: `${a.color}14`,
+                  display: "inline-block",
+                }}>
                 {a.cta}
               </a>
             </motion.div>
