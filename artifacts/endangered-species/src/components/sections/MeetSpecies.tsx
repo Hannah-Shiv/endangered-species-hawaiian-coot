@@ -32,10 +32,10 @@ function PopIndicator() {
             fontFamily: FF_SERIF,
             fontStyle: "italic",
             fontWeight: 900,
-            fontSize: i === 1
-              ? "clamp(32px, 4.8vw, 62px)"
-              : "clamp(16px, 2.0vw, 26px)",
-            lineHeight: i === 1 ? 1.0 : 1.3,
+            fontSize: i === 0
+              ? "clamp(16px, 2.0vw, 26px)"
+              : "clamp(32px, 4.8vw, 62px)",
+            lineHeight: i === 0 ? 1.3 : 1.0,
             letterSpacing: "0.06em",
             color: WINE,
             margin: 0,
