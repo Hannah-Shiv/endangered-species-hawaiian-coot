@@ -49,7 +49,7 @@ const STAT_LABELS: Array<{ key: StatKey; label: string }> = [
 const PHYSICAL: Adaptation[] = [
   {
     id: "lobed-feet", name: "Lobed Feet", type: "PHYSICAL", icon: "🦆", color: "#00e88a",
-    cx: 8, cy: 48,
+    cx: 20, cy: 47,
     image: lobedFeetImg as string,
     headline: "Walking on Water",
     desc: "Unique lobed toes act as paddles for swimming AND spread weight for walking on floating vegetation.",
@@ -58,7 +58,7 @@ const PHYSICAL: Adaptation[] = [
   },
   {
     id: "frontal-shield", name: "White Frontal Shield", type: "PHYSICAL", icon: "🛡️", color: "#00d4ff",
-    cx: 50, cy: 5,
+    cx: 50, cy: 11,
     image: frontalShieldImg as string,
     headline: "Social Signaling",
     desc: "Highly visible white plate used for communication, mate selection, and territorial signaling; unique among Hawaiian birds.",
@@ -67,7 +67,7 @@ const PHYSICAL: Adaptation[] = [
   },
   {
     id: "plumage", name: "Dense Waterproof Plumage", type: "PHYSICAL", icon: "🪶", color: "#90c8e8",
-    cx: 92, cy: 48,
+    cx: 80, cy: 47,
     image: plumageImg as string,
     headline: "Storm Survival",
     desc: "Oil gland preening keeps feathers water-repellent, enabling all-weather survival even in heavy storms.",
@@ -397,13 +397,13 @@ export function Adaptations() {
                   >
                     {/* Image thumbnail */}
                     <div style={{
-                      width: 80, height: 58,
-                      borderRadius: 8,
+                      width: 112, height: 82,
+                      borderRadius: 9,
                       overflow: "hidden",
                       border: `2px solid ${isActive ? ad.color : ad.color + "55"}`,
                       boxShadow: isActive
-                        ? `0 0 20px ${ad.color}55, 0 4px 16px rgba(0,0,0,0.8)`
-                        : `0 4px 12px rgba(0,0,0,0.7)`,
+                        ? `0 0 22px ${ad.color}66, 0 4px 18px rgba(0,0,0,0.85)`
+                        : `0 4px 14px rgba(0,0,0,0.75)`,
                       transition: "border-color 0.2s, box-shadow 0.2s",
                     }}>
                       <img
@@ -413,10 +413,10 @@ export function Adaptations() {
                     </div>
                     {/* Label */}
                     <p style={{
-                      fontSize: 9, fontWeight: 800, margin: 0,
-                      color: isActive ? ad.color : "rgba(255,255,255,0.65)",
+                      fontSize: 9.5, fontWeight: 800, margin: 0,
+                      color: isActive ? ad.color : "rgba(255,255,255,0.7)",
                       textAlign: "center", letterSpacing: "0.05em",
-                      lineHeight: 1.2, maxWidth: 80,
+                      lineHeight: 1.2, maxWidth: 112,
                       transition: "color 0.2s",
                     }}>
                       {ad.name}
