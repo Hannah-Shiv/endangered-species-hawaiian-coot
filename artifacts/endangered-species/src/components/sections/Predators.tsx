@@ -259,7 +259,6 @@ export function Predators() {
   const p = PREDATORS.find(x => x.id === selId) ?? PREDATORS[0];
   const tc = THREAT_COLORS[p.threat];
 
-  // When predator changes, reset to impact view
   function select(id: string) { setSelId(id); setView("impact"); }
 
   return (
@@ -289,77 +288,73 @@ export function Predators() {
       {/* ── 2. MAIN BODY ──────────────────────────────────────────────── */}
       <div style={{ flex: 1, display: "flex", minHeight: 0 }}>
 
-        {/* ── 2a. LEFT SIDEBAR — predator cards ───────────────────────── */}
+        {/* ── 2a. LEFT — 2×3 button grid ───────────────────────────────── */}
         <div style={{
-          width: 280, flexShrink: 0,
-          display: "flex", flexDirection: "column",
-          background: "rgba(0,0,0,0.5)",
+          width: 340, flexShrink: 0,
+          padding: "10px 8px",
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          gridTemplateRows: "repeat(3, 1fr)",
+          gap: 7,
+          background: "rgba(0,0,0,0.55)",
           borderRight: "1px solid rgba(255,255,255,0.07)",
-          overflowY: "auto",
         }}>
           {PREDATORS.map(pred => {
             const isSel = pred.id === selId;
-            const pc    = THREAT_COLORS[pred.threat];
+            const pc    = pred.color;
             return (
               <motion.button
                 key={pred.id}
                 onClick={() => select(pred.id)}
-                onHoverStart={() => !isSel && select(pred.id)}
-                whileTap={{ scale: 0.98 }}
+                whileTap={{ scale: 0.97 }}
                 style={{
-                  width: "100%", textAlign: "left", cursor: "pointer",
-                  background: isSel ? `${pc}18` : "transparent",
-                  border: "none",
-                  borderLeft: `3px solid ${isSel ? pc : "transparent"}`,
-                  borderBottom: "1px solid rgba(255,255,255,0.05)",
-                  padding: "12px 14px",
-                  transition: "background 0.25s, border-color 0.25s",
+                  cursor: "pointer", textAlign: "left",
+                  background: isSel ? `${pc}22` : "rgba(255,255,255,0.03)",
+                  border: `1.5px solid ${isSel ? pc : "rgba(255,255,255,0.1)"}`,
+                  borderRadius: 10,
+                  padding: "10px 11px",
+                  display: "flex", flexDirection: "column", gap: 5,
+                  transition: "background 0.25s, border-color 0.25s, box-shadow 0.25s",
+                  boxShadow: isSel ? `0 0 16px ${pc}44, inset 0 0 0 1px ${pc}33` : "none",
+                  overflow: "hidden",
                 }}
               >
-                <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
-                  {/* Number circle */}
-                  <div style={{
-                    width: 36, height: 36, borderRadius: "50%", flexShrink: 0,
-                    background: isSel ? `${pc}33` : "rgba(255,255,255,0.07)",
-                    border: `1.5px solid ${isSel ? pc : "rgba(255,255,255,0.12)"}`,
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    transition: "background 0.25s, border-color 0.25s",
+                {/* Icon row + threat badge */}
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                  <span style={{ fontSize: 20 }}>{pred.sideIcon}</span>
+                  <span style={{
+                    fontSize: 8.5, fontWeight: 800, letterSpacing: "0.07em",
+                    background: `${pc}28`, color: pc,
+                    border: `1px solid ${pc}66`,
+                    borderRadius: 4, padding: "2px 5px",
                   }}>
-                    <span style={{ fontSize: 13.5, fontWeight: 900, color: isSel ? pc : "rgba(255,255,255,0.55)" }}>
-                      {pred.num}
-                    </span>
-                  </div>
-
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    {/* Name + threat badge */}
-                    <div style={{ display: "flex", alignItems: "center", gap: 7, flexWrap: "wrap", marginBottom: 6 }}>
-                      <span style={{ fontSize: 22, lineHeight: 1 }}>{pred.sideIcon}</span>
-                      <span style={{ fontSize: 15.5, fontWeight: 800, color: isSel ? "#fff" : "rgba(255,255,255,0.78)", letterSpacing: "0.04em" }}>
-                        {pred.name}
-                      </span>
-                      <span style={{
-                        fontSize: 10.5, fontWeight: 800, letterSpacing: "0.1em",
-                        background: `${pc}28`, color: pc,
-                        border: `1px solid ${pc}88`,
-                        borderRadius: 4, padding: "2px 7px",
-                      }}>
-                        {pred.threat === "LOW" ? "LOW THREAT" : pred.threat === "MEDIUM" ? "MEDIUM THREAT" : "HIGH THREAT"}
-                      </span>
-                    </div>
-                    <p style={{ fontSize: 13, lineHeight: 1.5, color: "rgba(255,255,255,0.52)" }}>
-                      {pred.sideDesc}
-                    </p>
-                  </div>
-
-                  {/* Arrow */}
-                  <span style={{ fontSize: 16, color: isSel ? pc : "rgba(255,255,255,0.2)", flexShrink: 0, marginTop: 4 }}>→</span>
+                    {pred.threat === "LOW" ? "LOW" : pred.threat === "MEDIUM" ? "MED" : "HIGH"}
+                  </span>
                 </div>
+                {/* Name */}
+                <span style={{
+                  fontSize: 12, fontWeight: 800, letterSpacing: "0.05em",
+                  color: isSel ? "#fff" : "rgba(255,255,255,0.82)",
+                  lineHeight: 1.2,
+                }}>
+                  {pred.name}
+                </span>
+                {/* Description */}
+                <span style={{
+                  fontSize: 10, color: "rgba(255,255,255,0.48)", lineHeight: 1.45,
+                  display: "-webkit-box",
+                  WebkitLineClamp: 3,
+                  WebkitBoxOrient: "vertical",
+                  overflow: "hidden",
+                } as React.CSSProperties}>
+                  {pred.sideDesc}
+                </span>
               </motion.button>
             );
           })}
         </div>
 
-        {/* ── 2b. RIGHT MAIN ──────────────────────────────────────────── */}
+        {/* ── 2b. RIGHT — image panel (full remaining width) ───────────── */}
         <div style={{ flex: 1, display: "flex", flexDirection: "column", minWidth: 0 }}>
 
           {/* Title bar with IMPACT VIEW / INFO toggle */}
@@ -371,7 +366,6 @@ export function Predators() {
             position: "relative",
             transition: "border-color 0.4s",
           }}>
-            {/* Centered headline */}
             <AnimatePresence mode="wait">
               <motion.div
                 key={p.id + "-headline"}
@@ -388,7 +382,6 @@ export function Predators() {
                 </span>
               </motion.div>
             </AnimatePresence>
-            {/* Toggle buttons — stay right */}
             <div style={{ display: "flex", gap: 6, marginLeft: "auto" }}>
               {(["impact","info"] as const).map(v => (
                 <button key={v} onClick={() => setView(v)} style={{
@@ -406,180 +399,149 @@ export function Predators() {
             </div>
           </div>
 
-          {/* Content row: image + right panel */}
-          <div style={{ flex: "0 1 46vh", display: "flex", minHeight: 0, maxHeight: "46vh" }}>
+          {/* CINEMATIC IMAGE — fills all remaining height */}
+          <div style={{ flex: 1, position: "relative", overflow: "hidden" }}>
+            <AnimatePresence mode="sync">
+              <motion.img
+                key={p.id + "-img"}
+                src={p.image}
+                alt={p.name}
+                initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                transition={{ duration: 0.6 }}
+                style={{
+                  position: "absolute", inset: 0, width: "100%", height: "100%",
+                  objectFit: "cover", objectPosition: "center",
+                  filter: p.imgFilter,
+                }}
+              />
+            </AnimatePresence>
 
-            {/* CINEMATIC IMAGE PANEL */}
-            <div style={{ flex: 1, position: "relative", overflow: "hidden" }}>
-              <AnimatePresence mode="sync">
-                <motion.img
-                  key={p.id + "-img"}
-                  src={p.image}
-                  alt={p.name}
-                  initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                  transition={{ duration: 0.6 }}
+            {/* Threat overlay tint */}
+            <motion.div
+              animate={{ background: `${tc}18` }}
+              transition={{ duration: 0.6 }}
+              style={{ position: "absolute", inset: 0, pointerEvents: "none" }}
+            />
+
+            {/* Edge vignette */}
+            <div style={{
+              position: "absolute", inset: 0, pointerEvents: "none",
+              boxShadow: "inset 0 0 60px rgba(0,0,0,0.65)",
+            }} />
+
+            {/* Scan lines for HIGH threat */}
+            <AnimatePresence>
+              {p.threat === "HIGH" && (
+                <motion.div
+                  key="scan" initial={{ opacity: 0 }}
+                  animate={{ opacity: [0, 0.14, 0] }} exit={{ opacity: 0 }}
+                  transition={{ duration: 2.6, repeat: Infinity, ease: "easeInOut" }}
                   style={{
-                    position: "absolute", inset: 0, width: "100%", height: "100%",
-                    objectFit: "cover", objectPosition: "center",
-                    filter: p.imgFilter,
+                    position: "absolute", inset: 0, pointerEvents: "none",
+                    background: "repeating-linear-gradient(0deg, rgba(255,30,30,0.06) 0px, transparent 2px, transparent 8px)",
                   }}
                 />
-              </AnimatePresence>
+              )}
+            </AnimatePresence>
 
-              {/* Threat overlay tint */}
-              <motion.div
-                animate={{ background: `${tc}18` }}
-                transition={{ duration: 0.6 }}
-                style={{ position: "absolute", inset: 0, pointerEvents: "none" }}
-              />
+            {/* Overlays */}
+            <AnimatePresence>
+              {view === "impact" && p.overlays.map((ov, i) => (
+                <motion.div
+                  key={p.id + "-ov-" + i}
+                  initial={{ opacity: 0, y: -6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
+                  transition={{ delay: i * 0.12, duration: 0.35 }}
+                  style={{
+                    position: "absolute", top: ov.top, left: ov.left, right: ov.right, transform: ov.transform,
+                    background: `rgba(0,0,0,0.88)`,
+                    border: `2.5px solid ${tc}`,
+                    borderLeft: `5px solid ${tc}`,
+                    borderRadius: 10, padding: "14px 18px", maxWidth: 280,
+                    boxShadow: `0 0 8px ${tc}28, 0 2px 10px rgba(0,0,0,0.55)`,
+                  }}
+                >
+                  <p style={{ fontSize: 14, fontWeight: 900, letterSpacing: "0.1em", color: tc, marginBottom: 7, lineHeight: 1.2 }}>{ov.label}</p>
+                  <p style={{ fontSize: 13, color: "rgba(255,255,255,0.88)", lineHeight: 1.6, fontWeight: 500 }}>{ov.text}</p>
+                </motion.div>
+              ))}
+            </AnimatePresence>
 
-              {/* Edge vignette */}
-              <div style={{
-                position: "absolute", inset: 0, pointerEvents: "none",
-                boxShadow: "inset 0 0 60px rgba(0,0,0,0.65)",
-              }} />
+            {/* INFO view overlay */}
+            <AnimatePresence>
+              {view === "info" && (
+                <motion.div
+                  key="info-overlay"
+                  initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                  style={{
+                    position: "absolute", inset: 0,
+                    background: "linear-gradient(to top, rgba(0,0,0,0.97) 0%, rgba(0,0,0,0.7) 50%, rgba(0,0,0,0.3) 100%)",
+                    display: "flex", alignItems: "flex-end", padding: 20,
+                  }}
+                >
+                  <div>
+                    <p style={{ fontSize: 10, letterSpacing: "0.16em", color: tc, marginBottom: 8, fontWeight: 800 }}>ABOUT THIS THREAT</p>
+                    <p style={{ fontSize: 13, lineHeight: 1.6, color: "rgba(255,255,255,0.88)", maxWidth: 480 }}>
+                      {p.sideDesc}
+                    </p>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
-              {/* Scan lines for HIGH */}
-              <AnimatePresence>
-                {p.threat === "HIGH" && (
-                  <motion.div
-                    key="scan" initial={{ opacity: 0 }}
-                    animate={{ opacity: [0, 0.14, 0] }} exit={{ opacity: 0 }}
-                    transition={{ duration: 2.6, repeat: Infinity, ease: "easeInOut" }}
-                    style={{
-                      position: "absolute", inset: 0, pointerEvents: "none",
-                      background: "repeating-linear-gradient(0deg, rgba(255,30,30,0.06) 0px, transparent 2px, transparent 8px)",
-                    }}
-                  />
-                )}
-              </AnimatePresence>
+          </div>{/* end image panel */}
+        </div>{/* end right column */}
+      </div>{/* end main body */}
 
-              {/* Overlays */}
-              <AnimatePresence>
-                {view === "impact" && p.overlays.map((ov, i) => (
-                  <motion.div
-                    key={p.id + "-ov-" + i}
-                    initial={{ opacity: 0, y: -6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }}
-                    transition={{ delay: i * 0.12, duration: 0.35 }}
-                    style={{
-                      position: "absolute", top: ov.top, left: ov.left, right: ov.right, transform: ov.transform,
-                      background: `rgba(0,0,0,0.88)`,
-                      border: `2.5px solid ${tc}`,
-                      borderLeft: `5px solid ${tc}`,
-                      borderRadius: 10, padding: "14px 18px", maxWidth: 280,
-                      boxShadow: `0 0 8px ${tc}28, 0 2px 10px rgba(0,0,0,0.55)`,
-                    }}
-                  >
-                    <p style={{ fontSize: 14, fontWeight: 900, letterSpacing: "0.1em", color: tc, marginBottom: 7, lineHeight: 1.2 }}>{ov.label}</p>
-                    <p style={{ fontSize: 13, color: "rgba(255,255,255,0.88)", lineHeight: 1.6, fontWeight: 500 }}>{ov.text}</p>
-                  </motion.div>
-                ))}
-              </AnimatePresence>
+      {/* ── 3. BOTTOM — 3 BOXES ───────────────────────────────────────── */}
+      <div style={{
+        flexShrink: 0,
+        display: "flex",
+        borderTop: "1px solid rgba(255,255,255,0.08)",
+        background: "rgba(0,0,0,0.88)",
+        maxHeight: "25vh",
+      }}>
 
-              {/* INFO view overlay */}
-              <AnimatePresence>
-                {view === "info" && (
-                  <motion.div
-                    key="info-overlay"
-                    initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                    style={{
-                      position: "absolute", inset: 0,
-                      background: "linear-gradient(to top, rgba(0,0,0,0.97) 0%, rgba(0,0,0,0.7) 50%, rgba(0,0,0,0.3) 100%)",
-                      display: "flex", alignItems: "flex-end", padding: 20,
-                    }}
-                  >
-                    <div>
-                      <p style={{ fontSize: 10, letterSpacing: "0.16em", color: tc, marginBottom: 8, fontWeight: 800 }}>ABOUT THIS THREAT</p>
-                      <p style={{ fontSize: 13, lineHeight: 1.6, color: "rgba(255,255,255,0.88)", maxWidth: 400 }}>
-                        {p.sideDesc}
-                      </p>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
+        {/* LEFT: Ecological Impact */}
+        <div style={{
+          flex: 1, padding: "12px 16px",
+          borderRight: "1px solid rgba(255,255,255,0.07)",
+          overflowY: "auto",
+          display: "flex", flexDirection: "column",
+        }}>
+          <p style={{ fontSize: 10.5, letterSpacing: "0.16em", color: "rgba(255,255,255,0.5)", marginBottom: 9, fontWeight: 700, flexShrink: 0 }}>
+            ECOLOGICAL IMPACT
+          </p>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={p.id + "-eco"}
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+              transition={{ duration: 0.35 }}
+              style={{ display: "flex", flexDirection: "column", gap: 7 }}
+            >
+              {p.ecoImpact.map((row, i) => (
+                <div key={i} style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <span style={{ fontSize: 14, flexShrink: 0 }}>{row.icon}</span>
+                  <span style={{ fontSize: 12, color: "rgba(255,255,255,0.8)", flex: 1, lineHeight: 1.3 }}>{row.label}</span>
+                  <span style={{ fontSize: 12, fontWeight: 900, color: row.dir === "up" ? "#4cde88" : "#ff3344", flexShrink: 0 }}>
+                    {row.dir === "down" ? "↓" : "↑"} {row.pct}%
+                  </span>
+                </div>
+              ))}
+            </motion.div>
+          </AnimatePresence>
+        </div>
 
-            {/* RIGHT INFO PANEL */}
-            <div style={{
-              width: 214, flexShrink: 0,
-              background: "rgba(0,0,0,0.7)",
-              borderLeft: "1px solid rgba(255,255,255,0.07)",
-              display: "flex", flexDirection: "column",
-              overflowY: "auto",
-            }}>
-              {/* ECOLOGICAL IMPACT */}
-              <div style={{ padding: "14px 16px", borderBottom: "1px solid rgba(255,255,255,0.07)" }}>
-                <p style={{ fontSize: 11.5, letterSpacing: "0.16em", color: "rgba(255,255,255,0.55)", marginBottom: 12, fontWeight: 700 }}>
-                  ECOLOGICAL IMPACT
-                </p>
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={p.id + "-eco"}
-                    initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                    transition={{ duration: 0.35 }}
-                    style={{ display: "flex", flexDirection: "column", gap: 11 }}
-                  >
-                    {p.ecoImpact.map((row, i) => (
-                      <div key={i} style={{ display: "flex", alignItems: "center", gap: 9 }}>
-                        <span style={{ fontSize: 16, flexShrink: 0 }}>{row.icon}</span>
-                        <span style={{ fontSize: 13.5, color: "rgba(255,255,255,0.82)", flex: 1, lineHeight: 1.3 }}>{row.label}</span>
-                        <span style={{
-                          fontSize: 13, fontWeight: 900,
-                          color: row.dir === "up" ? "#ff6644" : "#ff3344",
-                          flexShrink: 0,
-                        }}>
-                          {row.dir === "down" ? "↓" : "↑"} -{row.pct}%
-                        </span>
-                      </div>
-                    ))}
-                  </motion.div>
-                </AnimatePresence>
-              </div>
-
-              {/* WHAT YOU CAN DO */}
-              <div style={{ padding: "14px 16px", flex: 1 }}>
-                <p style={{ fontSize: 11.5, letterSpacing: "0.16em", color: "rgba(255,255,255,0.55)", marginBottom: 12, fontWeight: 700 }}>
-                  WHAT YOU CAN DO
-                </p>
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={p.id + "-act"}
-                    initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                    transition={{ duration: 0.35 }}
-                    style={{ display: "flex", flexDirection: "column", gap: 11 }}
-                  >
-                    {p.actions.map((act, i) => (
-                      <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 9 }}>
-                        <div style={{
-                          width: 20, height: 20, borderRadius: 4, flexShrink: 0, marginTop: 1,
-                          background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.15)",
-                          display: "flex", alignItems: "center", justifyContent: "center",
-                        }}>
-                          <span style={{ fontSize: 10 }}>✓</span>
-                        </div>
-                        <span style={{ fontSize: 13, color: "rgba(255,255,255,0.72)", lineHeight: 1.5 }}>{act}</span>
-                      </div>
-                    ))}
-                  </motion.div>
-                </AnimatePresence>
-              </div>
-            </div>
-
-          </div>{/* end content row */}
-
-          {/* ── ECOSYSTEM HEALTH OVERVIEW — below image ────────────────── */}
-          <div style={{
-            flexShrink: 0,
-            background: "rgba(0,0,0,0.85)",
-            borderTop: "1px solid rgba(255,255,255,0.07)",
-            padding: "12px 20px",
-            paddingRight: 64,
-            display: "flex", alignItems: "center", gap: 16,
-          }}>
-            <p style={{ fontSize: 11.5, letterSpacing: "0.16em", color: GOLD, fontWeight: 800, flexShrink: 0, textShadow: `0 0 8px ${GOLD}` }}>
-              ECOSYSTEM HEALTH OVERVIEW
-            </p>
-            <div style={{ flex: 1, display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: "0 16px" }}>
+        {/* CENTER: Ecosystem Health Overview (biggest — flex:2) */}
+        <div style={{
+          flex: 2, padding: "12px 22px",
+          borderRight: "1px solid rgba(255,255,255,0.07)",
+          display: "flex", flexDirection: "column",
+        }}>
+          <p style={{ fontSize: 11.5, letterSpacing: "0.16em", color: GOLD, fontWeight: 800, marginBottom: 10, flexShrink: 0, textShadow: `0 0 8px ${GOLD}55` }}>
+            ECOSYSTEM HEALTH OVERVIEW
+          </p>
+          <div style={{ flex: 1, display: "flex", alignItems: "center", gap: 18, minHeight: 0 }}>
+            <div style={{ flex: 1, display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: "0 14px" }}>
               {DASH_KEYS.map(({ key, label, icon, barColor }) => (
                 <DashBar key={key + p.id} value={p.metrics[key]} label={label} icon={icon} barColor={barColor} />
               ))}
@@ -592,67 +554,43 @@ export function Predators() {
               </AnimatePresence>
             </div>
           </div>
-
-        </div>{/* end right main */}
-      </div>{/* end main body */}
-
-      {/* ── 3. BOTTOM ROW — SEE THE DIFFERENCE ───────────────────────── */}
-      <div style={{
-        flexShrink: 0,
-        borderTop: "1px solid rgba(255,255,255,0.07)",
-        background: "rgba(0,0,0,0.7)",
-        padding: "8px 16px",
-        display: "flex", flexDirection: "column", alignItems: "center",
-      }}>
-        <p style={{ fontSize: 9, letterSpacing: "0.2em", color: "rgba(255,255,255,0.35)", marginBottom: 8, textAlign: "center" }}>
-          SEE THE DIFFERENCE
-        </p>
-        <div style={{ display: "flex", gap: 8 }}>
-          {PREDATORS.map(pred => {
-            const isSel = pred.id === selId;
-            const pc    = THREAT_COLORS[pred.threat];
-            return (
-              <motion.button
-                key={pred.id}
-                onClick={() => select(pred.id)}
-                whileTap={{ scale: 0.96 }}
-                style={{
-                  padding: 0, cursor: "pointer",
-                  background: "none", border: "none",
-                  display: "flex", flexDirection: "column", alignItems: "center", gap: 4,
-                }}
-              >
-                <div style={{
-                  width: 82, height: 48, borderRadius: 6, overflow: "hidden",
-                  border: `2px solid ${isSel ? pc : "rgba(255,255,255,0.1)"}`,
-                  boxShadow: isSel ? `0 0 12px ${pc}66` : "none",
-                  transition: "border-color 0.25s, box-shadow 0.25s",
-                  position: "relative",
-                }}>
-                  <img
-                    src={pred.image} alt={pred.name}
-                    style={{ width: "100%", height: "100%", objectFit: "cover", filter: pred.imgFilter }}
-                  />
-                  {isSel && (
-                    <div style={{ position: "absolute", inset: 0, background: `${pc}28` }} />
-                  )}
-                </div>
-                <span style={{
-                  fontFamily: "'Josefin Sans', sans-serif",
-                  fontSize: 8.5, letterSpacing: "0.06em", fontWeight: 700,
-                  color: isSel ? pc : "rgba(255,255,255,0.45)",
-                  textAlign: "center", maxWidth: 82,
-                  transition: "color 0.25s",
-                }}>
-                  {pred.name}
-                </span>
-              </motion.button>
-            );
-          })}
         </div>
+
+        {/* RIGHT: What You Can Do */}
+        <div style={{
+          flex: 1, padding: "12px 16px",
+          overflowY: "auto",
+          display: "flex", flexDirection: "column",
+        }}>
+          <p style={{ fontSize: 10.5, letterSpacing: "0.16em", color: "rgba(255,255,255,0.5)", marginBottom: 9, fontWeight: 700, flexShrink: 0 }}>
+            WHAT YOU CAN DO
+          </p>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={p.id + "-act"}
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+              transition={{ duration: 0.35 }}
+              style={{ display: "flex", flexDirection: "column", gap: 8 }}
+            >
+              {p.actions.map((act, i) => (
+                <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 8 }}>
+                  <div style={{
+                    width: 17, height: 17, borderRadius: 4, flexShrink: 0, marginTop: 1,
+                    background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.15)",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                  }}>
+                    <span style={{ fontSize: 9 }}>✓</span>
+                  </div>
+                  <span style={{ fontSize: 11.5, color: "rgba(255,255,255,0.72)", lineHeight: 1.5 }}>{act}</span>
+                </div>
+              ))}
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
       </div>
 
-      {/* ── 5. FOOTER BANNER ──────────────────────────────────────────── */}
+      {/* ── 4. FOOTER BANNER ──────────────────────────────────────────── */}
       <div style={{
         flexShrink: 0,
         background: "rgba(0,0,0,0.92)",
