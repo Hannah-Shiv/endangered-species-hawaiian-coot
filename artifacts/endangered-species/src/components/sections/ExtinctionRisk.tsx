@@ -609,16 +609,14 @@ export function ExtinctionRisk() {
 
       {/* Cinematic header — minHeight so VULNERABLE never gets clipped */}
       <div style={{ position: "relative", minHeight: 390, overflow: "hidden" }}>
+        {/* Background image — brighter so sides pop */}
         <img src="/campbell-habitat.png" alt="" aria-hidden
-          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 60%", filter: "brightness(0.52)" }}
+          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 55%", filter: "brightness(0.78)" }}
         />
-        <img src="/hanalei-6.png" alt="" aria-hidden
-          style={{ position: "absolute", right: 0, bottom: 0, height: "88%", width: "26%", objectFit: "cover", objectPosition: "center top", opacity: 0.55,
-            maskImage: "linear-gradient(to left, rgba(0,0,0,0.85) 40%, transparent 100%)",
-            WebkitMaskImage: "linear-gradient(to left, rgba(0,0,0,0.85) 40%, transparent 100%)" }}
-        />
-        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.15) 50%, rgba(0,0,0,0.75) 100%)" }} />
-        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(90deg, rgba(0,0,0,0.35) 0%, transparent 55%)" }} />
+        {/* Horizontal vignette: bright left + right thirds, dark center third for text legibility */}
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(90deg, rgba(0,0,0,0.04) 0%, rgba(0,0,0,0.04) 18%, rgba(0,0,0,0.78) 36%, rgba(0,0,0,0.88) 50%, rgba(0,0,0,0.78) 64%, rgba(0,0,0,0.04) 82%, rgba(0,0,0,0.04) 100%)" }} />
+        {/* Soft bottom fade into the tab bar */}
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, rgba(0,0,0,0.18) 0%, transparent 40%, rgba(0,0,0,0.55) 100%)" }} />
 
         {/* Centered text block — top padding clears the DomeNav hamburger (~80px button + gap) */}
         <div style={{ position: "relative", zIndex: 2, textAlign: "center", padding: "96px 32px 0", maxWidth: 860, margin: "0 auto" }}>
