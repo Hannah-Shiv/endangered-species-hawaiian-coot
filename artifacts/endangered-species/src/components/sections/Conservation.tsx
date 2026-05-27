@@ -180,8 +180,8 @@ function LightboxModal({ src, alt, onClose }: { src: string; alt: string; onClos
         src={src} alt={alt}
         initial={{ scale: 0.88, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.88, opacity: 0 }}
         transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-        onClick={e => e.stopPropagation()}
-        style={{ maxWidth: "90vw", maxHeight: "85vh", borderRadius: 14, objectFit: "contain", boxShadow: "0 0 80px rgba(0,0,0,0.8)" }}
+        onClick={onClose}
+        style={{ maxWidth: "90vw", maxHeight: "85vh", borderRadius: 14, objectFit: "contain", boxShadow: "0 0 80px rgba(0,0,0,0.8)", cursor: "zoom-out" }}
       />
       <button
         onClick={onClose}

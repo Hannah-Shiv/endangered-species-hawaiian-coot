@@ -43,11 +43,12 @@ export function GlobalLightbox() {
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.86, opacity: 0 }}
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            onClick={e => e.stopPropagation()}
+            onClick={() => setImg(null)}
             style={{
               maxWidth: "92vw", maxHeight: "88vh",
               borderRadius: 14, objectFit: "contain",
               boxShadow: "0 0 120px rgba(0,0,0,0.9)",
+              cursor: "zoom-out",
             }}
           />
           <button
