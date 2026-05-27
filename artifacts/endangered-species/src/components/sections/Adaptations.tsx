@@ -429,70 +429,102 @@ export function Adaptations() {
             {/* DIVIDER */}
             <div style={{ height: 1, background: "rgba(0,200,120,0.12)", flexShrink: 0 }} />
 
-            {/* BOTTOM — Behavioral Adaptations */}
+            {/* BOTTOM — Behavioral Adaptations (full-bleed image cards) */}
             <div style={{
-              flexShrink: 0, height: "38%",
-              background: "rgba(3,10,6,0.97)",
-              display: "flex", flexDirection: "column",
-              overflow: "hidden",
+              flexShrink: 0, height: "40%",
+              display: "flex", overflow: "hidden",
+              borderTop: "1px solid rgba(0,200,120,0.12)",
             }}>
-              <div style={{ padding: "7px 14px 6px", borderBottom: "1px solid rgba(255,255,255,0.05)", flexShrink: 0 }}>
-                <p style={{ fontSize: 9, letterSpacing: "0.18em", color: "rgba(255,140,80,0.85)", fontWeight: 800, margin: 0 }}>
+              {/* Section label — vertical on far left */}
+              <div style={{
+                width: 22, flexShrink: 0,
+                background: "rgba(3,8,5,0.98)",
+                borderRight: "1px solid rgba(255,255,255,0.05)",
+                display: "flex", alignItems: "center", justifyContent: "center",
+              }}>
+                <p style={{
+                  fontSize: 8.5, letterSpacing: "0.18em", color: "rgba(255,140,80,0.75)",
+                  fontWeight: 800, margin: 0,
+                  writingMode: "vertical-rl", transform: "rotate(180deg)",
+                  whiteSpace: "nowrap",
+                }}>
                   BEHAVIORAL ADAPTATIONS
                 </p>
               </div>
 
-              <div style={{ flex: 1, display: "flex", overflow: "hidden", minHeight: 0 }}>
-                {BEHAVIORAL.map((ad, i) => {
-                  const isActive = selectedId === ad.id;
-                  return (
-                    <motion.div
-                      key={ad.id}
-                      onClick={() => select(ad.id)}
-                      whileHover={{ background: `${ad.color}0d` }}
-                      style={{
-                        flex: 1,
-                        borderRight: i === 0 ? "1px solid rgba(255,255,255,0.05)" : "none",
-                        display: "flex", gap: 10, padding: "10px 12px",
-                        cursor: "pointer",
-                        background: isActive ? `${ad.color}12` : "transparent",
-                        transition: "background 0.25s",
-                        overflow: "hidden",
-                      }}
-                    >
-                      {/* Image thumbnail */}
-                      <div style={{
-                        width: 80, flexShrink: 0, borderRadius: 7, overflow: "hidden",
-                        border: `2px solid ${isActive ? ad.color + "88" : "rgba(255,255,255,0.08)"}`,
-                        boxShadow: isActive ? `0 0 14px ${ad.color}44` : "none",
-                        transition: "border-color 0.25s, box-shadow 0.25s",
-                      }}>
-                        <img src={ad.image} alt={ad.name} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
-                      </div>
+              {/* Two full-bleed image cards */}
+              {BEHAVIORAL.map((ad, i) => {
+                const isActive = selectedId === ad.id;
+                return (
+                  <motion.div
+                    key={ad.id}
+                    onClick={() => select(ad.id)}
+                    whileHover={{ filter: "brightness(1.08)" }}
+                    style={{
+                      flex: 1,
+                      position: "relative",
+                      overflow: "hidden",
+                      cursor: "pointer",
+                      borderRight: i === 0 ? "1px solid rgba(255,255,255,0.07)" : "none",
+                    }}
+                  >
+                    {/* Full-bleed image */}
+                    <img
+                      src={ad.image} alt={ad.name}
+                      style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                    />
 
-                      {/* Text */}
-                      <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: 4 }}>
-                        <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                          <span style={{ fontSize: 14 }}>{ad.icon}</span>
-                          <p style={{ fontSize: 12.5, fontWeight: 800, color: isActive ? ad.color : "rgba(255,255,255,0.9)", margin: 0, transition: "color 0.25s" }}>
-                            {ad.name}
-                          </p>
-                        </div>
-                        <p style={{ fontSize: 11, lineHeight: 1.5, color: "rgba(255,255,255,0.52)", margin: 0 }}>
-                          {ad.desc}
+                    {/* Gradient overlay */}
+                    <div style={{
+                      position: "absolute", inset: 0,
+                      background: isActive
+                        ? `linear-gradient(to top, ${ad.color}cc 0%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.1) 100%)`
+                        : "linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.45) 55%, rgba(0,0,0,0.1) 100%)",
+                      transition: "background 0.3s",
+                    }} />
+
+                    {/* Active border highlight */}
+                    {isActive && (
+                      <div style={{
+                        position: "absolute", inset: 0,
+                        border: `2px solid ${ad.color}`,
+                        borderRadius: 0, pointerEvents: "none",
+                      }} />
+                    )}
+
+                    {/* Text overlaid at bottom */}
+                    <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "12px 14px" }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 7, marginBottom: 4 }}>
+                        <span style={{ fontSize: 16 }}>{ad.icon}</span>
+                        <p style={{
+                          fontSize: 13.5, fontWeight: 800, margin: 0,
+                          color: isActive ? "white" : "rgba(255,255,255,0.95)",
+                          letterSpacing: "0.01em",
+                        }}>
+                          {ad.name}
                         </p>
-                        <div style={{ display: "flex", flexWrap: "wrap", gap: "3px 10px", marginTop: "auto" }}>
-                          {ad.benefits.slice(0, 2).map((b, j) => (
-                            <span key={j} style={{ fontSize: 10, color: isActive ? ad.color : "rgba(255,255,255,0.42)", display: "flex", alignItems: "center", gap: 4 }}>
-                              <span style={{ fontSize: 8 }}>✓</span>{b}
-                            </span>
-                          ))}
-                        </div>
                       </div>
-                    </motion.div>
-                  );
-                })}
-              </div>
+                      <p style={{
+                        fontSize: 11, lineHeight: 1.45, margin: "0 0 6px",
+                        color: isActive ? "rgba(255,255,255,0.92)" : "rgba(255,255,255,0.62)",
+                        transition: "color 0.25s",
+                      }}>
+                        {ad.headline}
+                      </p>
+                      <div style={{ display: "flex", gap: 8 }}>
+                        {ad.benefits.slice(0, 2).map((b, j) => (
+                          <span key={j} style={{
+                            fontSize: 9.5, color: isActive ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.5)",
+                            display: "flex", alignItems: "center", gap: 3,
+                          }}>
+                            <span style={{ color: ad.color, fontSize: 8 }}>✓</span>{b}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </motion.div>
+                );
+              })}
             </div>
 
           </div>{/* end right half */}
