@@ -4,7 +4,7 @@ import healthyImg from "@assets/image_1779835298098.png";
 import ratsImg    from "@assets/image_1779835596663.png";
 import dogsImg    from "@assets/image_1779838496982.png";
 import frogsImg     from "@assets/image_1779838792688.png";
-import mongooseImg   from "@assets/image_1779838906638.png";
+import mongooseImg   from "@assets/image_1779842103720.png";
 import nightHeronImg from "@assets/image_1779841933879.png";
 
 // ── Palette ───────────────────────────────────────────────────────────────────
