@@ -557,9 +557,9 @@ export function Conservation() {
 
                   {/* Text */}
                   <div style={{ flex: 1, minWidth: 0, position: "relative", zIndex: 1 }}>
-                    <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11, color: "rgba(255,255,255,0.45)", margin: 0, letterSpacing: "0.1em" }}>{t.label.toUpperCase()}</p>
+                    <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 12, color: t.color, margin: 0, letterSpacing: "0.1em", fontWeight: 700, opacity: 0.85 }}>{t.label.toUpperCase()}</p>
                     <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 20, fontWeight: 700, color: t.color, margin: "2px 0 0", lineHeight: 1.15, textShadow: `0 0 20px ${t.color}55` }}>{t.status}</p>
-                    <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 12, color: "rgba(255,255,255,0.5)", margin: "3px 0 0" }}>{t.detail}</p>
+                    <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, color: "rgba(255,255,255,0.82)", margin: "3px 0 0", fontWeight: 500 }}>{t.detail}</p>
                   </div>
 
                   {/* Sparkline + badge */}
