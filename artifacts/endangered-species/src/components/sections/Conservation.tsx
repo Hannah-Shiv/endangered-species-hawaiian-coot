@@ -125,11 +125,11 @@ function ProgressBar({ label, sub, pct, suffix, icon }: { label: string; sub: st
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
           <span style={{ fontSize: 20 }}>{icon}</span>
           <div>
-            <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 14, fontWeight: 700, color: "rgba(255,255,255,0.92)", margin: 0 }}>{label}</p>
-            <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11, color: "rgba(255,255,255,0.4)", margin: 0, marginTop: 2 }}>{sub}</p>
+            <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 16, fontWeight: 700, color: "rgba(255,255,255,0.92)", margin: 0 }}>{label}</p>
+            <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, color: "rgba(255,255,255,0.4)", margin: 0, marginTop: 2 }}>{sub}</p>
           </div>
         </div>
-        <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 22, color: GOLD, margin: 0, whiteSpace: "nowrap", paddingLeft: 12 }}>
+        <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 28, color: GOLD, margin: 0, whiteSpace: "nowrap", paddingLeft: 12 }}>
           <AnimatedCounter target={pct} />{suffix}
         </p>
       </div>
@@ -151,6 +151,40 @@ function ProgressBar({ label, sub, pct, suffix, icon }: { label: string; sub: st
         <div style={{ position: "absolute", right: 0, top: -4, bottom: -4, width: 2, borderLeft: `2px dashed rgba(255,255,255,0.25)` }} />
       </div>
     </div>
+  );
+}
+
+// ─── Image Lightbox ───────────────────────────────────────────────────────────
+function LightboxModal({ src, alt, onClose }: { src: string; alt: string; onClose: () => void }) {
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [onClose]);
+  return (
+    <motion.div
+      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+      transition={{ duration: 0.25 }}
+      onClick={onClose}
+      style={{
+        position: "fixed", inset: 0, zIndex: 99999,
+        background: "rgba(0,0,0,0.92)",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        cursor: "zoom-out", padding: 32,
+      }}
+    >
+      <motion.img
+        src={src} alt={alt}
+        initial={{ scale: 0.88, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.88, opacity: 0 }}
+        transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+        onClick={e => e.stopPropagation()}
+        style={{ maxWidth: "90vw", maxHeight: "85vh", borderRadius: 14, objectFit: "contain", boxShadow: "0 0 80px rgba(0,0,0,0.8)" }}
+      />
+      <button
+        onClick={onClose}
+        style={{ position: "fixed", top: 24, right: 28, background: "rgba(255,255,255,0.1)", border: "1px solid rgba(255,255,255,0.25)", borderRadius: "50%", width: 40, height: 40, color: "#fff", fontSize: 18, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
+      >✕</button>
+    </motion.div>
   );
 }
 
@@ -180,15 +214,15 @@ function OrgCard({ org, delay }: { org: typeof ORGS[0]; delay: number }) {
           <div style={{ width: 44, height: 44, borderRadius: "50%", background: `rgba(200,30,10,0.18)`, border: `1px solid rgba(200,30,10,0.45)`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, flexShrink: 0 }}>
             {org.icon}
           </div>
-          <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 15, fontWeight: 800, color: "rgba(255,255,255,0.95)", margin: 0, lineHeight: 1.3 }}>{org.name}</p>
+          <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 18, fontWeight: 800, color: "rgba(255,255,255,0.95)", margin: 0, lineHeight: 1.3 }}>{org.name}</p>
         </div>
         <a href={org.url} target="_blank" rel="noreferrer" data-testid={org.testId} style={{ color: GOLD_DIM, flexShrink: 0, paddingTop: 2 }}>
-          <ExternalLink size={16} />
+          <ExternalLink size={18} />
         </a>
       </div>
 
       {/* Description */}
-      <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, color: "rgba(255,255,255,0.58)", margin: 0, lineHeight: 1.55 }}>{org.desc}</p>
+      <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 15, color: "rgba(255,255,255,0.62)", margin: 0, lineHeight: 1.6 }}>{org.desc}</p>
 
       {/* Stats — slide in on hover */}
       <AnimatePresence>
@@ -201,8 +235,8 @@ function OrgCard({ org, delay }: { org: typeof ORGS[0]; delay: number }) {
             <div style={{ display: "flex", gap: 8, flexWrap: "wrap", paddingTop: 8, borderTop: `1px solid ${BORDER}` }}>
               {org.stats.map(s => (
                 <div key={s.label} style={{ background: "rgba(212,175,55,0.07)", border: `1px solid rgba(212,175,55,0.2)`, borderRadius: 8, padding: "5px 12px" }}>
-                  <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11, color: "rgba(255,255,255,0.4)", margin: 0, letterSpacing: "0.06em" }}>{s.label.toUpperCase()}</p>
-                  <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 16, color: GOLD, margin: 0 }}>{s.value}</p>
+                  <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 12, color: "rgba(255,255,255,0.4)", margin: 0, letterSpacing: "0.06em" }}>{s.label.toUpperCase()}</p>
+                  <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 18, color: GOLD, margin: 0 }}>{s.value}</p>
                 </div>
               ))}
             </div>
@@ -213,13 +247,14 @@ function OrgCard({ org, delay }: { org: typeof ORGS[0]; delay: number }) {
       {/* Visit button */}
       <a href={org.url} target="_blank" rel="noreferrer" style={{ textDecoration: "none" }}>
         <div style={{
-          marginTop: 4, padding: "8px 0", textAlign: "center", borderRadius: 8,
-          border: `1px solid rgba(200,30,10,0.5)`, background: "rgba(200,30,10,0.08)",
-          fontFamily: "'Josefin Sans', sans-serif", fontSize: 12, fontWeight: 700,
-          letterSpacing: "0.1em", color: "rgba(200,30,10,0.9)", cursor: "pointer",
-          transition: "background 0.2s",
+          marginTop: 4, padding: "10px 0", textAlign: "center", borderRadius: 8,
+          border: `1px solid rgba(212,175,55,0.65)`, background: "rgba(212,175,55,0.1)",
+          fontFamily: "'Josefin Sans', sans-serif", fontSize: 14, fontWeight: 800,
+          letterSpacing: "0.12em", color: GOLD, cursor: "pointer",
+          transition: "background 0.2s, box-shadow 0.2s",
+          boxShadow: "0 0 12px rgba(212,175,55,0.12)",
         }}>
-          VISIT WEBSITE
+          ✦ VISIT WEBSITE ✦
         </div>
       </a>
     </motion.div>
@@ -388,34 +423,39 @@ function BeforeAfterSlider() {
 // ─── Main component ───────────────────────────────────────────────────────────
 export function Conservation() {
   const [selectedLoc, setSelectedLoc] = useState<string | null>("campbell");
+  const [lightbox, setLightbox] = useState<{ src: string; alt: string } | null>(null);
   const locData = LOCATIONS.find(l => l.id === selectedLoc);
 
   return (
+    <>
+    {/* Lightbox */}
+    <AnimatePresence>
+      {lightbox && <LightboxModal src={lightbox.src} alt={lightbox.alt} onClose={() => setLightbox(null)} />}
+    </AnimatePresence>
+
     <div className="w-full min-h-screen pt-24 pb-16 px-6 md:px-12 bg-background overflow-y-auto">
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
 
         {/* ── Header ── */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 32, flexWrap: "wrap", gap: 12 }}>
-            <div style={{ flex: 1 }}>
-              <h1 className="text-6xl mb-3" style={{ fontFamily: "'Playfair Display', serif", color: GOLD, letterSpacing: "0.04em" }}>
-                Conservation &amp; Solutions
-              </h1>
-              <p style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontSize: 20, color: "rgba(212,175,55,0.88)", margin: 0 }}>
-                Protecting the Hawaiian Coot requires constant vigilance: managing water, eliminating predators, and protecting land.
-              </p>
-            </div>
-            {/* Why It Matters + Last Updated */}
-            <div style={{ display: "flex", flexDirection: "column", gap: 8, alignItems: "flex-end", flexShrink: 0 }}>
-              <div style={{ borderRadius: 10, border: `1px solid ${BORDER}`, background: CARD_BG, padding: "12px 18px", maxWidth: 240 }}>
-                <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11, letterSpacing: "0.12em", color: GOLD, fontWeight: 700, margin: "0 0 4px" }}>WHY IT MATTERS</p>
-                <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 12, color: "rgba(255,255,255,0.6)", margin: 0, lineHeight: 1.5 }}>
+          <div style={{ textAlign: "center", marginBottom: 32 }}>
+            <h1 className="text-6xl mb-3" style={{ fontFamily: "'Playfair Display', serif", color: GOLD, letterSpacing: "0.04em" }}>
+              Conservation &amp; Solutions
+            </h1>
+            <p style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontSize: 20, color: "rgba(212,175,55,0.88)", margin: "0 auto 20px" }}>
+              Protecting the Hawaiian Coot requires constant vigilance: managing water, eliminating predators, and protecting land.
+            </p>
+            {/* Why It Matters + Last Updated — centered below subtitle */}
+            <div style={{ display: "flex", justifyContent: "center", gap: 12, flexWrap: "wrap" }}>
+              <div style={{ borderRadius: 10, border: `1px solid ${BORDER}`, background: CARD_BG, padding: "10px 18px", maxWidth: 300 }}>
+                <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 12, letterSpacing: "0.12em", color: GOLD, fontWeight: 700, margin: "0 0 3px" }}>WHY IT MATTERS</p>
+                <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, color: "rgba(255,255,255,0.6)", margin: 0, lineHeight: 1.5 }}>
                   The Hawaiian Coot is an ʻAlala Nui — a unique part of Hawaiʻi's natural heritage.
                 </p>
               </div>
-              <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "5px 12px", borderRadius: 999, border: `1px solid ${BORDER}`, background: CARD_BG }}>
-                <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#4ade80" }} />
-                <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11, color: "rgba(255,255,255,0.5)", margin: 0 }}>Last Updated: May 20, 2024</p>
+              <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "8px 16px", borderRadius: 999, border: `1px solid ${BORDER}`, background: CARD_BG, alignSelf: "center" }}>
+                <div style={{ width: 7, height: 7, borderRadius: "50%", background: "#4ade80" }} />
+                <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, color: "rgba(255,255,255,0.55)", margin: 0 }}>Last Updated: May 20, 2024</p>
               </div>
             </div>
           </div>
@@ -461,13 +501,13 @@ export function Conservation() {
             <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, fontWeight: 800, color: "rgba(255,255,255,0.9)", margin: "0 0 18px", letterSpacing: "0.06em" }}>CONSERVATION DASHBOARD</p>
             <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
               {TRENDS.map(t => (
-                <div key={t.label} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "14px 16px", borderRadius: 10, border: `1px solid rgba(255,255,255,0.07)`, background: "rgba(255,255,255,0.025)" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                    <t.Icon size={18} color={t.color} />
+                <div key={t.label} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "16px 18px", borderRadius: 10, border: `1px solid rgba(255,255,255,0.07)`, background: "rgba(255,255,255,0.025)" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                    <t.Icon size={20} color={t.color} />
                     <div>
-                      <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11, color: "rgba(255,255,255,0.4)", margin: 0, letterSpacing: "0.06em" }}>{t.label.toUpperCase()}</p>
-                      <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 15, fontWeight: 700, color: t.color, margin: "2px 0 0" }}>{t.status}</p>
-                      <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11, color: "rgba(255,255,255,0.38)", margin: 0, marginTop: 2 }}>{t.detail}</p>
+                      <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, color: "rgba(255,255,255,0.4)", margin: 0, letterSpacing: "0.06em" }}>{t.label.toUpperCase()}</p>
+                      <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 18, fontWeight: 700, color: t.color, margin: "2px 0 0" }}>{t.status}</p>
+                      <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, color: "rgba(255,255,255,0.42)", margin: 0, marginTop: 2 }}>{t.detail}</p>
                     </div>
                   </div>
                   <Sparkline data={t.data} color={t.color} />
@@ -535,14 +575,32 @@ export function Conservation() {
                   </div>
                 </div>
 
-                {/* James Campbell refuge photos */}
+                {/* James Campbell refuge photos — click or hover to expand */}
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
-                  <div style={{ aspectRatio: "4/3", borderRadius: 8, overflow: "hidden" }}>
-                    <img src="/campbell-habitat.png" alt="James Campbell NWR habitat" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
-                  </div>
-                  <div style={{ aspectRatio: "4/3", borderRadius: 8, overflow: "hidden" }}>
-                    <img src="/campbell-coot.png" alt="Hawaiian Coot at James Campbell NWR" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
-                  </div>
+                  {[
+                    { src: "/campbell-habitat.png", alt: "James Campbell NWR habitat" },
+                    { src: "/campbell-coot.png",    alt: "Hawaiian Coot at James Campbell NWR" },
+                  ].map(img => (
+                    <div
+                      key={img.src}
+                      onClick={() => setLightbox(img)}
+                      style={{ aspectRatio: "4/3", borderRadius: 8, overflow: "hidden", cursor: "zoom-in", position: "relative" }}
+                      className="group"
+                    >
+                      <img
+                        src={img.src} alt={img.alt}
+                        style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", transition: "transform 0.3s ease" }}
+                        onMouseEnter={e => (e.currentTarget.style.transform = "scale(1.06)")}
+                        onMouseLeave={e => (e.currentTarget.style.transform = "scale(1)")}
+                      />
+                      {/* Zoom hint overlay */}
+                      <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0)", display: "flex", alignItems: "center", justifyContent: "center", transition: "background 0.2s", pointerEvents: "none" }}
+                        onMouseEnter={e => (e.currentTarget.style.background = "rgba(0,0,0,0.28)")}
+                      >
+                        <span style={{ color: "rgba(255,255,255,0.85)", fontSize: 22, opacity: 0, transition: "opacity 0.2s" }}>🔍</span>
+                      </div>
+                    </div>
+                  ))}
                 </div>
 
                 <a href="https://www.fws.gov/refuge/james-campbell" target="_blank" rel="noreferrer" style={{ textDecoration: "none" }}>
@@ -607,5 +665,6 @@ export function Conservation() {
 
       </div>
     </div>
+    </>
   );
 }
