@@ -4,7 +4,7 @@ import healthyImg from "@assets/image_1779835298098.png";
 import ratsImg    from "@assets/image_1779835596663.png";
 import dogsImg    from "@assets/image_1779838496982.png";
 import frogsImg     from "@assets/image_1779838792688.png";
-import mongooseImg   from "@assets/image_1779842103720.png";
+import mongooseImg   from "@assets/image_1779842173926.png";
 import nightHeronImg from "@assets/image_1779841933879.png";
 
 // ── Palette ───────────────────────────────────────────────────────────────────
@@ -27,6 +27,7 @@ type Predator = {
   sideDesc:  string;
   image:     string;
   imgFilter: string;
+  imgFit?:   "cover" | "contain";
   headline:  string;
   overlays:  Overlay[];
   ecoImpact: EcoRow[];
@@ -59,7 +60,7 @@ const PREDATORS: Predator[] = [
     banner: "This is a healthy Hawaiian Coot wetland. Minimal threats. Ideal conditions for nesting, foraging, and raising chicks.",
   },
   {
-    id: "mongoose", num: 1, name: "Mongoose", threat: "HIGH", color: "#ff3344",
+    id: "mongoose", num: 1, name: "Mongoose", threat: "HIGH", color: "#ff3344", imgFit: "cover",
     sideIcon: "🦡",
     sideDesc: "Introduced in 1883, mongoose devastate ground and low nests, taking both eggs and chicks.",
     image: mongooseImg as string,
@@ -435,7 +436,7 @@ export function Predators() {
                 transition={{ duration: 0.6 }}
                 style={{
                   position: "absolute", inset: 0, width: "100%", height: "100%",
-                  objectFit: "contain", objectPosition: "center",
+                  objectFit: p.imgFit ?? "contain", objectPosition: "center",
                   filter: p.imgFilter,
                 }}
               />
