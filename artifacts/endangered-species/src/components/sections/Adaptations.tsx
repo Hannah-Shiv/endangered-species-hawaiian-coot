@@ -25,7 +25,7 @@ type Adaptation = {
   type:     "PHYSICAL" | "BEHAVIORAL";
   icon:     string;
   color:    string;
-  cx:       number; // % within the bird panel
+  cx:       number;
   cy:       number;
   image:    string;
   headline: string;
@@ -49,7 +49,7 @@ const STAT_LABELS: Array<{ key: StatKey; label: string }> = [
 const PHYSICAL: Adaptation[] = [
   {
     id: "lobed-feet", name: "Lobed Feet", type: "PHYSICAL", icon: "🦆", color: "#00e88a",
-    cx: 10, cy: 50,
+    cx: 8, cy: 48,
     image: lobedFeetImg as string,
     headline: "Walking on Water",
     desc: "Unique lobed toes act as paddles for swimming AND spread weight for walking on floating vegetation.",
@@ -58,7 +58,7 @@ const PHYSICAL: Adaptation[] = [
   },
   {
     id: "frontal-shield", name: "White Frontal Shield", type: "PHYSICAL", icon: "🛡️", color: "#00d4ff",
-    cx: 50, cy: 7,
+    cx: 50, cy: 5,
     image: frontalShieldImg as string,
     headline: "Social Signaling",
     desc: "Highly visible white plate used for communication, mate selection, and territorial signaling; unique among Hawaiian birds.",
@@ -67,7 +67,7 @@ const PHYSICAL: Adaptation[] = [
   },
   {
     id: "plumage", name: "Dense Waterproof Plumage", type: "PHYSICAL", icon: "🪶", color: "#90c8e8",
-    cx: 90, cy: 50,
+    cx: 92, cy: 48,
     image: plumageImg as string,
     headline: "Storm Survival",
     desc: "Oil gland preening keeps feathers water-repellent, enabling all-weather survival even in heavy storms.",
@@ -127,7 +127,6 @@ function StatBar({ label, value, color }: { label: string; value: number; color:
 
 export function Adaptations() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [hoveredId,  setHoveredId]  = useState<string | null>(null);
   const [sceneIdx,   setSceneIdx]   = useState(0);
 
   const selected  = ALL_ADAPTATIONS.find(a => a.id === selectedId) ?? null;
@@ -145,26 +144,23 @@ export function Adaptations() {
 
       {/* ── HEADER ─────────────────────────────────────────────────────────── */}
       <div style={{
-        flexShrink: 0, zIndex: 2,
+        flexShrink: 0,
         padding: "12px 24px 10px",
         borderBottom: "1px solid rgba(0,200,120,0.12)",
         background: "rgba(3,16,10,0.92)",
-        display: "flex", alignItems: "center",
       }}>
-        <div>
-          <h1 style={{ fontSize: 24, fontWeight: 800, color: "white", margin: 0, letterSpacing: "-0.02em" }}>
-            Endemic Adaptations
-          </h1>
-          <p style={{ fontSize: 12.5, color: "rgba(255,255,255,0.4)", margin: "2px 0 0" }}>
-            Discover how the Hawaiian Coot survives and thrives in Hawai'i's diverse wetlands.
-          </p>
-        </div>
+        <h1 style={{ fontSize: 24, fontWeight: 800, color: "white", margin: 0, letterSpacing: "-0.02em" }}>
+          Endemic Adaptations
+        </h1>
+        <p style={{ fontSize: 12.5, color: "rgba(255,255,255,0.4)", margin: "2px 0 0" }}>
+          Discover how the Hawaiian Coot survives and thrives in Hawai'i's diverse wetlands.
+        </p>
       </div>
 
       {/* ── MAIN BODY ──────────────────────────────────────────────────────── */}
       <div style={{ flex: 1, display: "flex", overflow: "hidden", minHeight: 0 }}>
 
-        {/* LEFT SIDEBAR — Adaptation Library */}
+        {/* LEFT SIDEBAR */}
         <div style={{
           width: 218, flexShrink: 0,
           borderRight: "1px solid rgba(0,200,120,0.1)",
@@ -212,10 +208,10 @@ export function Adaptations() {
           </div>
         </div>
 
-        {/* ── CENTER: 2 halves ─────────────────────────────────────────────── */}
+        {/* ── CENTER: left scene | right (top + bottom) ──────────────────── */}
         <div style={{ flex: 1, display: "flex", overflow: "hidden", minHeight: 0 }}>
 
-          {/* LEFT HALF — Scene background image + detail overlay */}
+          {/* LEFT HALF — Scene image + detail overlay */}
           <div style={{ flex: 1, position: "relative", overflow: "hidden", borderRight: "1px solid rgba(0,200,120,0.1)" }}>
 
             {/* Scene image */}
@@ -223,38 +219,32 @@ export function Adaptations() {
               <motion.img
                 key={sceneIdx}
                 src={SCENES[sceneIdx].img}
-                initial={{ opacity: 0, scale: 1.05 }}
-                animate={{ opacity: 1, scale: 1 }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 1.2 }}
+                transition={{ duration: 0.8 }}
                 style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
               />
             </AnimatePresence>
 
-            {/* Permanent dark gradient at bottom for readability */}
+            {/* Bottom gradient */}
             <div style={{
-              position: "absolute", bottom: 0, left: 0, right: 0, height: "55%",
-              background: "linear-gradient(to top, rgba(3,16,10,0.95) 0%, rgba(3,16,10,0.6) 50%, transparent 100%)",
+              position: "absolute", bottom: 0, left: 0, right: 0, height: "50%",
+              background: "linear-gradient(to top, rgba(3,16,10,0.96) 0%, rgba(3,16,10,0.5) 60%, transparent 100%)",
               pointerEvents: "none",
             }} />
 
-            {/* Scene label (no selection) */}
+            {/* Default label (nothing selected) */}
             <AnimatePresence>
               {!selected && (
                 <motion.div
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 8 }}
-                  style={{ position: "absolute", bottom: 16, left: 18, right: 18 }}
+                  initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                  style={{ position: "absolute", bottom: 18, left: 18, right: 18 }}
                 >
-                  <p style={{ fontSize: 9, letterSpacing: "0.18em", color: TEAL, fontWeight: 800, margin: "0 0 4px" }}>
-                    CURRENT SCENE
-                  </p>
-                  <p style={{ fontSize: 16, fontWeight: 800, color: "white", margin: "0 0 4px" }}>
-                    {SCENES[sceneIdx].name}
-                  </p>
-                  <p style={{ fontSize: 11.5, color: "rgba(255,255,255,0.5)", margin: 0 }}>
-                    Select an adaptation node or card to explore how the Hawaiian Coot survives.
+                  <p style={{ fontSize: 9, letterSpacing: "0.18em", color: TEAL, fontWeight: 800, margin: "0 0 4px" }}>CURRENT SCENE</p>
+                  <p style={{ fontSize: 17, fontWeight: 800, color: "white", margin: "0 0 5px" }}>{SCENES[sceneIdx].name}</p>
+                  <p style={{ fontSize: 12, color: "rgba(255,255,255,0.48)", margin: 0, lineHeight: 1.5 }}>
+                    Select an adaptation to see how this coot survives.
                   </p>
                 </motion.div>
               )}
@@ -264,64 +254,57 @@ export function Adaptations() {
             <AnimatePresence>
               {selected && (
                 <motion.div
-                  key={selected.id + "-detail"}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 10 }}
-                  transition={{ duration: 0.38, ease: [0.16, 1, 0.3, 1] }}
-                  style={{
-                    position: "absolute", inset: 0,
-                    display: "flex", flexDirection: "column",
-                  }}
+                  key={selected.id}
+                  initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                  style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column" }}
                 >
-                  {/* Dimmer over scene */}
-                  <div style={{ position: "absolute", inset: 0, background: "rgba(3,10,6,0.55)", zIndex: 0 }} />
+                  {/* Dark tint */}
+                  <div style={{ position: "absolute", inset: 0, background: "rgba(3,10,6,0.45)", zIndex: 0 }} />
 
                   {/* Close button */}
-                  <div style={{ position: "absolute", top: 12, right: 12, zIndex: 10 }}>
-                    <motion.div
-                      onClick={() => setSelectedId(null)}
-                      whileHover={{ scale: 1.1 }}
-                      style={{
-                        width: 28, height: 28, borderRadius: "50%",
-                        border: "1px solid rgba(255,255,255,0.2)",
-                        background: "rgba(0,0,0,0.5)",
-                        color: "rgba(255,255,255,0.6)",
-                        cursor: "pointer", fontSize: 13,
-                        display: "flex", alignItems: "center", justifyContent: "center",
-                      }}
-                    >✕</motion.div>
-                  </div>
+                  <motion.div
+                    onClick={() => setSelectedId(null)}
+                    whileHover={{ scale: 1.1 }}
+                    style={{
+                      position: "absolute", top: 12, right: 12, zIndex: 10,
+                      width: 28, height: 28, borderRadius: "50%",
+                      border: "1px solid rgba(255,255,255,0.2)",
+                      background: "rgba(0,0,0,0.55)",
+                      color: "rgba(255,255,255,0.65)", cursor: "pointer", fontSize: 13,
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                    }}
+                  >✕</motion.div>
 
-                  {/* Image — upper portion */}
+                  {/* Close-up image — upper portion */}
                   <div style={{ flex: 1, position: "relative", overflow: "hidden", minHeight: 0, zIndex: 1 }}>
                     <img
-                      src={selected.image}
-                      alt={selected.name}
+                      src={selected.image} alt={selected.name}
                       style={{ width: "100%", height: "100%", objectFit: "cover" }}
                     />
                     <div style={{
-                      position: "absolute", bottom: 0, left: 0, right: 0, height: "50%",
+                      position: "absolute", bottom: 0, left: 0, right: 0, height: "55%",
                       background: "linear-gradient(to top, rgba(3,10,6,1) 0%, transparent 100%)",
                     }} />
-                    {/* Type + headline over image */}
                     <div style={{ position: "absolute", bottom: 14, left: 16, right: 16 }}>
                       <p style={{ fontSize: 9.5, letterSpacing: "0.18em", color: selected.color, fontWeight: 800, margin: "0 0 3px" }}>
                         {selected.type} ADAPTATION
                       </p>
-                      <h3 style={{ fontSize: 20, fontWeight: 800, color: "white", margin: 0, lineHeight: 1.15 }}>
+                      <h3 style={{ fontSize: 21, fontWeight: 800, color: "white", margin: 0, lineHeight: 1.15 }}>
                         {selected.headline}
                       </h3>
                     </div>
                   </div>
 
-                  {/* Text content — lower portion */}
-                  <div style={{ flexShrink: 0, padding: "14px 16px 16px", background: "rgba(3,10,6,0.97)", zIndex: 1 }}>
-                    <p style={{ fontSize: 13, lineHeight: 1.6, color: "rgba(255,255,255,0.78)", margin: "0 0 12px" }}>
+                  {/* Text — lower portion */}
+                  <div style={{ flexShrink: 0, padding: "14px 16px 16px", background: "rgba(3,10,6,0.98)", zIndex: 1 }}>
+                    <p style={{ fontSize: 13, lineHeight: 1.65, color: "rgba(255,255,255,0.78)", margin: "0 0 12px" }}>
                       {selected.desc}
                     </p>
-                    <p style={{ fontSize: 10, letterSpacing: "0.14em", color: selected.color, fontWeight: 800, margin: "0 0 7px" }}>KEY BENEFITS</p>
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "4px 10px" }}>
+                    <p style={{ fontSize: 10, letterSpacing: "0.14em", color: selected.color, fontWeight: 800, margin: "0 0 7px" }}>
+                      KEY BENEFITS
+                    </p>
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "5px 10px" }}>
                       {selected.benefits.map((b, i) => (
                         <div key={i} style={{ display: "flex", alignItems: "center", gap: 7 }}>
                           <div style={{
@@ -331,7 +314,7 @@ export function Adaptations() {
                           }}>
                             <span style={{ fontSize: 8, color: selected.color }}>✓</span>
                           </div>
-                          <span style={{ fontSize: 11.5, color: "rgba(255,255,255,0.72)" }}>{b}</span>
+                          <span style={{ fontSize: 12, color: "rgba(255,255,255,0.72)" }}>{b}</span>
                         </div>
                       ))}
                     </div>
@@ -341,130 +324,106 @@ export function Adaptations() {
             </AnimatePresence>
           </div>
 
-          {/* RIGHT HALF — top: bird+nodes | bottom: behavioral */}
+          {/* RIGHT HALF */}
           <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
 
-            {/* TOP — Bird + Physical Adaptation Nodes */}
-            <div style={{ flex: 1, position: "relative", overflow: "hidden", minHeight: 0 }}>
+            {/* TOP — Bird + Physical adaptation image thumbnails */}
+            <div style={{
+              flex: 1, position: "relative", overflow: "hidden", minHeight: 0,
+              background: "radial-gradient(ellipse at 50% 55%, rgba(0,50,35,0.35) 0%, rgba(3,16,10,0.98) 72%)",
+            }}>
 
-              {/* Dark background with subtle teal glow */}
-              <div style={{
-                position: "absolute", inset: 0,
-                background: "radial-gradient(ellipse at 50% 50%, rgba(0,60,40,0.25) 0%, rgba(3,16,10,0.95) 70%)",
-              }} />
+              {/* Section label */}
+              <div style={{ position: "absolute", top: 9, left: 0, right: 0, textAlign: "center", zIndex: 5, pointerEvents: "none" }}>
+                <p style={{ fontSize: 9, letterSpacing: "0.18em", color: "rgba(0,200,120,0.5)", fontWeight: 800, margin: 0 }}>
+                  PHYSICAL ADAPTATIONS
+                </p>
+              </div>
 
-              {/* SVG lines — physical adaptations only */}
+              {/* Static SVG lines */}
               <svg
                 style={{ position: "absolute", inset: 0, width: "100%", height: "100%", zIndex: 1, pointerEvents: "none" }}
                 viewBox="0 0 100 100"
                 preserveAspectRatio="none"
               >
-                {PHYSICAL.map((ad, i) => {
-                  const isActive  = selectedId === ad.id;
-                  const isHovered = hoveredId === ad.id;
+                {PHYSICAL.map(ad => {
+                  const isActive = selectedId === ad.id;
                   return (
-                    <motion.line
+                    <line
                       key={ad.id}
-                      x1="50" y1="50"
+                      x1="50" y1="52"
                       x2={ad.cx} y2={ad.cy}
                       stroke={ad.color}
                       strokeWidth={isActive ? "0.6" : "0.3"}
-                      pathLength={1}
-                      strokeDasharray="1"
-                      initial={{ strokeDashoffset: 1, strokeOpacity: 0 }}
-                      animate={{ strokeDashoffset: 0, strokeOpacity: isActive ? 0.95 : isHovered ? 0.7 : 0.38 }}
-                      transition={{ duration: 1.2, delay: i * 0.15, ease: "easeOut" }}
+                      strokeOpacity={isActive ? 0.9 : 0.35}
                       style={{ filter: isActive ? `drop-shadow(0 0 3px ${ad.color})` : "none" }}
                     />
                   );
                 })}
               </svg>
 
-              {/* Coot bird — breathing centerpiece */}
+              {/* Coot bird — static */}
               <div style={{
                 position: "absolute", inset: 0,
                 display: "flex", alignItems: "center", justifyContent: "center",
                 zIndex: 2, pointerEvents: "none",
               }}>
-                <motion.img
+                <img
                   src={cootBirdImg as string}
                   alt="Hawaiian Coot"
-                  animate={{ scale: [1, 1.015, 1], y: [0, -5, 0] }}
-                  transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
                   style={{
-                    width: "64%",
-                    maxWidth: 340,
-                    objectFit: "contain",
-                    filter: "drop-shadow(0 0 30px rgba(0,200,120,0.2)) drop-shadow(0 6px 24px rgba(0,0,0,0.95))",
+                    width: "60%", maxWidth: 320, objectFit: "contain",
+                    filter: "drop-shadow(0 0 28px rgba(0,200,120,0.18)) drop-shadow(0 6px 20px rgba(0,0,0,0.95))",
                   }}
                 />
               </div>
 
-              {/* Physical adaptation nodes */}
-              {PHYSICAL.map((ad, i) => {
-                const isActive  = selectedId === ad.id;
-                const isHovered = hoveredId === ad.id;
+              {/* Physical adaptation image nodes */}
+              {PHYSICAL.map(ad => {
+                const isActive = selectedId === ad.id;
                 return (
                   <motion.div
                     key={ad.id}
+                    onClick={() => select(ad.id)}
+                    whileHover={{ scale: 1.06 }}
                     style={{
                       position: "absolute",
                       left: `${ad.cx}%`,
                       top: `${ad.cy}%`,
                       transform: "translate(-50%, -50%)",
                       zIndex: 10, cursor: "pointer",
+                      display: "flex", flexDirection: "column", alignItems: "center", gap: 5,
                     }}
-                    animate={{ scale: isActive ? 1.2 : 1 }}
-                    whileHover={{ scale: isActive ? 1.24 : 1.12 }}
-                    onClick={() => select(ad.id)}
-                    onHoverStart={() => setHoveredId(ad.id)}
-                    onHoverEnd={() => setHoveredId(null)}
                   >
-                    {/* Pulse ring */}
-                    <motion.div
-                      animate={{ scale: [1, 1.7, 1], opacity: [0.5, 0, 0.5] }}
-                      transition={{ duration: 2.6, repeat: Infinity, delay: i * 0.45, ease: "easeInOut" }}
-                      style={{
-                        position: "absolute", inset: -7, borderRadius: "50%",
-                        border: `1.5px solid ${ad.color}`, pointerEvents: "none",
-                      }}
-                    />
-                    {/* Circle */}
+                    {/* Image thumbnail */}
                     <div style={{
-                      width:   isActive ? 76 : 64,
-                      height:  isActive ? 76 : 64,
-                      borderRadius: "50%",
-                      background: isActive ? `${ad.color}22` : "rgba(3,16,10,0.9)",
-                      border: `2px solid ${isActive ? ad.color : ad.color + "88"}`,
-                      display: "flex", flexDirection: "column",
-                      alignItems: "center", justifyContent: "center", gap: 2,
-                      boxShadow: isActive ? `0 0 26px ${ad.color}66, 0 0 8px ${ad.color}33 inset` : `0 0 10px ${ad.color}22`,
-                      backdropFilter: "blur(10px)",
-                      transition: "all 0.25s ease",
+                      width: 80, height: 58,
+                      borderRadius: 8,
+                      overflow: "hidden",
+                      border: `2px solid ${isActive ? ad.color : ad.color + "55"}`,
+                      boxShadow: isActive
+                        ? `0 0 20px ${ad.color}55, 0 4px 16px rgba(0,0,0,0.8)`
+                        : `0 4px 12px rgba(0,0,0,0.7)`,
+                      transition: "border-color 0.2s, box-shadow 0.2s",
                     }}>
-                      <span style={{ fontSize: 18 }}>{ad.icon}</span>
-                      <p style={{
-                        fontSize: 7.5, fontWeight: 800,
-                        color: isActive ? ad.color : "rgba(255,255,255,0.7)",
-                        textAlign: "center", letterSpacing: "0.04em", lineHeight: 1.2,
-                        margin: 0, maxWidth: 56,
-                      }}>
-                        {ad.name}
-                      </p>
+                      <img
+                        src={ad.image} alt={ad.name}
+                        style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                      />
                     </div>
+                    {/* Label */}
+                    <p style={{
+                      fontSize: 9, fontWeight: 800, margin: 0,
+                      color: isActive ? ad.color : "rgba(255,255,255,0.65)",
+                      textAlign: "center", letterSpacing: "0.05em",
+                      lineHeight: 1.2, maxWidth: 80,
+                      transition: "color 0.2s",
+                    }}>
+                      {ad.name}
+                    </p>
                   </motion.div>
                 );
               })}
-
-              {/* "PHYSICAL ADAPTATIONS" label */}
-              <div style={{
-                position: "absolute", top: 10, left: 0, right: 0, textAlign: "center",
-                zIndex: 5, pointerEvents: "none",
-              }}>
-                <p style={{ fontSize: 9, letterSpacing: "0.18em", color: "rgba(0,200,120,0.5)", fontWeight: 800, margin: 0 }}>
-                  PHYSICAL ADAPTATIONS
-                </p>
-              </div>
             </div>
 
             {/* DIVIDER */}
@@ -473,32 +432,23 @@ export function Adaptations() {
             {/* BOTTOM — Behavioral Adaptations */}
             <div style={{
               flexShrink: 0, height: "38%",
-              background: "rgba(3,10,6,0.96)",
+              background: "rgba(3,10,6,0.97)",
               display: "flex", flexDirection: "column",
               overflow: "hidden",
             }}>
-              {/* Header */}
-              <div style={{
-                padding: "8px 14px 6px",
-                borderBottom: "1px solid rgba(255,255,255,0.05)",
-                flexShrink: 0,
-              }}>
+              <div style={{ padding: "7px 14px 6px", borderBottom: "1px solid rgba(255,255,255,0.05)", flexShrink: 0 }}>
                 <p style={{ fontSize: 9, letterSpacing: "0.18em", color: "rgba(255,140,80,0.85)", fontWeight: 800, margin: 0 }}>
                   BEHAVIORAL ADAPTATIONS
                 </p>
               </div>
 
-              {/* Two behavioral cards */}
               <div style={{ flex: 1, display: "flex", overflow: "hidden", minHeight: 0 }}>
                 {BEHAVIORAL.map((ad, i) => {
-                  const isActive  = selectedId === ad.id;
-                  const isHovered = hoveredId === ad.id;
+                  const isActive = selectedId === ad.id;
                   return (
                     <motion.div
                       key={ad.id}
                       onClick={() => select(ad.id)}
-                      onHoverStart={() => setHoveredId(ad.id)}
-                      onHoverEnd={() => setHoveredId(null)}
                       whileHover={{ background: `${ad.color}0d` }}
                       style={{
                         flex: 1,
@@ -510,40 +460,30 @@ export function Adaptations() {
                         overflow: "hidden",
                       }}
                     >
-                      {/* Thumbnail */}
+                      {/* Image thumbnail */}
                       <div style={{
-                        width: 74, flexShrink: 0, borderRadius: 8, overflow: "hidden",
-                        border: `2px solid ${isActive || isHovered ? ad.color + "88" : "rgba(255,255,255,0.08)"}`,
-                        transition: "border-color 0.25s",
+                        width: 80, flexShrink: 0, borderRadius: 7, overflow: "hidden",
+                        border: `2px solid ${isActive ? ad.color + "88" : "rgba(255,255,255,0.08)"}`,
                         boxShadow: isActive ? `0 0 14px ${ad.color}44` : "none",
+                        transition: "border-color 0.25s, box-shadow 0.25s",
                       }}>
-                        <img
-                          src={ad.image} alt={ad.name}
-                          style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
-                        />
+                        <img src={ad.image} alt={ad.name} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
                       </div>
 
                       {/* Text */}
                       <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", gap: 4 }}>
                         <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                          <span style={{ fontSize: 15 }}>{ad.icon}</span>
-                          <p style={{
-                            fontSize: 12.5, fontWeight: 800,
-                            color: isActive ? ad.color : "rgba(255,255,255,0.9)",
-                            margin: 0, transition: "color 0.25s",
-                          }}>
+                          <span style={{ fontSize: 14 }}>{ad.icon}</span>
+                          <p style={{ fontSize: 12.5, fontWeight: 800, color: isActive ? ad.color : "rgba(255,255,255,0.9)", margin: 0, transition: "color 0.25s" }}>
                             {ad.name}
                           </p>
                         </div>
-                        <p style={{ fontSize: 11, lineHeight: 1.5, color: "rgba(255,255,255,0.55)", margin: 0 }}>
+                        <p style={{ fontSize: 11, lineHeight: 1.5, color: "rgba(255,255,255,0.52)", margin: 0 }}>
                           {ad.desc}
                         </p>
-                        <div style={{ display: "flex", flexWrap: "wrap", gap: "3px 8px", marginTop: "auto" }}>
+                        <div style={{ display: "flex", flexWrap: "wrap", gap: "3px 10px", marginTop: "auto" }}>
                           {ad.benefits.slice(0, 2).map((b, j) => (
-                            <span key={j} style={{
-                              fontSize: 10, color: isActive ? ad.color : "rgba(255,255,255,0.45)",
-                              display: "flex", alignItems: "center", gap: 4,
-                            }}>
+                            <span key={j} style={{ fontSize: 10, color: isActive ? ad.color : "rgba(255,255,255,0.42)", display: "flex", alignItems: "center", gap: 4 }}>
                               <span style={{ fontSize: 8 }}>✓</span>{b}
                             </span>
                           ))}
@@ -555,15 +495,15 @@ export function Adaptations() {
               </div>
             </div>
 
-          </div>{/* end RIGHT HALF */}
-        </div>{/* end CENTER 2-halves */}
-      </div>{/* end MAIN BODY */}
+          </div>{/* end right half */}
+        </div>{/* end center 2-halves */}
+      </div>{/* end main body */}
 
       {/* ── BOTTOM BAR ─────────────────────────────────────────────────────── */}
       <div style={{
         flexShrink: 0,
         borderTop: "1px solid rgba(0,200,120,0.1)",
-        background: "rgba(3,12,8,0.95)",
+        background: "rgba(3,12,8,0.96)",
         display: "flex",
       }}>
 
@@ -579,7 +519,7 @@ export function Adaptations() {
           </div>
         </div>
 
-        {/* Wetland scene carousel */}
+        {/* Scene carousel */}
         <div style={{ flex: 1.2, padding: "10px 14px 12px", borderRight: "1px solid rgba(255,255,255,0.05)" }}>
           <p style={{ fontSize: 10, letterSpacing: "0.18em", color: TEAL, fontWeight: 800, margin: "0 0 8px", textAlign: "center" }}>
             EXPLORE THE WETLAND
