@@ -620,8 +620,8 @@ export function ExtinctionRisk() {
         <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.15) 50%, rgba(0,0,0,0.75) 100%)" }} />
         <div style={{ position: "absolute", inset: 0, background: "linear-gradient(90deg, rgba(0,0,0,0.35) 0%, transparent 55%)" }} />
 
-        {/* Centered text block */}
-        <div style={{ position: "relative", zIndex: 2, textAlign: "center", padding: "38px 32px 0", maxWidth: 860, margin: "0 auto" }}>
+        {/* Centered text block — top padding clears the DomeNav hamburger (~80px button + gap) */}
+        <div style={{ position: "relative", zIndex: 2, textAlign: "center", padding: "96px 32px 0", maxWidth: 860, margin: "0 auto" }}>
           <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.85 }}>
             <h1 style={{ fontFamily: FF_SERIF, fontSize: "clamp(38px, 5vw, 56px)", color: GOLD, margin: 0, letterSpacing: "0.04em", textShadow: "0 0 48px rgba(212,175,55,0.55)" }}>
               Extinction Risk
