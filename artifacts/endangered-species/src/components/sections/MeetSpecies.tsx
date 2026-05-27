@@ -142,12 +142,12 @@ export function MeetSpecies() {
         <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, rgba(0,0,0,0.15) 0%, transparent 35%, rgba(0,0,0,0.6) 100%)" }} />
         <div style={{ position: "relative", zIndex: 2, textAlign: "center", padding: "90px 32px 0", maxWidth: 820, margin: "0 auto" }}>
           <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.85 }}>
-            <span style={{ fontFamily: FF_SANS, fontSize: 15, fontWeight: 800, letterSpacing: "0.22em", color: CRIMSON, display: "block", marginBottom: 10 }}>
-              ENDEMIC TO HAWAII
-            </span>
-            <h1 style={{ fontFamily: FF_SERIF, fontSize: "clamp(36px, 5vw, 54px)", color: GOLD, margin: 0, letterSpacing: "0.04em", textShadow: "0 0 48px rgba(212,175,55,0.5)" }}>
+            <h1 style={{ fontFamily: FF_SANS, fontSize: "clamp(1.5rem, 2.2vw, 2.1rem)", fontWeight: 700, letterSpacing: "0.13em", textTransform: "uppercase", color: GOLD, margin: "0 0 10px", textShadow: "0 0 48px rgba(212,175,55,0.5)" }}>
               Meet the Species
             </h1>
+            <span style={{ fontFamily: FF_SANS, fontSize: 17, fontWeight: 800, letterSpacing: "0.22em", color: CRIMSON, display: "block", marginBottom: 10 }}>
+              ENDEMIC TO HAWAII
+            </span>
             <p style={{ fontFamily: FF_SERIF, fontStyle: "italic", fontSize: 22, color: "rgba(255,255,255,0.88)", margin: "10px 0 0" }}>
               Fulica alai — Hawaiian Coot
             </p>
