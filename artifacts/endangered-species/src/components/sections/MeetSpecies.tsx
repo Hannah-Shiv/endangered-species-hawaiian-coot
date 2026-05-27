@@ -3,12 +3,20 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import sciClassImg from "@assets/image_1779762468352.png";
 
-const GOLD    = "rgba(212,175,55,1)";
-const CRIMSON = "rgba(220,50,30,1)";
-const CARD_BG = "rgba(8,10,18,0.97)";
-const BORDER  = "rgba(212,175,55,0.18)";
+const GOLD     = "rgba(212,175,55,1)";
+const CRIMSON  = "rgba(220,50,30,1)";
+const CARD_BG  = "rgba(8,10,18,0.97)";
+const BORDER   = "rgba(212,175,55,0.18)";
 const FF_SERIF = "'Playfair Display', serif";
 const FF_SANS  = "'Josefin Sans', sans-serif";
+
+// Heavy shadow — same formula as cinematic intro, keeps text legible on any frame
+const TS = "0 2px 48px rgba(0,0,0,0.99), 0 0 90px rgba(0,0,0,0.97), 0 4px 18px rgba(0,0,0,0.94)";
+const TS_RED = `0 0 40px rgba(220,50,30,0.7), ${TS}`;
+
+// Shared cinematic motion
+const FADE_DUR = 1.3;
+const EASE_IN  = [0.16, 1, 0.3, 1] as const;
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
@@ -121,39 +129,63 @@ export function MeetSpecies() {
                 {titlePhase === "visible" && (
                   <motion.div
                     key="opening-title"
-                    initial={{ opacity: 0, y: 18 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: FADE_DUR, ease: EASE_IN }}
                     style={{
                       position: "absolute", top: 0, left: 0, right: 0, bottom: 0,
                       display: "flex", alignItems: "center", justifyContent: "center",
-                      flexDirection: "column", gap: 6,
-                      background: "linear-gradient(180deg, rgba(0,0,0,0.55) 0%, transparent 40%, transparent 60%, rgba(0,0,0,0.4) 100%)",
+                      flexDirection: "column",
+                      background: "linear-gradient(180deg, rgba(0,0,0,0.38) 0%, transparent 45%, rgba(0,0,0,0.28) 100%)",
                       pointerEvents: "none",
                     }}>
+                    {/* Main title */}
                     <motion.p
-                      initial={{ letterSpacing: "0.28em", opacity: 0 }}
-                      animate={{ letterSpacing: "0.38em", opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 1.4, ease: "easeOut" }}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -12 }}
+                      transition={{ duration: FADE_DUR, ease: EASE_IN }}
                       style={{
-                        fontFamily: FF_SANS, fontSize: "clamp(20px, 3.5vw, 38px)",
-                        fontWeight: 900, letterSpacing: "0.38em",
-                        color: GOLD, margin: 0,
-                        textShadow: `0 0 40px ${GOLD}, 0 0 80px rgba(212,175,55,0.4)`,
+                        fontFamily: FF_SERIF,
+                        fontStyle: "italic",
+                        fontWeight: 300,
+                        fontSize: "clamp(42px, 6.5vw, 86px)",
+                        lineHeight: 1.05,
+                        letterSpacing: "0.07em",
+                        color: CRIMSON,
+                        margin: 0,
+                        textShadow: TS_RED,
                       }}>
-                      HAWAIIAN COOT
+                      Hawaiian Coot
                     </motion.p>
-                    <motion.p
-                      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                      transition={{ delay: 0.5, duration: 1.1 }}
+
+                    {/* Gold rule */}
+                    <motion.div
+                      initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} exit={{ opacity: 0 }}
+                      transition={{ duration: 0.9, delay: 0.55, ease: EASE_IN }}
                       style={{
-                        fontFamily: FF_SERIF, fontStyle: "italic",
-                        fontSize: "clamp(14px, 2vw, 22px)",
-                        color: "rgba(255,255,255,0.82)", margin: 0,
+                        height: "1.5px", width: 100, margin: "18px auto",
+                        background: `linear-gradient(to right, transparent, ${GOLD} 40%, transparent)`,
+                        transformOrigin: "center",
+                      }}
+                    />
+
+                    {/* Scientific name */}
+                    <motion.p
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: FADE_DUR, delay: 0.55, ease: EASE_IN }}
+                      style={{
+                        fontFamily: FF_SERIF,
+                        fontStyle: "italic",
+                        fontWeight: 400,
+                        fontSize: "clamp(20px, 2.8vw, 38px)",
+                        color: "rgba(255,200,190,0.92)",
+                        margin: 0,
                         letterSpacing: "0.05em",
-                        textShadow: "0 2px 16px rgba(0,0,0,0.8)",
+                        textShadow: TS,
                       }}>
                       Fulica alai
                     </motion.p>
@@ -161,116 +193,112 @@ export function MeetSpecies() {
                 )}
               </AnimatePresence>
 
-              {/* ── OVERLAY: Top-right Quick Facts card ── */}
+              {/* ── OVERLAY: Top-right — Quick Facts, plain cinematic text ── */}
               <AnimatePresence>
                 {titlePhase === "hidden" && (
                   <motion.div
                     key="quick-facts"
-                    initial={{ opacity: 0, x: 16 }}
+                    initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: FADE_DUR, ease: EASE_IN }}
                     style={{
-                      position: "absolute", top: 16, right: 16,
-                      background: "rgba(4,6,14,0.78)",
-                      border: `1px solid rgba(212,175,55,0.28)`,
-                      borderRadius: 12, padding: "14px 16px",
-                      backdropFilter: "blur(10px)",
+                      position: "absolute", top: "8%", right: "5%",
+                      textAlign: "right",
                       pointerEvents: "none",
-                      display: "flex", flexDirection: "column", gap: 9,
-                      minWidth: 190,
                     }}>
-                    <p style={{ fontFamily: FF_SANS, fontSize: 10, fontWeight: 900, letterSpacing: "0.18em", color: GOLD, margin: "0 0 4px" }}>
-                      ✦ SPECIES PROFILE
-                    </p>
                     {QUICK_FACTS.map((f, i) => (
-                      <motion.div key={i}
-                        initial={{ opacity: 0, x: 8 }} animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: i * 0.1 }}
-                        style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                        <span style={{
-                          fontSize: 9, color: i % 2 === 0 ? GOLD : "rgba(94,210,193,1)",
-                          flexShrink: 0,
-                        }}>{f.icon}</span>
-                        <span style={{
-                          fontFamily: FF_SANS, fontSize: 12, fontWeight: 600,
-                          color: "rgba(255,255,255,0.88)", letterSpacing: "0.04em",
-                        }}>{f.label}</span>
-                      </motion.div>
+                      <motion.p key={i}
+                        initial={{ opacity: 0, x: 14 }} animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: FADE_DUR, delay: i * 0.14, ease: EASE_IN }}
+                        style={{
+                          fontFamily: FF_SERIF,
+                          fontStyle: "italic",
+                          fontWeight: 300,
+                          fontSize: "clamp(15px, 2.0vw, 26px)",
+                          color: i % 2 === 0 ? CRIMSON : "rgba(255,200,190,0.88)",
+                          margin: "0 0 6px",
+                          letterSpacing: "0.04em",
+                          lineHeight: 1.3,
+                          textShadow: TS,
+                        }}>
+                        {f.label}
+                      </motion.p>
                     ))}
                   </motion.div>
                 )}
               </AnimatePresence>
 
-              {/* ── OVERLAY: Population pulse indicator (top-left) ── */}
+              {/* ── OVERLAY: Top-left — Population, plain cinematic text ── */}
               <AnimatePresence>
                 {titlePhase === "hidden" && (
                   <motion.div
                     key="pop-indicator"
-                    initial={{ opacity: 0, x: -16 }}
+                    initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: FADE_DUR, delay: 0.15, ease: EASE_IN }}
                     style={{
-                      position: "absolute", top: 16, left: 16,
-                      background: "rgba(4,6,14,0.78)",
-                      border: `1px solid rgba(220,50,30,0.35)`,
-                      borderRadius: 12, padding: "12px 16px",
-                      backdropFilter: "blur(10px)",
+                      position: "absolute", top: "8%", left: "5%",
                       pointerEvents: "none",
-                      display: "flex", alignItems: "center", gap: 10,
                     }}>
-                    {/* Pulse dot */}
-                    <div style={{ position: "relative", width: 10, height: 10, flexShrink: 0 }}>
-                      <motion.div
-                        animate={{ scale: [1, 1.9, 1], opacity: [0.7, 0, 0.7] }}
-                        transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                        style={{
-                          position: "absolute", inset: 0, borderRadius: "50%",
-                          background: CRIMSON,
-                        }} />
-                      <div style={{
-                        position: "absolute", inset: "2px", borderRadius: "50%",
-                        background: CRIMSON, boxShadow: `0 0 8px ${CRIMSON}`,
-                      }} />
-                    </div>
-                    <div>
-                      <p style={{ fontFamily: FF_SERIF, fontSize: 18, fontWeight: 700, color: CRIMSON, margin: 0, lineHeight: 1 }}>
-                        ~3,200
-                      </p>
-                      <p style={{ fontFamily: FF_SANS, fontSize: 10, fontWeight: 700, letterSpacing: "0.1em", color: "rgba(255,255,255,0.6)", margin: "3px 0 0" }}>
-                        REMAINING
-                      </p>
-                    </div>
+                    <motion.p
+                      animate={{ opacity: [1, 0.55, 1] }}
+                      transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+                      style={{
+                        fontFamily: FF_SERIF,
+                        fontStyle: "italic",
+                        fontWeight: 300,
+                        fontSize: "clamp(28px, 4.2vw, 58px)",
+                        lineHeight: 1,
+                        color: CRIMSON,
+                        margin: 0,
+                        letterSpacing: "0.04em",
+                        textShadow: TS_RED,
+                      }}>
+                      ~3,200
+                    </motion.p>
+                    <p style={{
+                      fontFamily: FF_SERIF,
+                      fontStyle: "italic",
+                      fontWeight: 400,
+                      fontSize: "clamp(13px, 1.6vw, 20px)",
+                      color: "rgba(255,200,190,0.82)",
+                      margin: "6px 0 0",
+                      letterSpacing: "0.06em",
+                      textShadow: TS,
+                    }}>
+                      remaining
+                    </p>
                   </motion.div>
                 )}
               </AnimatePresence>
 
-              {/* ── OVERLAY: Rotating documentary captions (bottom center) ── */}
+              {/* ── OVERLAY: Rotating documentary captions (bottom, above controls) ── */}
               <div style={{
-                position: "absolute", bottom: 52, left: 0, right: 0,
+                position: "absolute", bottom: 58, left: 0, right: 0,
                 display: "flex", justifyContent: "center",
                 pointerEvents: "none",
               }}>
                 <AnimatePresence mode="wait">
                   <motion.p
                     key={captionIdx}
-                    initial={{ opacity: 0, y: 10 }}
+                    initial={{ opacity: 0, y: 12 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -8 }}
-                    transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+                    transition={{ duration: 1.1, ease: EASE_IN }}
                     style={{
-                      fontFamily: FF_SERIF, fontStyle: "italic",
-                      fontSize: "clamp(13px, 1.8vw, 18px)",
-                      color: "rgba(255,255,255,0.90)",
+                      fontFamily: FF_SERIF,
+                      fontStyle: "italic",
+                      fontWeight: 300,
+                      fontSize: "clamp(16px, 2.2vw, 28px)",
+                      color: CRIMSON,
                       margin: 0,
-                      padding: "8px 20px",
-                      background: "rgba(0,0,0,0.52)",
-                      borderRadius: 8,
-                      backdropFilter: "blur(6px)",
-                      textShadow: "0 1px 12px rgba(0,0,0,0.9)",
-                      maxWidth: "72%",
                       textAlign: "center",
-                      lineHeight: 1.5,
-                      letterSpacing: "0.01em",
+                      letterSpacing: "0.04em",
+                      lineHeight: 1.4,
+                      textShadow: TS_RED,
+                      maxWidth: "80%",
                     }}>
                     {CAPTIONS[captionIdx]}
                   </motion.p>
