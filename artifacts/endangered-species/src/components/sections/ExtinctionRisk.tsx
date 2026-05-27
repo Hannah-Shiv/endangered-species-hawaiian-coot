@@ -607,10 +607,10 @@ export function ExtinctionRisk() {
   return (
     <div style={{ background: "#000", minHeight: "100vh", color: "#fff" }}>
 
-      {/* Cinematic header */}
-      <div style={{ position: "relative", height: 272, overflow: "hidden" }}>
+      {/* Cinematic header — minHeight so VULNERABLE never gets clipped */}
+      <div style={{ position: "relative", minHeight: 390, overflow: "hidden" }}>
         <img src="/campbell-habitat.png" alt="" aria-hidden
-          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 60%", filter: "brightness(0.32)" }}
+          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 60%", filter: "brightness(0.52)" }}
         />
         <img src="/hanalei-6.png" alt="" aria-hidden
           style={{ position: "absolute", right: 0, bottom: 0, height: "88%", width: "26%", objectFit: "cover", objectPosition: "center top", opacity: 0.55,

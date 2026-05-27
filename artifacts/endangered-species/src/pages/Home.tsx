@@ -184,6 +184,7 @@ export default function Home() {
             animate={{ opacity:1, y:0 }}
             exit={{ opacity:0, y:-16 }}
             transition={{ duration:0.45, ease:[0.16,1,0.3,1] }}
+            className="hide-scrollbar"
             style={{
               position:"fixed",
               top: domeOpen ? "440px" : "0px",

@@ -275,3 +275,11 @@
   0%, 100% { opacity: 0.45; }
   50% { opacity: 1; }
 }
+
+.hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
