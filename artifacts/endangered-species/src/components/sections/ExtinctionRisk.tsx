@@ -260,19 +260,59 @@ function DotMatrix() {
   const cols = 22, total = 400, active = 320;
   const ref   = useRef(null);
   const inView = useInView(ref, { once: true });
+  const [tip, setTip] = useState<{ x: number; y: number; text: string; sub: string; color: string } | null>(null);
 
   return (
-    <div ref={ref}>
+    <div ref={ref} data-dotmatrix style={{ position: "relative" }}>
       <div style={{ display: "grid", gridTemplateColumns: `repeat(${cols}, 1fr)`, gap: 4, maxWidth: 360 }}>
-        {Array.from({ length: total }).map((_, i) => (
-          <motion.div key={i}
-            initial={{ opacity: 0, scale: 0 }}
-            animate={inView ? { opacity: 1, scale: 1 } : {}}
-            transition={{ duration: 0.22, delay: i * 0.004, ease: "backOut" }}
-            style={{ width: 9, height: 9, borderRadius: "50%", background: i < active ? CRIMSON : "rgba(255,255,255,0.1)", boxShadow: i < active ? `0 0 3px ${CRIMSON}55` : "none" }}
-          />
-        ))}
+        {Array.from({ length: total }).map((_, i) => {
+          const alive = i < active;
+          return (
+            <motion.div key={i}
+              initial={{ opacity: 0, scale: 0 }}
+              animate={inView ? { opacity: 1, scale: 1 } : {}}
+              transition={{ duration: 0.22, delay: i * 0.004, ease: "backOut" }}
+              onMouseEnter={e => {
+                const el = e.currentTarget;
+                el.style.transform = "scale(2)";
+                el.style.zIndex = "10";
+                el.style.background = alive ? CRIMSON : "rgba(220,50,30,0.55)";
+                el.style.boxShadow = alive
+                  ? `0 0 10px ${CRIMSON}, 0 0 20px ${CRIMSON}88`
+                  : `0 0 8px rgba(220,50,30,0.5)`;
+                const rect = el.getBoundingClientRect();
+                const parent = el.closest("[data-dotmatrix]")!.getBoundingClientRect();
+                setTip({
+                  x: rect.left - parent.left + rect.width / 2,
+                  y: rect.top - parent.top - 12,
+                  text: alive ? "≈10 birds still surviving" : "≈10 birds lost forever",
+                  sub: alive ? "Every dot counts." : "Habitat destroyed.",
+                  color: alive ? CRIMSON : "rgba(180,40,20,0.9)",
+                });
+              }}
+              onMouseLeave={e => {
+                const el = e.currentTarget;
+                el.style.transform = "scale(1)";
+                el.style.zIndex = "1";
+                el.style.background = alive ? CRIMSON : "rgba(255,255,255,0.1)";
+                el.style.boxShadow = alive ? `0 0 3px ${CRIMSON}55` : "none";
+                setTip(null);
+              }}
+              style={{ width: 9, height: 9, borderRadius: "50%", background: alive ? CRIMSON : "rgba(255,255,255,0.1)", boxShadow: alive ? `0 0 3px ${CRIMSON}55` : "none", cursor: "crosshair", transition: "transform 0.15s, box-shadow 0.15s, background 0.15s", position: "relative" }}
+            />
+          );
+        })}
       </div>
+      {/* Urgency tooltip */}
+      {tip && (
+        <div style={{ position: "absolute", left: tip.x, top: tip.y, transform: "translate(-50%, -100%)", pointerEvents: "none", zIndex: 20, textAlign: "center" }}>
+          <div style={{ background: "rgba(8,6,4,0.96)", border: `1px solid ${tip.color}`, borderRadius: 8, padding: "7px 13px", whiteSpace: "nowrap", boxShadow: `0 0 18px ${tip.color}55` }}>
+            <p style={{ fontFamily: FF_SANS, fontSize: 12, fontWeight: 800, color: tip.color, margin: 0, letterSpacing: "0.06em" }}>{tip.text}</p>
+            <p style={{ fontFamily: FF_SERIF, fontSize: 11, color: "rgba(255,255,255,0.6)", margin: "2px 0 0", fontStyle: "italic" }}>{tip.sub}</p>
+          </div>
+          <div style={{ width: 0, height: 0, borderLeft: "5px solid transparent", borderRight: "5px solid transparent", borderTop: `5px solid ${tip.color}`, margin: "0 auto" }} />
+        </div>
+      )}
     </div>
   );
 }
@@ -342,19 +382,19 @@ function OverviewContent() {
         <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.12 }}
           style={{ borderRadius: 16, border: "1px solid rgba(220,50,30,0.32)", background: CARD_RED, padding: "26px 28px", display: "flex", flexDirection: "column" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
-            <p style={{ fontFamily: FF_SERIF, fontSize: 22, color: GOLD, margin: 0, textShadow: "0 0 20px rgba(212,175,55,0.3)" }}>A Fragile Balance</p>
-            <TrendingDown size={20} color={CRIMSON} />
+            <p style={{ fontFamily: FF_SERIF, fontSize: 24, color: GOLD, margin: 0, textShadow: "0 0 20px rgba(212,175,55,0.3)" }}>A Fragile Balance</p>
+            <TrendingDown size={22} color={CRIMSON} />
           </div>
-          <p style={{ fontFamily: FF_SANS, fontSize: 15, fontWeight: 700, color: "rgba(255,255,255,0.95)", margin: "0 0 8px" }}>
+          <p style={{ fontFamily: FF_SANS, fontSize: 17, fontWeight: 700, color: "rgba(255,255,255,0.95)", margin: "0 0 8px" }}>
             Only ~3,200 Hawaiian Coots remain.
           </p>
-          <p style={{ fontFamily: FF_SANS, fontSize: 13, color: "rgba(255,255,255,0.55)", margin: "0 0 20px", lineHeight: 1.65 }}>
+          <p style={{ fontFamily: FF_SANS, fontSize: 15, color: "rgba(255,255,255,0.65)", margin: "0 0 20px", lineHeight: 1.65 }}>
             One major hurricane season or severe prolonged drought could reduce the population by 30%.
           </p>
           <DotMatrix />
           <div style={{ display: "flex", justifyContent: "space-between", marginTop: 16, alignItems: "center" }}>
-            <p style={{ fontFamily: FF_SANS, fontSize: 12, color: "rgba(255,255,255,0.35)", margin: 0 }}>Each dot represents ~10 birds</p>
-            <p style={{ fontFamily: FF_SERIF, fontSize: 15, color: CRIMSON, margin: 0, fontStyle: "italic" }}>~3,200 birds estimated</p>
+            <p style={{ fontFamily: FF_SANS, fontSize: 14, color: "rgba(255,255,255,0.5)", margin: 0 }}>Each dot represents ~10 birds</p>
+            <p style={{ fontFamily: FF_SERIF, fontSize: 17, color: CRIMSON, margin: 0, fontStyle: "italic" }}>~3,200 birds estimated</p>
           </div>
         </motion.div>
       </div>
