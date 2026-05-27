@@ -162,7 +162,7 @@ function PopChart() {
   };
 
   return (
-    <div style={{ position: "relative" }}>
+    <div style={{ position: "relative", height: "100%", minHeight: 260 }}>
       {/* LIVE badge */}
       <div style={{ position: "absolute", top: 0, right: 0, display: "flex", alignItems: "center", gap: 5, zIndex: 2 }}>
         <motion.div animate={{ opacity: [1, 0.2, 1] }} transition={{ duration: 1.4, repeat: Infinity }}
@@ -172,7 +172,7 @@ function PopChart() {
       </div>
 
       <svg ref={svgRef} width={W} height={H} viewBox={`0 0 ${W} ${H}`}
-        style={{ display: "block", overflow: "visible", cursor: "crosshair", width: "100%", maxWidth: W }}
+        style={{ display: "block", overflow: "visible", cursor: "crosshair", width: "100%", height: "100%" }}
         onMouseMove={handleMouseMove}
         onMouseLeave={() => setHovered(null)}
       >
@@ -293,20 +293,20 @@ function PopChart() {
 
 // ─── Donut chart ──────────────────────────────────────────────────────────────
 function DonutChart({ pct, color, label }: { pct: number; color: string; label: string }) {
-  const r = 50, cx = 66, cy = 66, stroke = 13;
+  const r = 76, cx = 100, cy = 100, stroke = 18;
   const circ = 2 * Math.PI * r;
   const dash = (pct / 100) * circ;
   return (
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-      <svg width={132} height={132} style={{ display: "block" }}>
-        <circle cx={cx} cy={cy} r={r} fill="none" stroke="rgba(255,255,255,0.07)" strokeWidth={stroke} />
+      <svg width={200} height={200} style={{ display: "block" }}>
+        <circle cx={cx} cy={cy} r={r} fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth={stroke} />
         <circle cx={cx} cy={cy} r={r} fill="none" stroke={color} strokeWidth={stroke}
           strokeDasharray={`${dash.toFixed(1)} ${(circ - dash).toFixed(1)}`}
           strokeLinecap="round"
           style={{ transform: "rotate(-90deg)", transformOrigin: `${cx}px ${cy}px` }}
         />
-        <text x={cx} y={cy - 3} textAnchor="middle" fill={color} fontSize={24} fontFamily={FF_SERIF} fontWeight="bold">{pct}%</text>
-        <text x={cx} y={cy + 16} textAnchor="middle" fill="rgba(255,255,255,0.42)" fontSize={10} fontFamily={FF_SANS}>{label}</text>
+        <text x={cx} y={cy - 6} textAnchor="middle" fill={color} fontSize={36} fontFamily={FF_SERIF} fontWeight="bold">{pct}%</text>
+        <text x={cx} y={cy + 20} textAnchor="middle" fill="rgba(255,255,255,0.7)" fontSize={13} fontFamily={FF_SANS}>{label}</text>
       </svg>
     </div>
   );
@@ -538,18 +538,18 @@ function OverviewContent() {
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
 
         <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.22 }}
-          style={{ borderRadius: 16, border: `1px solid ${BORDER}`, background: CARD_BG, padding: "20px 24px 18px" }}>
+          style={{ borderRadius: 16, border: `1px solid ${BORDER}`, background: CARD_BG, padding: "20px 24px 18px", display: "flex", flexDirection: "column" }}>
           <SectionLabel>POPULATION TREND</SectionLabel>
-          <div style={{ marginTop: 14 }}><PopChart /></div>
+          <div style={{ marginTop: 14, flex: 1, minHeight: 0 }}><PopChart /></div>
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.3 }}
-          style={{ borderRadius: 16, border: `1px solid ${BORDER}`, background: CARD_BG, padding: "20px 24px 18px", display: "flex", flexDirection: "column", alignItems: "center" }}>
+          style={{ borderRadius: 16, border: `1px solid ${BORDER}`, background: CARD_BG, padding: "20px 24px 24px", display: "flex", flexDirection: "column", alignItems: "center" }}>
           <div style={{ alignSelf: "flex-start" }}><SectionLabel>HABITAT STATUS</SectionLabel></div>
-          <div style={{ marginTop: 16, flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 10, marginTop: 8 }}>
             <DonutChart pct={42} color={GREEN} label="of historical" />
-            <p style={{ fontFamily: FF_SANS, fontSize: 15, fontWeight: 700, color: "rgba(255,255,255,0.88)", margin: "10px 0 0", textAlign: "center" }}>wetlands remain</p>
-            <p style={{ fontFamily: FF_SANS, fontSize: 13, color: "rgba(255,255,255,0.6)", margin: "6px 0 0", textAlign: "center", lineHeight: 1.6 }}>
+            <p style={{ fontFamily: FF_SANS, fontSize: 16, fontWeight: 700, color: "rgba(255,255,255,0.92)", margin: 0, textAlign: "center" }}>wetlands remain</p>
+            <p style={{ fontFamily: FF_SANS, fontSize: 14, color: "rgba(255,255,255,0.65)", margin: 0, textAlign: "center", lineHeight: 1.65 }}>
               Only <span style={{ color: GREEN, fontWeight: 800 }}>42%</span> of historical Hawaiian wetland habitat survives today
             </p>
           </div>
