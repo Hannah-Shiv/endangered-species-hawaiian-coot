@@ -99,137 +99,17 @@ export function Sources() {
             <p className="mt-2">Conservation Organizations: James Campbell NWR, Kealia Pond NWR, Hawaii Wildlife Fund, The Nature Conservancy Hawaii.</p>
           </div>
 
-          {/* ── Project credit ── */}
+          {/* ── Project credit image ── */}
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.7, duration: 0.7 }}
-            style={{
-              borderRadius: 20,
-              border: "1px solid rgba(212,175,55,0.4)",
-              background: "linear-gradient(145deg, rgba(28,8,4,0.98) 0%, rgba(18,6,2,1) 50%, rgba(8,5,0,1) 100%)",
-              overflow: "hidden",
-            }}
           >
-            {/* Tricolor top bar: red → gold → white → gold → red */}
-            <div style={{ height: 4, background: "linear-gradient(90deg, rgba(200,30,10,0.9), rgba(212,175,55,1) 35%, rgba(255,255,255,0.95) 50%, rgba(212,175,55,1) 65%, rgba(200,30,10,0.9))" }} />
-
-            <div style={{ padding: "40px 52px 44px", textAlign: "center" }}>
-
-              {/* Eyebrow */}
-              <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, letterSpacing: "0.26em", color: "rgba(220,60,30,0.9)", fontWeight: 800, marginBottom: 10 }}>
-                SCIENCE PROJECT · ENDANGERED SPECIES
-              </p>
-
-              {/* Project title */}
-              <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 28, color: "rgba(255,255,255,0.97)", fontStyle: "italic", marginBottom: 30 }}>
-                Hawaiian Coot — <em style={{ color: "rgba(212,175,55,1)" }}>Fulica alai</em>
-              </p>
-
-              {/* Decorative divider */}
-              <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 32, justifyContent: "center" }}>
-                <div style={{ height: 1, flex: 1, maxWidth: 80, background: "linear-gradient(to right, transparent, rgba(200,30,10,0.6))" }} />
-                <span style={{ color: "rgba(212,175,55,1)", fontSize: 16 }}>✦</span>
-                <div style={{ height: 1, width: 30, background: "rgba(255,255,255,0.25)" }} />
-                <span style={{ color: "rgba(255,255,255,0.6)", fontSize: 11 }}>✦</span>
-                <div style={{ height: 1, width: 30, background: "rgba(255,255,255,0.25)" }} />
-                <span style={{ color: "rgba(212,175,55,1)", fontSize: 16 }}>✦</span>
-                <div style={{ height: 1, flex: 1, maxWidth: 80, background: "linear-gradient(to left, transparent, rgba(200,30,10,0.6))" }} />
-              </div>
-
-              {/* Team member cards — no glow */}
-              <div style={{ display: "flex", justifyContent: "center", gap: 14, flexWrap: "wrap", marginBottom: 28 }}>
-                {[
-                  { name: "Hannah Shiv",  role: "Developer & Student Researcher" },
-                  { name: "Chloe Pan",    role: "Student Researcher"             },
-                  { name: "Bahram Ostad", role: "Student Researcher"             },
-                ].map((member) => (
-                  <div
-                    key={member.name}
-                    style={{
-                      width: 200,
-                      borderRadius: 14,
-                      border: "1px solid rgba(212,175,55,0.35)",
-                      background: "rgba(212,175,55,0.06)",
-                      padding: "22px 18px 20px",
-                      display: "flex", flexDirection: "column", alignItems: "center", gap: 9,
-                    }}
-                  >
-                    {/* Accent dot — no glow */}
-                    <div style={{ width: 8, height: 8, borderRadius: "50%", background: "rgba(212,175,55,0.8)", marginBottom: 4 }} />
-                    <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 21, color: "rgba(212,175,55,1)", margin: 0, lineHeight: 1.2 }}>
-                      {member.name}
-                    </p>
-                    <div style={{ height: 1, width: 44, background: "rgba(212,175,55,0.3)" }} />
-                    <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 12, letterSpacing: "0.07em", color: "rgba(220,60,30,0.85)", margin: 0, lineHeight: 1.45, textAlign: "center", textTransform: "uppercase", fontWeight: 700 }}>
-                      {member.role}
-                    </p>
-                  </div>
-                ))}
-              </div>
-
-              {/* Teacher credit */}
-              <div style={{
-                marginBottom: 32, padding: "28px 36px 30px",
-                borderRadius: 16,
-                border: "1px solid rgba(255,255,255,0.18)",
-                background: "linear-gradient(135deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.03) 100%)",
-                position: "relative", overflow: "hidden",
-              }}>
-                {/* Subtle left accent stripe */}
-                <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: 4, background: "linear-gradient(to bottom, rgba(212,175,55,0.8), rgba(255,255,255,0.5), rgba(200,30,10,0.6))" }} />
-
-                {/* Label row */}
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10, marginBottom: 12 }}>
-                  <div style={{ height: 1, width: 32, background: "rgba(255,255,255,0.25)" }} />
-                  <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11, letterSpacing: "0.28em", color: "rgba(255,255,255,0.5)", fontWeight: 800, margin: 0, textTransform: "uppercase" }}>
-                    Life Science Teacher
-                  </p>
-                  <div style={{ height: 1, width: 32, background: "rgba(255,255,255,0.25)" }} />
-                </div>
-
-                {/* Name */}
-                <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 38, color: "rgba(255,255,255,1)", margin: "0 0 10px", lineHeight: 1.15, letterSpacing: "0.01em" }}>
-                  Ms. Calliandra Harris
-                </p>
-
-                {/* Decorative underline */}
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
-                  <div style={{ height: 1, width: 50, background: "linear-gradient(to right, transparent, rgba(212,175,55,0.7))" }} />
-                  <span style={{ color: "rgba(212,175,55,0.85)", fontSize: 12 }}>✦</span>
-                  <div style={{ height: 1, width: 50, background: "linear-gradient(to left, transparent, rgba(212,175,55,0.7))" }} />
-                </div>
-              </div>
-
-              {/* School info pills */}
-              <div style={{ display: "flex", justifyContent: "center", gap: 10, flexWrap: "wrap" }}>
-                {[
-                  { icon: "🏫", text: "Cooper Middle School", color: "rgba(212,175,55,0.3)" },
-                  { icon: "🔬", text: "Life Science",          color: "rgba(200,30,10,0.3)" },
-                  { icon: "📅", text: "2025–2026",             color: "rgba(255,255,255,0.15)" },
-                ].map((item) => (
-                  <div
-                    key={item.text}
-                    style={{
-                      display: "flex", alignItems: "center", gap: 8,
-                      padding: "8px 18px",
-                      borderRadius: 999,
-                      border: `1px solid ${item.color}`,
-                      background: "rgba(255,255,255,0.03)",
-                    }}
-                  >
-                    <span style={{ fontSize: 16 }}>{item.icon}</span>
-                    <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, color: "rgba(255,255,255,0.72)", letterSpacing: "0.05em", fontWeight: 600 }}>
-                      {item.text}
-                    </span>
-                  </div>
-                ))}
-              </div>
-
-            </div>
-
-            {/* Tricolor bottom bar */}
-            <div style={{ height: 4, background: "linear-gradient(90deg, rgba(200,30,10,0.9), rgba(212,175,55,1) 35%, rgba(255,255,255,0.95) 50%, rgba(212,175,55,1) 65%, rgba(200,30,10,0.9))" }} />
+            <img
+              src="/credits-card.png"
+              alt="Project credits — Hawaiian Coot science project by Hannah Shiv, Chloe Pan, Bahram Ostad. Life Science Teacher: Ms. Calliandra Harris, Cooper Middle School 2025–2026."
+              style={{ width: "100%", borderRadius: 16, display: "block" }}
+            />
           </motion.div>
 
         </motion.div>
