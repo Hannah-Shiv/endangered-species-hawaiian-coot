@@ -17,68 +17,31 @@ const WINE = "#5C0808";
 const FADE_DUR = 1.3;
 const EASE_IN  = [0.16, 1, 0.3, 1] as const;
 
-// ─── Matrix decode banner ──────────────────────────────────────────────────────
-const MATRIX_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*<>{}[]!?/\\|";
-const FINAL_LINES  = ["O N L Y", "3 2 0 0", "R E M A I N I N G"];
-const SETTLE_MS    = 900;    // time to fully decode each line
-const LOOP_MS      = 10000;  // total cycle: decode + hold
-
-function MatrixLine({ text, delayOffset }: { text: string; delayOffset: number }) {
-  const [chars, setChars] = useState<{ ch: string; locked: boolean }[]>([]);
-  const frameRef = useRef<number | undefined>(undefined);
-  const startRef = useRef(Date.now() - delayOffset);
-
-  useEffect(() => {
-    const tick = () => {
-      const elapsed  = (Date.now() - startRef.current) % LOOP_MS;
-      const progress = Math.min(elapsed / SETTLE_MS, 1);
-      const lockedN  = Math.floor(progress * text.length);
-
-      setChars(
-        text.split("").map((char, i) => {
-          if (char === " ") return { ch: " ", locked: true };
-          if (i < lockedN) return { ch: char, locked: true };
-          return { ch: MATRIX_CHARS[Math.floor(Math.random() * MATRIX_CHARS.length)], locked: false };
-        })
-      );
-      frameRef.current = requestAnimationFrame(tick);
-    };
-    frameRef.current = requestAnimationFrame(tick);
-    return () => { if (frameRef.current !== undefined) cancelAnimationFrame(frameRef.current); };
-  }, [text]);
-
-  return (
-    <div style={{ display: "flex", justifyContent: "center", lineHeight: 1 }}>
-      {chars.map(({ ch, locked }, i) => (
-        <span key={i} style={{
-          fontFamily: "'Orbitron', sans-serif",
-          fontWeight: 900,
-          fontSize: "clamp(16px, 2.2vw, 28px)",
-          letterSpacing: "0.10em",
-          color: locked
-            ? "rgba(10,80,30,1)"
-            : `rgba(10,80,30,${(0.2 + Math.random() * 0.45).toFixed(2)})`,
-          display: "inline-block",
-          minWidth: ch === " " ? "0.55em" : undefined,
-        }}>{ch}</span>
-      ))}
-    </div>
-  );
-}
-
-function MatrixDecode() {
+function PopIndicator() {
   return (
     <div style={{
       position: "absolute", top: "7%", left: "4%",
       pointerEvents: "none",
-      background: "none",
-      border: "none",
-      borderRadius: 10,
-      padding: "14px 22px",
-      display: "flex", flexDirection: "column", gap: 10,
+      display: "flex", flexDirection: "column", gap: 2,
     }}>
-      {FINAL_LINES.map((line, i) => (
-        <MatrixLine key={line} text={line} delayOffset={i * 350} />
+      {["Only", "3,200", "Remaining"].map((word, i) => (
+        <motion.p key={word}
+          initial={{ opacity: 0, x: -14 }} animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: FADE_DUR, delay: i * 0.18, ease: EASE_IN }}
+          style={{
+            fontFamily: FF_SERIF,
+            fontStyle: "italic",
+            fontWeight: 900,
+            fontSize: i === 1
+              ? "clamp(32px, 4.8vw, 62px)"
+              : "clamp(16px, 2.0vw, 26px)",
+            lineHeight: i === 1 ? 1.0 : 1.3,
+            letterSpacing: "0.06em",
+            color: WINE,
+            margin: 0,
+          }}>
+          {word}
+        </motion.p>
       ))}
     </div>
   );
@@ -315,7 +278,7 @@ export function MeetSpecies() {
                     exit={{ opacity: 0 }}
                     transition={{ duration: FADE_DUR, delay: 0.15, ease: EASE_IN }}
                     style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, pointerEvents: "none" }}>
-                    <MatrixDecode />
+                    <PopIndicator />
                   </motion.div>
                 )}
               </AnimatePresence>
