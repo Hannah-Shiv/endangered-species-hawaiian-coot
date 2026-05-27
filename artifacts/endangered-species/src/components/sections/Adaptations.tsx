@@ -143,19 +143,21 @@ export function Adaptations() {
     }}>
 
       {/* ── HEADER ─────────────────────────────────────────────────────────── */}
-      <div style={{
-        flexShrink: 0,
-        padding: "12px 24px 10px",
-        borderBottom: "1px solid rgba(0,200,120,0.12)",
-        background: "rgba(3,16,10,0.92)",
-      }}>
-        <h1 style={{ fontSize: 24, fontWeight: 800, color: "white", margin: 0, letterSpacing: "-0.02em" }}>
+      <motion.div
+        initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}
+        style={{
+          flexShrink: 0, paddingTop: 80, paddingBottom: 14,
+          borderBottom: "1px solid rgba(212,175,55,0.22)",
+          textAlign: "center",
+        }}
+      >
+        <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: "2.8rem", color: "rgba(212,175,55,1)", letterSpacing: "0.04em", lineHeight: 1.1, margin: 0 }}>
           Endemic Adaptations
         </h1>
-        <p style={{ fontSize: 12.5, color: "rgba(255,255,255,0.4)", margin: "2px 0 0" }}>
-          Discover how the Hawaiian Coot survives and thrives in Hawai'i's diverse wetlands.
+        <p style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontSize: 15, color: "rgba(212,175,55,0.88)", marginTop: 6, marginBottom: 0 }}>
+          Millions of years of evolution — these survival traits make the Hawaiian Coot unlike any other bird.
         </p>
-      </div>
+      </motion.div>
 
       {/* ── MAIN BODY ──────────────────────────────────────────────────────── */}
       <div style={{ flex: 1, display: "flex", overflow: "hidden", minHeight: 0 }}>
