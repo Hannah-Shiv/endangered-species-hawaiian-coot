@@ -505,8 +505,8 @@ export function Predators() {
                   }}
                 >
                   <div>
-                    <p style={{ fontSize: 12, letterSpacing: "0.16em", color: tc, marginBottom: 8, fontWeight: 800 }}>ABOUT THIS THREAT</p>
-                    <p style={{ fontSize: 15, lineHeight: 1.6, color: "rgba(255,255,255,0.88)", maxWidth: 480 }}>
+                    <p style={{ fontSize: 14, letterSpacing: "0.16em", color: tc, marginBottom: 8, fontWeight: 800 }}>ABOUT THIS THREAT</p>
+                    <p style={{ fontSize: 17, lineHeight: 1.6, color: "rgba(255,255,255,0.88)", maxWidth: 480 }}>
                       {p.sideDesc}
                     </p>
                   </div>
