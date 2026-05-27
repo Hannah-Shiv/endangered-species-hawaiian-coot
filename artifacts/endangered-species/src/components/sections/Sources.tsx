@@ -67,17 +67,17 @@ export function Sources() {
             </p>
           </div>
 
-          {/* ── Citation cards ── */}
-          <div className="space-y-4 mb-16">
+          {/* ── Citation cards — 2 columns ── */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-16">
             {sources.map((source, idx) => (
               <motion.div
                 key={idx}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: idx * 0.1 }}
+                transition={{ delay: idx * 0.08 }}
               >
-                <Card className="bg-card/30 border-border hover:bg-card/50 transition-colors">
-                  <CardContent className="p-4 md:p-6 flex justify-between items-center group">
+                <Card className="bg-card/30 border-border hover:bg-card/50 transition-colors h-full">
+                  <CardContent className="p-4 md:p-6 flex justify-between items-center group h-full">
                     <div>
                       <h3 className="text-lg font-bold text-primary group-hover:text-accent transition-colors">{source.title}</h3>
                       <p className="text-muted-foreground text-sm">{source.desc}</p>
@@ -118,12 +118,12 @@ export function Sources() {
             <div style={{ padding: "40px 52px 44px", textAlign: "center" }}>
 
               {/* Eyebrow */}
-              <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11.5, letterSpacing: "0.26em", color: "rgba(220,60,30,0.85)", fontWeight: 800, marginBottom: 8 }}>
+              <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, letterSpacing: "0.26em", color: "rgba(220,60,30,0.9)", fontWeight: 800, marginBottom: 10 }}>
                 SCIENCE PROJECT · ENDANGERED SPECIES
               </p>
 
               {/* Project title */}
-              <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 24, color: "rgba(255,255,255,0.97)", fontStyle: "italic", marginBottom: 30, textShadow: "0 0 30px rgba(212,175,55,0.4)" }}>
+              <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 28, color: "rgba(255,255,255,0.97)", fontStyle: "italic", marginBottom: 30, textShadow: "0 0 30px rgba(212,175,55,0.4)" }}>
                 Hawaiian Coot — <em style={{ color: "rgba(212,175,55,1)" }}>Fulica alai</em>
               </p>
 
@@ -138,57 +138,58 @@ export function Sources() {
                 <div style={{ height: 1, flex: 1, maxWidth: 80, background: "linear-gradient(to left, transparent, rgba(200,30,10,0.6))" }} />
               </div>
 
-              {/* Team member cards — no initials avatars */}
+              {/* Team member cards — all glow */}
               <div style={{ display: "flex", justifyContent: "center", gap: 14, flexWrap: "wrap", marginBottom: 36 }}>
                 {[
-                  { name: "Hannah Shiv",  role: "Developer & Student Researcher", lead: true },
-                  { name: "Chloe Pan",    role: "Student Researcher",             lead: false },
-                  { name: "Bahram Ostad", role: "Student Researcher",             lead: false },
-                ].map((member) => (
+                  { name: "Hannah Shiv",  role: "Developer & Student Researcher", glowColor: "212,175,55",  roleColor: "rgba(220,60,30,0.95)"  },
+                  { name: "Chloe Pan",    role: "Student Researcher",             glowColor: "255,255,255", roleColor: "rgba(180,180,180,0.85)" },
+                  { name: "Bahram Ostad", role: "Student Researcher",             glowColor: "255,255,255", roleColor: "rgba(180,180,180,0.85)" },
+                ].map((member) => {
+                  const isHannah = member.name === "Hannah Shiv";
+                  return (
                   <div
                     key={member.name}
                     style={{
-                      width: 190,
+                      width: 200,
                       borderRadius: 14,
-                      border: member.lead
-                        ? "1px solid rgba(212,175,55,0.6)"
-                        : "1px solid rgba(255,255,255,0.15)",
-                      background: member.lead
-                        ? "linear-gradient(145deg, rgba(212,175,55,0.12), rgba(200,30,10,0.06))"
-                        : "rgba(255,255,255,0.04)",
-                      padding: "22px 16px 20px",
-                      display: "flex", flexDirection: "column", alignItems: "center", gap: 8,
-                      boxShadow: member.lead ? "0 0 24px rgba(212,175,55,0.12)" : "none",
+                      border: `1px solid rgba(${member.glowColor},${isHannah ? "0.65" : "0.25"})`,
+                      background: isHannah
+                        ? "linear-gradient(145deg, rgba(212,175,55,0.13), rgba(200,30,10,0.07))"
+                        : "linear-gradient(145deg, rgba(255,255,255,0.07), rgba(255,255,255,0.03))",
+                      padding: "24px 18px 22px",
+                      display: "flex", flexDirection: "column", alignItems: "center", gap: 9,
+                      boxShadow: `0 0 28px rgba(${member.glowColor},${isHannah ? "0.18" : "0.1"}), 0 0 8px rgba(${member.glowColor},${isHannah ? "0.12" : "0.06"})`,
                     }}
                   >
-                    {/* Colored accent dot */}
+                    {/* Glowing accent dot */}
                     <div style={{
-                      width: 10, height: 10, borderRadius: "50%",
-                      background: member.lead ? "rgba(212,175,55,1)" : "rgba(255,255,255,0.4)",
-                      boxShadow: member.lead ? "0 0 10px rgba(212,175,55,0.8)" : "none",
+                      width: 11, height: 11, borderRadius: "50%",
+                      background: `rgba(${member.glowColor},1)`,
+                      boxShadow: `0 0 14px rgba(${member.glowColor},0.9), 0 0 28px rgba(${member.glowColor},0.4)`,
                       marginBottom: 4,
                     }} />
                     <p style={{
                       fontFamily: "'Playfair Display', serif",
-                      fontSize: 18,
-                      color: member.lead ? "rgba(212,175,55,1)" : "rgba(255,255,255,0.9)",
+                      fontSize: 21,
+                      color: isHannah ? "rgba(212,175,55,1)" : "rgba(255,255,255,0.95)",
                       margin: 0, lineHeight: 1.2,
-                      textShadow: member.lead ? "0 0 20px rgba(212,175,55,0.5)" : "none",
+                      textShadow: `0 0 22px rgba(${member.glowColor},0.55)`,
                     }}>
                       {member.name}
                     </p>
-                    <div style={{ height: 1, width: 40, background: member.lead ? "rgba(212,175,55,0.4)" : "rgba(255,255,255,0.15)" }} />
+                    <div style={{ height: 1, width: 44, background: `rgba(${member.glowColor},${isHannah ? "0.45" : "0.25"})` }} />
                     <p style={{
                       fontFamily: "'Josefin Sans', sans-serif",
-                      fontSize: 11, letterSpacing: "0.07em",
-                      color: member.lead ? "rgba(220,60,30,0.9)" : "rgba(255,255,255,0.45)",
-                      margin: 0, lineHeight: 1.4, textAlign: "center",
+                      fontSize: 12, letterSpacing: "0.07em",
+                      color: member.roleColor,
+                      margin: 0, lineHeight: 1.45, textAlign: "center",
                       textTransform: "uppercase", fontWeight: 700,
                     }}>
                       {member.role}
                     </p>
                   </div>
-                ))}
+                  );
+                })}
               </div>
 
               {/* School info pills */}
