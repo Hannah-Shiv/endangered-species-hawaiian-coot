@@ -83,17 +83,13 @@ export function MeetSpecies() {
             </div>
 
             {/* Video frame */}
-            <div style={{ position: "relative", paddingBottom: "56.25%", background: "#000" }}>
-              <iframe
-                src="https://www.youtube-nocookie.com/embed/x0ugyok9syw?controls=1&rel=0&modestbranding=1&color=white"
-                title="Hawaiian Coot — Species Documentary"
-                allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen"
-                allowFullScreen
-                style={{
-                  position: "absolute", inset: 0,
-                  width: "100%", height: "100%",
-                  border: "none",
-                }}
+            <div style={{ position: "relative", background: "#000", lineHeight: 0 }}>
+              <video
+                src="/coot.mp4"
+                controls
+                controlsList="nodownload"
+                playsInline
+                style={{ width: "100%", display: "block", maxHeight: 540 }}
               />
             </div>
 
