@@ -95,7 +95,7 @@ export function Sources() {
 
           {/* ── Image & org credits ── */}
           <div className="border-t border-border pt-8 mb-10 text-center text-sm text-muted-foreground">
-            <p>Image Credits: AI-generated images used for educational purposes.</p>
+            <p>Image Credits: Few images are generated for educational purposes.</p>
             <p className="mt-2">Conservation Organizations: James Campbell NWR, Kealia Pond NWR, Hawaii Wildlife Fund, The Nature Conservancy Hawaii.</p>
           </div>
 
@@ -106,81 +106,84 @@ export function Sources() {
             transition={{ delay: 0.7, duration: 0.7 }}
             style={{
               borderRadius: 20,
-              border: "1px solid rgba(212,175,55,0.35)",
-              background: "linear-gradient(135deg, rgba(20,14,0,0.95) 0%, rgba(10,8,2,0.98) 100%)",
-              boxShadow: "0 0 40px rgba(212,175,55,0.08), inset 0 1px 0 rgba(212,175,55,0.15)",
+              border: "1px solid rgba(212,175,55,0.5)",
+              background: "linear-gradient(145deg, rgba(28,8,4,0.98) 0%, rgba(18,6,2,1) 50%, rgba(8,5,0,1) 100%)",
+              boxShadow: "0 0 60px rgba(212,175,55,0.14), 0 0 120px rgba(200,30,10,0.06), inset 0 1px 0 rgba(212,175,55,0.25)",
               overflow: "hidden",
             }}
           >
-            {/* Gold top bar */}
-            <div style={{ height: 3, background: "linear-gradient(90deg, transparent, rgba(212,175,55,0.8), rgba(212,175,55,1), rgba(212,175,55,0.8), transparent)" }} />
+            {/* Tricolor top bar: red → gold → white → gold → red */}
+            <div style={{ height: 4, background: "linear-gradient(90deg, rgba(200,30,10,0.9), rgba(212,175,55,1) 35%, rgba(255,255,255,0.95) 50%, rgba(212,175,55,1) 65%, rgba(200,30,10,0.9))" }} />
 
-            <div style={{ padding: "36px 48px 40px", textAlign: "center" }}>
+            <div style={{ padding: "40px 52px 44px", textAlign: "center" }}>
 
-              {/* Eyebrow label */}
-              <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11, letterSpacing: "0.22em", color: "rgba(212,175,55,0.5)", fontWeight: 700, marginBottom: 6 }}>
+              {/* Eyebrow */}
+              <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11.5, letterSpacing: "0.26em", color: "rgba(220,60,30,0.85)", fontWeight: 800, marginBottom: 8 }}>
                 SCIENCE PROJECT · ENDANGERED SPECIES
               </p>
 
               {/* Project title */}
-              <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 22, color: "rgba(212,175,55,0.95)", fontStyle: "italic", marginBottom: 28 }}>
-                Hawaiian Coot — <em>Fulica alai</em>
+              <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 24, color: "rgba(255,255,255,0.97)", fontStyle: "italic", marginBottom: 30, textShadow: "0 0 30px rgba(212,175,55,0.4)" }}>
+                Hawaiian Coot — <em style={{ color: "rgba(212,175,55,1)" }}>Fulica alai</em>
               </p>
 
               {/* Decorative divider */}
-              <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 28, justifyContent: "center" }}>
-                <div style={{ height: 1, width: 60, background: "linear-gradient(to right, transparent, rgba(212,175,55,0.4))" }} />
-                <span style={{ color: "rgba(212,175,55,0.6)", fontSize: 14 }}>✦</span>
-                <div style={{ height: 1, width: 60, background: "linear-gradient(to left, transparent, rgba(212,175,55,0.4))" }} />
+              <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 32, justifyContent: "center" }}>
+                <div style={{ height: 1, flex: 1, maxWidth: 80, background: "linear-gradient(to right, transparent, rgba(200,30,10,0.6))" }} />
+                <span style={{ color: "rgba(212,175,55,1)", fontSize: 16 }}>✦</span>
+                <div style={{ height: 1, width: 30, background: "rgba(255,255,255,0.25)" }} />
+                <span style={{ color: "rgba(255,255,255,0.6)", fontSize: 11 }}>✦</span>
+                <div style={{ height: 1, width: 30, background: "rgba(255,255,255,0.25)" }} />
+                <span style={{ color: "rgba(212,175,55,1)", fontSize: 16 }}>✦</span>
+                <div style={{ height: 1, flex: 1, maxWidth: 80, background: "linear-gradient(to left, transparent, rgba(200,30,10,0.6))" }} />
               </div>
 
-              {/* Team member cards */}
-              <div style={{ display: "flex", justifyContent: "center", gap: 16, flexWrap: "wrap", marginBottom: 32 }}>
+              {/* Team member cards — no initials avatars */}
+              <div style={{ display: "flex", justifyContent: "center", gap: 14, flexWrap: "wrap", marginBottom: 36 }}>
                 {[
-                  { name: "Hannah Shiv",   initials: "HS", role: "Developer & Student Researcher", lead: true },
-                  { name: "Chloe Pan",     initials: "CP", role: "Student Researcher",             lead: false },
-                  { name: "Bahram Ostad",  initials: "BO", role: "Student Researcher",             lead: false },
+                  { name: "Hannah Shiv",  role: "Developer & Student Researcher", lead: true },
+                  { name: "Chloe Pan",    role: "Student Researcher",             lead: false },
+                  { name: "Bahram Ostad", role: "Student Researcher",             lead: false },
                 ].map((member) => (
                   <div
                     key={member.name}
                     style={{
-                      width: 180,
+                      width: 190,
                       borderRadius: 14,
-                      border: `1px solid rgba(212,175,55,${member.lead ? "0.35" : "0.18"})`,
-                      background: `rgba(212,175,55,${member.lead ? "0.07" : "0.03"})`,
-                      padding: "20px 16px 18px",
-                      display: "flex", flexDirection: "column", alignItems: "center", gap: 10,
+                      border: member.lead
+                        ? "1px solid rgba(212,175,55,0.6)"
+                        : "1px solid rgba(255,255,255,0.15)",
+                      background: member.lead
+                        ? "linear-gradient(145deg, rgba(212,175,55,0.12), rgba(200,30,10,0.06))"
+                        : "rgba(255,255,255,0.04)",
+                      padding: "22px 16px 20px",
+                      display: "flex", flexDirection: "column", alignItems: "center", gap: 8,
+                      boxShadow: member.lead ? "0 0 24px rgba(212,175,55,0.12)" : "none",
                     }}
                   >
-                    {/* Avatar circle */}
+                    {/* Colored accent dot */}
                     <div style={{
-                      width: 52, height: 52, borderRadius: "50%",
-                      background: `rgba(212,175,55,${member.lead ? "0.18" : "0.1"})`,
-                      border: `2px solid rgba(212,175,55,${member.lead ? "0.6" : "0.3"})`,
-                      display: "flex", alignItems: "center", justifyContent: "center",
-                    }}>
-                      <span style={{
-                        fontFamily: "'Playfair Display', serif",
-                        fontSize: 18, fontWeight: 700,
-                        color: `rgba(212,175,55,${member.lead ? "1" : "0.75"})`,
-                      }}>
-                        {member.initials}
-                      </span>
-                    </div>
+                      width: 10, height: 10, borderRadius: "50%",
+                      background: member.lead ? "rgba(212,175,55,1)" : "rgba(255,255,255,0.4)",
+                      boxShadow: member.lead ? "0 0 10px rgba(212,175,55,0.8)" : "none",
+                      marginBottom: 4,
+                    }} />
                     <p style={{
                       fontFamily: "'Playfair Display', serif",
-                      fontSize: 17,
-                      color: `rgba(212,175,55,${member.lead ? "1" : "0.8"})`,
+                      fontSize: 18,
+                      color: member.lead ? "rgba(212,175,55,1)" : "rgba(255,255,255,0.9)",
                       margin: 0, lineHeight: 1.2,
+                      textShadow: member.lead ? "0 0 20px rgba(212,175,55,0.5)" : "none",
                     }}>
                       {member.name}
                     </p>
+                    <div style={{ height: 1, width: 40, background: member.lead ? "rgba(212,175,55,0.4)" : "rgba(255,255,255,0.15)" }} />
                     <p style={{
                       fontFamily: "'Josefin Sans', sans-serif",
-                      fontSize: 10.5, letterSpacing: "0.06em",
-                      color: "rgba(255,255,255,0.4)",
+                      fontSize: 11, letterSpacing: "0.07em",
+                      color: member.lead ? "rgba(220,60,30,0.9)" : "rgba(255,255,255,0.45)",
                       margin: 0, lineHeight: 1.4, textAlign: "center",
-                      textTransform: "uppercase",
+                      textTransform: "uppercase", fontWeight: 700,
                     }}>
                       {member.role}
                     </p>
@@ -191,22 +194,22 @@ export function Sources() {
               {/* School info pills */}
               <div style={{ display: "flex", justifyContent: "center", gap: 10, flexWrap: "wrap" }}>
                 {[
-                  { icon: "🏫", text: "Cooper Middle School" },
-                  { icon: "🔬", text: "Life Science" },
-                  { icon: "📅", text: "2025–2026" },
+                  { icon: "🏫", text: "Cooper Middle School", color: "rgba(212,175,55,0.3)" },
+                  { icon: "🔬", text: "Life Science",          color: "rgba(200,30,10,0.3)" },
+                  { icon: "📅", text: "2025–2026",             color: "rgba(255,255,255,0.15)" },
                 ].map((item) => (
                   <div
                     key={item.text}
                     style={{
-                      display: "flex", alignItems: "center", gap: 7,
-                      padding: "7px 16px",
+                      display: "flex", alignItems: "center", gap: 8,
+                      padding: "8px 18px",
                       borderRadius: 999,
-                      border: "1px solid rgba(212,175,55,0.2)",
-                      background: "rgba(212,175,55,0.05)",
+                      border: `1px solid ${item.color}`,
+                      background: "rgba(255,255,255,0.03)",
                     }}
                   >
-                    <span style={{ fontSize: 15 }}>{item.icon}</span>
-                    <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, color: "rgba(255,255,255,0.55)", letterSpacing: "0.04em" }}>
+                    <span style={{ fontSize: 16 }}>{item.icon}</span>
+                    <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, color: "rgba(255,255,255,0.72)", letterSpacing: "0.05em", fontWeight: 600 }}>
                       {item.text}
                     </span>
                   </div>
@@ -215,8 +218,8 @@ export function Sources() {
 
             </div>
 
-            {/* Gold bottom bar */}
-            <div style={{ height: 3, background: "linear-gradient(90deg, transparent, rgba(212,175,55,0.5), rgba(212,175,55,0.8), rgba(212,175,55,0.5), transparent)" }} />
+            {/* Tricolor bottom bar */}
+            <div style={{ height: 4, background: "linear-gradient(90deg, rgba(200,30,10,0.9), rgba(212,175,55,1) 35%, rgba(255,255,255,0.95) 50%, rgba(212,175,55,1) 65%, rgba(200,30,10,0.9))" }} />
           </motion.div>
 
         </motion.div>
