@@ -307,6 +307,7 @@ export function Predators() {
                 key={pred.id}
                 onClick={() => select(pred.id)}
                 whileTap={{ scale: 0.96 }}
+                whileHover={{ boxShadow: isSel ? `0 0 28px ${pc}66, 0 6px 20px rgba(0,0,0,0.6)` : `0 0 22px ${pc}55, 0 4px 14px rgba(0,0,0,0.5)` }}
                 style={{
                   cursor: "pointer", textAlign: "left",
                   background: isSel
@@ -532,7 +533,7 @@ export function Predators() {
           overflowY: "auto",
           display: "flex", flexDirection: "column", alignItems: "center",
         }}>
-          <p style={{ fontSize: 13, letterSpacing: "0.16em", color: "rgba(255,255,255,0.5)", marginBottom: 9, fontWeight: 700, flexShrink: 0, textAlign: "center" }}>
+          <p style={{ fontSize: 13, letterSpacing: "0.16em", color: "rgba(255,255,255,0.92)", marginBottom: 9, fontWeight: 800, flexShrink: 0, textAlign: "center", textShadow: "0 0 10px rgba(255,255,255,0.3)" }}>
             ECOLOGICAL IMPACT
           </p>
           <AnimatePresence mode="wait">
@@ -566,7 +567,7 @@ export function Predators() {
           borderRight: "1px solid rgba(255,255,255,0.07)",
           display: "flex", flexDirection: "column",
         }}>
-          <p style={{ fontSize: 14, letterSpacing: "0.16em", color: GOLD, fontWeight: 800, marginBottom: 10, flexShrink: 0, textShadow: `0 0 8px ${GOLD}55` }}>
+          <p style={{ fontSize: 14, letterSpacing: "0.16em", color: GOLD, fontWeight: 800, marginBottom: 10, flexShrink: 0, textShadow: `0 0 14px ${GOLD}, 0 0 28px ${GOLD}88`, textAlign: "center", width: "100%" }}>
             ECOSYSTEM HEALTH OVERVIEW
           </p>
           <div style={{ flex: 1, display: "flex", alignItems: "center", gap: 18, minHeight: 0 }}>
