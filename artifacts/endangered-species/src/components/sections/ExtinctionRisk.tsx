@@ -933,10 +933,10 @@ function ConservationContent() {
               transition={{ delay: i * 0.07, ease: [0.16, 1, 0.3, 1] }}
               style={{ borderRadius: 14, border: `1px solid ${BORDER}`, background: CARD_BG, padding: "18px 20px", textAlign: "center" }}>
               <div style={{ display: "flex", alignItems: "baseline", justifyContent: "center", gap: 5 }}>
-                <span style={{ fontFamily: FF_SERIF, fontSize: 40, fontWeight: 700, color: GOLD, lineHeight: 1 }}>{s.value}</span>
-                {s.unit && <span style={{ fontFamily: FF_SANS, fontSize: 15, fontWeight: 700, color: "rgba(255,255,255,0.7)" }}>{s.unit}</span>}
+                <span style={{ fontFamily: FF_SERIF, fontSize: 48, fontWeight: 700, color: GOLD, lineHeight: 1 }}>{s.value}</span>
+                {s.unit && <span style={{ fontFamily: FF_SANS, fontSize: 17, fontWeight: 700, color: "rgba(255,255,255,0.82)" }}>{s.unit}</span>}
               </div>
-              <p style={{ fontFamily: FF_SANS, fontSize: 13, color: "rgba(255,255,255,0.72)", margin: "6px 0 0", lineHeight: 1.4 }}>{s.label}</p>
+              <p style={{ fontFamily: FF_SANS, fontSize: 15, color: "rgba(255,255,255,0.82)", margin: "8px 0 0", lineHeight: 1.4 }}>{s.label}</p>
             </motion.div>
           ))}
         </div>
@@ -966,17 +966,17 @@ function ConservationContent() {
                 <div style={{ flex: 1 }}>
                   {/* Year + type badge */}
                   <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
-                    <span style={{ fontFamily: FF_SERIF, fontSize: 34, fontWeight: 700, color: c, lineHeight: 1 }}>{m.year}</span>
+                    <span style={{ fontFamily: FF_SERIF, fontSize: 40, fontWeight: 700, color: c, lineHeight: 1 }}>{m.year}</span>
                     <span style={{
-                      fontFamily: FF_SANS, fontSize: 11, fontWeight: 800,
+                      fontFamily: FF_SANS, fontSize: 12, fontWeight: 800,
                       color: c, background: `${c}1e`,
                       border: `1px solid ${c}50`,
-                      borderRadius: 6, padding: "3px 8px",
+                      borderRadius: 6, padding: "4px 10px",
                       letterSpacing: "0.08em", textTransform: "uppercase",
                     }}>{typeLabel[m.type]}</span>
                   </div>
                   {/* Event text */}
-                  <p style={{ fontFamily: FF_SANS, fontSize: 15, fontWeight: 500, color: "rgba(255,255,255,0.92)", margin: 0, lineHeight: 1.55 }}>{m.event}</p>
+                  <p style={{ fontFamily: FF_SANS, fontSize: 17, fontWeight: 500, color: "rgba(255,255,255,0.95)", margin: 0, lineHeight: 1.55 }}>{m.event}</p>
                 </div>
 
                 {/* Corner glow */}
