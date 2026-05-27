@@ -1,108 +1,678 @@
-// ─── Extinction Risk ──────────────────────────────────────────────────────────
-// Displays the Hawaiian Coot's IUCN Red List status (Vulnerable).
-// Shows: threat matrix with progress bars, population timeline, and risk factors.
-// Previously listed as Endangered — downlisted after partial recovery.
+// ─── Extinction Risk — Cinematic Interactive Page ─────────────────────────────
+// IUCN Status: Vulnerable. Five threat categories, dot-matrix pop visualization,
+// pop trend chart, habitat donut, threat simulator, refuge carousel.
 // ─────────────────────────────────────────────────────────────────────────────
-import { motion } from "framer-motion";
-import { Card, CardContent } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
+import { useState, useRef, useCallback } from "react";
+import { motion, useInView, AnimatePresence } from "framer-motion";
+import { AlertTriangle, Droplets, Wind, Activity, Users, ChevronLeft, ChevronRight, Info, X, TrendingDown } from "lucide-react";
 
-export function ExtinctionRisk() {
+// ─── Palette ──────────────────────────────────────────────────────────────────
+const GOLD      = "rgba(212,175,55,1)";
+const GOLD_DIM  = "rgba(212,175,55,0.65)";
+const CRIMSON   = "rgba(220,50,30,1)";
+const AMBER     = "rgba(245,158,11,1)";
+const GREEN     = "rgba(74,222,128,1)";
+const CARD_BG   = "rgba(18,6,2,0.97)";
+const BORDER    = "rgba(212,175,55,0.38)";
+const FF_SERIF  = "'Playfair Display', serif";
+const FF_SANS   = "'Josefin Sans', sans-serif";
+
+// ─── Tabs ─────────────────────────────────────────────────────────────────────
+const TABS = [
+  { id: "overview",     label: "Overview"       },
+  { id: "threats",      label: "Threats"        },
+  { id: "population",   label: "Population"     },
+  { id: "habitat",      label: "Habitat"        },
+  { id: "conservation", label: "Conservation"   },
+  { id: "action",       label: "What You Can Do"},
+];
+
+// ─── Threat data ──────────────────────────────────────────────────────────────
+const THREATS = [
+  { id: "habitat",   Icon: Droplets,       label: "Habitat Loss",
+    desc: "Loss and degradation of wetlands due to development and water diversion.",
+    pct: 84, severity: "HIGH",     color: CRIMSON,
+    detail: "Over 90% of Hawaiian wetlands have been drained, filled, or converted since 1900. Remaining wetlands face pressure from urban expansion, agricultural diversion, and altered hydrology. The decline of traditional taro farming has removed thousands of additional acres of shallow freshwater habitat critical for foraging and nesting.",
+  },
+  { id: "predators", Icon: AlertTriangle,  label: "Invasive Predators",
+    desc: "Predation by introduced mongooses, rats, and feral cats on eggs and chicks.",
+    pct: 78, severity: "HIGH",     color: CRIMSON,
+    detail: "Small Indian mongooses were introduced in 1883 and now occupy all major islands except Kauaʻi. They actively raid ground nests, destroying eggs and killing chicks. Rats and feral cats compound the threat. Predator-proof fencing around key refuges has reduced nest failures significantly, but requires constant maintenance.",
+  },
+  { id: "climate",   Icon: Wind,           label: "Climate Change",
+    desc: "Sea level rise, increased droughts, and more intense storms degrade wetlands.",
+    pct: 65, severity: "MED-HIGH", color: AMBER,
+    detail: "Rising sea levels threaten low-lying coastal wetlands with saltwater intrusion. Increasingly frequent and intense hurricanes can cause sudden population crashes — a single storm can flood nesting sites island-wide. Extended droughts concentrate birds at shrinking water sources, raising disease transmission risk dramatically.",
+  },
+  { id: "disease",   Icon: Activity,       label: "Disease",
+    desc: "Avian malaria and avian pox transmitted by Culex mosquitoes threaten health.",
+    pct: 45, severity: "MEDIUM",   color: GOLD,
+    detail: "Introduced by non-native birds, avian malaria (Plasmodium relictum) and avian pox (Avipoxvirus) are spread by Culex mosquitoes. Hawaiian waterbirds evolved without these pathogens and have little immunity. Climate warming is expanding mosquito habitat to higher elevations, threatening mountain refuges once considered disease-free.",
+  },
+  { id: "human",     Icon: Users,          label: "Human Disturbance",
+    desc: "Recreation, vehicles, and human activity disturb nesting and feeding areas.",
+    pct: 40, severity: "MEDIUM",   color: GOLD,
+    detail: "Recreational activity near nesting sites causes adults to flush, exposing eggs to heat and predators. Vehicle strikes are a documented mortality source on refuge-adjacent roads. Fishing line entanglement and lead sinker ingestion have also caused deaths. Noise pollution from urban encroachment disrupts critical feeding behaviour.",
+  },
+];
+
+// ─── Population trend data 1990–2024 ─────────────────────────────────────────
+const POP_DATA = [
+  { year: 1990, pop: 8800 }, { year: 1995, pop: 7100 }, { year: 2000, pop: 5400 },
+  { year: 2005, pop: 4000 }, { year: 2010, pop: 2700 }, { year: 2015, pop: 2300 },
+  { year: 2018, pop: 2600 }, { year: 2021, pop: 2950 }, { year: 2024, pop: 3200 },
+];
+
+// ─── Refuge images for bottom carousel ───────────────────────────────────────
+const REFUGES = [
+  { src: "/kealia-2.png",         name: "Keālia Pond NWR",    island: "Maui",   url: "https://www.fws.gov/refuge/kealia-pond" },
+  { src: "/campbell-habitat.png", name: "James Campbell NWR", island: "Oʻahu",  url: "https://www.fws.gov/refuge/james-campbell" },
+  { src: "/hanalei-3.png",        name: "Hanalei NWR",        island: "Kauaʻi", url: "https://www.fws.gov/refuge/hanalei" },
+];
+
+// ─── Animated threat bar ──────────────────────────────────────────────────────
+function ThreatBar({ t, delay }: { t: typeof THREATS[0]; delay: number }) {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: "-60px" });
+  const [open, setOpen] = useState(false);
+
   return (
-    <div className="w-full min-h-screen pt-24 pb-12 px-6 md:px-12 bg-background overflow-y-auto">
-      <div className="max-w-5xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-12"
+    <div ref={ref} style={{ borderBottom: `1px solid rgba(255,255,255,0.06)`, paddingBottom: 12, marginBottom: 4 }}>
+      {/* Row */}
+      <div style={{ display: "flex", alignItems: "flex-start", gap: 12, marginBottom: 8 }}>
+        {/* Icon */}
+        <div style={{ width: 36, height: 36, borderRadius: "50%", background: `${t.color}18`, border: `1.5px solid ${t.color}44`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 2 }}>
+          <t.Icon size={16} color={t.color} />
+        </div>
+        {/* Text */}
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <p style={{ fontFamily: FF_SANS, fontSize: 13, fontWeight: 800, color: "rgba(255,255,255,0.92)", margin: 0, letterSpacing: "0.04em" }}>{t.label}</p>
+          <p style={{ fontFamily: FF_SANS, fontSize: 11, color: "rgba(255,255,255,0.5)", margin: "2px 0 0", lineHeight: 1.5 }}>{t.desc}</p>
+        </div>
+        {/* Severity + pct */}
+        <div style={{ textAlign: "right", flexShrink: 0 }}>
+          <p style={{ fontFamily: FF_SANS, fontSize: 11, fontWeight: 800, color: t.color, margin: 0, letterSpacing: "0.1em" }}>{t.severity}</p>
+          <p style={{ fontFamily: FF_SERIF, fontSize: 16, color: t.color, margin: 0 }}>{t.pct}%</p>
+        </div>
+        {/* Info toggle */}
+        <button onClick={() => setOpen(o => !o)} style={{ background: "none", border: `1px solid rgba(255,255,255,0.2)`, borderRadius: "50%", width: 26, height: 26, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", flexShrink: 0, marginTop: 2, color: "rgba(255,255,255,0.5)", transition: "all 0.2s" }}
+          onMouseEnter={e => { e.currentTarget.style.borderColor = t.color; e.currentTarget.style.color = t.color; }}
+          onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.2)"; e.currentTarget.style.color = "rgba(255,255,255,0.5)"; }}
         >
-          <h1
-            className="text-6xl mb-3"
-            style={{ fontFamily: "'Playfair Display', serif", color: "rgba(212,175,55,1)", letterSpacing: "0.04em" }}
+          {open ? <X size={12} /> : <Info size={12} />}
+        </button>
+      </div>
+
+      {/* Animated bar */}
+      <div style={{ height: 5, borderRadius: 999, background: "rgba(255,255,255,0.07)", overflow: "hidden" }}>
+        <motion.div
+          initial={{ width: 0 }}
+          animate={inView ? { width: `${t.pct}%` } : { width: 0 }}
+          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay }}
+          style={{ height: "100%", borderRadius: 999, background: `linear-gradient(90deg, ${t.color}bb, ${t.color})`, boxShadow: `0 0 8px ${t.color}55` }}
+        />
+      </div>
+
+      {/* Expanded detail */}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            style={{ overflow: "hidden" }}
           >
-            Extinction Risk
-          </h1>
-          <p
+            <div style={{ marginTop: 10, padding: "12px 14px", borderRadius: 8, background: `${t.color}0d`, border: `1px solid ${t.color}2a` }}>
+              <p style={{ fontFamily: FF_SANS, fontSize: 12, color: "rgba(255,255,255,0.72)", margin: 0, lineHeight: 1.7 }}>{t.detail}</p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+// ─── Population SVG chart ─────────────────────────────────────────────────────
+function PopChart() {
+  const W = 280, H = 118;
+  const pad = { l: 38, r: 12, t: 10, b: 26 };
+  const maxPop = 10000;
+  const xS = (y: number) => pad.l + (y - 1990) / (2024 - 1990) * (W - pad.l - pad.r);
+  const yS = (p: number) => pad.t + (1 - p / maxPop) * (H - pad.t - pad.b);
+  const pts = POP_DATA.map(d => `${xS(d.year).toFixed(1)},${yS(d.pop).toFixed(1)}`).join(" ");
+  const fillPts = [`${xS(1990)},${H - pad.b}`, ...POP_DATA.map(d => `${xS(d.year).toFixed(1)},${yS(d.pop).toFixed(1)}`), `${xS(2024)},${H - pad.b}`].join(" ");
+  const last = POP_DATA[POP_DATA.length - 1];
+  const yLabels = [0, 2500, 5000, 7500, 10000];
+
+  return (
+    <svg width={W} height={H} style={{ display: "block", overflow: "visible" }}>
+      <defs>
+        <linearGradient id="popGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor={CRIMSON} stopOpacity="0.22" />
+          <stop offset="100%" stopColor={CRIMSON} stopOpacity="0" />
+        </linearGradient>
+      </defs>
+      {/* Y grid lines */}
+      {yLabels.map(v => (
+        <g key={v}>
+          <line x1={pad.l} y1={yS(v)} x2={W - pad.r} y2={yS(v)} stroke="rgba(255,255,255,0.06)" strokeWidth={1} />
+          <text x={pad.l - 4} y={yS(v) + 4} textAnchor="end" fill="rgba(255,255,255,0.28)" fontSize={8} fontFamily={FF_SANS}>
+            {v >= 1000 ? `${v / 1000}K` : v}
+          </text>
+        </g>
+      ))}
+      {/* Fill */}
+      <polygon points={fillPts} fill="url(#popGrad)" />
+      {/* Line */}
+      <polyline points={pts} fill="none" stroke={CRIMSON} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
+      {/* End dot + label */}
+      <circle cx={xS(last.year)} cy={yS(last.pop)} r={4} fill={CRIMSON} />
+      <circle cx={xS(last.year)} cy={yS(last.pop)} r={8} fill={CRIMSON} fillOpacity={0.2} />
+      <rect x={xS(last.year) - 26} y={yS(last.pop) - 16} width={52} height={14} rx={3} fill="rgba(220,50,30,0.85)" />
+      <text x={xS(last.year)} y={yS(last.pop) - 6} textAnchor="middle" fill="#fff" fontSize={8} fontFamily={FF_SANS} fontWeight="bold">~3,200</text>
+      {/* X axis labels */}
+      {[1990, 2000, 2010, 2020, 2024].map(y => (
+        <text key={y} x={xS(y)} y={H - pad.b + 14} textAnchor="middle" fill="rgba(255,255,255,0.3)" fontSize={8} fontFamily={FF_SANS}>{y}</text>
+      ))}
+    </svg>
+  );
+}
+
+// ─── Donut chart ──────────────────────────────────────────────────────────────
+function DonutChart({ pct, color, label }: { pct: number; color: string; label: string }) {
+  const r = 46, cx = 60, cy = 60, stroke = 12;
+  const circ = 2 * Math.PI * r;
+  const dash = (pct / 100) * circ;
+  return (
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+      <svg width={120} height={120} style={{ display: "block" }}>
+        <circle cx={cx} cy={cy} r={r} fill="none" stroke="rgba(255,255,255,0.07)" strokeWidth={stroke} />
+        <circle cx={cx} cy={cy} r={r} fill="none" stroke={color} strokeWidth={stroke}
+          strokeDasharray={`${dash.toFixed(1)} ${(circ - dash).toFixed(1)}`}
+          strokeLinecap="round"
+          style={{ transform: "rotate(-90deg)", transformOrigin: `${cx}px ${cy}px`, transition: "stroke-dasharray 1s ease" }}
+        />
+        <text x={cx} y={cy - 4} textAnchor="middle" fill={color} fontSize={22} fontFamily={FF_SERIF} fontWeight="bold">{pct}%</text>
+        <text x={cx} y={cy + 13} textAnchor="middle" fill="rgba(255,255,255,0.45)" fontSize={8} fontFamily={FF_SANS}>{label}</text>
+      </svg>
+    </div>
+  );
+}
+
+// ─── Threat simulator ─────────────────────────────────────────────────────────
+function ThreatSim() {
+  const [years, setYears] = useState(10);
+  const estPop = Math.max(180, Math.round(3200 * Math.pow(0.845, years)));
+  const risk = estPop >= 2800 ? "LOW" : estPop >= 1800 ? "MEDIUM" : estPop >= 900 ? "HIGH" : "CRITICAL";
+  const riskColor = risk === "LOW" ? GREEN : risk === "MEDIUM" ? GOLD : CRIMSON;
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
+      <p style={{ fontFamily: FF_SANS, fontSize: 10, color: "rgba(255,255,255,0.45)", margin: "0 0 8px", letterSpacing: "0.08em" }}>WHAT IF CONSERVATION STOPPED?</p>
+      {/* Slider */}
+      <div style={{ marginBottom: 14 }}>
+        <input type="range" min={0} max={20} value={years}
+          onChange={e => setYears(Number(e.target.value))}
+          style={{ width: "100%", accentColor: CRIMSON, cursor: "pointer" }}
+        />
+        <div style={{ display: "flex", justifyContent: "space-between", marginTop: 2 }}>
+          <span style={{ fontFamily: FF_SANS, fontSize: 9, color: "rgba(255,255,255,0.3)" }}>0 yr</span>
+          <span style={{ fontFamily: FF_SANS, fontSize: 9, color: "rgba(255,255,255,0.3)" }}>20 yr</span>
+        </div>
+      </div>
+      {/* Results */}
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, flex: 1 }}>
+        <div style={{ padding: "10px 12px", borderRadius: 8, background: "rgba(255,255,255,0.04)", border: `1px solid rgba(255,255,255,0.1)` }}>
+          <p style={{ fontFamily: FF_SANS, fontSize: 9, color: "rgba(255,255,255,0.4)", margin: "0 0 2px", letterSpacing: "0.1em" }}>YEAR</p>
+          <p style={{ fontFamily: FF_SERIF, fontSize: 26, color: GOLD, margin: 0, lineHeight: 1 }}>{years}</p>
+        </div>
+        <div style={{ padding: "10px 12px", borderRadius: 8, background: "rgba(255,255,255,0.04)", border: `1px solid rgba(255,255,255,0.1)` }}>
+          <p style={{ fontFamily: FF_SANS, fontSize: 9, color: "rgba(255,255,255,0.4)", margin: "0 0 2px", letterSpacing: "0.1em" }}>EST. POPULATION</p>
+          <p style={{ fontFamily: FF_SERIF, fontSize: 20, color: CRIMSON, margin: 0, lineHeight: 1 }}>~{estPop.toLocaleString()}</p>
+        </div>
+        <div style={{ gridColumn: "1 / -1", padding: "8px 12px", borderRadius: 8, background: `${riskColor}14`, border: `1px solid ${riskColor}44`, textAlign: "center" }}>
+          <p style={{ fontFamily: FF_SANS, fontSize: 10, color: "rgba(255,255,255,0.4)", margin: "0 0 1px", letterSpacing: "0.1em" }}>RISK LEVEL</p>
+          <p style={{ fontFamily: FF_SERIF, fontSize: 22, fontWeight: 700, color: riskColor, margin: 0, textShadow: `0 0 16px ${riskColor}55` }}>{risk}</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Refuge mini-carousel ─────────────────────────────────────────────────────
+function RefugeCarousel() {
+  const [idx, setIdx] = useState(0);
+  const cur = REFUGES[idx];
+  const prev = useCallback(() => setIdx(i => (i - 1 + REFUGES.length) % REFUGES.length), []);
+  const next = useCallback(() => setIdx(i => (i + 1) % REFUGES.length), []);
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", height: "100%", position: "relative", overflow: "hidden" }}>
+      <AnimatePresence mode="wait">
+        <motion.img key={idx} src={cur.src} alt={cur.name}
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+          transition={{ duration: 0.4 }}
+          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+        />
+      </AnimatePresence>
+      {/* Gradient overlay */}
+      <div style={{ position: "absolute", inset: 0, background: "linear-gradient(0deg, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.1) 55%)" }} />
+      {/* Info */}
+      <div style={{ position: "absolute", bottom: 38, left: 14, right: 14 }}>
+        <p style={{ fontFamily: FF_SANS, fontSize: 10, color: GOLD_DIM, margin: 0, letterSpacing: "0.1em" }}>{cur.island.toUpperCase()}</p>
+        <p style={{ fontFamily: FF_SERIF, fontSize: 15, color: "#fff", margin: "2px 0 0" }}>{cur.name}</p>
+      </div>
+      {/* Explore link */}
+      <a href={cur.url} target="_blank" rel="noreferrer"
+        style={{ position: "absolute", bottom: 12, left: 14, fontFamily: FF_SANS, fontSize: 10, fontWeight: 800, color: GOLD, letterSpacing: "0.1em", textDecoration: "none", display: "flex", alignItems: "center", gap: 4 }}>
+        EXPLORE HABITAT →
+      </a>
+      {/* Arrows */}
+      <button onClick={prev} style={{ position: "absolute", left: 8, top: "50%", transform: "translateY(-50%)", background: "rgba(0,0,0,0.55)", border: "1px solid rgba(255,255,255,0.2)", borderRadius: "50%", width: 28, height: 28, color: "#fff", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}><ChevronLeft size={14} /></button>
+      <button onClick={next} style={{ position: "absolute", right: 8, top: "50%", transform: "translateY(-50%)", background: "rgba(0,0,0,0.55)", border: "1px solid rgba(255,255,255,0.2)", borderRadius: "50%", width: 28, height: 28, color: "#fff", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}><ChevronRight size={14} /></button>
+      {/* Dots */}
+      <div style={{ position: "absolute", bottom: 14, right: 14, display: "flex", gap: 5 }}>
+        {REFUGES.map((_, i) => (
+          <button key={i} onClick={() => setIdx(i)} style={{ width: i === idx ? 18 : 6, height: 6, borderRadius: 999, background: i === idx ? GOLD : "rgba(255,255,255,0.3)", border: "none", cursor: "pointer", padding: 0, transition: "all 0.25s" }} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ─── Dot Matrix ───────────────────────────────────────────────────────────────
+function DotMatrix() {
+  const cols = 22, total = 400;
+  const active = 320; // ~3,200 birds (each dot = ~10)
+  const rows = Math.ceil(total / cols);
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true });
+
+  return (
+    <div ref={ref}>
+      <div style={{ display: "grid", gridTemplateColumns: `repeat(${cols}, 1fr)`, gap: 4, maxWidth: 340 }}>
+        {Array.from({ length: total }).map((_, i) => (
+          <motion.div key={i}
+            initial={{ opacity: 0, scale: 0 }}
+            animate={inView ? { opacity: 1, scale: 1 } : {}}
+            transition={{ duration: 0.25, delay: i * 0.004, ease: "backOut" }}
             style={{
-              fontFamily: "'Playfair Display', serif",
-              fontStyle: "italic",
-              fontSize: 20,
-              color: "rgba(212,175,55,0.88)",
-              margin: "0 auto 24px",
+              width: 8, height: 8, borderRadius: "50%",
+              background: i < active ? CRIMSON : "rgba(255,255,255,0.1)",
+              boxShadow: i < active ? `0 0 3px ${CRIMSON}66` : "none",
             }}
-          >
-            Downlisted from Endangered after partial recovery, but still entirely dependent on conservation management.
-          </p>
-          <div className="inline-block px-4 py-1 rounded-full bg-secondary text-secondary-foreground font-bold tracking-widest text-sm border border-secondary/50">
-            IUCN RED LIST STATUS
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ─── Tab navigation ───────────────────────────────────────────────────────────
+function TabNav({ active, onSelect }: { active: string; onSelect: (id: string) => void }) {
+  return (
+    <div style={{ display: "flex", gap: 0, borderBottom: `1px solid rgba(212,175,55,0.18)`, background: "rgba(0,0,0,0.7)", backdropFilter: "blur(10px)", position: "sticky", top: 0, zIndex: 100 }}>
+      {TABS.map(t => (
+        <button key={t.id} onClick={() => onSelect(t.id)}
+          style={{
+            fontFamily: FF_SANS, fontSize: 12, fontWeight: 700, letterSpacing: "0.07em",
+            padding: "13px 20px", cursor: "pointer", border: "none", outline: "none", background: "transparent",
+            color: active === t.id ? GOLD : "rgba(255,255,255,0.45)",
+            borderBottom: active === t.id ? `2px solid ${GOLD}` : "2px solid transparent",
+            marginBottom: -1, transition: "all 0.2s", whiteSpace: "nowrap",
+          }}
+          onMouseEnter={e => { if (active !== t.id) e.currentTarget.style.color = "rgba(255,255,255,0.75)"; }}
+          onMouseLeave={e => { if (active !== t.id) e.currentTarget.style.color = "rgba(255,255,255,0.45)"; }}
+        >
+          {t.label.toUpperCase()}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+// ─── Overview tab content ─────────────────────────────────────────────────────
+function OverviewContent() {
+  return (
+    <div style={{ padding: "28px 32px 40px", maxWidth: 1280, margin: "0 auto" }}>
+      {/* Row 1: Threat Matrix + Fragile Balance */}
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, marginBottom: 20 }}>
+
+        {/* Threat Matrix */}
+        <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}
+          style={{ borderRadius: 14, border: `1px solid ${BORDER}`, background: CARD_BG, padding: "22px 24px" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 18 }}>
+            <p style={{ fontFamily: FF_SANS, fontSize: 13, fontWeight: 800, color: GOLD, margin: 0, letterSpacing: "0.08em", textShadow: "0 0 16px rgba(212,175,55,0.3)" }}>
+              ✦ THREAT MATRIX
+            </p>
+            <span style={{ fontFamily: FF_SANS, fontSize: 9, color: "rgba(255,255,255,0.28)", letterSpacing: "0.1em" }}>CLICK ⓘ FOR DETAILS</span>
           </div>
-          <div
-            className="font-serif tracking-tighter mt-4"
-            style={{ fontSize: "5rem", color: "rgba(220,50,30,1)", lineHeight: 1 }}
-          >
-            VULNERABLE
+          <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+            {THREATS.map((t, i) => <ThreatBar key={t.id} t={t} delay={0.1 + i * 0.08} />)}
           </div>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
-          <Card className="bg-card/50 border-border">
-            <CardContent className="p-8">
-              <h3 className="text-xl font-bold mb-6 text-foreground">Threat Matrix</h3>
-              <div className="space-y-6">
-                <div>
-                  <div className="flex justify-between mb-2">
-                    <span>Habitat Loss</span>
-                    <span className="text-destructive font-bold">HIGH</span>
-                  </div>
-                  <Progress value={85} className="h-2 [&>div]:bg-destructive" />
-                </div>
-                <div>
-                  <div className="flex justify-between mb-2">
-                    <span>Invasive Predators</span>
-                    <span className="text-destructive font-bold">HIGH</span>
-                  </div>
-                  <Progress value={80} className="h-2 [&>div]:bg-destructive" />
-                </div>
-                <div>
-                  <div className="flex justify-between mb-2">
-                    <span>Climate Change</span>
-                    <span className="text-destructive font-bold">MED-HIGH</span>
-                  </div>
-                  <Progress value={70} className="h-2 [&>div]:bg-destructive" />
-                </div>
-                <div>
-                  <div className="flex justify-between mb-2">
-                    <span>Disease</span>
-                    <span className="text-accent font-bold">MEDIUM</span>
-                  </div>
-                  <Progress value={50} className="h-2 [&>div]:bg-accent" />
-                </div>
-                <div>
-                  <div className="flex justify-between mb-2">
-                    <span>Human Disturbance</span>
-                    <span className="text-accent font-bold">MEDIUM</span>
-                  </div>
-                  <Progress value={45} className="h-2 [&>div]:bg-accent" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+        {/* A Fragile Balance */}
+        <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.15 }}
+          style={{ borderRadius: 14, border: `1px solid rgba(220,50,30,0.35)`, background: "rgba(30,4,2,0.97)", padding: "22px 24px", display: "flex", flexDirection: "column" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 6 }}>
+            <p style={{ fontFamily: FF_SERIF, fontSize: 18, color: GOLD, margin: 0, textShadow: "0 0 20px rgba(212,175,55,0.35)" }}>A Fragile Balance</p>
+            <TrendingDown size={18} color={CRIMSON} />
+          </div>
+          <p style={{ fontFamily: FF_SANS, fontSize: 13, fontWeight: 700, color: "rgba(255,255,255,0.92)", margin: "0 0 6px" }}>
+            Only ~3,200 Hawaiian Coots remain.
+          </p>
+          <p style={{ fontFamily: FF_SANS, fontSize: 12, color: "rgba(255,255,255,0.55)", margin: "0 0 18px", lineHeight: 1.6 }}>
+            One major hurricane season or severe prolonged drought could reduce the population by 30%.
+          </p>
+          <DotMatrix />
+          <div style={{ display: "flex", justifyContent: "space-between", marginTop: 14, alignItems: "center" }}>
+            <p style={{ fontFamily: FF_SANS, fontSize: 10, color: "rgba(255,255,255,0.35)", margin: 0 }}>Each dot represents ~10 birds</p>
+            <p style={{ fontFamily: FF_SERIF, fontSize: 14, color: CRIMSON, margin: 0, fontStyle: "italic" }}>~3,200 birds estimated</p>
+          </div>
+        </motion.div>
+      </div>
 
-          <Card className="bg-destructive/10 border-destructive/30 flex flex-col justify-center items-center text-center p-8">
-            <h3 className="text-2xl font-serif text-destructive mb-4">A Fragile Balance</h3>
-            <p className="text-foreground font-bold mb-2">Only ~3,200 Hawaiian Coots remain.</p>
-            <p className="text-muted-foreground mb-8">One major hurricane season or severe prolonged drought could reduce the population by 30%.</p>
-            
-            {/* Visual representation - approx 320 dots, 1 dot = 10 birds */}
-            <div className="w-full max-w-xs grid grid-cols-20 gap-1 opacity-60">
-              {Array.from({ length: 320 }).map((_, i) => (
-                <div key={i} className="w-1.5 h-1.5 rounded-full bg-primary" />
-              ))}
+      {/* Row 2: 4 bottom cards */}
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1.1fr", gap: 14 }}>
+
+        {/* Population Trend */}
+        <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.25 }}
+          style={{ borderRadius: 14, border: `1px solid ${BORDER}`, background: CARD_BG, padding: "18px 18px 14px" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
+            <p style={{ fontFamily: FF_SANS, fontSize: 11, fontWeight: 800, color: GOLD, margin: 0, letterSpacing: "0.08em" }}>POPULATION TREND</p>
+          </div>
+          <PopChart />
+        </motion.div>
+
+        {/* Habitat Status */}
+        <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.32 }}
+          style={{ borderRadius: 14, border: `1px solid ${BORDER}`, background: CARD_BG, padding: "18px 18px 14px", display: "flex", flexDirection: "column", alignItems: "center" }}>
+          <p style={{ fontFamily: FF_SANS, fontSize: 11, fontWeight: 800, color: GOLD, margin: "0 0 12px", letterSpacing: "0.08em", alignSelf: "flex-start" }}>HABITAT STATUS</p>
+          <DonutChart pct={42} color={GREEN} label="of historical" />
+          <p style={{ fontFamily: FF_SANS, fontSize: 11, color: "rgba(255,255,255,0.5)", margin: "4px 0 0", textAlign: "center" }}>wetlands remain</p>
+        </motion.div>
+
+        {/* Threat Simulator */}
+        <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.38 }}
+          style={{ borderRadius: 14, border: `1px solid ${BORDER}`, background: CARD_BG, padding: "18px 18px 14px" }}>
+          <p style={{ fontFamily: FF_SANS, fontSize: 11, fontWeight: 800, color: GOLD, margin: "0 0 12px", letterSpacing: "0.08em" }}>THREAT SIMULATOR</p>
+          <ThreatSim />
+        </motion.div>
+
+        {/* Refuge Carousel */}
+        <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.44 }}
+          style={{ borderRadius: 14, border: `1px solid ${BORDER}`, background: "#000", overflow: "hidden", position: "relative", minHeight: 200 }}>
+          <RefugeCarousel />
+        </motion.div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Threats tab ──────────────────────────────────────────────────────────────
+function ThreatsContent() {
+  return (
+    <div style={{ padding: "28px 32px 40px", maxWidth: 1100, margin: "0 auto" }}>
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+        <p style={{ fontFamily: FF_SANS, fontSize: 12, color: "rgba(255,255,255,0.5)", margin: "0 0 8px", letterSpacing: "0.06em" }}>
+          Five primary threat categories are actively monitored. Click each card for full scientific detail.
+        </p>
+        {THREATS.map((t, i) => (
+          <motion.div key={t.id} initial={{ opacity: 0, x: -16 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.08 }}
+            style={{ borderRadius: 12, border: `1px solid ${t.color}33`, background: CARD_BG, padding: "20px 24px", borderLeft: `4px solid ${t.color}` }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 10 }}>
+              <div style={{ width: 44, height: 44, borderRadius: "50%", background: `${t.color}18`, border: `1.5px solid ${t.color}44`, boxShadow: `0 0 16px ${t.color}22`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                <t.Icon size={20} color={t.color} />
+              </div>
+              <div style={{ flex: 1 }}>
+                <p style={{ fontFamily: FF_SANS, fontSize: 14, fontWeight: 800, color: "#fff", margin: 0, letterSpacing: "0.04em" }}>{t.label}</p>
+                <p style={{ fontFamily: FF_SANS, fontSize: 12, color: t.color, margin: "2px 0 0", fontWeight: 700 }}>{t.severity} — {t.pct}% severity</p>
+              </div>
+              <div style={{ height: 8, width: 120, borderRadius: 999, background: "rgba(255,255,255,0.08)", overflow: "hidden" }}>
+                <motion.div initial={{ width: 0 }} animate={{ width: `${t.pct}%` }} transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.3 + i * 0.1 }}
+                  style={{ height: "100%", background: t.color, borderRadius: 999 }} />
+              </div>
             </div>
-            <p className="text-xs text-muted-foreground mt-4">Each dot represents ~10 birds</p>
-          </Card>
+            <p style={{ fontFamily: FF_SANS, fontSize: 13, color: "rgba(255,255,255,0.68)", margin: 0, lineHeight: 1.7 }}>{t.detail}</p>
+          </motion.div>
+        ))}
+      </motion.div>
+    </div>
+  );
+}
+
+// ─── Population tab ───────────────────────────────────────────────────────────
+function PopulationContent() {
+  return (
+    <div style={{ padding: "28px 32px 40px", maxWidth: 1100, margin: "0 auto" }}>
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ display: "grid", gridTemplateColumns: "1.6fr 1fr", gap: 20 }}>
+        <div style={{ borderRadius: 14, border: `1px solid ${BORDER}`, background: CARD_BG, padding: "24px 28px" }}>
+          <p style={{ fontFamily: FF_SANS, fontSize: 13, fontWeight: 800, color: GOLD, margin: "0 0 6px", letterSpacing: "0.08em" }}>✦ POPULATION TRAJECTORY 1990 – 2024</p>
+          <p style={{ fontFamily: FF_SANS, fontSize: 12, color: "rgba(255,255,255,0.5)", margin: "0 0 20px" }}>From ~8,800 birds to a low of ~2,300, now recovering to ~3,200 thanks to refuge protection.</p>
+          <svg width="100%" viewBox="0 0 480 160" style={{ display: "block", overflow: "visible" }}>
+            <defs>
+              <linearGradient id="popGrad2" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor={CRIMSON} stopOpacity="0.25" />
+                <stop offset="100%" stopColor={CRIMSON} stopOpacity="0" />
+              </linearGradient>
+            </defs>
+            {[0,2500,5000,7500,10000].map(v => {
+              const y2 = 10 + (1 - v/10000) * 120;
+              return <g key={v}>
+                <line x1={50} y1={y2} x2={470} y2={y2} stroke="rgba(255,255,255,0.06)" strokeWidth={1} />
+                <text x={44} y={y2+4} textAnchor="end" fill="rgba(255,255,255,0.3)" fontSize={10} fontFamily={FF_SANS}>{v>=1000?`${v/1000}K`:v}</text>
+              </g>;
+            })}
+            <polygon points={[`50,130`, ...POP_DATA.map(d => `${50 + (d.year-1990)/(2024-1990)*420},${10+(1-d.pop/10000)*120}`), `470,130`].join(" ")} fill="url(#popGrad2)" />
+            <polyline points={POP_DATA.map(d => `${50 + (d.year-1990)/(2024-1990)*420},${10+(1-d.pop/10000)*120}`).join(" ")} fill="none" stroke={CRIMSON} strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" />
+            {POP_DATA.map((d, i) => {
+              const cx2 = 50 + (d.year-1990)/(2024-1990)*420;
+              const cy2 = 10+(1-d.pop/10000)*120;
+              return <g key={i}>
+                <circle cx={cx2} cy={cy2} r={3.5} fill={CRIMSON} />
+                <text x={cx2} y={150} textAnchor="middle" fill="rgba(255,255,255,0.35)" fontSize={9} fontFamily={FF_SANS}>{d.year}</text>
+              </g>;
+            })}
+          </svg>
         </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+          {[
+            { label: "1970s Low", value: "~1,800", note: "Near-extinction; ESA listing", color: CRIMSON },
+            { label: "1990s Peak", value: "~8,800", note: "Best count in modern records", color: GREEN },
+            { label: "2015 Low", value: "~2,300", note: "Drought + habitat loss", color: AMBER },
+            { label: "2024 Count", value: "~3,200", note: "Partial recovery underway", color: GOLD },
+          ].map(s => (
+            <div key={s.label} style={{ borderRadius: 10, border: `1px solid ${s.color}33`, background: `${s.color}0a`, padding: "14px 16px" }}>
+              <p style={{ fontFamily: FF_SANS, fontSize: 10, color: "rgba(255,255,255,0.45)", margin: "0 0 2px", letterSpacing: "0.1em" }}>{s.label.toUpperCase()}</p>
+              <p style={{ fontFamily: FF_SERIF, fontSize: 28, color: s.color, margin: 0, lineHeight: 1 }}>{s.value}</p>
+              <p style={{ fontFamily: FF_SANS, fontSize: 11, color: "rgba(255,255,255,0.5)", margin: "4px 0 0" }}>{s.note}</p>
+            </div>
+          ))}
+        </div>
+      </motion.div>
+    </div>
+  );
+}
+
+// ─── Habitat tab ──────────────────────────────────────────────────────────────
+function HabitatContent() {
+  const stats = [
+    { label: "Historical wetlands (1800s)", value: "~900,000 acres", color: GREEN },
+    { label: "Remaining today",             value: "~378,000 acres (42%)", color: AMBER },
+    { label: "Protected refuge wetlands",   value: "~5,000 acres", color: GOLD },
+    { label: "Wetlands lost since 1900",    value: "> 58%", color: CRIMSON },
+  ];
+  return (
+    <div style={{ padding: "28px 32px 40px", maxWidth: 1100, margin: "0 auto" }}>
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
+        <div style={{ borderRadius: 14, border: `1px solid ${BORDER}`, background: CARD_BG, padding: "24px 28px" }}>
+          <p style={{ fontFamily: FF_SANS, fontSize: 13, fontWeight: 800, color: GOLD, margin: "0 0 16px", letterSpacing: "0.08em" }}>✦ WETLAND LOSS TIMELINE</p>
+          {stats.map((s, i) => (
+            <motion.div key={i} initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.1 }}
+              style={{ padding: "14px 16px", borderRadius: 10, border: `1px solid ${s.color}33`, background: `${s.color}0a`, marginBottom: 10 }}>
+              <p style={{ fontFamily: FF_SANS, fontSize: 11, color: "rgba(255,255,255,0.5)", margin: "0 0 3px" }}>{s.label}</p>
+              <p style={{ fontFamily: FF_SERIF, fontSize: 22, color: s.color, margin: 0 }}>{s.value}</p>
+            </motion.div>
+          ))}
+        </div>
+        <div style={{ borderRadius: 14, border: `1px solid ${BORDER}`, background: CARD_BG, padding: "24px 28px", display: "flex", flexDirection: "column", gap: 16 }}>
+          <p style={{ fontFamily: FF_SANS, fontSize: 13, fontWeight: 800, color: GOLD, margin: 0, letterSpacing: "0.08em" }}>✦ REMAINING WETLAND TYPES</p>
+          {[
+            { type: "Coastal Wetlands",  pct: 38, desc: "Brackish coastal ponds, estuaries, and salt flats used for foraging" },
+            { type: "Freshwater Ponds",  pct: 28, desc: "Inland shallow ponds and reservoirs — primary coot habitat" },
+            { type: "Taro Fields",       pct: 18, desc: "Traditional kalo farming paddies with shallow flooded margins" },
+            { type: "Managed Refuge",    pct: 16, desc: "Actively managed wetland cells within NWRs" },
+          ].map((w, i) => (
+            <div key={i}>
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
+                <span style={{ fontFamily: FF_SANS, fontSize: 12, color: "rgba(255,255,255,0.8)" }}>{w.type}</span>
+                <span style={{ fontFamily: FF_SANS, fontSize: 12, fontWeight: 700, color: GREEN }}>{w.pct}%</span>
+              </div>
+              <div style={{ height: 4, borderRadius: 999, background: "rgba(255,255,255,0.07)", overflow: "hidden", marginBottom: 4 }}>
+                <motion.div initial={{ width: 0 }} animate={{ width: `${w.pct}%` }} transition={{ duration: 1, delay: 0.3 + i * 0.1 }}
+                  style={{ height: "100%", background: GREEN, borderRadius: 999 }} />
+              </div>
+              <p style={{ fontFamily: FF_SANS, fontSize: 10, color: "rgba(255,255,255,0.4)", margin: 0 }}>{w.desc}</p>
+            </div>
+          ))}
+        </div>
+      </motion.div>
+    </div>
+  );
+}
+
+// ─── Conservation tab ─────────────────────────────────────────────────────────
+function ConservationContent() {
+  const milestones = [
+    { year: "1970", event: "Hawaiian Coot listed under the Endangered Species Act", type: "law" },
+    { year: "1972", event: "Hanalei National Wildlife Refuge established on Kauaʻi", type: "refuge" },
+    { year: "1978", event: "James Campbell NWR established on Oʻahu north shore", type: "refuge" },
+    { year: "1992", event: "Keālia Pond NWR established on Maui south shore", type: "refuge" },
+    { year: "2005", event: "Hawaiian Coot downlisted from Endangered to Vulnerable", type: "milestone" },
+    { year: "2010", event: "Predator control fencing expanded to 80% of key nesting sites", type: "action" },
+    { year: "2019", event: "Population exceeds 3,000 for first time since early 2000s", type: "milestone" },
+    { year: "2024", event: "Ongoing wetland restoration targets additional 1,200 acres", type: "action" },
+  ];
+  const colors: Record<string, string> = { law: CRIMSON, refuge: GREEN, milestone: GOLD, action: AMBER };
+  return (
+    <div style={{ padding: "28px 32px 40px", maxWidth: 900, margin: "0 auto" }}>
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+        <p style={{ fontFamily: FF_SANS, fontSize: 12, color: "rgba(255,255,255,0.5)", margin: "0 0 24px" }}>Conservation milestones that have shaped the Hawaiian Coot's partial recovery.</p>
+        <div style={{ position: "relative", paddingLeft: 32 }}>
+          <div style={{ position: "absolute", left: 8, top: 0, bottom: 0, width: 2, background: `linear-gradient(180deg, ${GOLD}44, transparent)` }} />
+          {milestones.map((m, i) => (
+            <motion.div key={i} initial={{ opacity: 0, x: -12 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.07 }}
+              style={{ marginBottom: 16, position: "relative" }}>
+              <div style={{ position: "absolute", left: -28, top: 6, width: 10, height: 10, borderRadius: "50%", background: colors[m.type], boxShadow: `0 0 10px ${colors[m.type]}66` }} />
+              <div style={{ padding: "14px 18px", borderRadius: 10, border: `1px solid ${colors[m.type]}28`, background: `${colors[m.type]}0a` }}>
+                <div style={{ display: "flex", alignItems: "baseline", gap: 10, marginBottom: 4 }}>
+                  <span style={{ fontFamily: FF_SERIF, fontSize: 18, color: colors[m.type] }}>{m.year}</span>
+                  <span style={{ fontFamily: FF_SANS, fontSize: 9, color: "rgba(255,255,255,0.3)", letterSpacing: "0.1em", textTransform: "uppercase" }}>{m.type}</span>
+                </div>
+                <p style={{ fontFamily: FF_SANS, fontSize: 13, color: "rgba(255,255,255,0.78)", margin: 0, lineHeight: 1.6 }}>{m.event}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </motion.div>
+    </div>
+  );
+}
+
+// ─── What You Can Do tab ──────────────────────────────────────────────────────
+function ActionContent() {
+  const actions = [
+    { icon: "🔭", title: "Report Sightings",      desc: "Submit observations to eBird or iNaturalist. Citizen science data directly informs USFWS population assessments.", link: "https://ebird.org", cta: "Open eBird →" },
+    { icon: "🌿", title: "Restore Native Plants",  desc: "Volunteer with the Hawaii Wildlife Fund or TNC to restore native wetland vegetation around refuge borders.", link: "https://www.hwf.org", cta: "Join HWF →" },
+    { icon: "🏞",  title: "Visit Respectfully",    desc: "Stay on designated trails, keep dogs leashed, and never approach nesting birds at refuges. Give wildlife space.", link: "https://www.fws.gov", cta: "Find Refuges →" },
+    { icon: "💰", title: "Donate to Recovery",     desc: "Support USFWS, TNC Hawaii, and Hawaii Wildlife Fund programs that fund predator control and habitat restoration.", link: "https://www.tnc.org", cta: "Donate →" },
+    { icon: "📢", title: "Advocate for Wetlands",  desc: "Contact your state legislators in support of wetland protection laws and funding for water bird conservation programs.", link: "https://www.capitol.hawaii.gov", cta: "Contact Reps →" },
+    { icon: "📚", title: "Educate Others",          desc: "Share this page and spread awareness about the Hawaiian Coot's plight. Conservation begins with understanding.", link: "#", cta: "Share This Page" },
+  ];
+  return (
+    <div style={{ padding: "28px 32px 40px", maxWidth: 1100, margin: "0 auto" }}>
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+        <p style={{ fontFamily: FF_SERIF, fontStyle: "italic", fontSize: 16, color: "rgba(212,175,55,0.75)", margin: "0 0 24px", textAlign: "center" }}>
+          "Conservation works. Protection, habitat restoration, and community efforts give the Hawaiian Coot a future."
+        </p>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 14 }}>
+          {actions.map((a, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.08 }}
+              style={{ borderRadius: 12, border: `1px solid ${BORDER}`, background: CARD_BG, padding: "20px 20px" }}>
+              <p style={{ fontSize: 28, margin: "0 0 8px" }}>{a.icon}</p>
+              <p style={{ fontFamily: FF_SANS, fontSize: 13, fontWeight: 800, color: GOLD, margin: "0 0 6px", letterSpacing: "0.04em" }}>{a.title}</p>
+              <p style={{ fontFamily: FF_SANS, fontSize: 12, color: "rgba(255,255,255,0.6)", margin: "0 0 14px", lineHeight: 1.65 }}>{a.desc}</p>
+              <a href={a.link} target="_blank" rel="noreferrer"
+                style={{ fontFamily: FF_SANS, fontSize: 11, fontWeight: 800, color: GOLD, letterSpacing: "0.1em", textDecoration: "none", display: "inline-block", padding: "7px 14px", borderRadius: 6, border: `1px solid rgba(212,175,55,0.45)`, background: "rgba(212,175,55,0.09)", transition: "background 0.2s" }}>
+                {a.cta}
+              </a>
+            </motion.div>
+          ))}
+        </div>
+      </motion.div>
+    </div>
+  );
+}
+
+// ─── Main component ───────────────────────────────────────────────────────────
+export function ExtinctionRisk() {
+  const [activeTab, setActiveTab] = useState("overview");
+
+  return (
+    <div style={{ background: "#000", minHeight: "100vh", color: "#fff" }}>
+
+      {/* ── Cinematic header ── */}
+      <div style={{ position: "relative", height: 260, overflow: "hidden" }}>
+        {/* Background — campbell habitat wetland */}
+        <img src="/campbell-habitat.png" alt="" aria-hidden
+          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 60%", filter: "brightness(0.35)" }}
+        />
+        {/* Coot bird — right side */}
+        <img src="/hanalei-6.png" alt="" aria-hidden
+          style={{ position: "absolute", right: 0, bottom: 0, height: "88%", width: "28%", objectFit: "cover", objectPosition: "center top", opacity: 0.6, maskImage: "linear-gradient(to left, rgba(0,0,0,0.9) 40%, transparent 100%)", WebkitMaskImage: "linear-gradient(to left, rgba(0,0,0,0.9) 40%, transparent 100%)" }}
+        />
+        {/* Gradient overlays */}
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.75) 100%)" }} />
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(90deg, rgba(0,0,0,0.4) 0%, transparent 50%, rgba(0,0,0,0.2) 100%)" }} />
+        {/* Text content */}
+        <div style={{ position: "relative", zIndex: 2, textAlign: "center", padding: "36px 32px 0" }}>
+          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
+            <h1 style={{ fontFamily: FF_SERIF, fontSize: "clamp(36px, 5vw, 52px)", color: GOLD, margin: 0, letterSpacing: "0.04em", textShadow: "0 0 40px rgba(212,175,55,0.5)" }}>
+              Extinction Risk
+            </h1>
+            <p style={{ fontFamily: FF_SERIF, fontStyle: "italic", fontSize: 14, color: "rgba(212,175,55,0.78)", margin: "6px 0 14px" }}>
+              Downlisted from Endangered after partial recovery, but still entirely dependent on conservation management.
+            </p>
+            <span style={{ fontFamily: FF_SANS, fontSize: 10, fontWeight: 800, letterSpacing: "0.18em", color: "rgba(255,255,255,0.55)", display: "block", marginBottom: 6 }}>
+              IUCN RED LIST STATUS
+            </span>
+            <p style={{ fontFamily: FF_SERIF, fontSize: "clamp(42px, 7vw, 64px)", color: CRIMSON, margin: 0, letterSpacing: "0.06em", lineHeight: 1, textShadow: `0 0 40px ${CRIMSON}66` }}>
+              VULNERABLE
+            </p>
+          </motion.div>
+        </div>
+      </div>
+
+      {/* ── Tabs ── */}
+      <TabNav active={activeTab} onSelect={setActiveTab} />
+
+      {/* ── Tab content ── */}
+      <AnimatePresence mode="wait">
+        <motion.div key={activeTab} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
+          {activeTab === "overview"     && <OverviewContent />}
+          {activeTab === "threats"      && <ThreatsContent />}
+          {activeTab === "population"   && <PopulationContent />}
+          {activeTab === "habitat"      && <HabitatContent />}
+          {activeTab === "conservation" && <ConservationContent />}
+          {activeTab === "action"       && <ActionContent />}
+        </motion.div>
+      </AnimatePresence>
+
+      {/* ── Footer quote ── */}
+      <div style={{ textAlign: "center", padding: "20px 32px 32px", borderTop: `1px solid rgba(212,175,55,0.15)` }}>
+        <p style={{ fontFamily: FF_SANS, fontSize: 11, color: "rgba(255,255,255,0.3)", margin: 0, letterSpacing: "0.06em" }}>
+          🌿 &nbsp; Conservation works. Protection, habitat restoration, and community efforts give the Hawaiian Coot a future.
+        </p>
       </div>
     </div>
   );
