@@ -259,7 +259,7 @@ export function MeetSpecies() {
                       <motion.p key={i}
                         initial={{ opacity: 0, x: 14 }} animate={{ opacity: 1, x: 0 }}
                         transition={{ duration: FADE_DUR, delay: i * 0.12, ease: EASE_IN }}
-                        style={{ ...overlayText("clamp(14px, 1.9vw, 24px)", true), margin: "0 0 8px" }}>
+                        style={{ ...overlayText("clamp(32px, 4.8vw, 62px)", true), margin: "0 0 8px" }}>
                         {label}
                       </motion.p>
                     ))}
