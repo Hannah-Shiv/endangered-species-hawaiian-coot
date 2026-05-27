@@ -106,9 +106,8 @@ export function Sources() {
             transition={{ delay: 0.7, duration: 0.7 }}
             style={{
               borderRadius: 20,
-              border: "1px solid rgba(212,175,55,0.5)",
+              border: "1px solid rgba(212,175,55,0.4)",
               background: "linear-gradient(145deg, rgba(28,8,4,0.98) 0%, rgba(18,6,2,1) 50%, rgba(8,5,0,1) 100%)",
-              boxShadow: "0 0 60px rgba(212,175,55,0.14), 0 0 120px rgba(200,30,10,0.06), inset 0 1px 0 rgba(212,175,55,0.25)",
               overflow: "hidden",
             }}
           >
@@ -123,7 +122,7 @@ export function Sources() {
               </p>
 
               {/* Project title */}
-              <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 28, color: "rgba(255,255,255,0.97)", fontStyle: "italic", marginBottom: 30, textShadow: "0 0 30px rgba(212,175,55,0.4)" }}>
+              <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 28, color: "rgba(255,255,255,0.97)", fontStyle: "italic", marginBottom: 30 }}>
                 Hawaiian Coot — <em style={{ color: "rgba(212,175,55,1)" }}>Fulica alai</em>
               </p>
 
@@ -138,8 +137,8 @@ export function Sources() {
                 <div style={{ height: 1, flex: 1, maxWidth: 80, background: "linear-gradient(to left, transparent, rgba(200,30,10,0.6))" }} />
               </div>
 
-              {/* Team member cards — all identical */}
-              <div style={{ display: "flex", justifyContent: "center", gap: 14, flexWrap: "wrap", marginBottom: 36 }}>
+              {/* Team member cards — no glow */}
+              <div style={{ display: "flex", justifyContent: "center", gap: 14, flexWrap: "wrap", marginBottom: 28 }}>
                 {[
                   { name: "Hannah Shiv",  role: "Developer & Student Researcher" },
                   { name: "Chloe Pan",    role: "Student Researcher"             },
@@ -150,41 +149,33 @@ export function Sources() {
                     style={{
                       width: 200,
                       borderRadius: 14,
-                      border: "1px solid rgba(212,175,55,0.55)",
-                      background: "linear-gradient(145deg, rgba(212,175,55,0.1), rgba(200,30,10,0.06))",
-                      padding: "24px 18px 22px",
+                      border: "1px solid rgba(212,175,55,0.35)",
+                      background: "rgba(212,175,55,0.06)",
+                      padding: "22px 18px 20px",
                       display: "flex", flexDirection: "column", alignItems: "center", gap: 9,
-                      boxShadow: "0 0 28px rgba(212,175,55,0.15), 0 0 8px rgba(212,175,55,0.08)",
                     }}
                   >
-                    {/* Glowing accent dot */}
-                    <div style={{
-                      width: 11, height: 11, borderRadius: "50%",
-                      background: "rgba(212,175,55,1)",
-                      boxShadow: "0 0 14px rgba(212,175,55,0.9), 0 0 28px rgba(212,175,55,0.4)",
-                      marginBottom: 4,
-                    }} />
-                    <p style={{
-                      fontFamily: "'Playfair Display', serif",
-                      fontSize: 21,
-                      color: "rgba(212,175,55,1)",
-                      margin: 0, lineHeight: 1.2,
-                      textShadow: "0 0 22px rgba(212,175,55,0.55)",
-                    }}>
+                    {/* Accent dot — no glow */}
+                    <div style={{ width: 8, height: 8, borderRadius: "50%", background: "rgba(212,175,55,0.8)", marginBottom: 4 }} />
+                    <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 21, color: "rgba(212,175,55,1)", margin: 0, lineHeight: 1.2 }}>
                       {member.name}
                     </p>
-                    <div style={{ height: 1, width: 44, background: "rgba(212,175,55,0.4)" }} />
-                    <p style={{
-                      fontFamily: "'Josefin Sans', sans-serif",
-                      fontSize: 12, letterSpacing: "0.07em",
-                      color: "rgba(220,60,30,0.9)",
-                      margin: 0, lineHeight: 1.45, textAlign: "center",
-                      textTransform: "uppercase", fontWeight: 700,
-                    }}>
+                    <div style={{ height: 1, width: 44, background: "rgba(212,175,55,0.3)" }} />
+                    <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 12, letterSpacing: "0.07em", color: "rgba(220,60,30,0.85)", margin: 0, lineHeight: 1.45, textAlign: "center", textTransform: "uppercase", fontWeight: 700 }}>
                       {member.role}
                     </p>
                   </div>
                 ))}
+              </div>
+
+              {/* Teacher credit */}
+              <div style={{ marginBottom: 32, padding: "20px 28px", borderRadius: 14, border: "1px solid rgba(255,255,255,0.12)", background: "rgba(255,255,255,0.04)" }}>
+                <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 12, letterSpacing: "0.2em", color: "rgba(255,255,255,0.4)", fontWeight: 700, marginBottom: 8, textTransform: "uppercase" }}>
+                  Life Science Teacher
+                </p>
+                <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 32, color: "rgba(255,255,255,0.97)", margin: 0, lineHeight: 1.2 }}>
+                  Ms. Calliandra Harris
+                </p>
               </div>
 
               {/* School info pills */}
