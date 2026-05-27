@@ -100,7 +100,8 @@ function ThreatBar({ t, delay }: { t: typeof THREATS[0]; delay: number }) {
           {open ? <X size={14} /> : <Info size={14} />}
         </button>
       </div>
-      <div style={{ height: 6, borderRadius: 999, background: "rgba(255,255,255,0.07)", overflow: "hidden" }}>
+      {/* Progress bar — gold-tinted track doubles as the row divider */}
+      <div style={{ height: 5, borderRadius: 999, background: "linear-gradient(90deg, transparent 0%, rgba(212,175,55,0.22) 18%, rgba(212,175,55,0.22) 82%, transparent 100%)", overflow: "hidden" }}>
         <motion.div
           initial={{ width: 0 }}
           animate={inView ? { width: `${t.pct}%` } : { width: 0 }}
@@ -117,8 +118,6 @@ function ThreatBar({ t, delay }: { t: typeof THREATS[0]; delay: number }) {
           </motion.div>
         )}
       </AnimatePresence>
-      {/* Gold fading divider */}
-      <div style={{ marginTop: 14, height: 1, background: "linear-gradient(90deg, transparent 0%, rgba(212,175,55,0.45) 20%, rgba(212,175,55,0.45) 80%, transparent 100%)" }} />
     </div>
   );
 }
