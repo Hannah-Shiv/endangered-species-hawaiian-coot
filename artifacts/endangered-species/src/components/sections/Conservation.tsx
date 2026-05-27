@@ -75,9 +75,12 @@ const TRENDS = [
 
 // ─── Hawaii map locations ──────────────────────────────────────────────────────
 const LOCATIONS = [
-  { id: "hanalei",  name: "Hanalei NWR",          island: "Kauaʻi", cx: 85,  cy: 50, pop: "~500",   habitat: "917",   threat: "Medium", recovery: 58 },
-  { id: "campbell", name: "James Campbell NWR",    island: "Oʻahu",  cx: 216, cy: 70, pop: "~1,450", habitat: "2,150", threat: "Medium", recovery: 68 },
-  { id: "kealia",   name: "Kealia Pond NWR",       island: "Maui",   cx: 362, cy: 100, pop: "~700",  habitat: "700",   threat: "Low",    recovery: 55 },
+  { id: "hanalei",  name: "Hanalei NWR",          island: "Kauaʻi", cx: 85,  cy: 50, pop: "~500",   habitat: "917",   threat: "Medium", recovery: 58, mapImg: null as string | null,
+    desc: "Nestled in the lush Hanalei Valley on Kauaʻi, this refuge shelters the largest concentration of endangered waterbirds in the state, including the Hawaiian Coot, Stilt, and Moorhen." },
+  { id: "campbell", name: "James Campbell NWR",    island: "Oʻahu",  cx: 216, cy: 70, pop: "~1,450", habitat: "2,150", threat: "Medium", recovery: 68, mapImg: "/campbell-map.png" as string | null,
+    desc: "Located on the windward side of Oʻahu near Kahuku Point, James Campbell NWR protects critical wetland habitat and is the primary site for Hawaiian Coot population recovery efforts." },
+  { id: "kealia",   name: "Kealia Pond NWR",       island: "Maui",   cx: 362, cy: 100, pop: "~700",  habitat: "700",   threat: "Low",    recovery: 55, mapImg: null as string | null,
+    desc: "One of Maui's last natural perennial wetlands, Kealia Pond provides essential wintering habitat and a protected breeding ground for Hawaiian Coots and other native waterbirds." },
 ];
 
 // ─── Animated Counter ─────────────────────────────────────────────────────────
@@ -520,104 +523,165 @@ export function Conservation() {
           </motion.div>
         </div>
 
-        {/* ── Hawaii Map + Location Popup ── */}
+        {/* ── Wetland Strongholds Map ── */}
         <motion.div
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.7 }}
-          style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, marginBottom: 28 }}
+          style={{ marginBottom: 28, borderRadius: 16, border: `1px solid ${BORDER}`, background: CARD_BG, overflow: "hidden" }}
         >
-          {/* Map panel */}
-          <div style={{ borderRadius: 14, border: `1px solid ${BORDER}`, background: CARD_BG, padding: "20px 22px" }}>
-            <div style={{ marginBottom: 14 }}>
-              <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 14, fontWeight: 800, color: GOLD, margin: "0 0 4px", letterSpacing: "0.08em", textShadow: "0 0 18px rgba(212,175,55,0.35)" }}>
-                <MapPin size={14} style={{ display: "inline", marginRight: 6, verticalAlign: "middle", color: GOLD }} />
+          {/* ── Section header + tab selector ── */}
+          <div style={{ padding: "20px 24px 0", borderBottom: `1px solid rgba(212,175,55,0.15)` }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 14 }}>
+              <MapPin size={16} color={GOLD} />
+              <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 14, fontWeight: 800, color: GOLD, margin: 0, letterSpacing: "0.08em", textShadow: "0 0 18px rgba(212,175,55,0.35)" }}>
                 HAWAIʻI WETLAND STRONGHOLDS
               </p>
-              <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 12, color: "rgba(255,255,255,0.55)", margin: 0 }}>Click a location on the map to explore details.</p>
+              <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 12, color: "rgba(255,255,255,0.4)", margin: "0 0 0 8px" }}>— Click a refuge to explore</p>
             </div>
-            <HawaiiMap selected={selectedLoc} onSelect={setSelectedLoc} />
+            {/* Location tabs */}
+            <div style={{ display: "flex", gap: 6 }}>
+              {LOCATIONS.map(loc => {
+                const active = selectedLoc === loc.id;
+                return (
+                  <button
+                    key={loc.id}
+                    onClick={() => setSelectedLoc(loc.id)}
+                    style={{
+                      fontFamily: "'Josefin Sans', sans-serif", fontSize: 12, fontWeight: 700,
+                      letterSpacing: "0.08em", cursor: "pointer", border: "none", outline: "none",
+                      padding: "8px 18px 10px", borderRadius: "8px 8px 0 0",
+                      background: active ? "rgba(212,175,55,0.15)" : "transparent",
+                      color: active ? GOLD : "rgba(255,255,255,0.45)",
+                      borderBottom: active ? `2px solid ${GOLD}` : "2px solid transparent",
+                      transition: "all 0.2s",
+                    }}
+                  >
+                    {loc.name.replace(" National Wildlife Refuge", "").replace(" NWR", " NWR")}
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
-          {/* Location info popup */}
-          <AnimatePresence mode="wait">
-            {locData ? (
-              <motion.div
-                key={locData.id}
-                initial={{ opacity: 0, x: 12 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -12 }}
-                transition={{ duration: 0.35 }}
-                style={{ borderRadius: 14, border: `1px solid rgba(212,175,55,0.35)`, background: "rgba(28,8,4,0.98)", padding: "22px 24px", display: "flex", flexDirection: "column", gap: 14 }}
-              >
-                {/* Header */}
-                <div>
-                  <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11, color: GOLD_DIM, letterSpacing: "0.12em", margin: "0 0 4px" }}>{locData.island.toUpperCase()} · NATIONAL WILDLIFE REFUGE</p>
-                  <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 22, color: "rgba(255,255,255,0.97)", margin: 0 }}>{locData.name}</p>
-                </div>
+          {/* ── Main content: map image + detail panel ── */}
+          <div style={{ display: "grid", gridTemplateColumns: "3fr 2fr", minHeight: 420 }}>
 
-                {/* Stats row */}
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
-                  {[
-                    { label: "Population", value: locData.pop, sub: "birds" },
-                    { label: "Habitat", value: locData.habitat, sub: "acres" },
-                    { label: "Threat Level", value: locData.threat, sub: "" },
-                  ].map(s => (
-                    <div key={s.label} style={{ padding: "10px 14px", borderRadius: 10, border: `1px solid ${BORDER}`, background: "rgba(212,175,55,0.04)" }}>
-                      <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 10, color: "rgba(255,255,255,0.35)", margin: "0 0 2px", letterSpacing: "0.08em" }}>{s.label.toUpperCase()}</p>
-                      <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 18, color: GOLD, margin: 0 }}>{s.value}</p>
-                      {s.sub && <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 10, color: "rgba(255,255,255,0.3)", margin: 0 }}>{s.sub}</p>}
-                    </div>
-                  ))}
-                  {/* Recovery progress */}
-                  <div style={{ padding: "10px 14px", borderRadius: 10, border: `1px solid ${BORDER}`, background: "rgba(212,175,55,0.04)" }}>
-                    <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 10, color: "rgba(255,255,255,0.35)", margin: "0 0 6px", letterSpacing: "0.08em" }}>RECOVERY</p>
-                    <div style={{ height: 6, borderRadius: 999, background: "rgba(255,255,255,0.08)", overflow: "hidden" }}>
-                      <div style={{ height: "100%", width: `${locData.recovery}%`, background: `linear-gradient(90deg, ${RED}, ${GOLD})`, borderRadius: 999 }} />
-                    </div>
-                    <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 16, color: GOLD, margin: "4px 0 0" }}>{locData.recovery}%</p>
+            {/* Left: map image / SVG fallback */}
+            <AnimatePresence mode="wait">
+              {locData?.mapImg ? (
+                <motion.div
+                  key={locData.id + "-map"}
+                  initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                  transition={{ duration: 0.45 }}
+                  onClick={() => setLightbox({ src: locData.mapImg!, alt: `${locData.name} map` })}
+                  style={{ position: "relative", cursor: "zoom-in", overflow: "hidden", borderRight: `1px solid rgba(212,175,55,0.18)` }}
+                >
+                  <img
+                    src={locData.mapImg} alt={`${locData.name} satellite map`}
+                    style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", display: "block", transition: "transform 0.5s ease" }}
+                    onMouseEnter={e => (e.currentTarget.style.transform = "scale(1.03)")}
+                    onMouseLeave={e => (e.currentTarget.style.transform = "scale(1)")}
+                  />
+                  {/* Zoom hint */}
+                  <div style={{ position: "absolute", bottom: 14, right: 14, background: "rgba(0,0,0,0.65)", border: `1px solid rgba(212,175,55,0.4)`, borderRadius: 8, padding: "5px 12px", display: "flex", alignItems: "center", gap: 6 }}>
+                    <span style={{ fontSize: 13 }}>🔍</span>
+                    <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11, color: "rgba(255,255,255,0.8)", letterSpacing: "0.06em" }}>CLICK TO EXPAND</span>
                   </div>
-                </div>
+                  {/* Location badge */}
+                  <div style={{ position: "absolute", top: 14, left: 14, background: "rgba(0,0,0,0.7)", border: `1px solid ${BORDER}`, borderRadius: 8, padding: "6px 14px" }}>
+                    <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 10, color: GOLD_DIM, margin: 0, letterSpacing: "0.1em" }}>OFFICIAL USFWS MAP</p>
+                    <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 15, color: "rgba(255,255,255,0.95)", margin: 0 }}>{locData.name}</p>
+                  </div>
+                </motion.div>
+              ) : (
+                <motion.div
+                  key={(locData?.id ?? "none") + "-svg"}
+                  initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                  transition={{ duration: 0.45 }}
+                  style={{ padding: "24px 28px", borderRight: `1px solid rgba(212,175,55,0.18)`, display: "flex", flexDirection: "column", justifyContent: "center" }}
+                >
+                  <HawaiiMap selected={selectedLoc} onSelect={setSelectedLoc} />
+                  <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11, color: "rgba(255,255,255,0.3)", textAlign: "center", letterSpacing: "0.06em", marginTop: 12 }}>
+                    Detailed satellite map not yet available for this refuge
+                  </p>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
-                {/* James Campbell refuge photos — click or hover to expand */}
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
-                  {[
-                    { src: "/campbell-habitat.png", alt: "James Campbell NWR habitat" },
-                    { src: "/campbell-coot.png",    alt: "Hawaiian Coot at James Campbell NWR" },
-                  ].map(img => (
-                    <div
-                      key={img.src}
-                      onClick={() => setLightbox(img)}
-                      style={{ aspectRatio: "4/3", borderRadius: 8, overflow: "hidden", cursor: "zoom-in", position: "relative" }}
-                      className="group"
-                    >
-                      <img
-                        src={img.src} alt={img.alt}
-                        style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", transition: "transform 0.3s ease" }}
-                        onMouseEnter={e => (e.currentTarget.style.transform = "scale(1.06)")}
-                        onMouseLeave={e => (e.currentTarget.style.transform = "scale(1)")}
-                      />
-                      {/* Zoom hint overlay */}
-                      <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0)", display: "flex", alignItems: "center", justifyContent: "center", transition: "background 0.2s", pointerEvents: "none" }}
-                        onMouseEnter={e => (e.currentTarget.style.background = "rgba(0,0,0,0.28)")}
-                      >
-                        <span style={{ color: "rgba(255,255,255,0.85)", fontSize: 22, opacity: 0, transition: "opacity 0.2s" }}>🔍</span>
+            {/* Right: detail panel */}
+            <AnimatePresence mode="wait">
+              {locData ? (
+                <motion.div
+                  key={locData.id + "-detail"}
+                  initial={{ opacity: 0, x: 12 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -12 }}
+                  transition={{ duration: 0.35 }}
+                  style={{ padding: "24px 22px", display: "flex", flexDirection: "column", gap: 16, overflowY: "auto" }}
+                >
+                  {/* Header */}
+                  <div>
+                    <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11, color: GOLD_DIM, letterSpacing: "0.14em", margin: "0 0 4px" }}>{locData.island.toUpperCase()} · NATIONAL WILDLIFE REFUGE</p>
+                    <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 22, color: "rgba(255,255,255,0.97)", margin: "0 0 8px" }}>{locData.name}</p>
+                    <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, color: "rgba(255,255,255,0.55)", margin: 0, lineHeight: 1.6 }}>{locData.desc}</p>
+                  </div>
+
+                  {/* Stats 2×2 */}
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
+                    {[
+                      { label: "Population",   value: locData.pop,     sub: "birds" },
+                      { label: "Habitat",      value: locData.habitat, sub: "acres" },
+                      { label: "Threat Level", value: locData.threat,  sub: "" },
+                    ].map(s => (
+                      <div key={s.label} style={{ padding: "10px 12px", borderRadius: 10, border: `1px solid ${BORDER}`, background: "rgba(212,175,55,0.06)" }}>
+                        <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 10, color: "rgba(255,255,255,0.4)", margin: "0 0 2px", letterSpacing: "0.08em" }}>{s.label.toUpperCase()}</p>
+                        <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 20, color: GOLD, margin: 0 }}>{s.value}</p>
+                        {s.sub && <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 10, color: "rgba(255,255,255,0.35)", margin: 0 }}>{s.sub}</p>}
                       </div>
+                    ))}
+                    {/* Recovery mini-bar */}
+                    <div style={{ padding: "10px 12px", borderRadius: 10, border: `1px solid ${BORDER}`, background: "rgba(212,175,55,0.06)" }}>
+                      <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 10, color: "rgba(255,255,255,0.4)", margin: "0 0 6px", letterSpacing: "0.08em" }}>RECOVERY</p>
+                      <div style={{ height: 6, borderRadius: 999, background: "rgba(255,255,255,0.08)", overflow: "hidden" }}>
+                        <div style={{ height: "100%", width: `${locData.recovery}%`, background: `linear-gradient(90deg, ${RED}, ${GOLD})`, borderRadius: 999 }} />
+                      </div>
+                      <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 18, color: GOLD, margin: "4px 0 0" }}>{locData.recovery}%</p>
                     </div>
-                  ))}
-                </div>
-
-                <a href="https://www.fws.gov/refuge/james-campbell" target="_blank" rel="noreferrer" style={{ textDecoration: "none" }}>
-                  <div style={{ padding: "10px 0", textAlign: "center", borderRadius: 8, background: RED, fontFamily: "'Josefin Sans', sans-serif", fontSize: 12, fontWeight: 700, letterSpacing: "0.1em", color: "rgba(255,255,255,0.95)", cursor: "pointer" }}>
-                    VIEW FULL REPORT ↗
                   </div>
-                </a>
-              </motion.div>
-            ) : (
-              <motion.div
-                key="empty" initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                style={{ borderRadius: 14, border: `1px solid ${BORDER}`, background: CARD_BG, display: "flex", alignItems: "center", justifyContent: "center" }}
-              >
-                <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, color: "rgba(255,255,255,0.3)", letterSpacing: "0.08em" }}>Select a location on the map</p>
-              </motion.div>
-            )}
-          </AnimatePresence>
+
+                  {/* Photos — Campbell only */}
+                  {locData.id === "campbell" && (
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
+                      {[
+                        { src: "/campbell-habitat.png", alt: "James Campbell NWR habitat" },
+                        { src: "/campbell-coot.png",    alt: "Hawaiian Coot at James Campbell NWR" },
+                      ].map(img => (
+                        <div key={img.src} onClick={() => setLightbox(img)}
+                          style={{ aspectRatio: "4/3", borderRadius: 8, overflow: "hidden", cursor: "zoom-in", position: "relative" }}
+                        >
+                          <img src={img.src} alt={img.alt}
+                            style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", transition: "transform 0.3s ease" }}
+                            onMouseEnter={e => (e.currentTarget.style.transform = "scale(1.07)")}
+                            onMouseLeave={e => (e.currentTarget.style.transform = "scale(1)")}
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* CTA */}
+                  <a href={locData.id === "campbell" ? "https://www.fws.gov/refuge/james-campbell" : locData.id === "hanalei" ? "https://www.fws.gov/refuge/hanalei" : "https://www.fws.gov/refuge/kealia-pond"} target="_blank" rel="noreferrer" style={{ textDecoration: "none", marginTop: "auto" }}>
+                    <div style={{ padding: "11px 0", textAlign: "center", borderRadius: 8, border: `1px solid rgba(212,175,55,0.55)`, background: "rgba(212,175,55,0.1)", fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, fontWeight: 800, letterSpacing: "0.1em", color: GOLD, cursor: "pointer", boxShadow: "0 0 12px rgba(212,175,55,0.1)", textShadow: "0 0 8px rgba(212,175,55,0.3)" }}>
+                      ✦ VISIT USFWS REFUGE PAGE ✦
+                    </div>
+                  </a>
+                </motion.div>
+              ) : (
+                <motion.div key="empty" initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+                  style={{ display: "flex", alignItems: "center", justifyContent: "center" }}
+                >
+                  <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, color: "rgba(255,255,255,0.3)", letterSpacing: "0.08em" }}>Select a refuge above</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </motion.div>
 
         {/* ── Before/After Slider + You Can Help ── */}
