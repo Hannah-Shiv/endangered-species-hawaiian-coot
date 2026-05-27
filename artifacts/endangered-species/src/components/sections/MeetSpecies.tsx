@@ -17,7 +17,12 @@ const WINE = "#5C0808";
 const FADE_DUR = 1.3;
 const EASE_IN  = [0.16, 1, 0.3, 1] as const;
 
-function PopIndicator() {
+// Halve every numeric value inside a clamp() string — used for non-fullscreen overlay sizing
+const halve = (s: string) =>
+  s.replace(/(\d+(?:\.\d+)?)(px|vw)/g, (_, n, u) => `${parseFloat(n) / 2}${u}`);
+
+function PopIndicator({ fs }: { fs: boolean }) {
+  const sz = (s: string) => fs ? s : halve(s);
   return (
     <div style={{
       position: "absolute", top: "7%", left: "4%",
@@ -33,8 +38,8 @@ function PopIndicator() {
             fontStyle: "italic",
             fontWeight: 900,
             fontSize: i === 0
-              ? "clamp(16px, 2.0vw, 26px)"
-              : "clamp(32px, 4.8vw, 62px)",
+              ? sz("clamp(16px, 2.0vw, 26px)")
+              : sz("clamp(32px, 4.8vw, 62px)"),
             lineHeight: i === 0 ? 1.3 : 1.0,
             letterSpacing: "0.06em",
             color: WINE,
@@ -115,12 +120,13 @@ export function MeetSpecies() {
     }
   };
 
-  // Shared text style for overlays — thick black weight, no shadow
+  // Shared text style for overlays — halved when not in fullscreen
+  const sz = (s: string) => isFullscreen ? s : halve(s);
   const overlayText = (size: string, sub = false): React.CSSProperties => ({
     fontFamily: FF_SERIF,
     fontStyle: "italic",
     fontWeight: sub ? 700 : 900,
-    fontSize: size,
+    fontSize: sz(size),
     lineHeight: sub ? 1.4 : 1.05,
     letterSpacing: sub ? "0.03em" : "0.05em",
     color: WINE,
@@ -218,7 +224,7 @@ export function MeetSpecies() {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
                       transition={{ duration: FADE_DUR, ease: EASE_IN }}
-                      style={{ ...overlayText("clamp(44px, 6.5vw, 88px)") }}>
+                      style={{ ...overlayText("clamp(44px, 6.5vw, 88px)"), fontSize: sz("clamp(44px, 6.5vw, 88px)") }}>
                       Hawaiian Coot
                     </motion.p>
 
@@ -237,7 +243,7 @@ export function MeetSpecies() {
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
                       transition={{ duration: FADE_DUR, delay: 0.55, ease: EASE_IN }}
-                      style={{ ...overlayText("clamp(20px, 2.8vw, 38px)", true) }}>
+                      style={{ ...overlayText("clamp(20px, 2.8vw, 38px)", true), fontSize: sz("clamp(20px, 2.8vw, 38px)") }}>
                       Fulica alai
                     </motion.p>
                   </motion.div>
@@ -276,7 +282,7 @@ export function MeetSpecies() {
                     exit={{ opacity: 0 }}
                     transition={{ duration: FADE_DUR, delay: 0.15, ease: EASE_IN }}
                     style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, pointerEvents: "none" }}>
-                    <PopIndicator />
+                    <PopIndicator fs={isFullscreen} />
                   </motion.div>
                 )}
               </AnimatePresence>
