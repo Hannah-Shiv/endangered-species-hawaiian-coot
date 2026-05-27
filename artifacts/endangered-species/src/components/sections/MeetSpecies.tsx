@@ -19,25 +19,25 @@ const EASE_IN  = [0.16, 1, 0.3, 1] as const;
 
 // ─── Matrix decode banner ──────────────────────────────────────────────────────
 const MATRIX_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*<>{}[]!?/\\|";
-const FINAL_TEXT   = "ONLY   3,200   REMAINING";
-const SETTLE_MS    = 2000;   // time to fully decode
+const FINAL_LINES  = ["O N L Y", "3 2 0 0", "R E M A I N I N G"];
+const SETTLE_MS    = 2200;   // time to fully decode each line
 const LOOP_MS      = 10000;  // total cycle: decode + hold
 
-function MatrixDecode() {
+function MatrixLine({ text, delayOffset }: { text: string; delayOffset: number }) {
   const [chars, setChars] = useState<{ ch: string; locked: boolean }[]>([]);
   const frameRef = useRef<number | undefined>(undefined);
-  const startRef = useRef(Date.now());
+  const startRef = useRef(Date.now() - delayOffset);
 
   useEffect(() => {
     const tick = () => {
       const elapsed  = (Date.now() - startRef.current) % LOOP_MS;
       const progress = Math.min(elapsed / SETTLE_MS, 1);
-      const locked   = Math.floor(progress * FINAL_TEXT.length);
+      const lockedN  = Math.floor(progress * text.length);
 
       setChars(
-        FINAL_TEXT.split("").map((char, i) => {
-          if (char === " ") return { ch: "\u00A0\u00A0", locked: true };
-          if (i < locked)  return { ch: char, locked: true };
+        text.split("").map((char, i) => {
+          if (char === " ") return { ch: " ", locked: true };
+          if (i < lockedN) return { ch: char, locked: true };
           return { ch: MATRIX_CHARS[Math.floor(Math.random() * MATRIX_CHARS.length)], locked: false };
         })
       );
@@ -45,26 +45,42 @@ function MatrixDecode() {
     };
     frameRef.current = requestAnimationFrame(tick);
     return () => { if (frameRef.current !== undefined) cancelAnimationFrame(frameRef.current); };
-  }, []);
+  }, [text]);
 
   return (
-    <div style={{
-      position: "absolute", top: "7%", left: "4%",
-      pointerEvents: "none",
-      display: "flex", alignItems: "baseline", flexWrap: "nowrap",
-    }}>
+    <div style={{ display: "flex", justifyContent: "center", lineHeight: 1 }}>
       {chars.map(({ ch, locked }, i) => (
         <span key={i} style={{
           fontFamily: "'Orbitron', sans-serif",
           fontWeight: 900,
-          fontSize: "clamp(13px, 1.7vw, 21px)",
-          letterSpacing: "0.08em",
-          lineHeight: 1,
+          fontSize: "clamp(16px, 2.2vw, 28px)",
+          letterSpacing: "0.10em",
           color: locked
-            ? WINE
-            : `rgba(92,8,8,${(0.25 + Math.random() * 0.45).toFixed(2)})`,
+            ? "rgba(212,175,55,1)"
+            : `rgba(212,175,55,${(0.2 + Math.random() * 0.4).toFixed(2)})`,
           display: "inline-block",
+          minWidth: ch === " " ? "0.55em" : undefined,
         }}>{ch}</span>
+      ))}
+    </div>
+  );
+}
+
+function MatrixDecode() {
+  return (
+    <div style={{
+      position: "absolute", top: "7%", left: "4%",
+      pointerEvents: "none",
+      background: "rgba(60,4,4,0.82)",
+      border: "2px solid rgba(92,8,8,0.9)",
+      borderRadius: 10,
+      padding: "14px 22px",
+      display: "flex", flexDirection: "column", gap: 10,
+      backdropFilter: "blur(4px)",
+      boxShadow: "0 0 28px rgba(92,8,8,0.5), inset 0 0 20px rgba(60,4,4,0.4)",
+    }}>
+      {FINAL_LINES.map((line, i) => (
+        <MatrixLine key={line} text={line} delayOffset={i * 600} />
       ))}
     </div>
   );
