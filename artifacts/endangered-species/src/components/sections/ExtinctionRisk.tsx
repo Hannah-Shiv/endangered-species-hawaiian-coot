@@ -290,14 +290,14 @@ function TabNav({ active, onSelect }: { active: string; onSelect: (id: string) =
                 padding: "16px 22px",
                 cursor: "pointer", border: "none", outline: "none",
                 background: isActive ? "rgba(212,175,55,0.1)" : "transparent",
-                color: isActive ? GOLD : "rgba(255,255,255,0.42)",
+                color: isActive ? GOLD : "rgba(255,255,255,0.9)",
                 borderBottom: isActive ? `3px solid ${GOLD}` : "3px solid transparent",
                 marginBottom: -1,
                 transition: "all 0.2s",
                 whiteSpace: "nowrap",
               }}
-              onMouseEnter={e => { if (!isActive) { e.currentTarget.style.color = "rgba(255,255,255,0.82)"; e.currentTarget.style.background = "rgba(255,255,255,0.05)"; } }}
-              onMouseLeave={e => { if (!isActive) { e.currentTarget.style.color = "rgba(255,255,255,0.42)"; e.currentTarget.style.background = "transparent"; } }}
+              onMouseEnter={e => { if (!isActive) { e.currentTarget.style.color = "#fff"; e.currentTarget.style.background = "rgba(255,255,255,0.07)"; } }}
+              onMouseLeave={e => { if (!isActive) { e.currentTarget.style.color = "rgba(255,255,255,0.9)"; e.currentTarget.style.background = "transparent"; } }}
             >
               <t.Icon size={14} />
               {t.label.toUpperCase()}
