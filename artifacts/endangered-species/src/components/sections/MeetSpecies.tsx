@@ -37,10 +37,8 @@ function PopIndicator({ fs }: { fs: boolean }) {
             fontFamily: FF_SERIF,
             fontStyle: "italic",
             fontWeight: 900,
-            fontSize: i === 0
-              ? sz("clamp(16px, 2.0vw, 26px)")
-              : sz("clamp(32px, 4.8vw, 62px)"),
-            lineHeight: i === 0 ? 1.3 : 1.0,
+            fontSize: sz("clamp(32px, 4.8vw, 62px)"),
+            lineHeight: 1.0,
             letterSpacing: "0.06em",
             color: WINE,
             margin: 0,
