@@ -105,66 +105,56 @@ export function MeetSpecies() {
             <div style={{ position: "absolute", bottom: 0, right: 0, width: "30%", height: "30%", background: `radial-gradient(ellipse at 100% 100%, ${CRIMSON}0d, transparent 70%)`, pointerEvents: "none" }} />
           </motion.div>
 
-          {/* ── Two-column: facts + stats ── */}
-          <div style={{ display: "grid", gridTemplateColumns: "1.35fr 1fr", gap: 22 }}>
-
-            {/* Left — Key facts */}
-            <div style={{ borderRadius: 16, border: `1px solid ${BORDER}`, background: CARD_BG, padding: "26px 28px" }}>
-              <SectionLabel>5 KEY FACTS</SectionLabel>
-              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-                {facts.map((fact, i) => (
-                  <motion.div key={i}
-                    initial={{ opacity: 0, x: -14 }} animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.3 + i * 0.08, ease: [0.16, 1, 0.3, 1] }}
-                    style={{
-                      display: "flex", gap: 14, alignItems: "flex-start",
-                      padding: "14px 16px", borderRadius: 12,
-                      border: `1px solid rgba(220,50,30,0.28)`,
-                      background: "rgba(220,50,30,0.06)",
-                    }}>
-                    <div style={{
-                      width: 28, height: 28, borderRadius: "50%", flexShrink: 0,
-                      display: "flex", alignItems: "center", justifyContent: "center",
-                      background: "rgba(212,175,55,0.14)", fontFamily: FF_SANS,
-                      fontSize: 13, fontWeight: 900, color: GOLD,
-                    }}>{i + 1}</div>
-                    <p style={{ fontFamily: FF_SERIF, fontSize: 16, color: "rgba(255,255,255,0.92)", margin: 0, lineHeight: 1.6 }}>{fact}</p>
-                  </motion.div>
-                ))}
-              </div>
+          {/* ── 1: Species Statistics ── */}
+          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+            style={{ borderRadius: 16, border: `1px solid ${BORDER}`, background: CARD_BG, padding: "26px 30px" }}>
+            <SectionLabel>SPECIES STATISTICS</SectionLabel>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 14 }}>
+              {stats.map((s, i) => (
+                <motion.div key={i}
+                  initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.35 + i * 0.07 }}
+                  style={{
+                    padding: "20px 16px", borderRadius: 14, textAlign: "center",
+                    border: `1px solid ${s.color}40`, background: `${s.color}0d`,
+                  }}>
+                  <p style={{ fontFamily: FF_SERIF, fontSize: 36, fontWeight: 700, color: s.color, margin: 0, lineHeight: 1 }}>{s.value}</p>
+                  <p style={{ fontFamily: FF_SANS, fontSize: 13, fontWeight: 600, color: "rgba(255,255,255,0.82)", margin: "8px 0 0", letterSpacing: "0.06em" }}>{s.label}</p>
+                </motion.div>
+              ))}
             </div>
+          </motion.div>
 
-            {/* Right — Stats + classification */}
-            <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
-              {/* Stat grid */}
-              <div style={{ borderRadius: 16, border: `1px solid ${BORDER}`, background: CARD_BG, padding: "24px 26px" }}>
-                <SectionLabel>SPECIES STATISTICS</SectionLabel>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-                  {stats.map((s, i) => (
-                    <motion.div key={i}
-                      initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.4 + i * 0.07 }}
-                      style={{
-                        padding: "16px 14px", borderRadius: 12, textAlign: "center",
-                        border: `1px solid ${s.color}35`, background: `${s.color}0b`,
-                      }}>
-                      <p style={{ fontFamily: FF_SERIF, fontSize: 28, fontWeight: 700, color: s.color, margin: 0, lineHeight: 1 }}>{s.value}</p>
-                      <p style={{ fontFamily: FF_SANS, fontSize: 12, color: "rgba(255,255,255,0.78)", margin: "6px 0 0", letterSpacing: "0.06em" }}>{s.label}</p>
-                    </motion.div>
-                  ))}
-                </div>
-              </div>
+          {/* ── 2: Scientific Classification ── */}
+          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
+            style={{ borderRadius: 16, border: `1px solid ${BORDER}`, background: CARD_BG, padding: "26px 30px" }}>
+            <SectionLabel>SCIENTIFIC CLASSIFICATION</SectionLabel>
+            <img src={sciClassImg} alt="Scientific Classification" style={{ width: "100%", borderRadius: 12, display: "block" }} />
+          </motion.div>
 
-              {/* Classification image */}
-              <motion.div
-                initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.55 }}
-                style={{ borderRadius: 16, border: `1px solid ${BORDER}`, background: CARD_BG, padding: "20px", flex: 1 }}>
-                <SectionLabel>SCIENTIFIC CLASSIFICATION</SectionLabel>
-                <img src={sciClassImg} alt="Scientific Classification" style={{ width: "100%", borderRadius: 10, display: "block" }} />
-              </motion.div>
+          {/* ── 3: Key Facts ── */}
+          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }}
+            style={{ borderRadius: 16, border: `1px solid ${BORDER}`, background: CARD_BG, padding: "26px 30px" }}>
+            <SectionLabel>5 KEY FACTS</SectionLabel>
+            <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
+              {facts.map((fact, i) => (
+                <motion.div key={i}
+                  initial={{ opacity: 0, x: -14 }} animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.5 + i * 0.07, ease: [0.16, 1, 0.3, 1] }}
+                  style={{
+                    display: "flex", gap: 18, alignItems: "flex-start",
+                    padding: "16px 4px",
+                    borderBottom: i < facts.length - 1 ? "1px solid rgba(255,255,255,0.07)" : "none",
+                  }}>
+                  <span style={{
+                    fontFamily: FF_SERIF, fontSize: 22, fontWeight: 700,
+                    color: GOLD, flexShrink: 0, lineHeight: 1, marginTop: 2,
+                  }}>{i + 1}</span>
+                  <p style={{ fontFamily: FF_SERIF, fontSize: 17, color: "rgba(255,255,255,0.92)", margin: 0, lineHeight: 1.65 }}>{fact}</p>
+                </motion.div>
+              ))}
             </div>
-
-          </div>
+          </motion.div>
         </motion.div>
       </div>
 
