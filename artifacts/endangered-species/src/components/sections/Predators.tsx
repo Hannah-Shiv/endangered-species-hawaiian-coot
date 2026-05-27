@@ -187,18 +187,18 @@ function DashBar({ value, label, icon, barColor }: { value: number; label: strin
 
   return (
     <div>
-      <div style={{ display: "flex", alignItems: "center", gap: 5, marginBottom: 4 }}>
-        <span style={{ fontSize: 15 }}>{icon}</span>
-        <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, color: "rgba(255,255,255,0.75)", letterSpacing: "0.04em" }}>{label}</span>
+      <div style={{ display: "flex", alignItems: "center", gap: 5, marginBottom: 5 }}>
+        <span style={{ fontSize: 17 }}>{icon}</span>
+        <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 14, color: "rgba(255,255,255,0.78)", letterSpacing: "0.04em" }}>{label}</span>
       </div>
-      <div style={{ height: 8, background: "rgba(255,255,255,0.08)", borderRadius: 4, overflow: "visible", position: "relative" }}>
+      <div style={{ height: 9, background: "rgba(255,255,255,0.08)", borderRadius: 4, overflow: "visible", position: "relative" }}>
         <motion.div
           animate={{ width: `${value}%`, backgroundColor: barColor }}
           transition={{ type: "spring", stiffness: 55, damping: 18 }}
           style={{ height: "100%", borderRadius: 4, position: "absolute", top: 0, left: 0, boxShadow: `0 0 8px ${barColor}88` }}
         />
       </div>
-      <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 14, fontWeight: 800, color: barColor, display: "block", marginTop: 3 }}>
+      <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 15.5, fontWeight: 800, color: barColor, display: "block", marginTop: 4 }}>
         {display}%
       </span>
     </div>
@@ -306,42 +306,66 @@ export function Predators() {
               <motion.button
                 key={pred.id}
                 onClick={() => select(pred.id)}
-                whileTap={{ scale: 0.97 }}
+                whileTap={{ scale: 0.96 }}
                 style={{
                   cursor: "pointer", textAlign: "left",
-                  background: isSel ? `${pc}22` : "rgba(255,255,255,0.03)",
+                  background: isSel
+                    ? `linear-gradient(145deg, ${pc}28 0%, ${pc}0e 60%, rgba(0,0,0,0.4) 100%)`
+                    : "linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%)",
                   border: `1.5px solid ${isSel ? pc : "rgba(255,255,255,0.1)"}`,
-                  borderRadius: 10,
-                  padding: "10px 11px",
-                  display: "flex", flexDirection: "column", gap: 5,
-                  transition: "background 0.25s, border-color 0.25s, box-shadow 0.25s",
-                  boxShadow: isSel ? `0 0 16px ${pc}44, inset 0 0 0 1px ${pc}33` : "none",
+                  borderTop: `3px solid ${isSel ? pc : "rgba(255,255,255,0.08)"}`,
+                  borderRadius: 12,
+                  padding: "11px 12px 10px",
+                  display: "flex", flexDirection: "column", gap: 6,
+                  transition: "background 0.3s, border-color 0.3s, box-shadow 0.3s",
+                  boxShadow: isSel
+                    ? `0 0 22px ${pc}44, 0 4px 16px rgba(0,0,0,0.5)`
+                    : "0 2px 8px rgba(0,0,0,0.3)",
                   overflow: "hidden",
+                  position: "relative",
                 }}
               >
+                {/* Subtle corner glow when selected */}
+                {isSel && (
+                  <div style={{
+                    position: "absolute", top: 0, left: 0, right: 0, height: 60,
+                    background: `radial-gradient(ellipse at 20% 0%, ${pc}22 0%, transparent 70%)`,
+                    pointerEvents: "none",
+                  }} />
+                )}
                 {/* Icon row + threat badge */}
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                  <span style={{ fontSize: 26 }}>{pred.sideIcon}</span>
+                  <span style={{ fontSize: 28 }}>{pred.sideIcon}</span>
                   <span style={{
-                    fontSize: 10.5, fontWeight: 800, letterSpacing: "0.07em",
-                    background: `${pc}28`, color: pc,
-                    border: `1px solid ${pc}66`,
-                    borderRadius: 4, padding: "2px 7px",
+                    fontSize: 10.5, fontWeight: 900, letterSpacing: "0.08em",
+                    background: `${pc}22`, color: pc,
+                    border: `1px solid ${pc}88`,
+                    borderRadius: 5, padding: "3px 8px",
+                    textShadow: `0 0 8px ${pc}88`,
                   }}>
                     {pred.threat === "LOW" ? "LOW" : pred.threat === "MEDIUM" ? "MED" : "HIGH"}
                   </span>
                 </div>
                 {/* Name */}
                 <span style={{
-                  fontSize: 14.5, fontWeight: 800, letterSpacing: "0.05em",
-                  color: isSel ? "#fff" : "rgba(255,255,255,0.82)",
+                  fontSize: 14.5, fontWeight: 900, letterSpacing: "0.04em",
+                  color: isSel ? "#fff" : "rgba(255,255,255,0.8)",
                   lineHeight: 1.2,
+                  textShadow: isSel ? `0 0 12px ${pc}66` : "none",
                 }}>
                   {pred.name}
                 </span>
+                {/* Colored divider */}
+                <div style={{
+                  height: 1,
+                  background: isSel
+                    ? `linear-gradient(to right, ${pc}88, transparent)`
+                    : "rgba(255,255,255,0.07)",
+                  borderRadius: 1,
+                }} />
                 {/* Description */}
                 <span style={{
-                  fontSize: 12, color: "rgba(255,255,255,0.48)", lineHeight: 1.45,
+                  fontSize: 11.5, color: isSel ? "rgba(255,255,255,0.6)" : "rgba(255,255,255,0.38)", lineHeight: 1.5,
                   display: "-webkit-box",
                   WebkitLineClamp: 3,
                   WebkitBoxOrient: "vertical",
@@ -508,7 +532,7 @@ export function Predators() {
           overflowY: "auto",
           display: "flex", flexDirection: "column",
         }}>
-          <p style={{ fontSize: 10.5, letterSpacing: "0.16em", color: "rgba(255,255,255,0.5)", marginBottom: 9, fontWeight: 700, flexShrink: 0 }}>
+          <p style={{ fontSize: 13, letterSpacing: "0.16em", color: "rgba(255,255,255,0.5)", marginBottom: 9, fontWeight: 700, flexShrink: 0 }}>
             ECOLOGICAL IMPACT
           </p>
           <AnimatePresence mode="wait">
@@ -519,10 +543,10 @@ export function Predators() {
               style={{ display: "flex", flexDirection: "column", gap: 7 }}
             >
               {p.ecoImpact.map((row, i) => (
-                <div key={i} style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                  <span style={{ fontSize: 14, flexShrink: 0 }}>{row.icon}</span>
-                  <span style={{ fontSize: 12, color: "rgba(255,255,255,0.8)", marginLeft: "auto", lineHeight: 1.3, textAlign: "right" }}>{row.label}</span>
-                  <span style={{ fontSize: 12, fontWeight: 900, color: row.dir === "up" ? "#4cde88" : "#ff3344", flexShrink: 0, minWidth: 44, textAlign: "right" }}>
+                <div key={i} style={{ display: "flex", alignItems: "center", gap: 7 }}>
+                  <span style={{ fontSize: 15, flexShrink: 0, marginLeft: "auto" }}>{row.icon}</span>
+                  <span style={{ fontSize: 13.5, color: "rgba(255,255,255,0.8)", lineHeight: 1.3 }}>{row.label}</span>
+                  <span style={{ fontSize: 13.5, fontWeight: 900, color: row.dir === "up" ? "#4cde88" : "#ff3344", flexShrink: 0, minWidth: 48, textAlign: "right" }}>
                     {row.dir === "down" ? "↓" : "↑"} {row.pct}%
                   </span>
                 </div>
@@ -537,7 +561,7 @@ export function Predators() {
           borderRight: "1px solid rgba(255,255,255,0.07)",
           display: "flex", flexDirection: "column",
         }}>
-          <p style={{ fontSize: 11.5, letterSpacing: "0.16em", color: GOLD, fontWeight: 800, marginBottom: 10, flexShrink: 0, textShadow: `0 0 8px ${GOLD}55` }}>
+          <p style={{ fontSize: 14, letterSpacing: "0.16em", color: GOLD, fontWeight: 800, marginBottom: 10, flexShrink: 0, textShadow: `0 0 8px ${GOLD}55` }}>
             ECOSYSTEM HEALTH OVERVIEW
           </p>
           <div style={{ flex: 1, display: "flex", alignItems: "center", gap: 18, minHeight: 0 }}>
@@ -562,7 +586,7 @@ export function Predators() {
           overflowY: "auto",
           display: "flex", flexDirection: "column",
         }}>
-          <p style={{ fontSize: 10.5, letterSpacing: "0.16em", color: "rgba(255,255,255,0.5)", marginBottom: 9, fontWeight: 700, flexShrink: 0 }}>
+          <p style={{ fontSize: 13, letterSpacing: "0.16em", color: "rgba(255,255,255,0.5)", marginBottom: 9, fontWeight: 700, flexShrink: 0 }}>
             WHAT YOU CAN DO
           </p>
           <AnimatePresence mode="wait">
@@ -570,18 +594,18 @@ export function Predators() {
               key={p.id + "-act"}
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
               transition={{ duration: 0.35 }}
-              style={{ display: "flex", flexDirection: "column", gap: 8 }}
+              style={{ display: "flex", flexDirection: "column", gap: 9 }}
             >
               {p.actions.map((act, i) => (
-                <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 8 }}>
+                <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 9 }}>
                   <div style={{
-                    width: 17, height: 17, borderRadius: 4, flexShrink: 0, marginTop: 1,
-                    background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.15)",
+                    width: 20, height: 20, borderRadius: 5, flexShrink: 0, marginTop: 1,
+                    background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.18)",
                     display: "flex", alignItems: "center", justifyContent: "center",
                   }}>
-                    <span style={{ fontSize: 9 }}>✓</span>
+                    <span style={{ fontSize: 11 }}>✓</span>
                   </div>
-                  <span style={{ fontSize: 11.5, color: "rgba(255,255,255,0.72)", lineHeight: 1.5 }}>{act}</span>
+                  <span style={{ fontSize: 13.5, color: "rgba(255,255,255,0.78)", lineHeight: 1.5 }}>{act}</span>
                 </div>
               ))}
             </motion.div>
