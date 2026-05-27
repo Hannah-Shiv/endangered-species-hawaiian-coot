@@ -321,19 +321,19 @@ export function Predators() {
               >
                 {/* Icon row + threat badge */}
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                  <span style={{ fontSize: 20 }}>{pred.sideIcon}</span>
+                  <span style={{ fontSize: 26 }}>{pred.sideIcon}</span>
                   <span style={{
-                    fontSize: 8.5, fontWeight: 800, letterSpacing: "0.07em",
+                    fontSize: 10.5, fontWeight: 800, letterSpacing: "0.07em",
                     background: `${pc}28`, color: pc,
                     border: `1px solid ${pc}66`,
-                    borderRadius: 4, padding: "2px 5px",
+                    borderRadius: 4, padding: "2px 7px",
                   }}>
                     {pred.threat === "LOW" ? "LOW" : pred.threat === "MEDIUM" ? "MED" : "HIGH"}
                   </span>
                 </div>
                 {/* Name */}
                 <span style={{
-                  fontSize: 12, fontWeight: 800, letterSpacing: "0.05em",
+                  fontSize: 14.5, fontWeight: 800, letterSpacing: "0.05em",
                   color: isSel ? "#fff" : "rgba(255,255,255,0.82)",
                   lineHeight: 1.2,
                 }}>
@@ -341,7 +341,7 @@ export function Predators() {
                 </span>
                 {/* Description */}
                 <span style={{
-                  fontSize: 10, color: "rgba(255,255,255,0.48)", lineHeight: 1.45,
+                  fontSize: 12, color: "rgba(255,255,255,0.48)", lineHeight: 1.45,
                   display: "-webkit-box",
                   WebkitLineClamp: 3,
                   WebkitBoxOrient: "vertical",
@@ -519,10 +519,10 @@ export function Predators() {
               style={{ display: "flex", flexDirection: "column", gap: 7 }}
             >
               {p.ecoImpact.map((row, i) => (
-                <div key={i} style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <div key={i} style={{ display: "flex", alignItems: "center", gap: 6 }}>
                   <span style={{ fontSize: 14, flexShrink: 0 }}>{row.icon}</span>
-                  <span style={{ fontSize: 12, color: "rgba(255,255,255,0.8)", flex: 1, lineHeight: 1.3 }}>{row.label}</span>
-                  <span style={{ fontSize: 12, fontWeight: 900, color: row.dir === "up" ? "#4cde88" : "#ff3344", flexShrink: 0 }}>
+                  <span style={{ fontSize: 12, color: "rgba(255,255,255,0.8)", marginLeft: "auto", lineHeight: 1.3, textAlign: "right" }}>{row.label}</span>
+                  <span style={{ fontSize: 12, fontWeight: 900, color: row.dir === "up" ? "#4cde88" : "#ff3344", flexShrink: 0, minWidth: 44, textAlign: "right" }}>
                     {row.dir === "down" ? "↓" : "↑"} {row.pct}%
                   </span>
                 </div>
