@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import healthyImg from "@assets/image_1779835298098.png";
 import ratsImg    from "@assets/image_1779835596663.png";
 import dogsImg    from "@assets/image_1779838496982.png";
-import frogsImg     from "@assets/image_1779838792688.png";
+import frogsImg     from "@assets/image_1779842207715.png";
 import mongooseImg   from "@assets/image_1779842173926.png";
 import nightHeronImg from "@assets/image_1779841933879.png";
 
@@ -123,7 +123,7 @@ const PREDATORS: Predator[] = [
     banner: "Dogs may not prey directly on eggs, but they disturb nests, increase stress, and reduce nesting success significantly.",
   },
   {
-    id: "frogs", num: 4, name: "Bullfrogs", threat: "MEDIUM", color: "#ff8c00",
+    id: "frogs", num: 4, name: "Bullfrogs", threat: "MEDIUM", color: "#ff8c00", imgFit: "cover",
     sideIcon: "🐸",
     sideDesc: "Invasive bullfrogs compete for food and may take small coot chicks.",
     image: frogsImg as string,
