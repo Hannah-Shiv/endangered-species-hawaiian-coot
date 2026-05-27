@@ -760,25 +760,28 @@ export function Conservation() {
                     </div>
                   </div>
 
-                  {/* Photos — Campbell only */}
-                  {locData.id === "campbell" && (
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
-                      {[
-                        { src: "/campbell-habitat.png", alt: "James Campbell NWR habitat" },
-                        { src: "/campbell-coot.png",    alt: "Hawaiian Coot at James Campbell NWR" },
-                      ].map(img => (
-                        <div key={img.src} onClick={() => setLightbox(img)}
-                          style={{ aspectRatio: "4/3", borderRadius: 8, overflow: "hidden", cursor: "zoom-in" }}
-                        >
-                          <img src={img.src} alt={img.alt}
-                            style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", transition: "transform 0.3s ease" }}
-                            onMouseEnter={e => (e.currentTarget.style.transform = "scale(1.07)")}
-                            onMouseLeave={e => (e.currentTarget.style.transform = "scale(1)")}
-                          />
-                        </div>
-                      ))}
-                    </div>
-                  )}
+                  {/* Photos */}
+                  {(locData.id === "campbell" || locData.id === "hanalei") && (() => {
+                    const photos = locData.id === "campbell"
+                      ? [{ src: "/campbell-habitat.png", alt: "James Campbell NWR habitat" }, { src: "/campbell-coot.png", alt: "Hawaiian Coot at James Campbell NWR" }]
+                      : [{ src: "/hanalei-valley.png", alt: "Hanalei Valley overlook" }, { src: "/hanalei-wetland.png", alt: "Hanalei River wetland" }, { src: "/hanalei-sign.png", alt: "Hanalei NWR entrance sign" }];
+                    const cols = photos.length === 3 ? "1fr 1fr 1fr" : "1fr 1fr";
+                    return (
+                      <div style={{ display: "grid", gridTemplateColumns: cols, gap: 8 }}>
+                        {photos.map(img => (
+                          <div key={img.src} onClick={() => setLightbox(img)}
+                            style={{ aspectRatio: photos.length === 3 ? "3/2" : "4/3", borderRadius: 8, overflow: "hidden", cursor: "zoom-in" }}
+                          >
+                            <img src={img.src} alt={img.alt}
+                              style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", transition: "transform 0.3s ease" }}
+                              onMouseEnter={e => (e.currentTarget.style.transform = "scale(1.07)")}
+                              onMouseLeave={e => (e.currentTarget.style.transform = "scale(1)")}
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    );
+                  })()}
 
                   {/* CTA */}
                   <a
