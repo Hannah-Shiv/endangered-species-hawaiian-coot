@@ -13,13 +13,6 @@ const FF_SANS  = "'Josefin Sans', sans-serif";
 // Single text color for all overlays — deep wine red
 const WINE = "#5C0808";
 
-// White glow shadow: makes dark wine text readable on ANY video frame (light or dark)
-const TS = [
-  "0 0 18px rgba(255,255,255,1)",
-  "0 0 36px rgba(255,255,255,0.85)",
-  "0 0 60px rgba(255,255,255,0.5)",
-  "0 2px 6px rgba(255,255,255,0.9)",
-].join(", ");
 
 const FADE_DUR = 1.3;
 const EASE_IN  = [0.16, 1, 0.3, 1] as const;
@@ -93,17 +86,16 @@ export function MeetSpecies() {
     }
   };
 
-  // Shared text style for overlays
+  // Shared text style for overlays — thick black weight, no shadow
   const overlayText = (size: string, sub = false): React.CSSProperties => ({
     fontFamily: FF_SERIF,
     fontStyle: "italic",
-    fontWeight: sub ? 400 : 300,
+    fontWeight: sub ? 700 : 900,
     fontSize: size,
     lineHeight: sub ? 1.4 : 1.05,
-    letterSpacing: sub ? "0.05em" : "0.07em",
+    letterSpacing: sub ? "0.03em" : "0.05em",
     color: WINE,
     margin: 0,
-    textShadow: TS,
   });
 
   return (
@@ -269,9 +261,9 @@ export function MeetSpecies() {
                 )}
               </AnimatePresence>
 
-              {/* ── OVERLAY: Rotating captions (bottom, above controls) ── */}
+              {/* ── OVERLAY: Rotating captions — on the video content, above the black strip ── */}
               <div style={{
-                position: "absolute", bottom: 54, left: 0, right: 0,
+                position: "absolute", bottom: "22%", left: 0, right: 0,
                 display: "flex", justifyContent: "center",
                 pointerEvents: "none",
               }}>
