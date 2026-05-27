@@ -765,30 +765,77 @@ function PopTrendChart() {
 
 // ─── Population tab ───────────────────────────────────────────────────────────
 function PopulationContent() {
+  const stats = [
+    { year: "1970", suffix: "s Low",  value: "~1,800", note: "Near-extinction — ESA listing triggered",   color: CRIMSON },
+    { year: "1990", suffix: "s Peak", value: "~8,800", note: "Best population count in modern records",   color: GREEN   },
+    { year: "2015", suffix: " Low",   value: "~2,300", note: "Severe drought & compounding habitat loss", color: AMBER   },
+    { year: "2024", suffix: " Count", value: "~3,200", note: "Partial recovery — restoration ongoing",    color: GOLD    },
+  ];
+
   return (
     <div style={{ padding: "32px 40px 48px", maxWidth: 1100, margin: "0 auto" }}>
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ display: "grid", gridTemplateColumns: "1.6fr 1fr", gap: 22 }}>
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+
+        {/* Chart — full width */}
         <div style={{ borderRadius: 16, border: `1px solid ${BORDER}`, background: CARD_BG, padding: "26px 30px" }}>
           <SectionLabel>POPULATION TRAJECTORY 1990 – 2024</SectionLabel>
-          <p style={{ fontFamily: FF_SANS, fontSize: 14, color: "rgba(255,255,255,0.72)", margin: "8px 0 22px", lineHeight: 1.6 }}>
-            From ~8,800 birds to a low of ~2,300, now recovering to ~3,200 thanks to refuge protection.
+          <p style={{ fontFamily: FF_SANS, fontSize: 15, color: "rgba(255,255,255,0.88)", margin: "8px 0 22px", lineHeight: 1.65 }}>
+            From ~8,800 birds to a record low of ~2,300, now recovering to ~3,200 thanks to refuge protection and active management.
           </p>
           <PopTrendChart />
         </div>
-        <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-          {[
-            { label: "1970s Low",  value: "~1,800", note: "Near-extinction; ESA listing",  color: CRIMSON },
-            { label: "1990s Peak", value: "~8,800", note: "Best count in modern records",  color: GREEN  },
-            { label: "2015 Low",   value: "~2,300", note: "Drought + habitat pressure",    color: AMBER  },
-            { label: "2024 Count", value: "~3,200", note: "Partial recovery underway",     color: GOLD   },
-          ].map(s => (
-            <div key={s.label} style={{ borderRadius: 12, border: `1px solid ${s.color}38`, background: `${s.color}0d`, padding: "16px 18px" }}>
-              <p style={{ fontFamily: FF_SANS, fontSize: 12, color: "rgba(255,255,255,0.82)", margin: "0 0 3px", letterSpacing: "0.1em", fontWeight: 700 }}>{s.label.toUpperCase()}</p>
-              <p style={{ fontFamily: FF_SERIF, fontSize: 34, color: s.color, margin: 0, lineHeight: 1 }}>{s.value}</p>
-              <p style={{ fontFamily: FF_SANS, fontSize: 13, color: "rgba(255,255,255,0.68)", margin: "5px 0 0" }}>{s.note}</p>
-            </div>
+
+        {/* 2 × 2 big stat cards */}
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 18 }}>
+          {stats.map((s, i) => (
+            <motion.div key={s.year}
+              initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.12 + i * 0.08, ease: [0.16, 1, 0.3, 1] }}
+              style={{
+                borderRadius: 18,
+                border: `1px solid ${s.color}48`,
+                background: `${s.color}0e`,
+                padding: "30px 34px 28px",
+                position: "relative",
+                overflow: "hidden",
+              }}>
+              {/* Corner glow */}
+              <div style={{
+                position: "absolute", top: 0, left: 0, width: "60%", height: "60%",
+                background: `radial-gradient(ellipse at 0% 0%, ${s.color}1a, transparent 70%)`,
+                pointerEvents: "none",
+              }} />
+
+              {/* ERA label — year BIG + suffix small */}
+              <div style={{ display: "flex", alignItems: "baseline", gap: 4, marginBottom: 10 }}>
+                <span style={{
+                  fontFamily: FF_SANS, fontSize: 44, fontWeight: 900,
+                  color: s.color, letterSpacing: "-0.02em", lineHeight: 1,
+                }}>{s.year}</span>
+                <span style={{
+                  fontFamily: FF_SANS, fontSize: 19, fontWeight: 700,
+                  color: "rgba(255,255,255,0.92)", letterSpacing: "0.03em",
+                }}>{s.suffix}</span>
+              </div>
+
+              {/* Population value */}
+              <p style={{
+                fontFamily: FF_SERIF, fontSize: 52, fontWeight: 700,
+                color: "#fff", margin: "0 0 12px", lineHeight: 1,
+              }}>{s.value}</p>
+
+              {/* Divider */}
+              <div style={{ height: 1, background: `${s.color}30`, marginBottom: 12 }} />
+
+              {/* Note */}
+              <p style={{
+                fontFamily: FF_SANS, fontSize: 16, fontWeight: 500,
+                color: "rgba(255,255,255,0.88)", margin: 0, lineHeight: 1.55,
+              }}>{s.note}</p>
+            </motion.div>
           ))}
         </div>
+
       </motion.div>
     </div>
   );
