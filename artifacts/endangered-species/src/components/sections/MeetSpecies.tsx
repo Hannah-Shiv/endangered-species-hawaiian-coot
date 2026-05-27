@@ -66,7 +66,6 @@ const QUICK_FACTS = [
   "Endemic to Hawai\u02bbi",
   "IUCN: Vulnerable",
   "Wetland Waterbird",
-  "~3,200 remain",
 ];
 
 export function MeetSpecies() {
