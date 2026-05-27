@@ -124,7 +124,7 @@ function ThreatBar({ t, delay }: { t: typeof THREATS[0]; delay: number }) {
 
 // ─── Population SVG chart — live interactive ──────────────────────────────────
 function PopChart() {
-  const W = 300, H = 140;
+  const W = 300, H = 200;
   const pad = { l: 42, r: 16, t: 14, b: 30 };
   const maxPop = 10000;
   const xS = (y: number) => pad.l + (y - 1990) / (2024 - 1990) * (W - pad.l - pad.r);
@@ -280,6 +280,12 @@ function PopChart() {
             style={{ transition: "fill 0.12s" }}
           >{y}</text>
         ))}
+
+        {/* Transparent overlay — sits on top, guarantees mouse capture over all child elements */}
+        <rect x={0} y={0} width={W} height={H} fill="transparent" style={{ cursor: "crosshair" }}
+          onMouseMove={handleMouseMove}
+          onMouseLeave={() => setHovered(null)}
+        />
       </svg>
     </div>
   );
@@ -315,27 +321,27 @@ function ThreatSim() {
 
   return (
     <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
-      <p style={{ fontFamily: FF_SANS, fontSize: 12, color: "rgba(255,255,255,0.45)", margin: "0 0 10px", letterSpacing: "0.08em" }}>WHAT IF CONSERVATION STOPPED?</p>
+      <p style={{ fontFamily: FF_SANS, fontSize: 12, color: "#fff", margin: "0 0 10px", letterSpacing: "0.08em", fontWeight: 700 }}>WHAT IF CONSERVATION STOPPED?</p>
       <div style={{ marginBottom: 16 }}>
         <input type="range" min={0} max={20} value={years} onChange={e => setYears(Number(e.target.value))}
           style={{ width: "100%", accentColor: CRIMSON, cursor: "pointer" }} />
         <div style={{ display: "flex", justifyContent: "space-between", marginTop: 4 }}>
-          <span style={{ fontFamily: FF_SANS, fontSize: 11, color: "rgba(255,255,255,0.3)" }}>0 yr</span>
-          <span style={{ fontFamily: FF_SANS, fontSize: 11, color: "rgba(255,255,255,0.3)" }}>20 yr</span>
+          <span style={{ fontFamily: FF_SANS, fontSize: 11, color: "rgba(255,255,255,0.82)" }}>0 yr</span>
+          <span style={{ fontFamily: FF_SANS, fontSize: 11, color: "rgba(255,255,255,0.82)" }}>20 yr</span>
         </div>
       </div>
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, flex: 1 }}>
-        <div style={{ padding: "12px 14px", borderRadius: 10, background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}>
-          <p style={{ fontFamily: FF_SANS, fontSize: 11, color: "rgba(255,255,255,0.4)", margin: "0 0 3px", letterSpacing: "0.1em" }}>YEAR</p>
+        <div style={{ padding: "12px 14px", borderRadius: 10, background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.18)" }}>
+          <p style={{ fontFamily: FF_SANS, fontSize: 11, color: "rgba(255,255,255,0.88)", margin: "0 0 3px", letterSpacing: "0.1em", fontWeight: 700 }}>YEAR</p>
           <p style={{ fontFamily: FF_SERIF, fontSize: 30, color: GOLD, margin: 0, lineHeight: 1 }}>{years}</p>
         </div>
-        <div style={{ padding: "12px 14px", borderRadius: 10, background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}>
-          <p style={{ fontFamily: FF_SANS, fontSize: 11, color: "rgba(255,255,255,0.4)", margin: "0 0 3px", letterSpacing: "0.1em" }}>EST. POPULATION</p>
+        <div style={{ padding: "12px 14px", borderRadius: 10, background: "rgba(255,255,255,0.07)", border: "1px solid rgba(255,255,255,0.18)" }}>
+          <p style={{ fontFamily: FF_SANS, fontSize: 11, color: "rgba(255,255,255,0.88)", margin: "0 0 3px", letterSpacing: "0.1em", fontWeight: 700 }}>EST. POPULATION</p>
           <p style={{ fontFamily: FF_SERIF, fontSize: 22, color: CRIMSON, margin: 0, lineHeight: 1 }}>~{estPop.toLocaleString()}</p>
         </div>
-        <div style={{ gridColumn: "1 / -1", padding: "10px 14px", borderRadius: 10, background: `${riskColor}14`, border: `1px solid ${riskColor}44`, textAlign: "center" }}>
-          <p style={{ fontFamily: FF_SANS, fontSize: 11, color: "rgba(255,255,255,0.4)", margin: "0 0 2px", letterSpacing: "0.1em" }}>RISK LEVEL</p>
-          <p style={{ fontFamily: FF_SERIF, fontSize: 26, fontWeight: 700, color: riskColor, margin: 0, textShadow: `0 0 18px ${riskColor}55` }}>{risk}</p>
+        <div style={{ gridColumn: "1 / -1", padding: "10px 14px", borderRadius: 10, background: `${riskColor}18`, border: `1px solid ${riskColor}66`, textAlign: "center" }}>
+          <p style={{ fontFamily: FF_SANS, fontSize: 11, color: "rgba(255,255,255,0.88)", margin: "0 0 2px", letterSpacing: "0.1em", fontWeight: 700 }}>RISK LEVEL</p>
+          <p style={{ fontFamily: FF_SERIF, fontSize: 26, fontWeight: 700, color: riskColor, margin: 0, textShadow: `0 0 18px ${riskColor}88` }}>{risk}</p>
         </div>
       </div>
     </div>
