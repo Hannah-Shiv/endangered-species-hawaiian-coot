@@ -610,11 +610,11 @@ export function ExtinctionRisk() {
       {/* Cinematic header — minHeight so VULNERABLE never gets clipped */}
       <div style={{ position: "relative", minHeight: 390, overflow: "hidden" }}>
         {/* Background image — brighter so sides pop */}
-        <img src="/campbell-habitat.png" alt="" aria-hidden
-          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 55%", filter: "brightness(0.78)" }}
+        <img src="/campbell-new-header.png" alt="" aria-hidden
+          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 40%", filter: "brightness(0.92)" }}
         />
-        {/* Horizontal vignette: bright left + right thirds, dark center third for text legibility */}
-        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(90deg, rgba(0,0,0,0.04) 0%, rgba(0,0,0,0.04) 18%, rgba(0,0,0,0.78) 36%, rgba(0,0,0,0.88) 50%, rgba(0,0,0,0.78) 64%, rgba(0,0,0,0.04) 82%, rgba(0,0,0,0.04) 100%)" }} />
+        {/* Horizontal vignette: left + right thirds stay bright, center third darkened for text legibility */}
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.05) 22%, rgba(0,0,0,0.82) 34%, rgba(0,0,0,0.90) 50%, rgba(0,0,0,0.82) 66%, rgba(0,0,0,0.05) 78%, rgba(0,0,0,0) 100%)" }} />
         {/* Soft bottom fade into the tab bar */}
         <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, rgba(0,0,0,0.18) 0%, transparent 40%, rgba(0,0,0,0.55) 100%)" }} />
 
