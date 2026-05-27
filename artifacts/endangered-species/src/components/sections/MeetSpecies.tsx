@@ -17,6 +17,59 @@ const WINE = "#5C0808";
 const FADE_DUR = 1.3;
 const EASE_IN  = [0.16, 1, 0.3, 1] as const;
 
+// ─── Matrix decode banner ──────────────────────────────────────────────────────
+const MATRIX_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*<>{}[]!?/\\|";
+const FINAL_TEXT   = "ONLY   3,200   REMAINING";
+const SETTLE_MS    = 2000;   // time to fully decode
+const LOOP_MS      = 10000;  // total cycle: decode + hold
+
+function MatrixDecode() {
+  const [chars, setChars] = useState<{ ch: string; locked: boolean }[]>([]);
+  const frameRef = useRef<number | undefined>(undefined);
+  const startRef = useRef(Date.now());
+
+  useEffect(() => {
+    const tick = () => {
+      const elapsed  = (Date.now() - startRef.current) % LOOP_MS;
+      const progress = Math.min(elapsed / SETTLE_MS, 1);
+      const locked   = Math.floor(progress * FINAL_TEXT.length);
+
+      setChars(
+        FINAL_TEXT.split("").map((char, i) => {
+          if (char === " ") return { ch: "\u00A0\u00A0", locked: true };
+          if (i < locked)  return { ch: char, locked: true };
+          return { ch: MATRIX_CHARS[Math.floor(Math.random() * MATRIX_CHARS.length)], locked: false };
+        })
+      );
+      frameRef.current = requestAnimationFrame(tick);
+    };
+    frameRef.current = requestAnimationFrame(tick);
+    return () => { if (frameRef.current !== undefined) cancelAnimationFrame(frameRef.current); };
+  }, []);
+
+  return (
+    <div style={{
+      position: "absolute", top: "7%", left: "4%",
+      pointerEvents: "none",
+      display: "flex", alignItems: "baseline", flexWrap: "nowrap",
+    }}>
+      {chars.map(({ ch, locked }, i) => (
+        <span key={i} style={{
+          fontFamily: "'Orbitron', sans-serif",
+          fontWeight: 900,
+          fontSize: "clamp(13px, 1.7vw, 21px)",
+          letterSpacing: "0.08em",
+          lineHeight: 1,
+          color: locked
+            ? WINE
+            : `rgba(92,8,8,${(0.25 + Math.random() * 0.45).toFixed(2)})`,
+          display: "inline-block",
+        }}>{ch}</span>
+      ))}
+    </div>
+  );
+}
+
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
     <p style={{ fontFamily: FF_SANS, fontSize: 12, fontWeight: 800, letterSpacing: "0.18em", color: GOLD, margin: "0 0 14px", display: "flex", alignItems: "center", gap: 7 }}>
@@ -238,7 +291,7 @@ export function MeetSpecies() {
                 )}
               </AnimatePresence>
 
-              {/* ── OVERLAY: Top-left Population indicator ── */}
+              {/* ── OVERLAY: Top-left Matrix decode banner ── */}
               <AnimatePresence>
                 {titlePhase === "hidden" && (
                   <motion.div
@@ -247,16 +300,8 @@ export function MeetSpecies() {
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: FADE_DUR, delay: 0.15, ease: EASE_IN }}
-                    style={{ position: "absolute", top: "7%", left: "4%", pointerEvents: "none" }}>
-                    <motion.p
-                      animate={{ opacity: [1, 0.5, 1] }}
-                      transition={{ duration: 2.6, repeat: Infinity, ease: "easeInOut" }}
-                      style={{ ...overlayText("clamp(30px, 4.5vw, 62px)") }}>
-                      ~3,200
-                    </motion.p>
-                    <p style={{ ...overlayText("clamp(13px, 1.5vw, 19px)", true), marginTop: 6 }}>
-                      remaining
-                    </p>
+                    style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, pointerEvents: "none" }}>
+                    <MatrixDecode />
                   </motion.div>
                 )}
               </AnimatePresence>

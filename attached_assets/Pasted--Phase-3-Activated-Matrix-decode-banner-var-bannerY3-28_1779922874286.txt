@@ -1,0 +1,59 @@
+// Phase 3: Activated — Matrix decode banner
+		var bannerY3=28, bannerH3=52, bannerW3=1200;
+		var finalText='M I C R O \u005F B O T \u2022  A C T I V A T E D  \u2022 \u005F \u2022  I N S I D E  \u2022 T H E \u2022 B O D Y !';
+		var matrixChars='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*<>{}[]!?/\\|';
+		var loopDuration=4000; // total loop time in ms (settle + pause)
+		var settleTime=1000;   // how long the decode takes
+		var elapsed=Date.now()%loopDuration;
+		var progress=Math.min(elapsed/settleTime,1);
+
+		// How many characters have locked in
+		var lockedCount=Math.floor(progress*finalText.length);
+
+		// Build the display string
+		var displayText='';
+		for(var ci=0;ci<finalText.length;ci++){
+		  if(finalText[ci]===' ' || finalText[ci]==='\u2014'){
+			displayText+=finalText[ci]; // spaces and dashes always show
+		  } else if(ci<lockedCount){
+			displayText+=finalText[ci]; // locked in
+		  } else {
+			displayText+=matrixChars[Math.floor(Math.random()*matrixChars.length)]; // scramble
+		  }
+		}
+
+		// Banner background
+		ctx.fillStyle='rgba(0,20,30,0.9)';
+		rrect(bx-bannerW3/2,bannerY3-6,bannerW3,bannerH3,10);ctx.fill();
+
+		// Banner border
+		ctx.shadowColor='#4dff4d';ctx.shadowBlur=20;
+		ctx.strokeStyle='#4dff4d';ctx.lineWidth=2;
+		rrect(bx-bannerW3/2,bannerY3-6,bannerW3,bannerH3,10);ctx.stroke();
+		ctx.shadowBlur=0;
+
+		// Draw text character by character (locked = bright, scrambling = dim green)
+		ctx.font="bold 28px 'Orbitron'";ctx.textAlign='center';
+		var fullWidth=ctx.measureText(finalText).width;
+		var startX=bx-fullWidth/2;
+		var charX=startX;
+
+		for(var ci2=0;ci2<displayText.length;ci2++){
+		  var isLocked=finalText[ci2]===' '||finalText[ci2]==='\u2014'||ci2<lockedCount;
+
+		  if(isLocked){
+			ctx.fillStyle='#4dff4d';
+			ctx.shadowColor='#4dff4d';ctx.shadowBlur=18;
+		  } else {
+			// Scrambling characters — flickering dim green
+			var flicker=0.3+Math.random()*0.4;
+			ctx.fillStyle='rgba(77, 255, 77,'+flicker+')';
+			ctx.shadowColor='#4dff4d';ctx.shadowBlur=4;
+		  }
+
+		  ctx.textAlign='left';
+		  ctx.fillText(displayText[ci2],charX,bannerY3+32);
+		  charX+=ctx.measureText(finalText[ci2]).width;
+		}
+		ctx.shadowBlur=0;
+		ctx.textAlign='left';
