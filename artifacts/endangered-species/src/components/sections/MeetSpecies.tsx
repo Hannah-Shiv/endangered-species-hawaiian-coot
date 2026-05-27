@@ -1,5 +1,5 @@
 // ─── Meet the Species ─────────────────────────────────────────────────────────
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import sciClassImg from "@assets/image_1779762468352.png";
 
@@ -10,11 +10,17 @@ const BORDER   = "rgba(212,175,55,0.18)";
 const FF_SERIF = "'Playfair Display', serif";
 const FF_SANS  = "'Josefin Sans', sans-serif";
 
-// Heavy shadow — same formula as cinematic intro, keeps text legible on any frame
-const TS = "0 2px 48px rgba(0,0,0,0.99), 0 0 90px rgba(0,0,0,0.97), 0 4px 18px rgba(0,0,0,0.94)";
-const TS_RED = `0 0 40px rgba(220,50,30,0.7), ${TS}`;
+// Single text color for all overlays — deep wine red
+const WINE = "#5C0808";
 
-// Shared cinematic motion
+// White glow shadow: makes dark wine text readable on ANY video frame (light or dark)
+const TS = [
+  "0 0 18px rgba(255,255,255,1)",
+  "0 0 36px rgba(255,255,255,0.85)",
+  "0 0 60px rgba(255,255,255,0.5)",
+  "0 2px 6px rgba(255,255,255,0.9)",
+].join(", ");
+
 const FADE_DUR = 1.3;
 const EASE_IN  = [0.16, 1, 0.3, 1] as const;
 
@@ -34,10 +40,10 @@ const CAPTIONS = [
 ];
 
 const QUICK_FACTS = [
-  { icon: "◈", label: "Endemic to Hawai\u02bbi" },
-  { icon: "◉", label: "IUCN: Vulnerable" },
-  { icon: "◈", label: "Wetland Waterbird" },
-  { icon: "◉", label: "~3,200 remain" },
+  "Endemic to Hawai\u02bbi",
+  "IUCN: Vulnerable",
+  "Wetland Waterbird",
+  "~3,200 remain",
 ];
 
 export function MeetSpecies() {
@@ -56,9 +62,10 @@ export function MeetSpecies() {
     { value: "390–650",label: "Weight (g)",            color: GOLD   },
   ];
 
-  // Opening title: in → hold → out → gone
   const [titlePhase, setTitlePhase] = useState<"visible" | "hidden">("visible");
   const [captionIdx, setCaptionIdx] = useState(0);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const videoWrapRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const t = setTimeout(() => setTitlePhase("hidden"), 4000);
@@ -70,6 +77,35 @@ export function MeetSpecies() {
     return () => clearInterval(iv);
   }, []);
 
+  // Track fullscreen state
+  useEffect(() => {
+    const handler = () => setIsFullscreen(!!document.fullscreenElement);
+    document.addEventListener("fullscreenchange", handler);
+    return () => document.removeEventListener("fullscreenchange", handler);
+  }, []);
+
+  const toggleFullscreen = () => {
+    if (!videoWrapRef.current) return;
+    if (!document.fullscreenElement) {
+      videoWrapRef.current.requestFullscreen().catch(() => {});
+    } else {
+      document.exitFullscreen().catch(() => {});
+    }
+  };
+
+  // Shared text style for overlays
+  const overlayText = (size: string, sub = false): React.CSSProperties => ({
+    fontFamily: FF_SERIF,
+    fontStyle: "italic",
+    fontWeight: sub ? 400 : 300,
+    fontSize: size,
+    lineHeight: sub ? 1.4 : 1.05,
+    letterSpacing: sub ? "0.05em" : "0.07em",
+    color: WINE,
+    margin: 0,
+    textShadow: TS,
+  });
+
   return (
     <div style={{ background: "#000", minHeight: "100vh", color: "#fff" }}>
 
@@ -79,7 +115,6 @@ export function MeetSpecies() {
           style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 30%", filter: "brightness(0.78)" }} />
         <div style={{ position: "absolute", inset: 0, background: "linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 25%, rgba(0,0,0,0.82) 38%, rgba(0,0,0,0.90) 50%, rgba(0,0,0,0.82) 62%, rgba(0,0,0,0) 75%, rgba(0,0,0,0) 100%)" }} />
         <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, rgba(0,0,0,0.15) 0%, transparent 35%, rgba(0,0,0,0.6) 100%)" }} />
-
         <div style={{ position: "relative", zIndex: 2, textAlign: "center", padding: "90px 32px 0", maxWidth: 820, margin: "0 auto" }}>
           <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.85 }}>
             <span style={{ fontFamily: FF_SANS, fontSize: 13, fontWeight: 800, letterSpacing: "0.22em", color: CRIMSON, display: "block", marginBottom: 10 }}>
@@ -114,15 +149,34 @@ export function MeetSpecies() {
               <span style={{ fontFamily: FF_SANS, fontSize: 12, color: "rgba(255,255,255,0.45)", letterSpacing: "0.06em" }}>PLAY · PAUSE · REPLAY</span>
             </div>
 
-            {/* ── Video frame with overlays ── */}
-            <div style={{ position: "relative", background: "#000", lineHeight: 0 }}>
+            {/* ── Video frame + overlays — fullscreen wrapper ── */}
+            <div ref={videoWrapRef} style={{
+              position: "relative", background: "#000", lineHeight: 0,
+              // When this div is fullscreened, fill the screen
+              ...(isFullscreen ? { width: "100vw", height: "100vh", display: "flex", alignItems: "center" } : {}),
+            }}>
               <video
                 src="/coot.mp4"
                 controls
-                controlsList="nodownload"
+                controlsList="nodownload nofullscreen"
                 playsInline
-                style={{ width: "100%", display: "block", maxHeight: 540 }}
+                style={{ width: "100%", display: "block", maxHeight: isFullscreen ? "100vh" : 540, objectFit: "contain" }}
               />
+
+              {/* ── Custom fullscreen button ── */}
+              <button
+                onClick={toggleFullscreen}
+                title={isFullscreen ? "Exit fullscreen" : "Fullscreen"}
+                style={{
+                  position: "absolute", bottom: 12, right: 12, zIndex: 30,
+                  background: "rgba(0,0,0,0.55)", border: "1px solid rgba(255,255,255,0.25)",
+                  borderRadius: 6, color: "#fff", cursor: "pointer",
+                  width: 34, height: 34, display: "flex", alignItems: "center", justifyContent: "center",
+                  fontSize: 16, lineHeight: 1, backdropFilter: "blur(4px)",
+                  transition: "background 0.2s",
+                }}>
+                {isFullscreen ? "✕" : "⛶"}
+              </button>
 
               {/* ── OVERLAY: Cinematic Opening Title ── */}
               <AnimatePresence>
@@ -137,63 +191,40 @@ export function MeetSpecies() {
                       position: "absolute", top: 0, left: 0, right: 0, bottom: 0,
                       display: "flex", alignItems: "center", justifyContent: "center",
                       flexDirection: "column",
-                      background: "linear-gradient(180deg, rgba(0,0,0,0.38) 0%, transparent 45%, rgba(0,0,0,0.28) 100%)",
                       pointerEvents: "none",
                     }}>
-                    {/* Main title */}
                     <motion.p
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -12 }}
+                      exit={{ opacity: 0, y: -10 }}
                       transition={{ duration: FADE_DUR, ease: EASE_IN }}
-                      style={{
-                        fontFamily: FF_SERIF,
-                        fontStyle: "italic",
-                        fontWeight: 300,
-                        fontSize: "clamp(42px, 6.5vw, 86px)",
-                        lineHeight: 1.05,
-                        letterSpacing: "0.07em",
-                        color: CRIMSON,
-                        margin: 0,
-                        textShadow: TS_RED,
-                      }}>
+                      style={{ ...overlayText("clamp(44px, 6.5vw, 88px)") }}>
                       Hawaiian Coot
                     </motion.p>
 
-                    {/* Gold rule */}
                     <motion.div
                       initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} exit={{ opacity: 0 }}
                       transition={{ duration: 0.9, delay: 0.55, ease: EASE_IN }}
                       style={{
-                        height: "1.5px", width: 100, margin: "18px auto",
-                        background: `linear-gradient(to right, transparent, ${GOLD} 40%, transparent)`,
-                        transformOrigin: "center",
+                        height: "1.5px", width: 100, margin: "16px auto",
+                        background: `linear-gradient(to right, transparent, ${WINE} 40%, transparent)`,
+                        transformOrigin: "center", opacity: 0.5,
                       }}
                     />
 
-                    {/* Scientific name */}
                     <motion.p
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
                       transition={{ duration: FADE_DUR, delay: 0.55, ease: EASE_IN }}
-                      style={{
-                        fontFamily: FF_SERIF,
-                        fontStyle: "italic",
-                        fontWeight: 400,
-                        fontSize: "clamp(20px, 2.8vw, 38px)",
-                        color: "rgba(255,200,190,0.92)",
-                        margin: 0,
-                        letterSpacing: "0.05em",
-                        textShadow: TS,
-                      }}>
+                      style={{ ...overlayText("clamp(20px, 2.8vw, 38px)", true) }}>
                       Fulica alai
                     </motion.p>
                   </motion.div>
                 )}
               </AnimatePresence>
 
-              {/* ── OVERLAY: Top-right — Quick Facts, plain cinematic text ── */}
+              {/* ── OVERLAY: Top-right Quick Facts ── */}
               <AnimatePresence>
                 {titlePhase === "hidden" && (
                   <motion.div
@@ -202,34 +233,20 @@ export function MeetSpecies() {
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: FADE_DUR, ease: EASE_IN }}
-                    style={{
-                      position: "absolute", top: "8%", right: "5%",
-                      textAlign: "right",
-                      pointerEvents: "none",
-                    }}>
-                    {QUICK_FACTS.map((f, i) => (
+                    style={{ position: "absolute", top: "7%", right: "4%", textAlign: "right", pointerEvents: "none" }}>
+                    {QUICK_FACTS.map((label, i) => (
                       <motion.p key={i}
                         initial={{ opacity: 0, x: 14 }} animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: FADE_DUR, delay: i * 0.14, ease: EASE_IN }}
-                        style={{
-                          fontFamily: FF_SERIF,
-                          fontStyle: "italic",
-                          fontWeight: 300,
-                          fontSize: "clamp(15px, 2.0vw, 26px)",
-                          color: i % 2 === 0 ? CRIMSON : "rgba(255,200,190,0.88)",
-                          margin: "0 0 6px",
-                          letterSpacing: "0.04em",
-                          lineHeight: 1.3,
-                          textShadow: TS,
-                        }}>
-                        {f.label}
+                        transition={{ duration: FADE_DUR, delay: i * 0.12, ease: EASE_IN }}
+                        style={{ ...overlayText("clamp(14px, 1.9vw, 24px)", true), margin: "0 0 8px" }}>
+                        {label}
                       </motion.p>
                     ))}
                   </motion.div>
                 )}
               </AnimatePresence>
 
-              {/* ── OVERLAY: Top-left — Population, plain cinematic text ── */}
+              {/* ── OVERLAY: Top-left Population indicator ── */}
               <AnimatePresence>
                 {titlePhase === "hidden" && (
                   <motion.div
@@ -238,67 +255,37 @@ export function MeetSpecies() {
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0 }}
                     transition={{ duration: FADE_DUR, delay: 0.15, ease: EASE_IN }}
-                    style={{
-                      position: "absolute", top: "8%", left: "5%",
-                      pointerEvents: "none",
-                    }}>
+                    style={{ position: "absolute", top: "7%", left: "4%", pointerEvents: "none" }}>
                     <motion.p
-                      animate={{ opacity: [1, 0.55, 1] }}
-                      transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
-                      style={{
-                        fontFamily: FF_SERIF,
-                        fontStyle: "italic",
-                        fontWeight: 300,
-                        fontSize: "clamp(28px, 4.2vw, 58px)",
-                        lineHeight: 1,
-                        color: CRIMSON,
-                        margin: 0,
-                        letterSpacing: "0.04em",
-                        textShadow: TS_RED,
-                      }}>
+                      animate={{ opacity: [1, 0.5, 1] }}
+                      transition={{ duration: 2.6, repeat: Infinity, ease: "easeInOut" }}
+                      style={{ ...overlayText("clamp(30px, 4.5vw, 62px)") }}>
                       ~3,200
                     </motion.p>
-                    <p style={{
-                      fontFamily: FF_SERIF,
-                      fontStyle: "italic",
-                      fontWeight: 400,
-                      fontSize: "clamp(13px, 1.6vw, 20px)",
-                      color: "rgba(255,200,190,0.82)",
-                      margin: "6px 0 0",
-                      letterSpacing: "0.06em",
-                      textShadow: TS,
-                    }}>
+                    <p style={{ ...overlayText("clamp(13px, 1.5vw, 19px)", true), marginTop: 6 }}>
                       remaining
                     </p>
                   </motion.div>
                 )}
               </AnimatePresence>
 
-              {/* ── OVERLAY: Rotating documentary captions (bottom, above controls) ── */}
+              {/* ── OVERLAY: Rotating captions (bottom, above controls) ── */}
               <div style={{
-                position: "absolute", bottom: 58, left: 0, right: 0,
+                position: "absolute", bottom: 54, left: 0, right: 0,
                 display: "flex", justifyContent: "center",
                 pointerEvents: "none",
               }}>
                 <AnimatePresence mode="wait">
                   <motion.p
                     key={captionIdx}
-                    initial={{ opacity: 0, y: 12 }}
+                    initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -8 }}
                     transition={{ duration: 1.1, ease: EASE_IN }}
                     style={{
-                      fontFamily: FF_SERIF,
-                      fontStyle: "italic",
-                      fontWeight: 300,
-                      fontSize: "clamp(16px, 2.2vw, 28px)",
-                      color: CRIMSON,
-                      margin: 0,
+                      ...overlayText("clamp(16px, 2.1vw, 27px)", true),
                       textAlign: "center",
-                      letterSpacing: "0.04em",
-                      lineHeight: 1.4,
-                      textShadow: TS_RED,
-                      maxWidth: "80%",
+                      maxWidth: "78%",
                     }}>
                     {CAPTIONS[captionIdx]}
                   </motion.p>
@@ -314,7 +301,6 @@ export function MeetSpecies() {
               </span>
             </div>
 
-            {/* Corner glow */}
             <div style={{ position: "absolute", top: 0, left: 0, width: "30%", height: "30%", background: `radial-gradient(ellipse at 0% 0%, ${GOLD}12, transparent 70%)`, pointerEvents: "none" }} />
             <div style={{ position: "absolute", bottom: 0, right: 0, width: "30%", height: "30%", background: `radial-gradient(ellipse at 100% 100%, ${CRIMSON}0d, transparent 70%)`, pointerEvents: "none" }} />
           </motion.div>
@@ -328,10 +314,7 @@ export function MeetSpecies() {
                 <motion.div key={i}
                   initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.35 + i * 0.07 }}
-                  style={{
-                    padding: "20px 16px", borderRadius: 14, textAlign: "center",
-                    border: `1px solid ${s.color}40`, background: `${s.color}0d`,
-                  }}>
+                  style={{ padding: "20px 16px", borderRadius: 14, textAlign: "center", border: `1px solid ${s.color}40`, background: `${s.color}0d` }}>
                   <p style={{ fontFamily: FF_SERIF, fontSize: 36, fontWeight: 700, color: s.color, margin: 0, lineHeight: 1 }}>{s.value}</p>
                   <p style={{ fontFamily: FF_SANS, fontSize: 13, fontWeight: 600, color: "rgba(255,255,255,0.82)", margin: "8px 0 0", letterSpacing: "0.06em" }}>{s.label}</p>
                 </motion.div>
@@ -360,10 +343,7 @@ export function MeetSpecies() {
                     padding: "16px 4px",
                     borderBottom: i < facts.length - 1 ? "1px solid rgba(255,255,255,0.07)" : "none",
                   }}>
-                  <span style={{
-                    fontFamily: FF_SERIF, fontSize: 22, fontWeight: 700,
-                    color: GOLD, flexShrink: 0, lineHeight: 1, marginTop: 2,
-                  }}>{i + 1}</span>
+                  <span style={{ fontFamily: FF_SERIF, fontSize: 22, fontWeight: 700, color: GOLD, flexShrink: 0, lineHeight: 1, marginTop: 2 }}>{i + 1}</span>
                   <p style={{ fontFamily: FF_SERIF, fontSize: 17, color: "rgba(255,255,255,0.92)", margin: 0, lineHeight: 1.65 }}>{fact}</p>
                 </motion.div>
               ))}
