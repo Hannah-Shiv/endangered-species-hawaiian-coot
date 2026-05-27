@@ -540,13 +540,18 @@ export function Predators() {
               key={p.id + "-eco"}
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
               transition={{ duration: 0.35 }}
-              style={{ display: "flex", flexDirection: "column", gap: 7, width: "100%", alignItems: "center" }}
+              style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px 10px", width: "100%" }}
             >
               {p.ecoImpact.map((row, i) => (
-                <div key={i} style={{ display: "flex", alignItems: "center", gap: 7, justifyContent: "center" }}>
-                  <span style={{ fontSize: 15, flexShrink: 0 }}>{row.icon}</span>
-                  <span style={{ fontSize: 13.5, color: "rgba(255,255,255,0.8)", lineHeight: 1.3 }}>{row.label}</span>
-                  <span style={{ fontSize: 13.5, fontWeight: 900, color: row.dir === "up" ? "#4cde88" : "#ff3344", flexShrink: 0, minWidth: 48, textAlign: "right" }}>
+                <div key={i} style={{
+                  display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+                  gap: 3, padding: "8px 6px", borderRadius: 8,
+                  background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)",
+                  textAlign: "center",
+                }}>
+                  <span style={{ fontSize: 18 }}>{row.icon}</span>
+                  <span style={{ fontSize: 13, color: "rgba(255,255,255,0.75)", lineHeight: 1.3 }}>{row.label}</span>
+                  <span style={{ fontSize: 15, fontWeight: 900, color: row.dir === "up" ? "#4cde88" : "#ff3344" }}>
                     {row.dir === "down" ? "↓" : "↑"} {row.pct}%
                   </span>
                 </div>
