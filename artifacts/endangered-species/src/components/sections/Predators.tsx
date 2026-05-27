@@ -2,7 +2,7 @@ import { motion, AnimatePresence, useSpring } from "framer-motion";
 import { useState, useEffect } from "react";
 import healthyImg from "@assets/image_1779835298098.png";
 import ratsImg    from "@assets/image_1779835596663.png";
-import dogsImg    from "@assets/image_1779838496982.png";
+import dogsImg    from "@assets/image_1779842303114.png";
 import frogsImg     from "@assets/image_1779842207715.png";
 import mongooseImg   from "@assets/image_1779842173926.png";
 import nightHeronImg from "@assets/image_1779841933879.png";
@@ -102,7 +102,7 @@ const PREDATORS: Predator[] = [
     banner: "Rats and feral cats are major threats to Hawaiian Coot nests. Their presence can drastically reduce egg and chick survival.",
   },
   {
-    id: "dogs", num: 3, name: "Dogs", threat: "MEDIUM", color: "#ff8c00",
+    id: "dogs", num: 3, name: "Dogs", threat: "MEDIUM", color: "#ff8c00", imgFit: "cover",
     sideIcon: "🐕",
     sideDesc: "Domestic and feral dogs disturb and attack nesting birds in wetland areas.",
     image: dogsImg as string,
