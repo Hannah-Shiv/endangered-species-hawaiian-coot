@@ -169,13 +169,36 @@ export function Sources() {
               </div>
 
               {/* Teacher credit */}
-              <div style={{ marginBottom: 32, padding: "20px 28px", borderRadius: 14, border: "1px solid rgba(255,255,255,0.12)", background: "rgba(255,255,255,0.04)" }}>
-                <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 12, letterSpacing: "0.2em", color: "rgba(255,255,255,0.4)", fontWeight: 700, marginBottom: 8, textTransform: "uppercase" }}>
-                  Life Science Teacher
-                </p>
-                <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 32, color: "rgba(255,255,255,0.97)", margin: 0, lineHeight: 1.2 }}>
+              <div style={{
+                marginBottom: 32, padding: "28px 36px 30px",
+                borderRadius: 16,
+                border: "1px solid rgba(255,255,255,0.18)",
+                background: "linear-gradient(135deg, rgba(255,255,255,0.07) 0%, rgba(255,255,255,0.03) 100%)",
+                position: "relative", overflow: "hidden",
+              }}>
+                {/* Subtle left accent stripe */}
+                <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: 4, background: "linear-gradient(to bottom, rgba(212,175,55,0.8), rgba(255,255,255,0.5), rgba(200,30,10,0.6))" }} />
+
+                {/* Label row */}
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10, marginBottom: 12 }}>
+                  <div style={{ height: 1, width: 32, background: "rgba(255,255,255,0.25)" }} />
+                  <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11, letterSpacing: "0.28em", color: "rgba(255,255,255,0.5)", fontWeight: 800, margin: 0, textTransform: "uppercase" }}>
+                    Life Science Teacher
+                  </p>
+                  <div style={{ height: 1, width: 32, background: "rgba(255,255,255,0.25)" }} />
+                </div>
+
+                {/* Name */}
+                <p style={{ fontFamily: "'Playfair Display', serif", fontSize: 38, color: "rgba(255,255,255,1)", margin: "0 0 10px", lineHeight: 1.15, letterSpacing: "0.01em" }}>
                   Ms. Calliandra Harris
                 </p>
+
+                {/* Decorative underline */}
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
+                  <div style={{ height: 1, width: 50, background: "linear-gradient(to right, transparent, rgba(212,175,55,0.7))" }} />
+                  <span style={{ color: "rgba(212,175,55,0.85)", fontSize: 12 }}>✦</span>
+                  <div style={{ height: 1, width: 50, background: "linear-gradient(to left, transparent, rgba(212,175,55,0.7))" }} />
+                </div>
               </div>
 
               {/* School info pills */}
