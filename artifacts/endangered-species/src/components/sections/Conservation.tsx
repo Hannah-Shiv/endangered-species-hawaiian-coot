@@ -75,11 +75,11 @@ const TRENDS = [
 
 // ─── Hawaii map locations ──────────────────────────────────────────────────────
 const LOCATIONS = [
-  { id: "hanalei",  name: "Hanalei NWR",          island: "Kauaʻi", cx: 85,  cy: 50, pop: "~500",   habitat: "917",   threat: "Medium", recovery: 58, mapImg: null as string | null,
+  { id: "hanalei",  name: "Hanalei NWR",          island: "Kauaʻi", cx: 85,  cy: 50, pop: "~500",   habitat: "917",   threat: "Medium", recovery: 58, mapImg: "/hanalei-map.png" as string | null,
     desc: "Nestled in the lush Hanalei Valley on Kauaʻi, this refuge shelters the largest concentration of endangered waterbirds in the state, including the Hawaiian Coot, Stilt, and Moorhen." },
   { id: "campbell", name: "James Campbell NWR",    island: "Oʻahu",  cx: 216, cy: 70, pop: "~1,450", habitat: "2,150", threat: "Medium", recovery: 68, mapImg: "/campbell-map.png" as string | null,
     desc: "Located on the windward side of Oʻahu near Kahuku Point, James Campbell NWR protects critical wetland habitat and is the primary site for Hawaiian Coot population recovery efforts." },
-  { id: "kealia",   name: "Kealia Pond NWR",       island: "Maui",   cx: 362, cy: 100, pop: "~700",  habitat: "700",   threat: "Low",    recovery: 55, mapImg: null as string | null,
+  { id: "kealia",   name: "Kealia Pond NWR",       island: "Maui",   cx: 362, cy: 100, pop: "~700",  habitat: "700",   threat: "Low",    recovery: 55, mapImg: "/kealia-map.png" as string | null,
     desc: "One of Maui's last natural perennial wetlands, Kealia Pond provides essential wintering habitat and a protected breeding ground for Hawaiian Coots and other native waterbirds." },
 ];
 
