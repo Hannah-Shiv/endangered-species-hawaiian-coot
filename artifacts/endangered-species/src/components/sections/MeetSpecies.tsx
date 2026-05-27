@@ -167,7 +167,6 @@ export function MeetSpecies() {
                 <div style={{ width: 10, height: 10, borderRadius: "50%", background: CRIMSON, boxShadow: `0 0 10px ${CRIMSON}` }} />
                 <span style={{ fontFamily: FF_SANS, fontSize: 13, fontWeight: 800, color: GOLD, letterSpacing: "0.16em" }}>SPECIES DOCUMENTARY</span>
               </div>
-              <span style={{ fontFamily: FF_SANS, fontSize: 12, color: "rgba(255,255,255,0.45)", letterSpacing: "0.06em" }}>PLAY · PAUSE · REPLAY</span>
             </div>
 
             {/* ── Video frame + overlays — fullscreen wrapper ── */}
