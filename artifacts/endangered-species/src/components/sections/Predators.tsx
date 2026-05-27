@@ -435,7 +435,7 @@ export function Predators() {
                 transition={{ duration: 0.6 }}
                 style={{
                   position: "absolute", inset: 0, width: "100%", height: "100%",
-                  objectFit: "cover", objectPosition: "center",
+                  objectFit: "contain", objectPosition: "center",
                   filter: p.imgFilter,
                 }}
               />
