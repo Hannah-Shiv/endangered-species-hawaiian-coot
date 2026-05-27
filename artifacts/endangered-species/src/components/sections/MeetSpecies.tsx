@@ -20,7 +20,7 @@ const EASE_IN  = [0.16, 1, 0.3, 1] as const;
 // ─── Matrix decode banner ──────────────────────────────────────────────────────
 const MATRIX_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*<>{}[]!?/\\|";
 const FINAL_LINES  = ["O N L Y", "3 2 0 0", "R E M A I N I N G"];
-const SETTLE_MS    = 2200;   // time to fully decode each line
+const SETTLE_MS    = 900;    // time to fully decode each line
 const LOOP_MS      = 10000;  // total cycle: decode + hold
 
 function MatrixLine({ text, delayOffset }: { text: string; delayOffset: number }) {
@@ -78,7 +78,7 @@ function MatrixDecode() {
       display: "flex", flexDirection: "column", gap: 10,
     }}>
       {FINAL_LINES.map((line, i) => (
-        <MatrixLine key={line} text={line} delayOffset={i * 600} />
+        <MatrixLine key={line} text={line} delayOffset={i * 350} />
       ))}
     </div>
   );
