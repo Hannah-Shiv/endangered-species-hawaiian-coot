@@ -385,16 +385,22 @@ function OverviewContent() {
             <p style={{ fontFamily: FF_SERIF, fontSize: 24, color: GOLD, margin: 0, textShadow: "0 0 20px rgba(212,175,55,0.3)" }}>A Fragile Balance</p>
             <TrendingDown size={22} color={CRIMSON} />
           </div>
-          <p style={{ fontFamily: FF_SANS, fontSize: 17, fontWeight: 700, color: "rgba(255,255,255,0.95)", margin: "0 0 8px" }}>
-            Only ~3,200 Hawaiian Coots remain.
+          {/* Critical stat #1 */}
+          <p className="critical-pulse"
+            style={{ fontFamily: FF_SERIF, fontSize: 22, fontWeight: 700, color: CRIMSON, margin: "0 0 14px", letterSpacing: "0.02em", lineHeight: 1.2 }}>
+            ⚠ Only ~3,200 Hawaiian Coots remain.
           </p>
-          <p style={{ fontFamily: FF_SANS, fontSize: 15, color: "rgba(255,255,255,0.65)", margin: "0 0 20px", lineHeight: 1.65 }}>
-            One major hurricane season or severe prolonged drought could reduce the population by 30%.
-          </p>
+          {/* Critical stat #2 — amber warning block */}
+          <div style={{ borderLeft: `3px solid rgba(245,158,11,0.9)`, background: "rgba(245,158,11,0.07)", borderRadius: "0 8px 8px 0", padding: "10px 14px", marginBottom: 20 }}>
+            <p style={{ fontFamily: FF_SANS, fontSize: 14, fontWeight: 700, color: "rgba(245,158,11,1)", margin: "0 0 2px", letterSpacing: "0.05em" }}>⚡ ONE EVENT AWAY FROM COLLAPSE</p>
+            <p style={{ fontFamily: FF_SANS, fontSize: 14, color: "rgba(255,255,255,0.88)", margin: 0, lineHeight: 1.65 }}>
+              One major hurricane season or severe prolonged drought could reduce the population by <span style={{ color: "rgba(245,158,11,1)", fontWeight: 800 }}>30%</span>.
+            </p>
+          </div>
           <DotMatrix />
-          <div style={{ display: "flex", justifyContent: "space-between", marginTop: 16, alignItems: "center" }}>
-            <p style={{ fontFamily: FF_SANS, fontSize: 14, color: "rgba(255,255,255,0.5)", margin: 0 }}>Each dot represents ~10 birds</p>
-            <p style={{ fontFamily: FF_SERIF, fontSize: 17, color: CRIMSON, margin: 0, fontStyle: "italic" }}>~3,200 birds estimated</p>
+          <div style={{ display: "flex", justifyContent: "space-between", marginTop: 14, alignItems: "center" }}>
+            <p style={{ fontFamily: FF_SANS, fontSize: 13, color: "rgba(255,255,255,0.42)", margin: 0, fontStyle: "italic" }}>Each dot = ~10 birds</p>
+            <p style={{ fontFamily: FF_SERIF, fontSize: 16, color: CRIMSON, margin: 0, fontStyle: "italic", textShadow: `0 0 12px ${CRIMSON}66` }}>~3,200 birds estimated</p>
           </div>
         </motion.div>
       </div>
