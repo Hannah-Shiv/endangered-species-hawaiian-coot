@@ -840,7 +840,14 @@ export function Conservation() {
                   {/* Photos */}
                   {(locData.id === "campbell" || locData.id === "hanalei" || locData.id === "kealia") && (() => {
                     const photos: CarouselPhoto[] = locData.id === "campbell"
-                      ? [{ src: "/campbell-habitat.png", alt: "James Campbell NWR wetland habitat" }, { src: "/campbell-coot.png", alt: "Hawaiian Coot at James Campbell NWR" }]
+                      ? [
+                          { src: "/campbell-habitat.png", alt: "James Campbell NWR wetland habitat" },
+                          { src: "/campbell-coot.png",    alt: "Hawaiian Coot at James Campbell NWR" },
+                          { src: "/campbell-3.png",       alt: "Wetland pond and observation pavilion at James Campbell NWR" },
+                          { src: "/campbell-4.png",       alt: "Hawaiian Coots in flight over James Campbell NWR pond" },
+                          { src: "/campbell-5.png",       alt: "James Campbell NWR entrance sign" },
+                          { src: "/campbell-6.png",       alt: "Herons at James Campbell NWR wetland marsh" },
+                        ]
                       : locData.id === "hanalei"
                       ? [
                           { src: "/hanalei-1.png", alt: "Hanalei NWR information panels" },
