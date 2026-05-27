@@ -4,6 +4,7 @@
 // Header matches the style used across all other section pages.
 // ─────────────────────────────────────────────────────────────────────────────
 import { motion } from "framer-motion";
+import { Card, CardContent } from "@/components/ui/card";
 import { ExternalLink } from "lucide-react";
 
 export function Sources() {
@@ -108,52 +109,24 @@ export function Sources() {
             {sources.map((source, idx) => (
               <motion.div
                 key={idx}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.25 + idx * 0.07 }}
-                style={{
-                  borderRadius: 10,
-                  border: "1px solid rgba(212,175,55,0.35)",
-                  background: "rgba(212,175,55,0.07)",
-                  padding: "12px 14px",
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "flex-start",
-                  gap: 6,
-                }}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: idx * 0.08 }}
+                style={{ minHeight: 0 }}
               >
-                <div style={{ minWidth: 0 }}>
-                  <p style={{
-                    fontFamily: "'Josefin Sans', sans-serif",
-                    fontSize: 13,
-                    fontWeight: 700,
-                    color: "rgba(212,175,55,1)",
-                    margin: "0 0 4px",
-                    lineHeight: 1.3,
-                  }}>
-                    {source.title}
-                  </p>
-                  <p style={{
-                    fontFamily: "'Josefin Sans', sans-serif",
-                    fontSize: 11,
-                    color: "rgba(255,255,255,0.6)",
-                    margin: 0,
-                    lineHeight: 1.4,
-                  }}>
-                    {source.desc}
-                  </p>
-                </div>
-                {source.url && (
-                  <a
-                    href={source.url}
-                    target="_blank"
-                    rel="noreferrer"
-                    style={{ color: "rgba(212,175,55,0.5)", flexShrink: 0, paddingTop: 2 }}
-                    data-testid={`link-source-${idx}`}
-                  >
-                    <ExternalLink size={14} />
-                  </a>
-                )}
+                <Card className="bg-card/30 border-border hover:bg-card/50 transition-colors h-full">
+                  <CardContent className="p-4 flex justify-between items-start group h-full">
+                    <div>
+                      <h3 className="text-base font-bold text-primary group-hover:text-accent transition-colors">{source.title}</h3>
+                      <p className="text-muted-foreground text-sm mt-1">{source.desc}</p>
+                    </div>
+                    {source.url && (
+                      <a href={source.url} target="_blank" rel="noreferrer" className="text-muted-foreground hover:text-foreground shrink-0 p-1 pt-0" data-testid={`link-source-${idx}`}>
+                        <ExternalLink size={16} />
+                      </a>
+                    )}
+                  </CardContent>
+                </Card>
               </motion.div>
             ))}
           </div>
