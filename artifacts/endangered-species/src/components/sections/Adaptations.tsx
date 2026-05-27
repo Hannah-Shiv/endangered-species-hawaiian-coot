@@ -336,115 +336,72 @@ export function Adaptations() {
           {/* RIGHT HALF */}
           <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
 
-            {/* TOP — Bird + Physical adaptation image thumbnails */}
-            <div style={{
-              flex: 1, position: "relative", overflow: "hidden", minHeight: 0,
-              background: "radial-gradient(ellipse at 50% 55%, rgba(0,50,35,0.35) 0%, rgba(3,16,10,0.98) 72%)",
-            }}>
-
-              {/* Section label */}
-              <div style={{ position: "absolute", top: 9, left: 0, right: 0, textAlign: "center", zIndex: 5, pointerEvents: "none" }}>
-                <p style={{ fontSize: 9, letterSpacing: "0.18em", color: "rgba(0,200,120,0.5)", fontWeight: 800, margin: 0 }}>
+            {/* TOP — Physical adaptation cards (3 side-by-side full-bleed) */}
+            <div style={{ flex: 1, display: "flex", flexDirection: "column", minHeight: 0, overflow: "hidden" }}>
+              {/* Label bar */}
+              <div style={{
+                flexShrink: 0, padding: "7px 14px 6px",
+                borderBottom: "1px solid rgba(255,255,255,0.05)",
+                background: "rgba(3,8,5,0.98)",
+              }}>
+                <p style={{ fontSize: 9, letterSpacing: "0.18em", color: "rgba(0,200,120,0.75)", fontWeight: 800, margin: 0 }}>
                   PHYSICAL ADAPTATIONS
                 </p>
               </div>
-
-              {/* Curved bezier connectors + anchor dots */}
-              <svg
-                style={{ position: "absolute", inset: 0, width: "100%", height: "100%", zIndex: 1, pointerEvents: "none" }}
-                viewBox="0 0 100 100"
-                preserveAspectRatio="none"
-              >
-                {PHYSICAL.map(ad => {
+              {/* Three image cards */}
+              <div style={{ flex: 1, display: "flex", minHeight: 0 }}>
+                {PHYSICAL.map((ad, i) => {
                   const isActive = selectedId === ad.id;
-                  // control point: midway between anchor and thumbnail, pulled slightly outward
-                  const cpx = (ad.ax + ad.cx) / 2;
-                  const cpy = (ad.ay + ad.cy) / 2;
-                  const d = `M ${ad.ax} ${ad.ay} Q ${cpx} ${cpy} ${ad.cx} ${ad.cy}`;
                   return (
-                    <g key={ad.id}>
-                      <path
-                        d={d}
-                        fill="none"
-                        stroke={ad.color}
-                        strokeWidth={isActive ? "0.55" : "0.28"}
-                        strokeOpacity={isActive ? 0.95 : 0.4}
-                        strokeDasharray={isActive ? "none" : "2 1.5"}
-                        style={{ filter: isActive ? `drop-shadow(0 0 2px ${ad.color})` : "none" }}
-                      />
-                      {/* Small dot at anchor point on bird */}
-                      <circle
-                        cx={ad.ax} cy={ad.ay} r="1.2"
-                        fill={ad.color}
-                        fillOpacity={isActive ? 0.95 : 0.5}
-                      />
-                    </g>
-                  );
-                })}
-              </svg>
-
-              {/* Coot bird — static */}
-              <div style={{
-                position: "absolute", inset: 0,
-                display: "flex", alignItems: "center", justifyContent: "center",
-                zIndex: 2, pointerEvents: "none",
-              }}>
-                <img
-                  src={cootBirdImg as string}
-                  alt="Hawaiian Coot"
-                  style={{
-                    width: "60%", maxWidth: 320, objectFit: "contain",
-                    filter: "drop-shadow(0 0 28px rgba(0,200,120,0.18)) drop-shadow(0 6px 20px rgba(0,0,0,0.95))",
-                  }}
-                />
-              </div>
-
-              {/* Physical adaptation image nodes */}
-              {PHYSICAL.map(ad => {
-                const isActive = selectedId === ad.id;
-                return (
-                  <motion.div
-                    key={ad.id}
-                    onClick={() => select(ad.id)}
-                    whileHover={{ scale: 1.06 }}
-                    style={{
-                      position: "absolute",
-                      left: `${ad.cx}%`,
-                      top: `${ad.cy}%`,
-                      transform: "translate(-50%, -50%)",
-                      zIndex: 10, cursor: "pointer",
-                      display: "flex", flexDirection: "column", alignItems: "center", gap: 5,
-                    }}
-                  >
-                    {/* Image thumbnail */}
-                    <div style={{
-                      width: 112, height: 82,
-                      borderRadius: 9,
-                      overflow: "hidden",
-                      border: `2px solid ${isActive ? ad.color : ad.color + "55"}`,
-                      boxShadow: isActive
-                        ? `0 0 22px ${ad.color}66, 0 4px 18px rgba(0,0,0,0.85)`
-                        : `0 4px 14px rgba(0,0,0,0.75)`,
-                      transition: "border-color 0.2s, box-shadow 0.2s",
-                    }}>
+                    <motion.div
+                      key={ad.id}
+                      onClick={() => select(ad.id)}
+                      whileHover={{ filter: "brightness(1.09)" }}
+                      style={{
+                        flex: 1, position: "relative", overflow: "hidden", cursor: "pointer",
+                        borderRight: i < PHYSICAL.length - 1 ? "1px solid rgba(255,255,255,0.07)" : "none",
+                      }}
+                    >
                       <img
                         src={ad.image} alt={ad.name}
                         style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
                       />
-                    </div>
-                    {/* Label */}
-                    <p style={{
-                      fontSize: 9.5, fontWeight: 800, margin: 0,
-                      color: isActive ? ad.color : "rgba(255,255,255,0.7)",
-                      textAlign: "center", letterSpacing: "0.05em",
-                      lineHeight: 1.2, maxWidth: 112,
-                      transition: "color 0.2s",
-                    }}>
-                      {ad.name}
-                    </p>
-                  </motion.div>
-                );
-              })}
+                      {/* Gradient overlay */}
+                      <div style={{
+                        position: "absolute", inset: 0,
+                        background: isActive
+                          ? `linear-gradient(to top, ${ad.color}bb 0%, rgba(0,0,0,0.35) 55%, transparent 100%)`
+                          : "linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.3) 55%, transparent 100%)",
+                        transition: "background 0.3s",
+                      }} />
+                      {/* Active border */}
+                      {isActive && (
+                        <div style={{
+                          position: "absolute", inset: 0,
+                          border: `2px solid ${ad.color}`,
+                          pointerEvents: "none",
+                        }} />
+                      )}
+                      {/* Text at bottom */}
+                      <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "10px 11px" }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 3 }}>
+                          <span style={{ fontSize: 15 }}>{ad.icon}</span>
+                          <p style={{ fontSize: 12, fontWeight: 800, margin: 0, color: "rgba(255,255,255,0.96)", letterSpacing: "0.01em" }}>
+                            {ad.name}
+                          </p>
+                        </div>
+                        <p style={{
+                          fontSize: 10.5, margin: 0, lineHeight: 1.4,
+                          color: isActive ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.52)",
+                          transition: "color 0.25s",
+                        }}>
+                          {ad.headline}
+                        </p>
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </div>
             </div>
 
             {/* DIVIDER */}
@@ -558,6 +515,7 @@ export function Adaptations() {
         borderTop: "1px solid rgba(0,200,120,0.1)",
         background: "rgba(3,12,8,0.96)",
         display: "flex",
+        paddingRight: 58,
       }}>
 
         {/* Survival stats */}
@@ -596,10 +554,9 @@ export function Adaptations() {
           </div>
         </div>
 
-        {/* Ecosystem health — padded right to clear DomeNav X button */}
+        {/* Ecosystem health */}
         <div style={{
           width: 104, flexShrink: 0, padding: "10px 10px 12px",
-          paddingRight: 62,
           display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 3,
         }}>
           <p style={{ fontSize: 9, letterSpacing: "0.12em", color: "rgba(255,255,255,0.35)", fontWeight: 700, margin: 0 }}>ECOSYSTEM HEALTH</p>
