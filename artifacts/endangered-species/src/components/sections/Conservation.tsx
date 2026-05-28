@@ -513,6 +513,35 @@ function BeforeAfterSlider() {
   );
 }
 
+// ─── Action Card ──────────────────────────────────────────────────────────────
+function ActionCard({ icon, label, desc, color, url }: { icon: string; label: string; desc: string; color: string; url: string }) {
+  const [hovered, setHovered] = useState(false);
+  const rgb = color.replace("rgba(", "").replace(")", "").split(",").slice(0, 3).join(",");
+  return (
+    <a
+      href={url} target="_blank" rel="noopener noreferrer"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        padding: "14px 10px",
+        borderRadius: 10,
+        border: `1px solid ${hovered ? color : color.replace(",1)", ",0.45)")}`,
+        background: hovered ? `rgba(${rgb},0.18)` : `rgba(${rgb},0.07)`,
+        display: "flex", flexDirection: "column", gap: 5,
+        alignItems: "center", textAlign: "center",
+        cursor: "pointer", textDecoration: "none",
+        boxShadow: hovered ? `0 0 22px rgba(${rgb},0.45), inset 0 0 14px rgba(${rgb},0.12)` : `0 0 8px rgba(${rgb},0.06)`,
+        transform: hovered ? "translateY(-2px)" : "translateY(0)",
+        transition: "all 0.2s ease",
+      }}
+    >
+      <span style={{ fontSize: 26 }}>{icon}</span>
+      <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, fontWeight: 800, color, margin: 0, letterSpacing: "0.04em", textShadow: hovered ? `0 0 14px ${color}` : "none" }}>{label}</p>
+      <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11, color: "rgba(255,255,255,0.6)", margin: 0, lineHeight: 1.45 }}>{desc}</p>
+    </a>
+  );
+}
+
 // ─── Main component ───────────────────────────────────────────────────────────
 export function Conservation() {
   const [selectedLoc, setSelectedLoc] = useState<string | null>("campbell");
@@ -952,19 +981,17 @@ export function Conservation() {
           {/* You Can Help */}
           <div style={{ borderRadius: 14, border: `1px solid ${BORDER}`, background: CARD_BG, padding: "20px 22px" }}>
             <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 14, fontWeight: 800, color: GOLD, margin: "0 0 4px", letterSpacing: "0.08em", textShadow: "0 0 18px rgba(212,175,55,0.35)" }}>✦ YOU CAN HELP</p>
-            <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 12, color: "rgba(255,255,255,0.55)", margin: "0 0 20px" }}>Every action counts toward protecting Hawaii's wetlands.</p>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+            <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 12, color: "rgba(255,255,255,0.55)", margin: "0 0 16px" }}>Every action counts toward protecting Hawaii's wetlands.</p>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10 }}>
               {[
-                { icon: "❤️", label: "Donate", desc: "Support habitat restoration and research." },
-                { icon: "🤝", label: "Volunteer", desc: "Join local cleanups and monitoring programs." },
-                { icon: "📢", label: "Spread Awareness", desc: "Share knowledge and inspire others to care." },
-                { icon: "🔭", label: "Report Sightings", desc: "Help track coot populations in your area." },
+                { icon: "❤️", label: "Donate",           desc: "Fund habitat restoration and research.",      color: "rgba(220,60,40,1)",   url: "https://www.wildhawaii.org" },
+                { icon: "🤝", label: "Volunteer",        desc: "Join local cleanups and monitoring drives.",  color: "rgba(20,190,150,1)",  url: "https://dlnr.hawaii.gov/dofaw" },
+                { icon: "📢", label: "Spread Awareness", desc: "Share knowledge and inspire others to care.", color: "rgba(60,140,230,1)",  url: "https://www.fws.gov/story/saving-hawaiian-waterbirds" },
+                { icon: "🔭", label: "Report Sightings", desc: "Help scientists track coot populations.",     color: "rgba(160,80,230,1)",  url: "https://ebird.org" },
+                { icon: "🌿", label: "Go Pesticide-Free",desc: "Protect wetland food chains at the source.", color: "rgba(70,195,80,1)",   url: "https://www.nature.org/en-us/about-us/where-we-work/united-states/hawaii/" },
+                { icon: "🏛", label: "Back Legislation", desc: "Support laws that safeguard endangered birds.",color: "rgba(212,175,55,1)", url: "https://www.fws.gov/endangered" },
               ].map(item => (
-                <div key={item.label} style={{ padding: "16px 14px", borderRadius: 10, border: `1px solid rgba(212,175,55,0.42)`, background: "rgba(212,175,55,0.1)", display: "flex", flexDirection: "column", gap: 6, alignItems: "center", textAlign: "center", boxShadow: "0 0 14px rgba(212,175,55,0.06)" }}>
-                  <span style={{ fontSize: 28 }}>{item.icon}</span>
-                  <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 14, fontWeight: 800, color: GOLD, margin: 0, textShadow: "0 0 10px rgba(212,175,55,0.4)" }}>{item.label}</p>
-                  <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 12, color: "rgba(255,255,255,0.6)", margin: 0, lineHeight: 1.5 }}>{item.desc}</p>
-                </div>
+                <ActionCard key={item.label} {...item} />
               ))}
             </div>
           </div>
