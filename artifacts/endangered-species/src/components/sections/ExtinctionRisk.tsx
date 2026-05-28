@@ -997,12 +997,12 @@ function ConservationContent() {
 // ─── What You Can Do tab ──────────────────────────────────────────────────────
 function ActionContent() {
   const actions = [
-    { icon: "🔭", title: "Report Sightings",     desc: "Submit observations to eBird or iNaturalist. Citizen science data directly informs USFWS population assessments.", link: "https://ebird.org",             cta: "Open eBird →",    color: GOLD                    },
-    { icon: "🌿", title: "Restore Native Plants", desc: "Volunteer with the Hawaii Wildlife Fund or TNC to restore native wetland vegetation around refuge borders.",         link: "https://www.hwf.org",           cta: "Join HWF →",      color: GREEN                   },
-    { icon: "🏞", title: "Visit Respectfully",    desc: "Stay on designated trails, keep dogs leashed, never approach nesting birds. Give wildlife space at refuges.",      link: "https://www.fws.gov",           cta: "Find Refuges →",  color: AMBER                   },
-    { icon: "💰", title: "Donate to Recovery",    desc: "Support USFWS, TNC Hawaii, and Hawaii Wildlife Fund programs that fund predator control and habitat restoration.",  link: "https://www.tnc.org",           cta: "Donate →",        color: CRIMSON                 },
-    { icon: "📢", title: "Advocate for Wetlands", desc: "Contact your state legislators in support of wetland protection laws and waterbird conservation funding.",         link: "https://www.capitol.hawaii.gov",cta: "Contact Reps →",  color: "rgba(139,92,246,1)"    },
-    { icon: "📚", title: "Educate Others",         desc: "Share this page and spread awareness. Conservation begins with understanding the stakes.",                          link: "#",                             cta: "Share This Page", color: "rgba(56,189,248,1)"    },
+    { icon: "🔭", title: "Report Sightings",     desc: "Submit observations to eBird or iNaturalist. Citizen science data directly informs USFWS population assessments.", link: "https://ebird.org",             cta: "Open eBird →",    rgb: "212,175,55"  },
+    { icon: "🌿", title: "Restore Native Plants", desc: "Volunteer with the Hawaii Wildlife Fund or TNC to restore native wetland vegetation around refuge borders.",         link: "https://www.hwf.org",           cta: "Join HWF →",      rgb: "74,222,128"  },
+    { icon: "🏞", title: "Visit Respectfully",    desc: "Stay on designated trails, keep dogs leashed, never approach nesting birds. Give wildlife space at refuges.",      link: "https://www.fws.gov",           cta: "Find Refuges →",  rgb: "251,191,36"  },
+    { icon: "💰", title: "Donate to Recovery",    desc: "Support USFWS, TNC Hawaii, and Hawaii Wildlife Fund programs that fund predator control and habitat restoration.",  link: "https://www.tnc.org",           cta: "Donate →",        rgb: "220,50,30"   },
+    { icon: "📢", title: "Advocate for Wetlands", desc: "Contact your state legislators in support of wetland protection laws and waterbird conservation funding.",         link: "https://www.capitol.hawaii.gov",cta: "Contact Reps →",  rgb: "139,92,246"  },
+    { icon: "📚", title: "Educate Others",         desc: "Share this page and spread awareness. Conservation begins with understanding the stakes.",                          link: "#",                             cta: "Share This Page", rgb: "56,189,248"  },
   ];
 
   return (
@@ -1016,40 +1016,43 @@ function ActionContent() {
             <motion.div key={i}
               initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
-              whileHover={{ y: -5, boxShadow: `0 8px 48px ${a.color}44` }}
+              whileHover={{ y: -5 }}
+              onClick={() => a.link !== "#" ? window.open(a.link, "_blank", "noopener,noreferrer") : undefined}
               style={{
                 borderRadius: 16,
-                border: `1px solid ${a.color}42`,
-                background: `${a.color}0d`,
+                borderWidth: 2,
+                borderStyle: "solid",
+                borderColor: `rgba(${a.rgb},0.7)`,
+                backgroundColor: `rgba(${a.rgb},0.15)`,
+                boxShadow: `0 0 14px rgba(${a.rgb},0.22), inset 0 0 10px rgba(${a.rgb},0.08)`,
                 padding: "26px 24px",
-                cursor: "default",
+                cursor: "pointer",
                 position: "relative",
                 overflow: "hidden",
               }}>
               {/* Corner glow */}
-              <div style={{ position: "absolute", top: 0, left: 0, width: "70%", height: "70%", background: `radial-gradient(ellipse at 0% 0%, ${a.color}15, transparent 70%)`, pointerEvents: "none" }} />
+              <div style={{ position: "absolute", top: 0, left: 0, width: "70%", height: "70%", background: `radial-gradient(ellipse at 0% 0%, rgba(${a.rgb},0.18), transparent 70%)`, pointerEvents: "none" }} />
 
               {/* Icon */}
               <p style={{ fontSize: 36, margin: "0 0 12px", lineHeight: 1 }}>{a.icon}</p>
 
               {/* Title */}
-              <p style={{ fontFamily: FF_SANS, fontSize: 17, fontWeight: 800, color: a.color, margin: "0 0 10px", letterSpacing: "0.03em" }}>{a.title}</p>
+              <p style={{ fontFamily: FF_SANS, fontSize: 17, fontWeight: 800, color: `rgba(${a.rgb},1)`, margin: "0 0 10px", letterSpacing: "0.03em" }}>{a.title}</p>
 
               {/* Description */}
               <p style={{ fontFamily: FF_SANS, fontSize: 15, color: "rgba(255,255,255,0.88)", margin: "0 0 18px", lineHeight: 1.7 }}>{a.desc}</p>
 
               {/* CTA */}
-              <a href={a.link} target="_blank" rel="noreferrer"
-                style={{
+              <span style={{
                   fontFamily: FF_SANS, fontSize: 14, fontWeight: 800,
-                  color: a.color, letterSpacing: "0.08em", textDecoration: "none",
+                  color: `rgba(${a.rgb},1)`, letterSpacing: "0.08em",
                   padding: "9px 18px", borderRadius: 9,
-                  border: `1px solid ${a.color}55`,
-                  background: `${a.color}14`,
+                  borderWidth: 1, borderStyle: "solid", borderColor: `rgba(${a.rgb},0.55)`,
+                  backgroundColor: `rgba(${a.rgb},0.14)`,
                   display: "inline-block",
                 }}>
                 {a.cta}
-              </a>
+              </span>
             </motion.div>
           ))}
         </div>
