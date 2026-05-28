@@ -1085,15 +1085,15 @@ export function ExtinctionRisk() {
             <p style={{ fontFamily: FF_SANS, fontSize: "clamp(0.8rem,1.1vw,0.95rem)", fontWeight: 700, letterSpacing: "0.22em", color: GOLD, textTransform: "uppercase", margin: "0 0 10px" }}>
               Hawaiian Coot · <em style={{ fontStyle: "italic", fontFamily: FF_SERIF, letterSpacing: "0.05em" }}>Fulica alai</em>
             </p>
-            <p style={{ fontFamily: FF_SERIF, fontStyle: "italic", fontSize: "clamp(0.95rem,1.2vw,1.1rem)", color: "rgba(255,255,255,0.82)", maxWidth: 560, margin: "0 auto 18px", lineHeight: 1.6 }}>
+            <p style={{ fontFamily: FF_SERIF, fontStyle: "italic", fontSize: "clamp(0.95rem,1.2vw,1.1rem)", color: "rgba(255,255,255,0.82)", maxWidth: 560, margin: "0 auto 20px", lineHeight: 1.6 }}>
               Downlisted from Endangered after partial recovery, but still entirely dependent on conservation management.
             </p>
-            {/* IUCN status pill */}
-            <div style={{ display: "inline-flex", alignItems: "center", gap: 12, padding: "8px 22px", borderRadius: 999, background: "rgba(0,0,0,0.45)", backdropFilter: "blur(8px)", border: `1px solid rgba(212,175,55,0.3)` }}>
-              <span style={{ fontFamily: FF_SANS, fontSize: 13, fontWeight: 800, letterSpacing: "0.18em", color: "rgba(255,255,255,0.6)", textTransform: "uppercase" }}>IUCN Red List</span>
-              <span style={{ color: "rgba(212,175,55,0.5)" }}>|</span>
-              <span style={{ fontFamily: FF_SANS, fontSize: 14, fontWeight: 900, letterSpacing: "0.2em", color: CRIMSON, textTransform: "uppercase", textShadow: `0 0 22px ${CRIMSON}88` }}>● VULNERABLE</span>
-            </div>
+            <span style={{ fontFamily: FF_SANS, fontSize: 14, fontWeight: 800, letterSpacing: "0.2em", color: CRIMSON, display: "block", marginBottom: 6 }}>
+              IUCN RED LIST STATUS
+            </span>
+            <p style={{ fontFamily: FF_SERIF, fontSize: "clamp(44px,7vw,68px)", color: CRIMSON, margin: 0, letterSpacing: "0.06em", lineHeight: 1, textShadow: `0 0 44px ${CRIMSON}66` }}>
+              VULNERABLE
+            </p>
           </motion.div>
         </div>
       </div>

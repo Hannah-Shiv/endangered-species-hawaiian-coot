@@ -514,9 +514,8 @@ function BeforeAfterSlider() {
 }
 
 // ─── Action Card ──────────────────────────────────────────────────────────────
-function ActionCard({ icon, label, desc, color, url }: { icon: string; label: string; desc: string; color: string; url: string }) {
+function ActionCard({ icon, label, desc, color, url, rgb }: { icon: string; label: string; desc: string; color: string; url: string; rgb: string }) {
   const [hovered, setHovered] = useState(false);
-  const rgb = color.replace("rgba(", "").replace(")", "").split(",").slice(0, 3).join(",");
   return (
     <a
       href={url} target="_blank" rel="noopener noreferrer"
@@ -525,19 +524,21 @@ function ActionCard({ icon, label, desc, color, url }: { icon: string; label: st
       style={{
         padding: "14px 10px",
         borderRadius: 10,
-        border: `1px solid ${hovered ? color : color.replace(",1)", ",0.45)")}`,
-        background: hovered ? `rgba(${rgb},0.18)` : `rgba(${rgb},0.07)`,
+        border: `1.5px solid rgba(${rgb},${hovered ? 1 : 0.65})`,
+        background: `rgba(${rgb},${hovered ? 0.22 : 0.13})`,
         display: "flex", flexDirection: "column", gap: 5,
         alignItems: "center", textAlign: "center",
         cursor: "pointer", textDecoration: "none",
-        boxShadow: hovered ? `0 0 22px rgba(${rgb},0.45), inset 0 0 14px rgba(${rgb},0.12)` : `0 0 8px rgba(${rgb},0.06)`,
+        boxShadow: hovered
+          ? `0 0 24px rgba(${rgb},0.55), inset 0 0 16px rgba(${rgb},0.15)`
+          : `0 0 10px rgba(${rgb},0.18)`,
         transform: hovered ? "translateY(-2px)" : "translateY(0)",
         transition: "all 0.2s ease",
       }}
     >
       <span style={{ fontSize: 26 }}>{icon}</span>
-      <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, fontWeight: 800, color, margin: 0, letterSpacing: "0.04em", textShadow: hovered ? `0 0 14px ${color}` : "none" }}>{label}</p>
-      <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11, color: "rgba(255,255,255,0.6)", margin: 0, lineHeight: 1.45 }}>{desc}</p>
+      <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, fontWeight: 800, color, margin: 0, letterSpacing: "0.04em", textShadow: hovered ? `0 0 14px rgba(${rgb},0.8)` : "none" }}>{label}</p>
+      <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11, color: "rgba(255,255,255,0.65)", margin: 0, lineHeight: 1.45 }}>{desc}</p>
     </a>
   );
 }
@@ -984,12 +985,12 @@ export function Conservation() {
             <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 12, color: "rgba(255,255,255,0.55)", margin: "0 0 16px" }}>Every action counts toward protecting Hawaii's wetlands.</p>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10 }}>
               {[
-                { icon: "❤️", label: "Donate",           desc: "Fund habitat restoration and research.",      color: "rgba(220,60,40,1)",   url: "https://www.wildhawaii.org" },
-                { icon: "🤝", label: "Volunteer",        desc: "Join local cleanups and monitoring drives.",  color: "rgba(20,190,150,1)",  url: "https://dlnr.hawaii.gov/dofaw" },
-                { icon: "📢", label: "Spread Awareness", desc: "Share knowledge and inspire others to care.", color: "rgba(60,140,230,1)",  url: "https://www.fws.gov/story/saving-hawaiian-waterbirds" },
-                { icon: "🔭", label: "Report Sightings", desc: "Help scientists track coot populations.",     color: "rgba(160,80,230,1)",  url: "https://ebird.org" },
-                { icon: "🌿", label: "Go Pesticide-Free",desc: "Protect wetland food chains at the source.", color: "rgba(70,195,80,1)",   url: "https://www.nature.org/en-us/about-us/where-we-work/united-states/hawaii/" },
-                { icon: "🏛", label: "Back Legislation", desc: "Support laws that safeguard endangered birds.",color: "rgba(212,175,55,1)", url: "https://www.fws.gov/endangered" },
+                { icon: "❤️", label: "Donate",           desc: "Fund habitat restoration and research.",       color: "rgba(220,60,40,1)",   rgb: "220,60,40",   url: "https://www.wildhawaii.org" },
+                { icon: "🤝", label: "Volunteer",        desc: "Join local cleanups and monitoring drives.",   color: "rgba(20,190,150,1)",  rgb: "20,190,150",  url: "https://dlnr.hawaii.gov/dofaw" },
+                { icon: "📢", label: "Spread Awareness", desc: "Share knowledge and inspire others to care.",  color: "rgba(60,140,230,1)",  rgb: "60,140,230",  url: "https://www.fws.gov/story/saving-hawaiian-waterbirds" },
+                { icon: "🔭", label: "Report Sightings", desc: "Help scientists track coot populations.",      color: "rgba(160,80,230,1)",  rgb: "160,80,230",  url: "https://ebird.org" },
+                { icon: "🌿", label: "Go Pesticide-Free",desc: "Protect wetland food chains at the source.",  color: "rgba(70,195,80,1)",   rgb: "70,195,80",   url: "https://www.nature.org/en-us/about-us/where-we-work/united-states/hawaii/" },
+                { icon: "🏛", label: "Back Legislation", desc: "Support laws that safeguard endangered birds.", color: "rgba(212,175,55,1)", rgb: "212,175,55",  url: "https://www.fws.gov/endangered" },
               ].map(item => (
                 <ActionCard key={item.label} {...item} />
               ))}
