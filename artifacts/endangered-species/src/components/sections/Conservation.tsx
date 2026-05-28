@@ -16,7 +16,7 @@ import { TrendingUp, Droplets, AlertTriangle, ExternalLink, MapPin, ChevronLeft,
 const GOLD = "rgba(212,175,55,1)";
 const GOLD_DIM = "rgba(212,175,55,0.65)";
 const RED = "rgba(200,30,10,0.9)";
-const CARD_BG = "rgba(28,12,4,0.96)";
+const CARD_BG = "rgba(0,0,0,0.96)";
 const BORDER = "rgba(212,175,55,0.42)";
 
 // ─── Org data ─────────────────────────────────────────────────────────────────
