@@ -111,24 +111,58 @@ export function FoodWeb() {
   const eatenBy  = hoveredNode ? edges.filter(e => e.source === hoveredNode).map(e => nodes.find(n => n.id === e.target)!) : [];
   const hovNode  = hoveredNode ? nodes.find(n => n.id === hoveredNode) : null;
 
-  // ── Arrow endpoint calculation (pixel-precise) ─────────────────────────────
-  // Convert node % positions to pixels, trim from each circle edge, convert back to %.
-  const getArrowCoords = (src: FWNode, tgt: FWNode) => {
+  // ── Arrow path calculation — curves around any blocking node ────────────────
+  const computePath = (src: FWNode, tgt: FWNode): string => {
     const sx = src.x / 100 * dims.w,  sy = src.y / 100 * dims.h;
     const tx = tgt.x / 100 * dims.w,  ty = tgt.y / 100 * dims.h;
     const dx = tx - sx, dy = ty - sy;
     const len = Math.sqrt(dx * dx + dy * dy) || 1;
-    const ux = dx / len, uy = dy / len;           // unit vector source→target
+    const ux = dx / len, uy = dy / len;
 
-    const srcR = nodeStyle[src.type].px / 2 + 6;  // start just outside source circle
-    const tgtR = nodeStyle[tgt.type].px / 2 + 14; // end just outside target circle (room for arrowhead)
+    const srcR = nodeStyle[src.type].px / 2 + 6;
+    const tgtR = nodeStyle[tgt.type].px / 2 + 14;
 
-    return {
-      x1: ((sx + ux * srcR) / dims.w) * 100,
-      y1: ((sy + uy * srcR) / dims.h) * 100,
-      x2: ((tx - ux * tgtR) / dims.w) * 100,
-      y2: ((ty - uy * tgtR) / dims.h) * 100,
-    };
+    // Trimmed endpoints in pixels
+    const x1 = sx + ux * srcR, y1 = sy + uy * srcR;
+    const x2 = tx - ux * tgtR, y2 = ty - uy * tgtR;
+
+    // Find the node most obstructing this segment
+    let worstIntrusion = 0;
+    let blocker: FWNode | null = null;
+    for (const node of nodes) {
+      if (node.id === src.id || node.id === tgt.id) continue;
+      const nx = node.x / 100 * dims.w, ny = node.y / 100 * dims.h;
+      const r = nodeStyle[node.type].px / 2 + 8; // radius + small margin
+
+      // Closest point on segment [x1,y1]→[x2,y2] to node centre
+      const ex = x2 - x1, ey = y2 - y1;
+      const eLenSq = ex * ex + ey * ey;
+      const t = eLenSq > 0 ? Math.max(0.05, Math.min(0.95, ((nx - x1) * ex + (ny - y1) * ey) / eLenSq)) : 0;
+      const cpx = x1 + t * ex, cpy = y1 + t * ey;
+      const dist = Math.sqrt((nx - cpx) ** 2 + (ny - cpy) ** 2);
+
+      if (dist < r && (r - dist) > worstIntrusion) {
+        worstIntrusion = r - dist;
+        blocker = node;
+      }
+    }
+
+    if (!blocker) return `M ${x1} ${y1} L ${x2} ${y2}`;
+
+    // Control point: offset perpendicularly away from the blocker
+    const mx = (x1 + x2) / 2, my = (y1 + y2) / 2;
+    const bx = blocker.x / 100 * dims.w, by = blocker.y / 100 * dims.h;
+    // Which side of the line is the blocker on? (cross product sign)
+    const cross = (bx - x1) * (y2 - y1) - (by - y1) * (x2 - x1);
+    const sign = cross > 0 ? -1 : 1; // curve to the opposite side
+    // Perpendicular unit vector
+    const perpX = -(y2 - y1), perpY = (x2 - x1);
+    const perpLen = Math.sqrt(perpX * perpX + perpY * perpY) || 1;
+    const offset = nodeStyle[blocker.type].px / 2 + 32 + worstIntrusion;
+    const cpX = mx + sign * (perpX / perpLen) * offset;
+    const cpY = my + sign * (perpY / perpLen) * offset;
+
+    return `M ${x1} ${y1} Q ${cpX} ${cpY} ${x2} ${y2}`;
   };
 
   return (
@@ -197,10 +231,10 @@ export function FoodWeb() {
             {edges.map((edge, i) => {
               const src = nodes.find(n => n.id === edge.source)!;
               const tgt = nodes.find(n => n.id === edge.target)!;
-              const { x1, y1, x2, y2 } = getArrowCoords(src, tgt);
+              const d = computePath(src, tgt);
 
-              const isEats    = hoveredNode === edge.target; // hovered node eats src
-              const isEatenBy = hoveredNode === edge.source; // tgt eats hovered node
+              const isEats    = hoveredNode === edge.target;
+              const isEatenBy = hoveredNode === edge.source;
               const isActive  = isEats || isEatenBy;
               const isFaded   = !!hoveredNode && !isActive;
 
@@ -208,10 +242,10 @@ export function FoodWeb() {
               const marker = isFaded ? "url(#arr-faded)" : isEats ? "url(#arr-eats)" : isEatenBy ? "url(#arr-eatenby)" : "url(#arr-default)";
 
               return (
-                <motion.line
+                <motion.path
                   key={i}
-                  x1={`${x1}%`} y1={`${y1}%`}
-                  x2={`${x2}%`} y2={`${y2}%`}
+                  d={d}
+                  fill="none"
                   stroke={stroke}
                   strokeWidth={isActive ? 1.6 : 1.2}
                   opacity={isFaded ? 0.06 : isActive ? 1 : 0.6}
