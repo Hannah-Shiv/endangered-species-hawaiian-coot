@@ -324,7 +324,7 @@ function BeforeAfterSlider() {
 
 export function ClimateStressors() {
   return (
-    <div className="w-full min-h-screen pt-24 pb-12 px-6 md:px-12 bg-background overflow-y-auto">
+    <div className="w-full min-h-screen pb-12 px-6 md:px-12 bg-background overflow-y-auto" style={{ paddingTop: 80 }}>
       <div className="max-w-7xl mx-auto">
 
         {/* Page header */}
@@ -335,11 +335,15 @@ export function ClimateStressors() {
           className="mb-4 text-center"
         >
           <h1
-            className="text-6xl mb-3"
             style={{
-              fontFamily: "'Playfair Display', serif",
+              fontFamily: "'Josefin Sans', sans-serif",
+              fontSize: "clamp(1.4rem, 2.2vw, 2rem)",
+              fontWeight: 700,
+              letterSpacing: "0.13em",
+              textTransform: "uppercase",
               color: "rgba(212,175,55,1)",
-              letterSpacing: "0.04em",
+              margin: "0 0 8px",
+              textShadow: "0 0 40px rgba(212,175,55,0.45)",
             }}
           >
             Climate Stressors
@@ -348,10 +352,10 @@ export function ClimateStressors() {
             style={{
               fontFamily: "'Playfair Display', serif",
               fontStyle: "italic",
-              fontSize: 20,
+              fontSize: 17,
               color: "rgba(212,175,55,0.88)",
-              whiteSpace: "nowrap",
               margin: "0 auto",
+              maxWidth: 700,
             }}
           >
             Hawaii's delicate ecosystems are facing unprecedented changes, directly threatening the shallow wetlands coots depend on.

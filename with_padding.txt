@@ -1,0 +1,4 @@
+artifacts/endangered-species/src/components/sections/Adaptations.tsx
+artifacts/endangered-species/src/components/sections/ClimateStressors.tsx
+artifacts/endangered-species/src/components/sections/Conservation.tsx
+artifacts/endangered-species/src/components/sections/Predators.tsx

@@ -63,8 +63,7 @@ export function Sources() {
         style={{ textAlign: "center", flexShrink: 0 }}
       >
         <h1
-          className="text-6xl mb-3"
-          style={{ fontFamily: "'Playfair Display', serif", color: "rgba(212,175,55,1)", letterSpacing: "0.04em" }}
+          style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: "clamp(1.4rem, 2.2vw, 2rem)", fontWeight: 700, letterSpacing: "0.13em", textTransform: "uppercase", color: "rgba(212,175,55,1)", margin: "0 0 6px", textShadow: "0 0 40px rgba(212,175,55,0.45)" }}
         >
           Sources &amp; Citations
         </h1>

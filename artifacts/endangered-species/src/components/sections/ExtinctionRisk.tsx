@@ -149,7 +149,7 @@ function PopChart() {
     2021: "Stabilizing", 2024: "Current",
   };
 
-  const handleMouseMove = (e: React.MouseEvent<SVGSVGElement>) => {
+  const handleMouseMove = (e: React.MouseEvent<SVGElement>) => {
     if (!svgRef.current) return;
     const rect = svgRef.current.getBoundingClientRect();
     const mx = (e.clientX - rect.left) * (W / rect.width);

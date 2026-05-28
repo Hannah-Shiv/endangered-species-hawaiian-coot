@@ -227,7 +227,7 @@ export function PatternsOfChange() {
         className="mb-2 text-center"
         style={{ flexShrink: 0 }}
       >
-        <h1 className="text-6xl mb-2" style={{ fontFamily: "'Playfair Display', serif", color: GOLD, letterSpacing: "0.04em" }}>
+        <h1 style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: "clamp(1.4rem, 2.2vw, 2rem)", fontWeight: 700, letterSpacing: "0.13em", textTransform: "uppercase", color: GOLD, margin: "0 0 4px", textShadow: "0 0 40px rgba(212,175,55,0.45)" }}>
           Patterns of Change
         </h1>
         <p style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontSize: 16, color: "rgba(212,175,55,1)" }}>

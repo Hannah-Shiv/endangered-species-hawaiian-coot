@@ -1,0 +1,12 @@
+artifacts/endangered-species/src/components/sections/Adaptations.tsx
+artifacts/endangered-species/src/components/sections/ClimateStressors.tsx
+artifacts/endangered-species/src/components/sections/Conservation.tsx
+artifacts/endangered-species/src/components/sections/Evolution.tsx
+artifacts/endangered-species/src/components/sections/ExtinctionRisk.tsx
+artifacts/endangered-species/src/components/sections/FoodWeb.tsx
+artifacts/endangered-species/src/components/sections/Habitat.tsx
+artifacts/endangered-species/src/components/sections/HumanImpact.tsx
+artifacts/endangered-species/src/components/sections/MeetSpecies.tsx
+artifacts/endangered-species/src/components/sections/PatternsOfChange.tsx
+artifacts/endangered-species/src/components/sections/Predators.tsx
+artifacts/endangered-species/src/components/sections/Sources.tsx
