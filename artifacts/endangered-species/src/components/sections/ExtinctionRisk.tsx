@@ -209,7 +209,7 @@ function PopChart() {
         )}
 
         {/* Animated line draw */}
-        <motion.path d={pathD} fill="none" stroke={CRIMSON} strokeWidth={2.5}
+        <motion.path d={pathD} fill="none" stroke={CRIMSON} strokeWidth={1.5}
           strokeLinecap="round" strokeLinejoin="round"
           initial={{ pathLength: 0, opacity: 0 }}
           animate={inView ? { pathLength: 1, opacity: 1 } : {}}
@@ -683,7 +683,7 @@ function PopTrendChart() {
         )}
 
         {/* Animated line draw */}
-        <motion.path d={pathD} fill="none" stroke={CRIMSON} strokeWidth={3}
+        <motion.path d={pathD} fill="none" stroke={CRIMSON} strokeWidth={1.5}
           strokeLinecap="round" strokeLinejoin="round"
           initial={{ pathLength: 0, opacity: 0 }}
           animate={inView ? { pathLength: 1, opacity: 1 } : {}}
