@@ -140,10 +140,10 @@ function PopChart() {
     const label = LABELS[d.year] ?? (d.year < 2015 ? "Declining" : "Recovery");
     const warn = d.year === 2015 || d.year === 2010;
     return (
-      <div style={{ background: "rgba(6,4,8,0.97)", border: `1.5px solid ${warn ? AMBER : CRIMSON}`, borderRadius: 9, padding: "8px 12px" }}>
+      <div style={{ background: "rgba(6,4,8,0.97)", border: `1.5px solid ${warn ? AMBER : CRIMSON}`, borderRadius: 9, padding: "8px 18px", minWidth: 130 }}>
         <p style={{ fontFamily: FF_SANS, color: warn ? AMBER : CRIMSON, fontSize: 11, fontWeight: 800, margin: "0 0 2px" }}>{d.year}</p>
         <p style={{ fontFamily: FF_SANS, color: "#fff", fontSize: 14, fontWeight: 700, margin: "0 0 2px" }}>{d.pop.toLocaleString()}</p>
-        <p style={{ fontFamily: FF_SANS, color: "rgba(255,255,255,0.5)", fontSize: 9, margin: 0 }}>{label}</p>
+        <p style={{ fontFamily: FF_SANS, color: "rgba(255,255,255,0.5)", fontSize: 10, margin: 0 }}>{label}</p>
       </div>
     );
   };
@@ -511,10 +511,10 @@ function PopTrendChart() {
     const label = LABELS[d.year] ?? "Data Point";
     const warn = d.year === 2015 || d.year === 2010;
     return (
-      <div style={{ background: "rgba(6,4,8,0.97)", border: `1.5px solid ${warn ? AMBER : CRIMSON}`, borderRadius: 9, padding: "10px 16px" }}>
+      <div style={{ background: "rgba(6,4,8,0.97)", border: `1.5px solid ${warn ? AMBER : CRIMSON}`, borderRadius: 9, padding: "10px 22px", minWidth: 160 }}>
         <p style={{ fontFamily: FF_SANS, color: warn ? AMBER : CRIMSON, fontSize: 12, fontWeight: 800, margin: "0 0 3px" }}>{d.year}</p>
         <p style={{ fontFamily: FF_SERIF, color: "#fff", fontSize: 18, fontWeight: 700, margin: "0 0 3px" }}>{d.pop.toLocaleString()}</p>
-        <p style={{ fontFamily: FF_SANS, color: "rgba(255,255,255,0.5)", fontSize: 10, margin: 0 }}>{label}</p>
+        <p style={{ fontFamily: FF_SANS, color: "rgba(255,255,255,0.5)", fontSize: 11, margin: 0 }}>{label}</p>
       </div>
     );
   };
