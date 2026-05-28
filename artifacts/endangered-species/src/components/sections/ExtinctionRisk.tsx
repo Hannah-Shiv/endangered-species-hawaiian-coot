@@ -205,6 +205,61 @@ function DonutChart({ pct, color, label }: { pct: number; color: string; label: 
 }
 
 // ─── Threat simulator ─────────────────────────────────────────────────────────
+const KNOB = 22;
+const TRACK_H = 6;
+
+function SimSlider({ value, onChange }: { value: number; onChange: (v: number) => void }) {
+  const trackRef = useRef<HTMLDivElement>(null);
+
+  const calcValue = useCallback((clientX: number) => {
+    const rect = trackRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    const pct = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+    onChange(Math.round(pct * 20));
+  }, [onChange]);
+
+  const onMouseDown = (e: React.MouseEvent) => {
+    e.preventDefault();
+    calcValue(e.clientX);
+    const onMove = (me: MouseEvent) => calcValue(me.clientX);
+    const onUp   = () => { window.removeEventListener("mousemove", onMove); window.removeEventListener("mouseup", onUp); };
+    window.addEventListener("mousemove", onMove);
+    window.addEventListener("mouseup", onUp);
+  };
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    const onMove = (te: TouchEvent) => calcValue(te.touches[0].clientX);
+    const onEnd  = () => { window.removeEventListener("touchmove", onMove); window.removeEventListener("touchend", onEnd); };
+    window.addEventListener("touchmove", onMove);
+    window.addEventListener("touchend", onEnd);
+    calcValue(e.touches[0].clientX);
+  };
+
+  const pct = (value / 20) * 100;
+
+  return (
+    <div style={{ position: "relative", height: KNOB + 8, display: "flex", alignItems: "center", cursor: "pointer", userSelect: "none" }}
+      ref={trackRef} onMouseDown={onMouseDown} onTouchStart={onTouchStart}>
+      <div style={{ position: "absolute", left: 0, right: 0, height: TRACK_H, borderRadius: 999, background: "rgba(255,255,255,0.12)" }}>
+        <div style={{ height: "100%", width: `${pct}%`, borderRadius: 999, background: CRIMSON, transition: "width 0.05s linear" }} />
+      </div>
+      <div style={{
+        position: "absolute",
+        left: `calc(${pct}% - ${KNOB / 2}px)`,
+        width: KNOB, height: KNOB,
+        borderRadius: "50%",
+        background: "#fff",
+        border: `3px solid ${CRIMSON}`,
+        boxShadow: `0 0 10px ${CRIMSON}88`,
+        transition: "left 0.05s linear",
+        display: "flex", alignItems: "center", justifyContent: "center",
+      }}>
+        <div style={{ width: 6, height: 6, borderRadius: "50%", background: CRIMSON }} />
+      </div>
+    </div>
+  );
+}
+
 function ThreatSim() {
   const [years, setYears] = useState(10);
   const estPop  = Math.max(180, Math.round(3200 * Math.pow(0.845, years)));
@@ -215,8 +270,7 @@ function ThreatSim() {
     <div style={{ display: "flex", flexDirection: "column", height: "100%" }}>
       <p style={{ fontFamily: FF_SANS, fontSize: 12, color: "#fff", margin: "0 0 10px", letterSpacing: "0.08em", fontWeight: 700 }}>WHAT IF CONSERVATION STOPPED?</p>
       <div style={{ marginBottom: 16 }}>
-        <input type="range" min={0} max={20} value={years} onChange={e => setYears(Number(e.target.value))}
-          style={{ width: "100%", accentColor: CRIMSON, cursor: "pointer" }} />
+        <SimSlider value={years} onChange={setYears} />
         <div style={{ display: "flex", justifyContent: "space-between", marginTop: 4 }}>
           <span style={{ fontFamily: FF_SANS, fontSize: 11, color: "rgba(255,255,255,0.82)" }}>0 yr</span>
           <span style={{ fontFamily: FF_SANS, fontSize: 11, color: "rgba(255,255,255,0.82)" }}>20 yr</span>
