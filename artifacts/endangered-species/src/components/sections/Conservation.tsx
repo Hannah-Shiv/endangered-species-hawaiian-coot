@@ -517,29 +517,26 @@ function BeforeAfterSlider() {
 function ActionCard({ icon, label, desc, color, url, rgb }: { icon: string; label: string; desc: string; color: string; url: string; rgb: string }) {
   const [hovered, setHovered] = useState(false);
   return (
-    <a
-      href={url} target="_blank" rel="noopener noreferrer"
+    <div
+      className="action-card"
+      onClick={() => window.open(url, "_blank", "noopener,noreferrer")}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
-        padding: "14px 10px",
-        borderRadius: 10,
-        border: `1.5px solid rgba(${rgb},${hovered ? 1 : 0.65})`,
-        background: `rgba(${rgb},${hovered ? 0.22 : 0.13})`,
-        display: "flex", flexDirection: "column", gap: 5,
-        alignItems: "center", textAlign: "center",
-        cursor: "pointer", textDecoration: "none",
+        gap: 6,
+        borderWidth: "2px",
+        borderStyle: "solid",
+        borderColor: hovered ? `rgba(${rgb},1)` : `rgba(${rgb},0.7)`,
+        backgroundColor: hovered ? `rgba(${rgb},0.28)` : `rgba(${rgb},0.18)`,
         boxShadow: hovered
-          ? `0 0 24px rgba(${rgb},0.55), inset 0 0 16px rgba(${rgb},0.15)`
-          : `0 0 10px rgba(${rgb},0.18)`,
-        transform: hovered ? "translateY(-2px)" : "translateY(0)",
-        transition: "all 0.2s ease",
+          ? `0 0 28px rgba(${rgb},0.6), inset 0 0 18px rgba(${rgb},0.18)`
+          : `0 0 12px rgba(${rgb},0.25), inset 0 0 8px rgba(${rgb},0.08)`,
       }}
     >
-      <span style={{ fontSize: 26 }}>{icon}</span>
-      <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, fontWeight: 800, color, margin: 0, letterSpacing: "0.04em", textShadow: hovered ? `0 0 14px rgba(${rgb},0.8)` : "none" }}>{label}</p>
-      <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11, color: "rgba(255,255,255,0.65)", margin: 0, lineHeight: 1.45 }}>{desc}</p>
-    </a>
+      <span style={{ fontSize: 26, lineHeight: 1 }}>{icon}</span>
+      <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, fontWeight: 800, color, margin: 0, letterSpacing: "0.04em", textShadow: hovered ? `0 0 14px rgba(${rgb},0.9)` : "none" }}>{label}</p>
+      <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11, color: "rgba(255,255,255,0.7)", margin: 0, lineHeight: 1.45 }}>{desc}</p>
+    </div>
   );
 }
 

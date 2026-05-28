@@ -297,6 +297,23 @@
   animation: none;
 }
 
+/* ── Action Cards (You Can Help) ─────────────────────────────────────────── */
+.action-card {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  text-align: center !important;
+  padding: 14px 10px !important;
+  border-radius: 10px !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  text-decoration: none !important;
+  box-sizing: border-box !important;
+}
+.action-card:hover {
+  transform: translateY(-3px) !important;
+}
+
 /* Hide all scrollbars site-wide — cinematic experience */
 * {
   scrollbar-width: none;
