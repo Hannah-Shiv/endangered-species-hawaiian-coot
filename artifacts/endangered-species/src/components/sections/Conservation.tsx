@@ -531,33 +531,52 @@ export function Conservation() {
       {carousel && <CarouselModal photos={carousel.photos} startIndex={carousel.index} onClose={() => setCarousel(null)} />}
     </AnimatePresence>
 
-    <div className="w-full min-h-screen pt-24 pb-16 px-6 md:px-12 bg-background overflow-y-auto">
-      <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+    <div className="w-full min-h-screen pb-16 bg-background overflow-y-auto">
 
-        {/* ── Header ── */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }}>
-          <div style={{ textAlign: "center", marginBottom: 32 }}>
-            <h1 className="text-6xl mb-3" style={{ fontFamily: "'Playfair Display', serif", color: GOLD, letterSpacing: "0.04em" }}>
+        {/* ── Hero Header ── */}
+        <div style={{ position: "relative", width: "100%", height: 320, overflow: "hidden", flexShrink: 0 }}>
+          {/* background image */}
+          <div style={{
+            position: "absolute", inset: 0,
+            backgroundImage: "url('/conservation-hero.png')",
+            backgroundSize: "cover", backgroundPosition: "center 30%",
+          }} />
+          {/* center-dark gradient */}
+          <div style={{
+            position: "absolute", inset: 0,
+            background: "linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 10%, rgba(0,0,0,0.82) 28%, rgba(0,0,0,0.92) 50%, rgba(0,0,0,0.82) 72%, rgba(0,0,0,0) 90%, rgba(0,0,0,0) 100%)",
+          }} />
+          {/* top & bottom fade to black */}
+          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, rgba(0,0,0,0.55) 0%, transparent 30%, transparent 70%, rgba(0,0,0,0.85) 100%)" }} />
+          {/* content */}
+          <motion.div
+            initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9 }}
+            style={{ position: "relative", zIndex: 2, height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", padding: "0 24px" }}
+          >
+            <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: "clamp(0.7rem,1vw,0.85rem)", fontWeight: 700, letterSpacing: "0.22em", color: GOLD, textTransform: "uppercase", margin: "0 0 10px" }}>
+              Hawaiian Coot · <em style={{ fontStyle: "italic", fontFamily: "'Playfair Display', serif", letterSpacing: "0.05em" }}>Fulica alai</em>
+            </p>
+            <h1 style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: "clamp(1.5rem,2.2vw,2.1rem)", fontWeight: 700, letterSpacing: "0.13em", color: GOLD, textTransform: "uppercase", margin: "0 0 14px", textShadow: "0 2px 24px rgba(0,0,0,0.7)" }}>
               Conservation &amp; Solutions
             </h1>
-            <p style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontSize: 20, color: "rgba(212,175,55,0.88)", margin: "0 auto 20px" }}>
+            <p style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontSize: "clamp(0.85rem,1.1vw,1rem)", color: "rgba(255,255,255,0.82)", maxWidth: 560, margin: "0 0 18px", lineHeight: 1.6 }}>
               Protecting the Hawaiian Coot requires constant vigilance: managing water, eliminating predators, and protecting land.
             </p>
-            {/* Why It Matters + Last Updated — centered below subtitle */}
-            <div style={{ display: "flex", justifyContent: "center", gap: 12, flexWrap: "wrap" }}>
-              <div style={{ borderRadius: 10, border: `1px solid ${BORDER}`, background: CARD_BG, padding: "10px 18px", maxWidth: 300 }}>
-                <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 12, letterSpacing: "0.12em", color: GOLD, fontWeight: 700, margin: "0 0 3px" }}>WHY IT MATTERS</p>
-                <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, color: "rgba(255,255,255,0.6)", margin: 0, lineHeight: 1.5 }}>
-                  The Hawaiian Coot is an ʻAlala Nui — a unique part of Hawaiʻi's natural heritage.
-                </p>
-              </div>
-              <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "8px 16px", borderRadius: 999, border: `1px solid ${BORDER}`, background: CARD_BG, alignSelf: "center" }}>
+            {/* pill row */}
+            <div style={{ display: "flex", alignItems: "center", gap: 14, padding: "8px 20px", borderRadius: 999, background: "rgba(0,0,0,0.45)", backdropFilter: "blur(8px)", border: `1px solid rgba(212,175,55,0.3)` }}>
+              <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, color: "rgba(255,255,255,0.7)" }}>
+                🛡 Hanalei · James Campbell · Kealia Pond · Pearl Harbor
+              </span>
+              <span style={{ color: "rgba(212,175,55,0.5)", margin: "0 2px" }}>|</span>
+              <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
                 <div style={{ width: 7, height: 7, borderRadius: "50%", background: "#4ade80" }} />
-                <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, color: "rgba(255,255,255,0.55)", margin: 0 }}>Last Updated: May 20, 2024</p>
+                <span style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 13, color: "rgba(255,255,255,0.6)" }}>Last Updated: May 20, 2024</span>
               </div>
             </div>
-          </div>
-        </motion.div>
+          </motion.div>
+        </div>
+
+      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "32px 24px 0", paddingLeft: "clamp(24px,3vw,48px)", paddingRight: "clamp(24px,3vw,48px)" }}>
 
         {/* ── Org Cards — 2×2 grid ── */}
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, marginBottom: 28 }}>
