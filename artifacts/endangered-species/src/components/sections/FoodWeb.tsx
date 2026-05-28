@@ -184,41 +184,43 @@ export function FoodWeb() {
     <div style={{
       height:"100vh", display:"flex", flexDirection:"column", background:"#000000",
       overflow:"hidden", boxSizing:"border-box",
-      border:"1px solid rgba(212,175,55,0.35)", borderRadius:"12px",
-      boxShadow:"0 0 48px rgba(212,175,55,0.08), 0 0 120px rgba(193,18,31,0.04), inset 0 0 60px rgba(0,0,0,0.5)",
-      margin:"6px",
     }}>
 
-      {/* ── Header ──────────────────────────────────────────────────────── */}
-      <div style={{ paddingTop:"80px", paddingBottom:"12px", textAlign:"center", flexShrink:0 }}>
-        <h1 style={{ fontFamily:"'Josefin Sans',sans-serif", fontSize:"clamp(1.8rem,3vw,2.8rem)", fontWeight:700, letterSpacing:"0.1em", textTransform:"uppercase", color:"rgba(212,175,55,1)", margin:0 }}>
-          Wetland Food Web
-        </h1>
-        {/* Subtitle — single line with pipe separators, inside a styled box */}
-        <div style={{
-          display:"inline-flex", alignItems:"center", gap:"0",
-          marginTop:"10px",
-          padding:"8px 20px",
-          border:"1px solid rgba(212,175,55,0.4)",
-          borderRadius:"999px",
-          background:"rgba(212,175,55,0.07)",
-          boxShadow:"0 0 18px rgba(212,175,55,0.1)",
-        }}>
-          <span style={{ fontFamily:"'Playfair Display',serif", color:"rgba(255,255,255,0.88)", fontSize:"16px" }}>
-            Hover any organism
-          </span>
-          <span style={{ color:"rgba(212,175,55,0.5)", margin:"0 10px", fontSize:"17px" }}>|</span>
-          <span style={{ fontFamily:"'Playfair Display',serif", fontSize:"16px" }}>
-            <span style={{ color:"rgba(34,197,94,1)", fontWeight:600 }}>green arrows</span>
-            <span style={{ color:"rgba(255,255,255,0.75)" }}> = what it eats</span>
-          </span>
+      {/* ── Header with hero image ───────────────────────────────────────── */}
+      <div style={{ position:"relative", flexShrink:0, overflow:"hidden" }}>
+        <img src="/foodweb-hero.png" alt="" aria-hidden
+          style={{ position:"absolute", inset:0, width:"100%", height:"100%", objectFit:"cover", objectPosition:"center 55%" }} />
+        <div style={{ position:"absolute", inset:0, background:"linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,0.88) 40%, rgba(0,0,0,0.92) 50%, rgba(0,0,0,0.88) 60%, rgba(0,0,0,0) 70%, rgba(0,0,0,0) 100%)" }} />
+        <div style={{ position:"absolute", inset:0, background:"linear-gradient(180deg, rgba(0,0,0,0.25) 0%, transparent 40%, rgba(0,0,0,0.75) 100%)" }} />
+        <div style={{ position:"relative", zIndex:2, paddingTop:"88px", paddingBottom:"18px", textAlign:"center" }}>
+          <h1 style={{ fontFamily:"'Josefin Sans',sans-serif", fontSize:"clamp(1.5rem,2.2vw,2.1rem)", fontWeight:700, letterSpacing:"0.13em", textTransform:"uppercase", color:"rgba(212,175,55,1)", margin:"0 0 10px", textShadow:"0 0 40px rgba(212,175,55,0.45)" }}>
+            Wetland Food Web
+          </h1>
+          {/* Subtitle pill */}
+          <div style={{
+            display:"inline-flex", alignItems:"center", gap:"0",
+            padding:"8px 20px",
+            border:"1px solid rgba(212,175,55,0.4)",
+            borderRadius:"999px",
+            background:"rgba(0,0,0,0.55)",
+            backdropFilter:"blur(6px)",
+          }}>
+            <span style={{ fontFamily:"'Playfair Display',serif", color:"rgba(255,255,255,0.88)", fontSize:"16px" }}>
+              Hover any organism
+            </span>
+            <span style={{ color:"rgba(212,175,55,0.5)", margin:"0 10px", fontSize:"17px" }}>|</span>
+            <span style={{ fontFamily:"'Playfair Display',serif", fontSize:"16px" }}>
+              <span style={{ color:"rgba(34,197,94,1)", fontWeight:600 }}>green arrows</span>
+              <span style={{ color:"rgba(255,255,255,0.75)" }}> = what it eats</span>
+            </span>
           <span style={{ color:"rgba(212,175,55,0.5)", margin:"0 10px", fontSize:"17px" }}>|</span>
           <span style={{ fontFamily:"'Playfair Display',serif", fontSize:"16px" }}>
             <span style={{ color:"rgba(239,68,68,1)", fontWeight:600 }}>red arrows</span>
             <span style={{ color:"rgba(255,255,255,0.75)" }}> = what eats it</span>
           </span>
-        </div>
-      </div>
+          </div>{/* closes pill */}
+        </div>{/* closes content */}
+      </div>{/* closes outer hero */}
 
       {/* ── Body ────────────────────────────────────────────────────────── */}
       <div style={{ flex:1, display:"flex", overflow:"hidden", minHeight:0 }}>
