@@ -253,17 +253,16 @@ function NameReveal({ name, role }: { name: string; role: string }) {
 
 // ─── Team sequence — one person at a time ────────────────────────────────────
 const TEAM = [
-  { name: "Hannah Shiv",  role: "Student Researcher" },
-  { name: "Chloe Pan",    role: "Student Researcher" },
-  { name: "Bahram Ostad", role: "Student Researcher" },
+  { name: "Hannah Shiv",  role: "Developer and Student Researcher", duration: 10500 },
+  { name: "Chloe Pan",    role: "Student Researcher",               duration: 5500  },
+  { name: "Bahram Ostad", role: "Student Researcher",               duration: 5500  },
 ];
-const PER_PERSON = 5500; // ms — 3 students × 5.5s, mode="sync" so exits/enters overlap
 
 function TeamSequence() {
   const [idx, setIdx] = useState(0);
   useEffect(() => {
     if (idx >= TEAM.length - 1) return;
-    const t = setTimeout(() => setIdx(i => i + 1), PER_PERSON);
+    const t = setTimeout(() => setIdx(i => i + 1), TEAM[idx].duration);
     return () => clearTimeout(t);
   }, [idx]);
 
@@ -288,8 +287,8 @@ const CARDS: Card[] = [
   { kind:"nature",  in:19, out:26, top:"Freshwater Wetland", sub:"Hawai\u02BBi · Protected Ecosystem" },
   { kind:"nature",  in:28, out:36, top:"Hawaiian Coot",      sub:"\u02BBalae ke\u02BBoke\u02BBo  ·  Fulica alai" },
   { kind:"school",  in:38, out:46 },
-  { kind:"team",    in:47, out:65 },   // 3 students × 5.5s, sync crossfade
-  { kind:"teacher", in:66, out:82 },   // Calliandra — 16s dedicated, fades from t=79
+  { kind:"team",    in:47, out:70 },   // Hannah 10.5s + Chloe 5.5s + Bahram 5.5s = 21.5s
+  { kind:"teacher", in:71, out:87 },   // Calliandra — 16s dedicated
 ];
 
 // ─── Film grain ───────────────────────────────────────────────────────────────
