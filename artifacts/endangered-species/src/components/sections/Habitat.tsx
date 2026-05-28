@@ -122,13 +122,18 @@ export function Habitat() {
       }}>
 
         {/* Header */}
-        <div style={{textAlign:"center",flexShrink:0,paddingTop:"52px"}}>
-          <h1 style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:"clamp(1.5rem,2.2vw,2.1rem)",fontWeight:700,letterSpacing:"0.13em",textTransform:"uppercase",color:"rgba(212,175,55,1)",margin:"0 0 2px"}}>
-            Habitat &amp; Location
-          </h1>
-          <p style={{fontFamily:"'Playfair Display',serif",fontStyle:"italic",fontSize:"clamp(0.85rem,1vw,1rem)",color:"rgba(212,175,55,0.85)",margin:0,letterSpacing:"0.02em"}}>
-            Freshwater and brackish wetlands across the Hawaiian Islands — home to the Hawaiian Coot.
-          </p>
+        <div style={{position:"relative",textAlign:"center",flexShrink:0,overflow:"hidden",margin:"-68px -14px 0",padding:"90px 32px 28px"}}>
+          <img src="/habitat-hero.png" alt="" aria-hidden style={{position:"absolute",inset:0,width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 45%"}} />
+          <div style={{position:"absolute",inset:0,background:"linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,0.88) 40%, rgba(0,0,0,0.92) 50%, rgba(0,0,0,0.88) 60%, rgba(0,0,0,0) 70%, rgba(0,0,0,0) 100%)"}} />
+          <div style={{position:"absolute",inset:0,background:"linear-gradient(180deg, rgba(0,0,0,0.18) 0%, transparent 40%, rgba(0,0,0,0.65) 100%)"}} />
+          <div style={{position:"relative",zIndex:2}}>
+            <h1 style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:"clamp(1.5rem,2.2vw,2.1rem)",fontWeight:700,letterSpacing:"0.13em",textTransform:"uppercase",color:"rgba(212,175,55,1)",margin:"0 0 4px",textShadow:"0 0 40px rgba(212,175,55,0.45)"}}>
+              Habitat &amp; Location
+            </h1>
+            <p style={{fontFamily:"'Playfair Display',serif",fontStyle:"italic",fontSize:"clamp(0.85rem,1vw,1rem)",color:"rgba(212,175,55,0.9)",margin:0,letterSpacing:"0.02em"}}>
+              Freshwater and brackish wetlands across the Hawaiian Islands — home to the Hawaiian Coot.
+            </p>
+          </div>
         </div>
 
         {/* Island selector */}
