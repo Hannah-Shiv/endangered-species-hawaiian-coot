@@ -534,17 +534,17 @@ export function Conservation() {
     <div className="w-full min-h-screen pb-16 bg-background overflow-y-auto">
 
         {/* ── Hero Header ── */}
-        <div style={{ position: "relative", width: "100%", height: 320, overflow: "hidden", flexShrink: 0 }}>
+        <div style={{ position: "relative", width: "100%", height: 320, overflow: "hidden", flexShrink: 0, paddingTop: 80 }}>
           {/* background image */}
           <div style={{
             position: "absolute", inset: 0,
             backgroundImage: "url('/conservation-hero.png')",
             backgroundSize: "cover", backgroundPosition: "center 30%",
           }} />
-          {/* center-dark gradient */}
+          {/* center-dark gradient — only middle 1/3 darkened */}
           <div style={{
             position: "absolute", inset: 0,
-            background: "linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 10%, rgba(0,0,0,0.82) 28%, rgba(0,0,0,0.92) 50%, rgba(0,0,0,0.82) 72%, rgba(0,0,0,0) 90%, rgba(0,0,0,0) 100%)",
+            background: "linear-gradient(90deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 33%, rgba(0,0,0,0.80) 42%, rgba(0,0,0,0.90) 50%, rgba(0,0,0,0.80) 58%, rgba(0,0,0,0) 67%, rgba(0,0,0,0) 100%)",
           }} />
           {/* top & bottom fade to black */}
           <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, rgba(0,0,0,0.55) 0%, transparent 30%, transparent 70%, rgba(0,0,0,0.85) 100%)" }} />
