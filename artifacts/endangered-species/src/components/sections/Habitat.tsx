@@ -16,7 +16,7 @@ const ISLANDS = {
 };
 type IslandKey = keyof typeof ISLANDS;
 
-const RAIN_DROPS = Array.from({length:38},(_,i)=>({ delay:(i*0.13)%2.6, left:(i*17+5)%95, dur:0.65+(i%7)*0.11 }));
+const RAIN_DROPS = Array.from({length:76},(_,i)=>({ delay:(i*0.07)%2.6, left:(i*13+3)%95, dur:0.55+(i%7)*0.11 }));
 
 function StatBox({ label, value, color, icon }: { label:string; value:number; color:string; icon:string }) {
   return (
@@ -303,15 +303,20 @@ export function Habitat() {
               {rainActive&&<div style={{position:"absolute",bottom:"10px",left:"50%",transform:"translateX(-50%)",width:"58px",height:"18px",borderRadius:"50%",border:"2px solid rgba(59,130,246,0.5)",animation:"ripple 1.4s ease-out infinite",pointerEvents:"none"}}/>}
               {!rainActive&&<div style={{position:"absolute",bottom:0,left:0,right:0,height:"28px",background:"linear-gradient(to top,rgba(110,55,8,0.45),transparent)",borderTop:"1px solid rgba(110,55,8,0.3)"}}/>}
 
-              <svg width="62" height="42" viewBox="0 0 70 46" style={{flexShrink:0}}>
-                <ellipse cx="35" cy="32" rx="30" ry="12" fill={rainActive?"rgba(59,130,246,0.18)":"rgba(120,75,25,0.2)"} stroke={rainActive?"rgba(59,130,246,0.5)":"rgba(150,80,28,0.5)"} strokeWidth="1.5" style={{transition:"all 0.5s"}}/>
-                <ellipse cx="24" cy="24" rx="16" ry="11" fill={rainActive?"rgba(59,130,246,0.22)":"rgba(120,75,25,0.2)"} stroke={rainActive?"rgba(59,130,246,0.5)":"rgba(150,80,28,0.5)"} strokeWidth="1.5" style={{transition:"all 0.5s"}}/>
-                <ellipse cx="44" cy="20" rx="14" ry="12" fill={rainActive?"rgba(59,130,246,0.22)":"rgba(120,75,25,0.2)"} stroke={rainActive?"rgba(59,130,246,0.5)":"rgba(150,80,28,0.5)"} strokeWidth="1.5" style={{transition:"all 0.5s"}}/>
-                {rainActive&&<>
-                  <line x1="25" y1="43" x2="23" y2="52" stroke="rgba(59,130,246,0.7)" strokeWidth="2.5" strokeLinecap="round"/>
-                  <line x1="35" y1="43" x2="33" y2="52" stroke="rgba(59,130,246,0.7)" strokeWidth="2.5" strokeLinecap="round"/>
-                  <line x1="45" y1="43" x2="43" y2="52" stroke="rgba(59,130,246,0.7)" strokeWidth="2.5" strokeLinecap="round"/>
-                </>}
+              <svg width="100%" height="52" viewBox="0 0 300 52" style={{flexShrink:0,display:"block"}}>
+                {/* Cloud helper macro — repeated at left (x≈50), center (x≈150), right (x≈250) */}
+                {([50,150,250] as const).map((cx)=>(
+                  <g key={cx}>
+                    <ellipse cx={cx}   cy="34" rx="26" ry="10" fill={rainActive?"rgba(59,130,246,0.18)":"rgba(120,75,25,0.2)"} stroke={rainActive?"rgba(59,130,246,0.5)":"rgba(150,80,28,0.5)"} strokeWidth="1.5" style={{transition:"all 0.5s"}}/>
+                    <ellipse cx={cx-12} cy="26" rx="14" ry="10" fill={rainActive?"rgba(59,130,246,0.22)":"rgba(120,75,25,0.2)"} stroke={rainActive?"rgba(59,130,246,0.5)":"rgba(150,80,28,0.5)"} strokeWidth="1.5" style={{transition:"all 0.5s"}}/>
+                    <ellipse cx={cx+11} cy="22" rx="13" ry="11" fill={rainActive?"rgba(59,130,246,0.22)":"rgba(120,75,25,0.2)"} stroke={rainActive?"rgba(59,130,246,0.5)":"rgba(150,80,28,0.5)"} strokeWidth="1.5" style={{transition:"all 0.5s"}}/>
+                    {rainActive&&<>
+                      <line x1={cx-10} y1="44" x2={cx-12} y2="52" stroke="rgba(59,130,246,0.7)" strokeWidth="2" strokeLinecap="round"/>
+                      <line x1={cx}    y1="44" x2={cx-2}  y2="52" stroke="rgba(59,130,246,0.7)" strokeWidth="2" strokeLinecap="round"/>
+                      <line x1={cx+10} y1="44" x2={cx+8}  y2="52" stroke="rgba(59,130,246,0.7)" strokeWidth="2" strokeLinecap="round"/>
+                    </>}
+                  </g>
+                ))}
               </svg>
 
               <div style={{textAlign:"center",flexShrink:0,position:"relative",zIndex:1}}>
