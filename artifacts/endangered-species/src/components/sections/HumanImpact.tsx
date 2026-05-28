@@ -6,6 +6,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 import { motion, AnimatePresence, useSpring } from "framer-motion";
 import { useState, useEffect } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
 import wetlandHealthy from "@assets/image_1779819729646.png";
 import wetlandStressed from "@assets/image_1779819734890.png";
 
@@ -204,7 +205,7 @@ function LockBtn({
 }
 
 // ── Main Component ────────────────────────────────────────────────────────────
-export function HumanImpact() {
+function DesktopHumanImpact() {
   const [hoveredId,   setHoveredId]   = useState<string | null>(null);
   const [lockedIds,   setLockedIds]   = useState<Set<string>>(new Set());
   const [activated,   setActivated]   = useState<Set<number>>(new Set());
@@ -643,4 +644,99 @@ export function HumanImpact() {
       </div>
     </div>
   );
+}
+
+
+// ─── Mobile layout ────────────────────────────────────────────────────────────
+function MobileHumanImpact() {
+  const [hoveredHelp, setHoveredHelp] = useState<number|null>(null);
+  return (
+    <div style={{minHeight:"100vh",background:"#000",overflowY:"auto",padding:"90px 16px 48px"}}>
+      <div style={{textAlign:"center",marginBottom:24}}>
+        <h1 style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:"clamp(1.3rem,6vw,1.8rem)",fontWeight:700,
+          letterSpacing:"0.13em",textTransform:"uppercase",color:GOLD,margin:"0 0 6px"}}>
+          Human Impact
+        </h1>
+        <p style={{fontFamily:"'Playfair Display',serif",fontStyle:"italic",fontSize:14,
+          color:"rgba(212,175,55,0.75)",margin:0}}>
+          Threats and solutions for the Hawaiian Coot
+        </p>
+      </div>
+      <div style={{marginBottom:24}}>
+        <div style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:10,fontWeight:700,
+          letterSpacing:"0.16em",color:RED,marginBottom:12,textAlign:"center"}}>
+          ⚠ THREATS
+        </div>
+        <div style={{display:"flex",flexDirection:"column",gap:10}}>
+          {harmCards.map(c=>(
+            <div key={c.id} style={{borderRadius:12,padding:"14px 16px",
+              border:`1px solid ${RED}44`,background:`${RED}0d`}}>
+              <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:8}}>
+                <span style={{fontSize:24}}>{c.icon}</span>
+                <div>
+                  <div style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:13,fontWeight:700,
+                    letterSpacing:"0.06em",color:"#fff"}}>{c.title}</div>
+                  <div style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:10,letterSpacing:"0.1em",
+                    color:RED,marginTop:2}}>{c.effect}</div>
+                </div>
+              </div>
+              <p style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:12.5,
+                color:"rgba(255,255,255,0.72)",margin:0,lineHeight:1.6}}>{c.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div style={{marginBottom:24}}>
+        <div style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:10,fontWeight:700,
+          letterSpacing:"0.16em",color:GREEN,marginBottom:12,textAlign:"center"}}>
+          ✦ CONSERVATION SOLUTIONS
+        </div>
+        <div style={{display:"flex",flexDirection:"column",gap:10}}>
+          {hopeCards.map(c=>(
+            <div key={c.id} style={{borderRadius:12,padding:"14px 16px",
+              border:`1px solid ${GREEN}44`,background:`${GREEN}0d`}}>
+              <div style={{display:"flex",alignItems:"center",gap:10,marginBottom:8}}>
+                <span style={{fontSize:24}}>{c.icon}</span>
+                <div>
+                  <div style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:13,fontWeight:700,
+                    letterSpacing:"0.06em",color:"#fff"}}>{c.title}</div>
+                  <div style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:10,letterSpacing:"0.1em",
+                    color:GREEN,marginTop:2}}>{c.effect}</div>
+                </div>
+              </div>
+              <p style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:12.5,
+                color:"rgba(255,255,255,0.72)",margin:0,lineHeight:1.6}}>{c.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div>
+        <div style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:10,fontWeight:700,
+          letterSpacing:"0.16em",color:GOLD,marginBottom:12,textAlign:"center"}}>
+          ✦ WHAT YOU CAN DO
+        </div>
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
+          {helpCards.map(c=>(
+            <div key={c.n}
+              onMouseEnter={()=>setHoveredHelp(c.n)} onMouseLeave={()=>setHoveredHelp(null)}
+              style={{borderRadius:10,padding:"12px 10px",cursor:"default",
+                border:`1px solid ${hoveredHelp===c.n?c.color+"88":c.color+"33"}`,
+                background:hoveredHelp===c.n?c.color+"18":c.color+"0a",transition:"all 0.2s"}}>
+              <div style={{fontSize:22,marginBottom:6}}>{c.icon}</div>
+              <div style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:11,fontWeight:700,
+                letterSpacing:"0.05em",color:"#fff",marginBottom:4,lineHeight:1.3}}>{c.title}</div>
+              <div style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:10.5,
+                color:"rgba(255,255,255,0.65)",lineHeight:1.5}}>{c.desc}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function HumanImpact() {
+  const isMobile = useIsMobile();
+  if (isMobile) return <MobileHumanImpact />;
+  return <DesktopHumanImpact />;
 }

@@ -6,6 +6,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useIsMobile } from "@/hooks/use-mobile";
 import habitatImg from "@/assets/habitat.png";
 
 const ISLANDS = {
@@ -40,7 +41,7 @@ function StatBox({ label, value, color, icon }: { label:string; value:number; co
   );
 }
 
-export function Habitat() {
+function DesktopHabitat() {
   const [island,   setIsland]   = useState<IslandKey>("Maui");
   const [slider,   setSlider]   = useState(0);
   const [tempHover,setTempHover]= useState(false);
@@ -397,4 +398,106 @@ export function Habitat() {
       </div>
     </>
   );
+}
+
+
+// ─── Mobile layout ────────────────────────────────────────────────────────────
+function MobileHabitat() {
+  const [island, setIsland] = useState<IslandKey>("Maui");
+  const d = ISLANDS[island];
+  const GOLD = "rgba(212,175,55,1)";
+  const statItems = [
+    {label:"Wetland Quality",value:d.wetland,color:"rgba(34,197,94,1)",icon:"💧"},
+    {label:"Food Availability",value:d.food,color:"rgba(59,130,246,1)",icon:"🐟"},
+    {label:"Nesting Suitability",value:d.nesting,color:"rgba(212,175,55,1)",icon:"🪺"},
+  ];
+  return (
+    <div style={{minHeight:"100vh",background:"#000",overflowY:"auto",padding:"90px 16px 48px"}}>
+      <div style={{position:"relative",height:180,borderRadius:12,overflow:"hidden",marginBottom:20}}>
+        <img src={habitatImg as string} alt="Hawaiian wetland habitat"
+          style={{width:"100%",height:"100%",objectFit:"cover",objectPosition:"center 60%"}}/>
+        <div style={{position:"absolute",inset:0,background:"linear-gradient(180deg,rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.75) 100%)"}}/>
+        <div style={{position:"absolute",bottom:14,left:16}}>
+          <h1 style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:"clamp(1.3rem,6vw,1.8rem)",fontWeight:700,
+            letterSpacing:"0.13em",textTransform:"uppercase",color:GOLD,margin:"0 0 4px"}}>
+            Habitat & Location
+          </h1>
+          <p style={{fontFamily:"'Playfair Display',serif",fontStyle:"italic",fontSize:13,
+            color:"rgba(255,255,255,0.85)",margin:0}}>
+            Where Hawaiian Coots live across the islands
+          </p>
+        </div>
+      </div>
+      <div style={{display:"flex",gap:6,marginBottom:20,flexWrap:"wrap"}}>
+        {(Object.keys(ISLANDS) as IslandKey[]).map(k=>(
+          <button key={k} onClick={()=>setIsland(k)}
+            style={{flex:"1 1 40%",padding:"10px 8px",borderRadius:8,cursor:"pointer",
+              fontFamily:"'Josefin Sans',sans-serif",fontSize:11,fontWeight:700,letterSpacing:"0.06em",
+              background:island===k?GOLD+"33":"rgba(255,255,255,0.05)",
+              border:`1.5px solid ${island===k?GOLD:"rgba(255,255,255,0.12)"}`,
+              color:island===k?GOLD:"rgba(255,255,255,0.55)"}}>
+            {k}
+          </button>
+        ))}
+      </div>
+      <div style={{borderRadius:12,padding:"14px 16px",border:"1px solid rgba(212,175,55,0.25)",
+        background:"rgba(212,175,55,0.06)",marginBottom:16}}>
+        <div style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:10,fontWeight:700,
+          letterSpacing:"0.14em",color:GOLD,marginBottom:6}}>BIOME</div>
+        <div style={{fontFamily:"'Playfair Display',serif",fontStyle:"italic",fontSize:14,
+          color:"rgba(255,255,255,0.88)",lineHeight:1.5}}>{d.biome}</div>
+      </div>
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8,marginBottom:16}}>
+        <div style={{borderRadius:10,padding:"12px",border:"1px solid rgba(59,130,246,0.3)",
+          background:"rgba(59,130,246,0.08)"}}>
+          <div style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:9.5,fontWeight:700,
+            letterSpacing:"0.12em",color:"rgba(59,130,246,1)",marginBottom:4}}>🌡 TEMPERATURE</div>
+          <div style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:18,fontWeight:900,
+            color:"#fff"}}>{d.tempLow}–{d.tempHigh}°C</div>
+        </div>
+        <div style={{borderRadius:10,padding:"12px",border:"1px solid rgba(147,197,253,0.3)",
+          background:"rgba(147,197,253,0.06)"}}>
+          <div style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:9.5,fontWeight:700,
+            letterSpacing:"0.12em",color:"rgba(147,197,253,1)",marginBottom:4}}>🌧 RAINFALL</div>
+          <div style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:18,fontWeight:900,
+            color:"#fff"}}>{d.rainLow}–{d.rainHigh} mm</div>
+        </div>
+      </div>
+      <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:16}}>
+        {statItems.map(s=>(
+          <div key={s.label} style={{borderRadius:10,padding:"12px 14px",
+            border:`1px solid ${s.color}33`,background:`${s.color}0d`}}>
+            <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:6}}>
+              <span style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:11,fontWeight:700,
+                letterSpacing:"0.1em",color:s.color}}>{s.icon} {s.label}</span>
+              <span style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:18,fontWeight:900,
+                color:s.color}}>{s.value}%</span>
+            </div>
+            <div style={{height:5,borderRadius:3,background:"rgba(255,255,255,0.08)",overflow:"hidden"}}>
+              <div style={{height:"100%",borderRadius:3,background:s.color,width:`${s.value}%`}}/>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div style={{borderRadius:12,padding:"14px 16px",border:"1px solid rgba(255,255,255,0.1)",
+        background:"rgba(255,255,255,0.03)"}}>
+        <div style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:10,fontWeight:700,
+          letterSpacing:"0.14em",color:"rgba(255,255,255,0.5)",marginBottom:10}}>KEY NESTING SITES</div>
+        <div style={{display:"flex",flexDirection:"column",gap:6}}>
+          {d.sites.map(s=>(
+            <div key={s} style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:12.5,
+              color:"rgba(255,255,255,0.82)",display:"flex",alignItems:"center",gap:8}}>
+              <span style={{color:GOLD,flexShrink:0}}>📍</span>{s}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function Habitat() {
+  const isMobile = useIsMobile();
+  if (isMobile) return <MobileHabitat />;
+  return <DesktopHabitat />;
 }

@@ -1,6 +1,7 @@
 // ─── Meet the Species ─────────────────────────────────────────────────────────
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useIsMobile } from "@/hooks/use-mobile";
 import sciClassImg from "@assets/image_1779762468352.png";
 
 const GOLD     = "rgba(212,175,55,1)";
@@ -72,6 +73,7 @@ const QUICK_FACTS = [
 ];
 
 export function MeetSpecies() {
+  const isMobile = useIsMobile();
   const facts = [
     "The Hawaiian Coot is endemic to Hawaii — found nowhere else on Earth naturally",
     "Their distinctive bright white frontal shield can turn red in some individuals — scientists believe it signals social status",
@@ -156,7 +158,7 @@ export function MeetSpecies() {
       </div>
 
       {/* ── Body ── */}
-      <div style={{ padding: "40px 40px 60px", maxWidth: 1100, margin: "0 auto" }}>
+      <div style={{ padding: isMobile ? "20px 16px 60px" : "40px 40px 60px", maxWidth: 1100, margin: "0 auto" }}>
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}
           style={{ display: "flex", flexDirection: "column", gap: 28 }}>
 
@@ -325,7 +327,7 @@ export function MeetSpecies() {
           <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
             style={{ borderRadius: 16, border: `1px solid ${BORDER}`, background: CARD_BG, padding: "26px 30px" }}>
             <SectionLabel>SPECIES STATISTICS</SectionLabel>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 14 }}>
+            <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr 1fr" : "repeat(4, 1fr)", gap: 14 }}>
               {stats.map((s, i) => (
                 <motion.div key={i}
                   initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}

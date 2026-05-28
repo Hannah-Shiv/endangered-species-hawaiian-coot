@@ -5,6 +5,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 type NodeType = 'apex' | 'prey' | 'competitor' | 'scavenger' | 'producer' | 'decomposer';
 
@@ -80,7 +81,7 @@ const legendItems = [
   { color:"rgba(255,255,255,0.4)",label:"Decomposers" },
 ];
 
-export function FoodWeb() {
+function DesktopFoodWeb() {
   const [hoveredNode, setHoveredNode]   = useState<string | null>(null);
   const [dims, setDims]                 = useState({ w: 900, h: 600 });
   const containerRef                    = useRef<HTMLDivElement>(null);
@@ -455,4 +456,109 @@ export function FoodWeb() {
       </div>
     </div>
   );
+}
+
+
+// ─── Mobile layout ────────────────────────────────────────────────────────────
+const TYPE_COLORS_M: Record<NodeType,string> = {
+  apex:"rgba(212,175,55,1)", prey:"rgba(34,197,94,1)", competitor:"rgba(59,130,246,1)",
+  scavenger:"rgba(249,115,22,1)", producer:"rgba(20,184,166,1)", decomposer:"rgba(107,114,128,1)",
+};
+const TYPE_LABELS_M: Record<NodeType,string> = {
+  apex:"FOCAL SPECIES", prey:"PREY", competitor:"COMPETITOR",
+  scavenger:"PREDATOR/SCAVENGER", producer:"PRODUCER", decomposer:"DECOMPOSER",
+};
+
+function MobileFoodWeb() {
+  const cootEats    = edges.filter(e=>e.target==="coot").map(e=>nodes.find(n=>n.id===e.source)).filter(Boolean) as typeof nodes;
+  const cootEatenBy = edges.filter(e=>e.source==="coot").map(e=>nodes.find(n=>n.id===e.target)).filter(Boolean) as typeof nodes;
+  return (
+    <div style={{minHeight:"100vh",background:"#000",overflowY:"auto",padding:"90px 16px 48px"}}>
+      <div style={{textAlign:"center",marginBottom:20}}>
+        <h1 style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:"clamp(1.3rem,6vw,1.8rem)",fontWeight:700,
+          letterSpacing:"0.13em",textTransform:"uppercase",color:"rgba(212,175,55,1)",margin:"0 0 6px"}}>
+          Wetland Food Web
+        </h1>
+        <p style={{fontFamily:"'Playfair Display',serif",fontStyle:"italic",fontSize:14,
+          color:"rgba(212,175,55,0.75)",margin:0}}>
+          Energy flow in the Hawaiian wetland ecosystem
+        </p>
+      </div>
+      <div style={{display:"flex",justifyContent:"center",marginBottom:20}}>
+        <div style={{borderRadius:12,padding:"14px 24px",border:"2px solid rgba(212,175,55,0.55)",
+          background:"rgba(212,175,55,0.1)",textAlign:"center"}}>
+          <div style={{fontSize:36,marginBottom:4}}>🦆</div>
+          <div style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:14,fontWeight:700,
+            color:"rgba(212,175,55,1)",letterSpacing:"0.08em"}}>HAWAIIAN COOT</div>
+          <div style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:9.5,
+            color:"rgba(212,175,55,0.7)",letterSpacing:"0.1em",marginTop:2}}>FOCAL SPECIES</div>
+        </div>
+      </div>
+      <div style={{marginBottom:20}}>
+        <div style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:11,fontWeight:700,
+          letterSpacing:"0.14em",color:"rgba(34,197,94,1)",marginBottom:10,textAlign:"center"}}>
+          ↓ WHAT THE COOT EATS ↓
+        </div>
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
+          {cootEats.map(n=>(
+            <div key={n.id} style={{borderRadius:8,padding:"10px 10px",
+              border:`1px solid ${TYPE_COLORS_M[n.type]}44`,background:`${TYPE_COLORS_M[n.type]}11`,
+              display:"flex",alignItems:"center",gap:8}}>
+              <span style={{fontSize:22,flexShrink:0}}>{n.emoji}</span>
+              <div>
+                <div style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:11.5,fontWeight:700,
+                  color:"#fff",lineHeight:1.3,whiteSpace:"pre-line"}}>{n.label}</div>
+                <div style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:8.5,letterSpacing:"0.1em",
+                  color:TYPE_COLORS_M[n.type],marginTop:2}}>{TYPE_LABELS_M[n.type]}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div style={{marginBottom:20}}>
+        <div style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:11,fontWeight:700,
+          letterSpacing:"0.14em",color:"rgba(239,68,68,1)",marginBottom:10,textAlign:"center"}}>
+          ↑ WHAT THREATENS THE COOT ↑
+        </div>
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:8}}>
+          {cootEatenBy.map(n=>(
+            <div key={n.id} style={{borderRadius:8,padding:"10px 10px",
+              border:`1px solid ${TYPE_COLORS_M[n.type]}44`,background:`${TYPE_COLORS_M[n.type]}11`,
+              display:"flex",alignItems:"center",gap:8}}>
+              <span style={{fontSize:22,flexShrink:0}}>{n.emoji}</span>
+              <div>
+                <div style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:11.5,fontWeight:700,
+                  color:"#fff",lineHeight:1.3,whiteSpace:"pre-line"}}>{n.label}</div>
+                <div style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:8.5,letterSpacing:"0.1em",
+                  color:TYPE_COLORS_M[n.type],marginTop:2}}>{TYPE_LABELS_M[n.type]}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div>
+        <div style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:10,fontWeight:700,
+          letterSpacing:"0.14em",color:"rgba(255,255,255,0.4)",marginBottom:10,textAlign:"center"}}>
+          ALL WETLAND ORGANISMS
+        </div>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:6}}>
+          {nodes.filter(n=>n.id!=="coot").map(n=>(
+            <div key={n.id} style={{borderRadius:8,padding:"8px 4px",
+              border:`1px solid ${TYPE_COLORS_M[n.type]}33`,background:`${TYPE_COLORS_M[n.type]}0d`,
+              textAlign:"center"}}>
+              <div style={{fontSize:22,marginBottom:2}}>{n.emoji}</div>
+              <div style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:9,fontWeight:700,
+                color:"rgba(255,255,255,0.8)",lineHeight:1.3,whiteSpace:"pre-line"}}>{n.label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function FoodWeb() {
+  const isMobile = useIsMobile();
+  if (isMobile) return <MobileFoodWeb />;
+  return <DesktopFoodWeb />;
 }

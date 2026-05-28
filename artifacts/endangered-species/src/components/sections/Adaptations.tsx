@@ -9,6 +9,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 import cootBirdImg       from "@assets/image_1779846181334.png";
 import lobedFeetImg      from "@assets/image_1779846190761.png";
@@ -136,7 +137,7 @@ function StatBar({ label, value, color }: { label: string; value: number; color:
   );
 }
 
-export function Adaptations() {
+function DesktopAdaptations() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [sceneIdx,   setSceneIdx]   = useState(0);
 
@@ -574,4 +575,82 @@ export function Adaptations() {
       </div>
     </div>
   );
+}
+
+
+// ─── Mobile layout ────────────────────────────────────────────────────────────
+function MobileAdaptations() {
+  const [tab, setTab] = useState<"PHYSICAL"|"BEHAVIORAL">("PHYSICAL");
+  const items = tab === "PHYSICAL" ? PHYSICAL : BEHAVIORAL;
+  return (
+    <div style={{minHeight:"100vh",background:BG,overflowY:"auto",padding:"90px 16px 48px"}}>
+      <div style={{textAlign:"center",marginBottom:20}}>
+        <h1 style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:"clamp(1.3rem,6vw,1.8rem)",fontWeight:700,
+          letterSpacing:"0.13em",textTransform:"uppercase",color:TEAL,margin:"0 0 6px"}}>
+          Adaptations
+        </h1>
+        <p style={{fontFamily:"'Playfair Display',serif",fontStyle:"italic",fontSize:14,
+          color:"rgba(0,200,136,0.75)",margin:0}}>
+          How the Hawaiian Coot survives its wetland habitat
+        </p>
+      </div>
+      <div style={{display:"flex",gap:8,marginBottom:20}}>
+        {(["PHYSICAL","BEHAVIORAL"] as const).map(t=>(
+          <button key={t} onClick={()=>setTab(t)}
+            style={{flex:1,padding:"10px 0",borderRadius:8,cursor:"pointer",
+              fontFamily:"'Josefin Sans',sans-serif",fontSize:11.5,fontWeight:700,letterSpacing:"0.08em",
+              background:tab===t?TEAL+"33":"rgba(255,255,255,0.05)",
+              border:`1.5px solid ${tab===t?TEAL:"rgba(255,255,255,0.12)"}`,
+              color:tab===t?TEAL:"rgba(255,255,255,0.55)"}}>
+            {t}
+          </button>
+        ))}
+      </div>
+      <div style={{display:"flex",flexDirection:"column",gap:14}}>
+        {items.map(ad=>(
+          <div key={ad.id} style={{borderRadius:12,overflow:"hidden",
+            border:`1px solid ${ad.color}44`,background:"rgba(0,20,12,0.85)"}}>
+            <div style={{height:160,position:"relative"}}>
+              <img src={ad.image} alt={ad.name} style={{width:"100%",height:"100%",objectFit:"cover"}}/>
+              <div style={{position:"absolute",inset:0,background:"linear-gradient(180deg,transparent 40%,rgba(0,0,0,0.88) 100%)"}}/>
+              <div style={{position:"absolute",bottom:10,left:12}}>
+                <span style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:9.5,fontWeight:700,letterSpacing:"0.1em",
+                  color:ad.color,background:ad.color+"22",padding:"3px 8px",borderRadius:4}}>
+                  {ad.type}
+                </span>
+                <div style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:16,fontWeight:700,
+                  color:"#fff",marginTop:4,letterSpacing:"0.04em",textShadow:"0 1px 4px rgba(0,0,0,0.8)"}}>
+                  {ad.name}
+                </div>
+              </div>
+            </div>
+            <div style={{padding:"12px 14px 16px"}}>
+              <p style={{fontFamily:"'Playfair Display',serif",fontStyle:"italic",fontSize:15,
+                color:"rgba(255,255,255,0.92)",margin:"0 0 8px",lineHeight:1.5}}>
+                {ad.headline}
+              </p>
+              <p style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:12.5,
+                color:"rgba(255,255,255,0.72)",margin:"0 0 12px",lineHeight:1.65}}>
+                {ad.desc}
+              </p>
+              <div style={{display:"flex",flexWrap:"wrap",gap:6}}>
+                {ad.benefits.map(b=>(
+                  <span key={b} style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:10,fontWeight:700,
+                    color:ad.color,background:ad.color+"18",padding:"4px 8px",borderRadius:6,letterSpacing:"0.05em"}}>
+                    ✓ {b}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export function Adaptations() {
+  const isMobile = useIsMobile();
+  if (isMobile) return <MobileAdaptations />;
+  return <DesktopAdaptations />;
 }

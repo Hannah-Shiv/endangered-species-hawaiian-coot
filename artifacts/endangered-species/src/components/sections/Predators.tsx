@@ -6,6 +6,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 import { motion, AnimatePresence, useSpring } from "framer-motion";
 import { useState, useEffect } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
 import healthyImg from "@assets/image_1779842553544.png";
 import ratsImg    from "@assets/image_1779842417676.png";
 import dogsImg    from "@assets/image_1779842303114.png";
@@ -259,7 +260,7 @@ function ThreatGauge({ threat, color }: { threat: ThreatLevel; color: string }) 
 }
 
 // ── Main ──────────────────────────────────────────────────────────────────────
-export function Predators() {
+function DesktopPredators() {
   const [selId, setSelId] = useState("healthy");
   const [view,  setView]  = useState<"impact"|"info">("impact");
 
@@ -656,4 +657,114 @@ export function Predators() {
 
     </div>
   );
+}
+
+
+// ─── Mobile layout ────────────────────────────────────────────────────────────
+const THREAT_COLORS_M: Record<ThreatLevel,string> = {
+  HIGH:"rgba(220,50,30,1)", MEDIUM:"rgba(255,140,0,1)", LOW:"rgba(245,200,66,1)",
+};
+
+function MobilePredators() {
+  const [selId, setSelId] = useState("healthy");
+  const p = PREDATORS.find(x=>x.id===selId) ?? PREDATORS[0];
+  return (
+    <div style={{minHeight:"100vh",background:BG,overflowY:"auto",padding:"90px 0 48px"}}>
+      <div style={{textAlign:"center",padding:"0 16px",marginBottom:16}}>
+        <h1 style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:"clamp(1.3rem,6vw,1.8rem)",fontWeight:700,
+          letterSpacing:"0.13em",textTransform:"uppercase",color:GOLD,margin:"0 0 6px"}}>
+          Predators & Threats
+        </h1>
+        <p style={{fontFamily:"'Playfair Display',serif",fontStyle:"italic",fontSize:14,
+          color:"rgba(212,175,55,0.75)",margin:0}}>
+          Species that threaten the Hawaiian Coot
+        </p>
+      </div>
+      <div style={{overflowX:"auto",display:"flex",gap:8,padding:"0 16px",marginBottom:20,
+        scrollbarWidth:"none",WebkitOverflowScrolling:"touch"}}>
+        {PREDATORS.map(pr=>(
+          <button key={pr.id} onClick={()=>setSelId(pr.id)}
+            style={{flexShrink:0,padding:"8px 12px",borderRadius:20,cursor:"pointer",
+              fontFamily:"'Josefin Sans',sans-serif",fontSize:10.5,fontWeight:700,letterSpacing:"0.06em",
+              background:selId===pr.id?pr.color+"33":"rgba(255,255,255,0.05)",
+              border:`1.5px solid ${selId===pr.id?pr.color:"rgba(255,255,255,0.12)"}`,
+              color:selId===pr.id?pr.color:"rgba(255,255,255,0.55)",
+              whiteSpace:"nowrap"}}>
+            {pr.sideIcon} {pr.name}
+          </button>
+        ))}
+      </div>
+      <div style={{padding:"0 16px"}}>
+        <div style={{borderRadius:14,overflow:"hidden",border:`1.5px solid ${p.color}44`,marginBottom:16}}>
+          <div style={{height:200,position:"relative"}}>
+            <img src={p.image} alt={p.name}
+              style={{width:"100%",height:"100%",objectFit:p.imgFit??"cover",filter:p.imgFilter}}/>
+            <div style={{position:"absolute",inset:0,background:"linear-gradient(180deg,transparent 50%,rgba(0,0,0,0.88) 100%)"}}/>
+            <div style={{position:"absolute",bottom:12,left:14,right:14,display:"flex",justifyContent:"space-between",alignItems:"flex-end"}}>
+              <div>
+                <div style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:16,fontWeight:700,
+                  color:"#fff",letterSpacing:"0.04em",textShadow:"0 1px 4px rgba(0,0,0,0.8)"}}>{p.name}</div>
+                <div style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:9.5,letterSpacing:"0.12em",
+                  color:p.color,marginTop:3}}>{p.headline}</div>
+              </div>
+              <span style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:10,fontWeight:700,
+                letterSpacing:"0.1em",padding:"4px 10px",borderRadius:12,
+                background:THREAT_COLORS_M[p.threat]+"33",
+                border:`1px solid ${THREAT_COLORS_M[p.threat]}66`,
+                color:THREAT_COLORS_M[p.threat]}}>
+                {p.threat}
+              </span>
+            </div>
+          </div>
+          <div style={{padding:"14px 16px",background:"rgba(0,0,0,0.6)"}}>
+            <p style={{fontFamily:"'Playfair Display',serif",fontStyle:"italic",fontSize:14,
+              color:"rgba(255,255,255,0.88)",margin:"0 0 14px",lineHeight:1.55}}>{p.sideDesc}</p>
+            <div style={{marginBottom:14}}>
+              <div style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:9.5,fontWeight:700,
+                letterSpacing:"0.14em",color:"rgba(255,255,255,0.4)",marginBottom:8}}>ECO IMPACT</div>
+              <div style={{display:"flex",flexDirection:"column",gap:6}}>
+                {p.ecoImpact.map(e=>(
+                  <div key={e.label} style={{display:"flex",alignItems:"center",gap:8}}>
+                    <span style={{fontSize:16,width:22,textAlign:"center",flexShrink:0}}>{e.icon}</span>
+                    <div style={{flex:1}}>
+                      <div style={{display:"flex",justifyContent:"space-between",marginBottom:3}}>
+                        <span style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:10,
+                          color:"rgba(255,255,255,0.7)"}}>{e.label}</span>
+                        <span style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:10,fontWeight:700,
+                          color:e.dir==="up"?"rgba(34,197,94,1)":"rgba(239,68,68,1)"}}>
+                          {e.dir==="up"?"↑":"↓"}{e.pct}%
+                        </span>
+                      </div>
+                      <div style={{height:4,borderRadius:2,background:"rgba(255,255,255,0.08)",overflow:"hidden"}}>
+                        <div style={{height:"100%",borderRadius:2,width:`${e.pct}%`,
+                          background:e.dir==="up"?"rgba(34,197,94,1)":"rgba(239,68,68,1)"}}/>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div>
+              <div style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:9.5,fontWeight:700,
+                letterSpacing:"0.14em",color:"rgba(255,255,255,0.4)",marginBottom:8}}>WHAT YOU CAN DO</div>
+              <div style={{display:"flex",flexDirection:"column",gap:6}}>
+                {p.actions.map(a=>(
+                  <div key={a} style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:12,
+                    color:"rgba(255,255,255,0.75)",display:"flex",gap:8,lineHeight:1.5}}>
+                    <span style={{color:GOLD,flexShrink:0}}>→</span>{a}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function Predators() {
+  const isMobile = useIsMobile();
+  if (isMobile) return <MobilePredators />;
+  return <DesktopPredators />;
 }

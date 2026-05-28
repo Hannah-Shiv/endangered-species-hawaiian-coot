@@ -5,6 +5,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 import { motion } from "framer-motion";
 import { useState, useRef, useCallback, useEffect } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
 import {
   ComposedChart, Area, Line, XAxis, YAxis, CartesianGrid,
   Tooltip, ResponsiveContainer, Legend, ReferenceLine, Customized,
@@ -192,7 +193,7 @@ function TimelineScrubber({ currentYear, onChange }: { currentYear: number; onCh
 }
 
 // ── Main ───────────────────────────────────────────────────────────────────────
-export function PatternsOfChange() {
+function DesktopPatternsOfChange() {
   const [currentYear, setCurrentYear] = useState(1995);
   const yearInfo   = getYearInfo(currentYear);
   const indicators = getIndicators(currentYear);
@@ -413,4 +414,70 @@ export function PatternsOfChange() {
       </div>
     </div>
   );
+}
+
+
+// ─── Mobile layout ────────────────────────────────────────────────────────────
+const GOLD_M = "rgba(212,175,55,1)";
+
+function MobilePatternsOfChange() {
+  return (
+    <div style={{minHeight:"100vh",background:"#000",overflowY:"auto",padding:"90px 16px 48px"}}>
+      <div style={{textAlign:"center",marginBottom:20}}>
+        <h1 style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:"clamp(1.3rem,6vw,1.8rem)",fontWeight:700,
+          letterSpacing:"0.13em",textTransform:"uppercase",color:GOLD_M,margin:"0 0 6px"}}>
+          Patterns of Change
+        </h1>
+        <p style={{fontFamily:"'Playfair Display',serif",fontStyle:"italic",fontSize:14,
+          color:"rgba(212,175,55,0.75)",margin:0}}>
+          Hawaiian Coot population 1970–2024
+        </p>
+      </div>
+      <div style={{borderRadius:12,overflow:"hidden",border:"1px solid rgba(212,175,55,0.2)",
+        background:"rgba(0,0,0,0.6)",padding:"12px 8px 8px",marginBottom:20}}>
+        <ResponsiveContainer width="100%" height={220}>
+          <ComposedChart data={chartData} margin={{top:4,right:4,bottom:4,left:0}}>
+            <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.06)" />
+            <XAxis dataKey="year" tick={{fontFamily:"'Josefin Sans',sans-serif",fontSize:9,fill:"rgba(255,255,255,0.45)"}}
+              tickLine={false} axisLine={{stroke:"rgba(255,255,255,0.1)"}} interval={6} />
+            <YAxis yAxisId="pop" orientation="right" domain={[0,4000]}
+              tick={{fontFamily:"'Josefin Sans',sans-serif",fontSize:9,fill:"rgba(212,175,55,0.7)"}}
+              tickLine={false} axisLine={false} />
+            <YAxis yAxisId="rain" orientation="left" domain={[0,2200]}
+              tick={{fontFamily:"'Josefin Sans',sans-serif",fontSize:9,fill:"rgba(99,179,237,0.7)"}}
+              tickLine={false} axisLine={false} />
+            <Area yAxisId="rain" type="monotone" dataKey="rainfall" name="Rainfall (mm)"
+              stroke="rgba(99,179,237,0.6)" fill="rgba(99,179,237,0.12)" strokeWidth={1.5} />
+            <Line yAxisId="pop" type="monotone" dataKey="pop" name="Population"
+              stroke="rgba(212,175,55,1)" strokeWidth={2.5} dot={false} />
+            {inflectionPoints.map(p=>(
+              <ReferenceLine key={p.year} yAxisId="pop" x={p.year}
+                stroke={p.color} strokeDasharray="4 3" strokeWidth={1.5} />
+            ))}
+          </ComposedChart>
+        </ResponsiveContainer>
+      </div>
+      <div style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:10,fontWeight:700,
+        letterSpacing:"0.14em",color:"rgba(255,255,255,0.4)",marginBottom:12,textAlign:"center"}}>
+        KEY EVENTS
+      </div>
+      <div style={{display:"flex",flexDirection:"column",gap:10}}>
+        {inflectionPoints.map(pt=>(
+          <div key={pt.year} style={{borderRadius:10,padding:"12px 14px",
+            border:`1px solid ${pt.color}44`,background:`${pt.color}0e`}}>
+            <div style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:12.5,fontWeight:700,
+              letterSpacing:"0.06em",color:pt.color,marginBottom:5}}>{pt.title}</div>
+            <p style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:12,
+              color:"rgba(255,255,255,0.75)",margin:0,lineHeight:1.6}}>{pt.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export function PatternsOfChange() {
+  const isMobile = useIsMobile();
+  if (isMobile) return <MobilePatternsOfChange />;
+  return <DesktopPatternsOfChange />;
 }

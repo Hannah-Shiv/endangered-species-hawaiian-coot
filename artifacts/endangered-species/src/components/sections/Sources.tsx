@@ -5,8 +5,10 @@
 // ─────────────────────────────────────────────────────────────────────────────
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export function Sources() {
+  const isMobile = useIsMobile();
   const sources = [
     {
       title: "IUCN Red List of Threatened Species",
@@ -42,15 +44,15 @@ export function Sources() {
     <div
       className="w-full"
       style={{
-        height: "100vh",
-        overflow: "hidden",
+        minHeight: "100vh",
+        overflowY: isMobile ? "auto" : "hidden",
         background: "#000000",
         display: "flex",
         flexDirection: "column",
         paddingTop: 88,
         paddingBottom: 24,
-        paddingLeft: 48,
-        paddingRight: 48,
+        paddingLeft: isMobile ? 16 : 48,
+        paddingRight: isMobile ? 16 : 48,
         boxSizing: "border-box",
         gap: 20,
       }}
@@ -81,7 +83,7 @@ export function Sources() {
       </motion.div>
 
       {/* ── Body: citations left · image right ── */}
-      <div style={{ flex: 1, display: "flex", gap: 28, minHeight: 0 }}>
+      <div style={{ flex: 1, display: "flex", flexDirection: isMobile ? "column" : "row", gap: 28, minHeight: 0 }}>
 
         {/* Left — citations */}
         <motion.div
@@ -89,7 +91,7 @@ export function Sources() {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.7, delay: 0.2 }}
           style={{
-            flex: "0 0 42%",
+            flex: isMobile ? "0 0 auto" : "0 0 42%",
             display: "flex",
             flexDirection: "column",
             gap: 10,
@@ -99,7 +101,7 @@ export function Sources() {
           {/* 2-column grid */}
           <div style={{
             display: "grid",
-            gridTemplateColumns: "1fr 1fr",
+            gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
             gap: 10,
             flex: 1,
             minHeight: 0,

@@ -1,4 +1,5 @@
 import { useState, useCallback } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
 import cootPhoto from "@assets/image_1779896662127.png";
 import navBg from "@assets/image_1779671102911.png";
 import { DomeNav } from "@/components/DomeNav";
@@ -43,7 +44,7 @@ function CinematicSplash({ onStart }: { onStart: () => void }) {
           position: "absolute", inset: 0,
           width: "100%", height: "100%",
           objectFit: "cover",
-          objectPosition: "52% 50%",
+          objectPosition: window.innerWidth < 768 ? "18% 50%" : "52% 50%",
         }}
       />
 
@@ -94,6 +95,7 @@ export default function Home() {
   const [autoGroup,     setAutoGroup]     = useState<string | null>(null);
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const [domeOpen,      setDomeOpen]      = useState(false);
+  const isMobile = useIsMobile();
 
   // Called when user clicks a radial landing circle.
   // 1. Trigger exit animation on the landing (700 ms).
@@ -187,7 +189,7 @@ export default function Home() {
             className="hide-scrollbar"
             style={{
               position:"fixed",
-              top: domeOpen ? "440px" : "0px",
+              top: (domeOpen && !isMobile) ? "440px" : "0px",
               left:0, right:0, bottom:0,
               zIndex:9000,
               transition:"top 0.45s cubic-bezier(0.16,1,0.3,1)",

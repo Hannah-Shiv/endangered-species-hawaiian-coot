@@ -16,6 +16,7 @@
  */
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 // ─── Palette ───────────────────────────────────────────────────────────────────
 const C = {
@@ -201,6 +202,125 @@ function IntelThreads({ visible }: { visible: boolean }) {
   );
 }
 
+// ─── Mobile DomeNav ────────────────────────────────────────────────────────────
+function MobileDomeNav({ onSelect, activeSection, onCloseSection, autoOpenGroup, onOpenChange }: Props) {
+  const [open,  setOpen]  = useState(false);
+  const [group, setGroup] = useState<string|null>(null);
+
+  useEffect(() => { onOpenChange?.(open); }, [open]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    const onOut = (e: MouseEvent) => {
+      if (!(e.target as Element).closest("[data-mobile-nav]")) { setOpen(false); setGroup(null); }
+    };
+    document.addEventListener("click", onOut);
+    return () => document.removeEventListener("click", onOut);
+  }, []);
+
+  useEffect(() => { if (activeSection) { setOpen(false); setGroup(null); } }, [activeSection]);
+
+  const autoRef = useRef(autoOpenGroup ?? null);
+  useEffect(() => {
+    if (autoRef.current) { setOpen(true); setGroup(autoRef.current); }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  return (
+    <>
+      <AnimatePresence>
+        {activeSection && (
+          <motion.button key="close" initial={{scale:0}} animate={{scale:1}} exit={{scale:0}}
+            onClick={onCloseSection} data-testid="button-back-to-nav"
+            style={{position:"fixed",bottom:"1.2rem",right:"1.2rem",zIndex:10002,
+              width:"52px",height:"52px",borderRadius:"50%",background:"rgba(20,20,40,0.92)",
+              border:`2px solid ${C.gold}`,color:C.white,fontSize:"16px",cursor:"pointer",
+              display:"flex",alignItems:"center",justifyContent:"center",
+              boxShadow:"0 0 0 4px rgba(0,0,0,0.8), 0 0 16px rgba(212,175,55,0.4)",
+              fontFamily:"'Josefin Sans',sans-serif"}}>✕</motion.button>
+        )}
+      </AnimatePresence>
+
+      <div data-mobile-nav style={{position:"fixed",top:0,left:"50%",transform:"translateX(-50%)",zIndex:9999,width:`${BTN}px`}}>
+        <button
+          onClick={(e)=>{e.stopPropagation();setOpen(v=>!v);if(open)setGroup(null);}}
+          aria-label={open?"Close navigation":"Open navigation"} aria-expanded={open}
+          data-testid="button-dome-hamburger"
+          style={{width:`${BTN}px`,height:`${BTN}px`,borderRadius:"50%",background:"#8b0000",
+            border:`2px solid #FFE87C`,display:"flex",alignItems:"center",justifyContent:"center",
+            cursor:"pointer",position:"relative",zIndex:10001,
+            boxShadow:"0 0 0 1px rgba(255,232,124,0.4), 0 0 24px rgba(139,0,0,0.65)"}}>
+          <motion.div animate={{rotate:open?90:0}} transition={{duration:0.35,ease:[0.4,0,0.2,1]}}
+            style={{display:"flex",flexDirection:"column",gap:"5px",alignItems:"center"}}>
+            {[0,1,2].map(n=>(
+              <span key={n} style={{display:"block",width:"28px",height:"2px",borderRadius:"1px",background:"#FFE87C"}}/>
+            ))}
+          </motion.div>
+        </button>
+
+        <AnimatePresence>
+          {open && (
+            <motion.div
+              initial={{opacity:0,y:-8}} animate={{opacity:1,y:0}} exit={{opacity:0,y:-8}}
+              transition={{duration:0.22,ease:[0.16,1,0.3,1]}}
+              style={{position:"fixed",top:`${BTN}px`,left:0,right:0,zIndex:9998,
+                background:"rgba(3,6,16,0.97)",borderBottom:"1px solid rgba(212,175,55,0.18)",
+                padding:"10px 12px 14px"}}>
+              {!group ? (
+                <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:8}}>
+                  {GROUPS.map(grp=>(
+                    <button key={grp.key}
+                      onClick={(e)=>{e.stopPropagation();setGroup(grp.key);}}
+                      data-testid={`button-nav-group-${grp.key}`}
+                      style={{padding:"10px 4px 8px",borderRadius:10,
+                        background:grp.color+"22",border:`1.5px solid ${grp.color}66`,
+                        color:"#fff",cursor:"pointer",
+                        fontFamily:"'Josefin Sans',sans-serif",fontSize:9.5,fontWeight:700,
+                        letterSpacing:"0.04em",textTransform:"uppercase",
+                        display:"flex",flexDirection:"column",alignItems:"center",gap:3,
+                        WebkitTapHighlightColor:"transparent"}}>
+                      <span style={{fontSize:18}}>{grp.icon}</span>
+                      {grp.label.map((ln,j)=><span key={j}>{ln}</span>)}
+                    </button>
+                  ))}
+                </div>
+              ) : (()=>{
+                const ag=GROUPS.find(g=>g.key===group)!;
+                return (
+                  <div>
+                    <button onClick={(e)=>{e.stopPropagation();setGroup(null);}}
+                      style={{background:"none",border:"none",color:C.gold,
+                        fontFamily:"'Josefin Sans',sans-serif",fontSize:11,letterSpacing:"0.1em",
+                        textTransform:"uppercase",cursor:"pointer",marginBottom:10,
+                        display:"flex",alignItems:"center",gap:6,padding:0}}>
+                      ← Back
+                    </button>
+                    <div style={{display:"flex",flexDirection:"column",gap:8}}>
+                      {ag.items.map(sub=>(
+                        <button key={sub.key}
+                          onClick={(e)=>{e.stopPropagation();setOpen(false);setGroup(null);onSelect(sub.key);}}
+                          data-testid={`button-nav-sub-${sub.key.toLowerCase().replace(/[^a-z0-9]+/g,"-")}`}
+                          style={{width:"100%",height:52,borderRadius:26,
+                            background:"rgba(4,7,18,0.96)",border:`2px solid ${C.gold}`,
+                            color:C.gold,cursor:"pointer",
+                            fontFamily:"'Josefin Sans',sans-serif",fontSize:13,fontWeight:700,
+                            letterSpacing:"0.06em",textTransform:"uppercase",
+                            display:"flex",alignItems:"center",justifyContent:"center",gap:10,
+                            WebkitTapHighlightColor:"transparent"}}>
+                          <span style={{fontSize:18}}>{sub.icon}</span>
+                          {sub.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })()}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </>
+  );
+}
+
 // ─── DomeNav ───────────────────────────────────────────────────────────────────
 interface Props {
   onSelect: (key:string) => void;
@@ -210,7 +330,7 @@ interface Props {
   onOpenChange?: (isOpen: boolean) => void;
 }
 
-export function DomeNav({ onSelect, activeSection, onCloseSection, autoOpenGroup, onOpenChange }: Props) {
+function DesktopDomeNav({ onSelect, activeSection, onCloseSection, autoOpenGroup, onOpenChange }: Props) {
   const [open,  setOpen]  = useState(false);
   const [group, setGroup] = useState<string|null>(null);
   const [hoveredGroup, setHoveredGroup] = useState<string|null>(null);
@@ -462,4 +582,12 @@ export function DomeNav({ onSelect, activeSection, onCloseSection, autoOpenGroup
       </div>
     </>
   );
+}
+
+
+// ─── Public export — automatically picks mobile or desktop variant ─────────────
+export function DomeNav(props: Props) {
+  const isMobile = useIsMobile();
+  if (isMobile) return <MobileDomeNav {...props} />;
+  return <DesktopDomeNav {...props} />;
 }

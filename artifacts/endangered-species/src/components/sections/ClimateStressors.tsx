@@ -4,6 +4,7 @@
 // sea-level rise risk cards, and a draggable comparison slider.
 // ─────────────────────────────────────────────────────────────────────────────
 import { motion } from "framer-motion";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { Card, CardContent } from "@/components/ui/card";
 import { useRef, useState, useCallback, useEffect } from "react";
 import {
@@ -323,6 +324,7 @@ function BeforeAfterSlider() {
 }
 
 export function ClimateStressors() {
+  const isMobile = useIsMobile();
   return (
     <div className="w-full min-h-screen pb-12 px-6 md:px-12 bg-background overflow-y-auto" style={{ paddingTop: 80 }}>
       <div className="max-w-7xl mx-auto">
@@ -385,7 +387,7 @@ export function ClimateStressors() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
           className="grid gap-8 mb-12"
-          style={{ gridTemplateColumns: "3fr 1fr" }}
+          style={{ gridTemplateColumns: isMobile ? "1fr" : "3fr 1fr" }}
         >
           <div
             style={{

@@ -1,5 +1,6 @@
 // ─── Extinction Risk — Cinematic Interactive Page ─────────────────────────────
 import { useState, useRef, useCallback } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import {
   AlertTriangle, Droplets, Wind, Activity, Users,
@@ -491,9 +492,10 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 
 // ─── Overview ─────────────────────────────────────────────────────────────────
 function OverviewContent() {
+  const isMobile = useIsMobile();
   return (
-    <div style={{ padding: "32px 40px 48px", maxWidth: 1240, margin: "0 auto" }}>
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 22, marginBottom: 22 }}>
+    <div style={{ padding: isMobile ? "16px 16px 48px" : "32px 40px 48px", maxWidth: 1240, margin: "0 auto" }}>
+      <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 22, marginBottom: 22 }}>
 
         {/* Threat Matrix */}
         <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}
@@ -535,7 +537,7 @@ function OverviewContent() {
       </div>
 
       {/* Bottom 2×2 grid */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+      <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 16 }}>
 
         <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.22 }}
           style={{ borderRadius: 16, border: `1px solid ${BORDER}`, background: CARD_BG, padding: "20px 24px 18px", display: "flex", flexDirection: "column" }}>
@@ -572,8 +574,9 @@ function OverviewContent() {
 
 // ─── Threats tab ──────────────────────────────────────────────────────────────
 function ThreatsContent() {
+  const isMobile = useIsMobile();
   return (
-    <div style={{ padding: "32px 40px 48px", maxWidth: 1000, margin: "0 auto" }}>
+    <div style={{ padding: isMobile ? "16px 16px 48px" : "32px 40px 48px", maxWidth: 1000, margin: "0 auto" }}>
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
         <p style={{ fontFamily: FF_SANS, fontSize: 14, color: "rgba(255,255,255,0.5)", margin: "0 0 8px", lineHeight: 1.6 }}>
           Five primary threat categories are actively monitored by U.S. Fish & Wildlife Service researchers.
@@ -765,6 +768,7 @@ function PopTrendChart() {
 
 // ─── Population tab ───────────────────────────────────────────────────────────
 function PopulationContent() {
+  const isMobile = useIsMobile();
   const stats = [
     { year: "1970", suffix: "s Low",  value: "~1,800", note: "Near-extinction — ESA listing triggered",   color: CRIMSON },
     { year: "1990", suffix: "s Peak", value: "~8,800", note: "Best population count in modern records",   color: GREEN   },
@@ -773,7 +777,7 @@ function PopulationContent() {
   ];
 
   return (
-    <div style={{ padding: "32px 40px 48px", maxWidth: 1100, margin: "0 auto" }}>
+    <div style={{ padding: isMobile ? "16px 16px 48px" : "32px 40px 48px", maxWidth: 1100, margin: "0 auto" }}>
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ display: "flex", flexDirection: "column", gap: 24 }}>
 
         {/* Chart — full width */}
@@ -786,7 +790,7 @@ function PopulationContent() {
         </div>
 
         {/* 2 × 2 big stat cards */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 18 }}>
+        <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 18 }}>
           {stats.map((s, i) => (
             <motion.div key={s.year}
               initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
@@ -843,9 +847,10 @@ function PopulationContent() {
 
 // ─── Habitat tab ──────────────────────────────────────────────────────────────
 function HabitatContent() {
+  const isMobile = useIsMobile();
   return (
-    <div style={{ padding: "32px 40px 48px", maxWidth: 1100, margin: "0 auto" }}>
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 22 }}>
+    <div style={{ padding: isMobile ? "16px 16px 48px" : "32px 40px 48px", maxWidth: 1100, margin: "0 auto" }}>
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 22 }}>
 
         {/* Left — Wetland Loss */}
         <div style={{ borderRadius: 16, border: `1px solid ${BORDER}`, background: CARD_BG, padding: "28px 30px" }}>
@@ -903,6 +908,7 @@ function HabitatContent() {
 
 // ─── Conservation tab ─────────────────────────────────────────────────────────
 function ConservationContent() {
+  const isMobile = useIsMobile();
   const colors: Record<string, string> = { law: CRIMSON, refuge: GREEN, milestone: GOLD, action: AMBER };
   const typeLabel: Record<string, string> = { law: "Federal Law", refuge: "Refuge", milestone: "Milestone", action: "Active Program" };
 
@@ -925,11 +931,11 @@ function ConservationContent() {
   ];
 
   return (
-    <div style={{ padding: "28px 40px 48px", maxWidth: 1100, margin: "0 auto" }}>
+    <div style={{ padding: isMobile ? "16px 16px 48px" : "28px 40px 48px", maxWidth: 1100, margin: "0 auto" }}>
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ display: "flex", flexDirection: "column", gap: 24 }}>
 
         {/* Summary stat row */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 14 }}>
+        <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr 1fr" : "repeat(4, 1fr)", gap: 14 }}>
           {summary.map((s, i) => (
             <motion.div key={i}
               initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }}
@@ -945,7 +951,7 @@ function ConservationContent() {
         </div>
 
         {/* 2 × 4 milestone cards grid */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+        <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 14 }}>
           {milestones.map((m, i) => {
             const c = colors[m.type];
             return (
@@ -996,6 +1002,7 @@ function ConservationContent() {
 
 // ─── What You Can Do tab ──────────────────────────────────────────────────────
 function ActionContent() {
+  const isMobile = useIsMobile();
   const actions = [
     { icon: "🔭", title: "Report Sightings",     desc: "Submit observations to eBird or iNaturalist. Citizen science data directly informs USFWS population assessments.", link: "https://ebird.org",             cta: "Open eBird →",    rgb: "212,175,55"  },
     { icon: "🌿", title: "Restore Native Plants", desc: "Volunteer with the Hawaii Wildlife Fund or TNC to restore native wetland vegetation around refuge borders.",         link: "https://www.hwf.org",           cta: "Join HWF →",      rgb: "74,222,128"  },
@@ -1006,12 +1013,12 @@ function ActionContent() {
   ];
 
   return (
-    <div style={{ padding: "32px 40px 48px", maxWidth: 1100, margin: "0 auto" }}>
+    <div style={{ padding: isMobile ? "16px 16px 48px" : "32px 40px 48px", maxWidth: 1100, margin: "0 auto" }}>
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ display: "flex", flexDirection: "column", gap: 24 }}>
         <p style={{ fontFamily: FF_SERIF, fontStyle: "italic", fontSize: 20, color: "rgba(212,175,55,0.88)", margin: 0, textAlign: "center", lineHeight: 1.6 }}>
           "Conservation works. Protection, habitat restoration, and community effort give the Hawaiian Coot a future."
         </p>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 16 }}>
+        <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr 1fr", gap: 16 }}>
           {actions.map((a, i) => (
             <motion.div key={i}
               initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}

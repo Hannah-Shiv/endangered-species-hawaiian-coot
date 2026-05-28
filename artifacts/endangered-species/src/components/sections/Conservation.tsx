@@ -10,6 +10,7 @@
 // ─────────────────────────────────────────────────────────────────────────────
 import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { TrendingUp, Droplets, AlertTriangle, ExternalLink, MapPin, ChevronLeft, ChevronRight } from "lucide-react";
 
 // ─── Palette ─────────────────────────────────────────────────────────────────
@@ -542,6 +543,7 @@ function ActionCard({ icon, label, desc, color, url, rgb }: { icon: string; labe
 
 // ─── Main component ───────────────────────────────────────────────────────────
 export function Conservation() {
+  const isMobile = useIsMobile();
   const [selectedLoc, setSelectedLoc] = useState<string | null>("campbell");
   const [lightbox, setLightbox] = useState<{ src: string; alt: string } | null>(null);
   const [carousel, setCarousel] = useState<{ photos: CarouselPhoto[]; index: number } | null>(null);
@@ -606,7 +608,7 @@ export function Conservation() {
       <div style={{ maxWidth: 1200, margin: "0 auto", padding: "32px 24px 0", paddingLeft: "clamp(24px,3vw,48px)", paddingRight: "clamp(24px,3vw,48px)" }}>
 
         {/* ── Org Cards — 2×2 grid ── */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, marginBottom: 28 }}>
+        <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 14, marginBottom: 28 }}>
           {ORGS.map((org, i) => <OrgCard key={org.id} org={org} delay={i * 0.1} />)}
         </div>
 
@@ -615,7 +617,7 @@ export function Conservation() {
         </p>
 
         {/* ── Progress Metrics + Conservation Dashboard ── */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, marginBottom: 28 }}>
+        <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 14, marginBottom: 28 }}>
 
           {/* Progress bars */}
           <motion.div
@@ -734,7 +736,7 @@ export function Conservation() {
           </div>
 
           {/* ── Refuge selector — image thumbnail cards ── */}
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", borderBottom: `1px solid rgba(212,175,55,0.18)` }}>
+          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr 1fr", borderBottom: `1px solid rgba(212,175,55,0.18)` }}>
             {LOCATIONS.map((loc, i) => {
               const active = selectedLoc === loc.id;
               return (
@@ -793,7 +795,7 @@ export function Conservation() {
           </div>
 
           {/* ── Main content: map + detail panel ── */}
-          <div style={{ display: "grid", gridTemplateColumns: "3fr 2fr", minHeight: 430 }}>
+          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "3fr 2fr", minHeight: isMobile ? "auto" : 430 }}>
 
             {/* Left: map image */}
             <AnimatePresence mode="wait">
@@ -967,7 +969,7 @@ export function Conservation() {
         {/* ── Before/After Slider + You Can Help ── */}
         <motion.div
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6, duration: 0.7 }}
-          style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, marginBottom: 36 }}
+          style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 14, marginBottom: 36 }}
         >
           {/* Slider */}
           <div style={{ borderRadius: 14, border: `1px solid ${BORDER}`, background: CARD_BG, padding: "20px 22px" }}>
@@ -980,7 +982,7 @@ export function Conservation() {
           <div style={{ borderRadius: 14, border: `1px solid ${BORDER}`, background: CARD_BG, padding: "20px 22px" }}>
             <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 14, fontWeight: 800, color: GOLD, margin: "0 0 4px", letterSpacing: "0.08em", textShadow: "0 0 18px rgba(212,175,55,0.35)" }}>✦ YOU CAN HELP</p>
             <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 12, color: "rgba(255,255,255,0.55)", margin: "0 0 16px" }}>Every action counts toward protecting Hawaii's wetlands.</p>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10 }}>
+            <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr 1fr" : "1fr 1fr 1fr", gap: 10 }}>
               {[
                 { icon: "❤️", label: "Donate",           desc: "Fund habitat restoration and research.",       color: "rgba(220,60,40,1)",   rgb: "220,60,40",   url: "https://www.wildhawaii.org" },
                 { icon: "🤝", label: "Volunteer",        desc: "Join local cleanups and monitoring drives.",   color: "rgba(20,190,150,1)",  rgb: "20,190,150",  url: "https://dlnr.hawaii.gov/dofaw" },
