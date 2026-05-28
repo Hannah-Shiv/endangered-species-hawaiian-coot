@@ -1,6 +1,9 @@
 // ─── Extinction Risk — Cinematic Interactive Page ─────────────────────────────
 import { useState, useRef, useCallback } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import {
+  AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+} from "recharts";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import {
   AlertTriangle, Droplets, Wind, Activity, Users,
@@ -123,171 +126,59 @@ function ThreatBar({ t, delay }: { t: typeof THREATS[0]; delay: number }) {
   );
 }
 
-// ─── Population SVG chart — live interactive ──────────────────────────────────
+// ─── Population chart (Overview tab) — smooth Recharts area ──────────────────
 function PopChart() {
-  const W = 300, H = 240;
-  const pad = { l: 46, r: 16, t: 16, b: 32 };
-  const maxPop = 10000;
-  const xS = (y: number) => pad.l + (y - 1990) / (2024 - 1990) * (W - pad.l - pad.r);
-  const yS = (p: number) => pad.t + (1 - p / maxPop) * (H - pad.t - pad.b);
-
-  const svgRef = useRef<SVGSVGElement>(null);
-  const [hovered, setHovered] = useState<typeof POP_DATA[0] | null>(null);
-  const inView = useInView(svgRef, { once: true });
-
-  const pathD = POP_DATA.map((d, i) =>
-    `${i === 0 ? "M" : "L"} ${xS(d.year).toFixed(1)} ${yS(d.pop).toFixed(1)}`
-  ).join(" ");
-  const fillD = [
-    `M ${xS(POP_DATA[0].year).toFixed(1)} ${(H - pad.b).toFixed(1)}`,
-    ...POP_DATA.map(d => `L ${xS(d.year).toFixed(1)} ${yS(d.pop).toFixed(1)}`),
-    `L ${xS(POP_DATA[POP_DATA.length - 1].year).toFixed(1)} ${(H - pad.b).toFixed(1)} Z`,
-  ].join(" ");
-  const last = POP_DATA[POP_DATA.length - 1];
-
-  const POINT_LABELS: Record<number, string> = {
+  type TooltipProps = { active?: boolean; payload?: Array<{ payload: typeof POP_DATA[0] }> };
+  const LABELS: Record<number, string> = {
     1990: "Historic High", 2015: "Record Low", 2018: "Recovery Begins",
     2021: "Stabilizing", 2024: "Current",
   };
 
-  const handleMouseMove = (e: React.MouseEvent<SVGElement>) => {
-    if (!svgRef.current) return;
-    const rect = svgRef.current.getBoundingClientRect();
-    const mx = (e.clientX - rect.left) * (W / rect.width);
-    let nearest = POP_DATA[0], minDist = Infinity;
-    for (const d of POP_DATA) {
-      const dist = Math.abs(xS(d.year) - mx);
-      if (dist < minDist) { minDist = dist; nearest = d; }
-    }
-    setHovered(nearest);
+  const CustomTooltip = ({ active, payload }: TooltipProps) => {
+    if (!active || !payload?.length) return null;
+    const d = payload[0].payload;
+    const label = LABELS[d.year] ?? (d.year < 2015 ? "Declining" : "Recovery");
+    const warn = d.year === 2015 || d.year === 2010;
+    return (
+      <div style={{ background: "rgba(6,4,8,0.97)", border: `1.5px solid ${warn ? AMBER : CRIMSON}`, borderRadius: 9, padding: "8px 12px" }}>
+        <p style={{ fontFamily: FF_SANS, color: warn ? AMBER : CRIMSON, fontSize: 11, fontWeight: 800, margin: "0 0 2px" }}>{d.year}</p>
+        <p style={{ fontFamily: FF_SANS, color: "#fff", fontSize: 14, fontWeight: 700, margin: "0 0 2px" }}>{d.pop.toLocaleString()}</p>
+        <p style={{ fontFamily: FF_SANS, color: "rgba(255,255,255,0.5)", fontSize: 9, margin: 0 }}>{label}</p>
+      </div>
+    );
   };
 
   return (
     <div style={{ position: "relative", height: "100%", minHeight: 260 }}>
-      {/* LIVE badge */}
       <div style={{ position: "absolute", top: 0, right: 0, display: "flex", alignItems: "center", gap: 5, zIndex: 2 }}>
         <motion.div animate={{ opacity: [1, 0.2, 1] }} transition={{ duration: 1.4, repeat: Infinity }}
-          style={{ width: 7, height: 7, borderRadius: "50%", background: CRIMSON, boxShadow: `0 0 6px ${CRIMSON}` }}
-        />
+          style={{ width: 7, height: 7, borderRadius: "50%", background: CRIMSON, boxShadow: `0 0 6px ${CRIMSON}` }} />
         <span style={{ fontFamily: FF_SANS, fontSize: 10, fontWeight: 800, color: CRIMSON, letterSpacing: "0.12em" }}>LIVE</span>
       </div>
-
-      <svg ref={svgRef} width={W} height={H} viewBox={`0 0 ${W} ${H}`}
-        style={{ display: "block", overflow: "visible", cursor: "crosshair", width: "100%", height: "100%" }}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={() => setHovered(null)}
-      >
-        <defs>
-          <linearGradient id="popGrad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor={CRIMSON} stopOpacity="0.28" />
-            <stop offset="100%" stopColor={CRIMSON} stopOpacity="0" />
-          </linearGradient>
-        </defs>
-
-        {/* Grid lines */}
-        {[0, 2500, 5000, 7500, 10000].map(v => (
-          <g key={v}>
-            <line x1={pad.l} y1={yS(v)} x2={W - pad.r} y2={yS(v)}
-              stroke={hovered ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.12)"} strokeWidth={1} />
-            <text x={pad.l - 5} y={yS(v) + 4} textAnchor="end"
-              fill="rgba(255,255,255,0.72)" fontSize={10} fontFamily={FF_SANS} fontWeight="bold">
-              {v >= 1000 ? `${v / 1000}K` : v}
-            </text>
-          </g>
-        ))}
-
-        {/* Area fill */}
-        <motion.path d={fillD} fill="url(#popGrad)"
-          initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}}
-          transition={{ duration: 1.2, delay: 0.4 }}
-        />
-
-        {/* Hover crosshair */}
-        {hovered && (
-          <line x1={xS(hovered.year)} y1={pad.t} x2={xS(hovered.year)} y2={H - pad.b}
-            stroke={GOLD} strokeWidth={1} strokeDasharray="3 3" strokeOpacity={0.6}
-          />
-        )}
-
-        {/* Animated line draw */}
-        <motion.path d={pathD} fill="none" stroke={CRIMSON} strokeWidth={1.5}
-          strokeLinecap="round" strokeLinejoin="round"
-          initial={{ pathLength: 0, opacity: 0 }}
-          animate={inView ? { pathLength: 1, opacity: 1 } : {}}
-          transition={{ duration: 2, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-        />
-
-        {/* Data point dots */}
-        {POP_DATA.map((d) => (
-          <circle key={d.year}
-            cx={xS(d.year)} cy={yS(d.pop)}
-            r={hovered?.year === d.year ? 5.5 : 3}
-            fill={hovered?.year === d.year ? "#fff" : CRIMSON}
-            stroke={CRIMSON} strokeWidth={1.5}
-            style={{ transition: "r 0.12s ease, fill 0.12s ease" }}
-          />
-        ))}
-
-        {/* Pulsing ring on latest point when not hovering */}
-        {!hovered && (
-          <>
-            <motion.circle cx={xS(last.year)} cy={yS(last.pop)}
-              fill="none" stroke={CRIMSON} strokeWidth={1.5}
-              animate={{ r: [5, 14], opacity: [0.7, 0] }}
-              transition={{ duration: 1.8, repeat: Infinity, ease: "easeOut" }}
-            />
-            <circle cx={xS(last.year)} cy={yS(last.pop)} r={5} fill={CRIMSON} />
-            <rect x={xS(last.year) - 26} y={yS(last.pop) - 20} width={52} height={16} rx={4} fill="rgba(220,50,30,0.9)" />
-            <text x={xS(last.year)} y={yS(last.pop) - 9} textAnchor="middle"
-              fill="#fff" fontSize={9} fontFamily={FF_SANS} fontWeight="bold">~3,200</text>
-          </>
-        )}
-
-        {/* Hover tooltip */}
-        {hovered && (() => {
-          const tx = xS(hovered.year);
-          const ty = yS(hovered.pop);
-          const flipLeft = tx > W * 0.65;
-          const tooltipX = flipLeft ? tx - 72 : tx + 10;
-          const label = POINT_LABELS[hovered.year] ?? (hovered.year < 2015 ? "Declining" : "Recovery");
-          const isLow = hovered.year === 2015;
-          return (
-            <g>
-              <circle cx={tx} cy={ty} r={6} fill="#fff" stroke={CRIMSON} strokeWidth={2} />
-              <rect x={tooltipX} y={ty - 32} width={62} height={44} rx={7}
-                fill="rgba(6,4,8,0.97)" stroke={isLow ? AMBER : CRIMSON} strokeWidth={1.2}
-              />
-              <text x={tooltipX + 31} y={ty - 18} textAnchor="middle"
-                fill={isLow ? AMBER : CRIMSON} fontSize={10} fontFamily={FF_SANS} fontWeight="bold">
-                {hovered.year}
-              </text>
-              <text x={tooltipX + 31} y={ty - 5} textAnchor="middle"
-                fill="#fff" fontSize={12} fontFamily={FF_SANS} fontWeight="bold">
-                {hovered.pop.toLocaleString()}
-              </text>
-              <text x={tooltipX + 31} y={ty + 7} textAnchor="middle"
-                fill="rgba(255,255,255,0.45)" fontSize={8.5} fontFamily={FF_SANS}>
-                {label}
-              </text>
-            </g>
-          );
-        })()}
-
-        {/* Year axis labels */}
-        {[1990, 2000, 2010, 2020, 2024].map(y => (
-          <text key={y} x={xS(y)} y={H - pad.b + 16} textAnchor="middle"
-            fill={hovered?.year === y ? GOLD : "rgba(255,255,255,0.72)"}
-            fontSize={10} fontFamily={FF_SANS} fontWeight="bold"
-            style={{ transition: "fill 0.12s" }}
-          >{y}</text>
-        ))}
-
-        {/* Transparent overlay — sits on top, guarantees mouse capture over all child elements */}
-        <rect x={0} y={0} width={W} height={H} fill="transparent" style={{ cursor: "crosshair" }}
-          onMouseMove={handleMouseMove}
-          onMouseLeave={() => setHovered(null)}
-        />
-      </svg>
+      <ResponsiveContainer width="100%" height="100%">
+        <AreaChart data={POP_DATA} margin={{ top: 16, right: 16, left: 4, bottom: 20 }}>
+          <defs>
+            <linearGradient id="popGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%"  stopColor={CRIMSON} stopOpacity={0.28} />
+              <stop offset="95%" stopColor={CRIMSON} stopOpacity={0} />
+            </linearGradient>
+          </defs>
+          <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
+          <XAxis dataKey="year" stroke="rgba(255,255,255,0.3)"
+            tick={{ fontSize: 10, fill: "rgba(255,255,255,0.72)", fontFamily: FF_SANS, fontWeight: "bold" }}
+            tickLine={false} ticks={[1990, 2000, 2010, 2020, 2024]} />
+          <YAxis stroke="rgba(255,255,255,0.3)"
+            tick={{ fontSize: 10, fill: "rgba(255,255,255,0.72)", fontFamily: FF_SANS, fontWeight: "bold" }}
+            tickLine={false} tickFormatter={v => v >= 1000 ? `${(v / 1000).toFixed(0)}K` : String(v)}
+            domain={[0, 10000]} width={32} />
+          <Tooltip content={<CustomTooltip />}
+            cursor={{ stroke: GOLD, strokeWidth: 1, strokeDasharray: "4 3", opacity: 0.65 }} />
+          <Area type="monotone" dataKey="pop" stroke={CRIMSON} strokeWidth={2}
+            fill="url(#popGrad)"
+            dot={{ r: 3, fill: CRIMSON, stroke: CRIMSON, strokeWidth: 1.5 }}
+            activeDot={{ r: 6, fill: "#fff", stroke: CRIMSON, strokeWidth: 2 }} />
+        </AreaChart>
+      </ResponsiveContainer>
     </div>
   );
 }
@@ -607,161 +498,58 @@ function ThreatsContent() {
 
 // ─── Population tab — live interactive chart ──────────────────────────────────
 function PopTrendChart() {
-  const W = 480, H = 280;
-  const pad = { l: 52, r: 20, t: 24, b: 36 };
-  const maxPop = 10000;
-  const xS = (y: number) => pad.l + (y - 1990) / (2024 - 1990) * (W - pad.l - pad.r);
-  const yS = (p: number) => pad.t + (1 - p / maxPop) * (H - pad.t - pad.b);
-
-  const svgRef = useRef<SVGSVGElement>(null);
-  const [hovered, setHovered] = useState<typeof POP_DATA[0] | null>(null);
-  const inView = useInView(svgRef, { once: true });
-
-  const pathD = POP_DATA.map((d, i) =>
-    `${i === 0 ? "M" : "L"} ${xS(d.year).toFixed(1)} ${yS(d.pop).toFixed(1)}`
-  ).join(" ");
-  const fillD = [
-    `M ${xS(POP_DATA[0].year).toFixed(1)} ${(H - pad.b).toFixed(1)}`,
-    ...POP_DATA.map(d => `L ${xS(d.year).toFixed(1)} ${yS(d.pop).toFixed(1)}`),
-    `L ${xS(POP_DATA[POP_DATA.length - 1].year).toFixed(1)} ${(H - pad.b).toFixed(1)} Z`,
-  ].join(" ");
-  const last = POP_DATA[POP_DATA.length - 1];
-
-  const POINT_LABELS: Record<number, string> = {
+  type TooltipProps = { active?: boolean; payload?: Array<{ payload: typeof POP_DATA[0] }> };
+  const LABELS: Record<number, string> = {
     1990: "Historic High", 1995: "Declining", 2000: "Declining", 2005: "Downlisted",
     2010: "Critical Low", 2015: "Record Low", 2018: "Recovery Begins",
     2021: "Stabilizing", 2024: "Current",
   };
 
-  const handleMouseMove = (e: React.MouseEvent<SVGRectElement>) => {
-    if (!svgRef.current) return;
-    const rect = svgRef.current.getBoundingClientRect();
-    const mx = (e.clientX - rect.left) * (W / rect.width);
-    let nearest = POP_DATA[0], minDist = Infinity;
-    for (const d of POP_DATA) {
-      const dist = Math.abs(xS(d.year) - mx);
-      if (dist < minDist) { minDist = dist; nearest = d; }
-    }
-    setHovered(nearest);
+  const CustomTooltip = ({ active, payload }: TooltipProps) => {
+    if (!active || !payload?.length) return null;
+    const d = payload[0].payload;
+    const label = LABELS[d.year] ?? "Data Point";
+    const warn = d.year === 2015 || d.year === 2010;
+    return (
+      <div style={{ background: "rgba(6,4,8,0.97)", border: `1.5px solid ${warn ? AMBER : CRIMSON}`, borderRadius: 9, padding: "10px 16px" }}>
+        <p style={{ fontFamily: FF_SANS, color: warn ? AMBER : CRIMSON, fontSize: 12, fontWeight: 800, margin: "0 0 3px" }}>{d.year}</p>
+        <p style={{ fontFamily: FF_SERIF, color: "#fff", fontSize: 18, fontWeight: 700, margin: "0 0 3px" }}>{d.pop.toLocaleString()}</p>
+        <p style={{ fontFamily: FF_SANS, color: "rgba(255,255,255,0.5)", fontSize: 10, margin: 0 }}>{label}</p>
+      </div>
+    );
   };
 
   return (
-    <div style={{ position: "relative", flex: 1, minHeight: 0, display: "flex", flexDirection: "column" }}>
+    <div style={{ position: "relative", flex: 1, minHeight: 260, display: "flex", flexDirection: "column" }}>
       <div style={{ position: "absolute", top: 0, right: 0, display: "flex", alignItems: "center", gap: 5, zIndex: 2 }}>
         <motion.div animate={{ opacity: [1, 0.2, 1] }} transition={{ duration: 1.4, repeat: Infinity }}
           style={{ width: 8, height: 8, borderRadius: "50%", background: CRIMSON, boxShadow: `0 0 8px ${CRIMSON}` }} />
         <span style={{ fontFamily: FF_SANS, fontSize: 11, fontWeight: 800, color: CRIMSON, letterSpacing: "0.12em" }}>LIVE DATA</span>
       </div>
-
-      <svg ref={svgRef} viewBox={`0 0 ${W} ${H}`}
-        style={{ display: "block", overflow: "visible", width: "100%", height: "100%", flex: 1, minHeight: 260 }}>
-        <defs>
-          <linearGradient id="popGrad2" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor={CRIMSON} stopOpacity="0.3" />
-            <stop offset="100%" stopColor={CRIMSON} stopOpacity="0" />
-          </linearGradient>
-        </defs>
-
-        {/* Grid lines + Y-axis labels */}
-        {[0, 2500, 5000, 7500, 10000].map(v => (
-          <g key={v}>
-            <line x1={pad.l} y1={yS(v)} x2={W - pad.r} y2={yS(v)}
-              stroke={hovered ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.11)"} strokeWidth={1} />
-            <text x={pad.l - 6} y={yS(v) + 4} textAnchor="end"
-              fill="rgba(255,255,255,0.75)" fontSize={11} fontFamily={FF_SANS} fontWeight="bold">
-              {v >= 1000 ? `${v / 1000}K` : v}
-            </text>
-          </g>
-        ))}
-
-        {/* Area fill */}
-        <motion.path d={fillD} fill="url(#popGrad2)"
-          initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}}
-          transition={{ duration: 1.2, delay: 0.4 }} />
-
-        {/* Hover crosshair */}
-        {hovered && (
-          <line x1={xS(hovered.year)} y1={pad.t} x2={xS(hovered.year)} y2={H - pad.b}
-            stroke={GOLD} strokeWidth={1.5} strokeDasharray="4 3" strokeOpacity={0.75} />
-        )}
-
-        {/* Animated line draw */}
-        <motion.path d={pathD} fill="none" stroke={CRIMSON} strokeWidth={1.5}
-          strokeLinecap="round" strokeLinejoin="round"
-          initial={{ pathLength: 0, opacity: 0 }}
-          animate={inView ? { pathLength: 1, opacity: 1 } : {}}
-          transition={{ duration: 2.2, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-        />
-
-        {/* Data dots */}
-        {POP_DATA.map(d => (
-          <circle key={d.year}
-            cx={xS(d.year)} cy={yS(d.pop)}
-            r={hovered?.year === d.year ? 7 : 4}
-            fill={hovered?.year === d.year ? "#fff" : CRIMSON}
-            stroke={CRIMSON} strokeWidth={2}
-            style={{ transition: "r 0.12s ease, fill 0.12s ease" }}
-          />
-        ))}
-
-        {/* Pulsing ring on latest point */}
-        {!hovered && (
-          <>
-            <motion.circle cx={xS(last.year)} cy={yS(last.pop)}
-              fill="none" stroke={CRIMSON} strokeWidth={2}
-              animate={{ r: [6, 18], opacity: [0.8, 0] }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeOut" }} />
-            <circle cx={xS(last.year)} cy={yS(last.pop)} r={5} fill={CRIMSON} />
-            <rect x={xS(last.year) - 30} y={yS(last.pop) - 24} width={60} height={19} rx={5} fill="rgba(220,50,30,0.93)" />
-            <text x={xS(last.year)} y={yS(last.pop) - 11} textAnchor="middle"
-              fill="#fff" fontSize={11} fontFamily={FF_SANS} fontWeight="bold">~3,200</text>
-          </>
-        )}
-
-        {/* Hover tooltip */}
-        {hovered && (() => {
-          const tx = xS(hovered.year);
-          const ty = yS(hovered.pop);
-          const flipLeft = tx > W * 0.72;
-          const tX = flipLeft ? tx - 84 : tx + 12;
-          const label = POINT_LABELS[hovered.year] ?? "Data Point";
-          const isWarning = hovered.year === 2015 || hovered.year === 2010;
-          return (
-            <g>
-              <circle cx={tx} cy={ty} r={7} fill="#fff" stroke={CRIMSON} strokeWidth={2.5} />
-              <rect x={tX} y={ty - 42} width={76} height={56} rx={9}
-                fill="rgba(6,4,8,0.97)" stroke={isWarning ? AMBER : CRIMSON} strokeWidth={1.5} />
-              <text x={tX + 38} y={ty - 26} textAnchor="middle"
-                fill={isWarning ? AMBER : CRIMSON} fontSize={12} fontFamily={FF_SANS} fontWeight="bold">
-                {hovered.year}
-              </text>
-              <text x={tX + 38} y={ty - 8} textAnchor="middle"
-                fill="#fff" fontSize={16} fontFamily={FF_SERIF} fontWeight="bold">
-                {hovered.pop.toLocaleString()}
-              </text>
-              <text x={tX + 38} y={ty + 8} textAnchor="middle"
-                fill="rgba(255,255,255,0.52)" fontSize={9.5} fontFamily={FF_SANS}>
-                {label}
-              </text>
-            </g>
-          );
-        })()}
-
-        {/* X-axis year labels */}
-        {POP_DATA.map(d => (
-          <text key={d.year} x={xS(d.year)} y={H - pad.b + 20} textAnchor="middle"
-            fill={hovered?.year === d.year ? GOLD : "rgba(255,255,255,0.7)"}
-            fontSize={11} fontFamily={FF_SANS} fontWeight="bold"
-            style={{ transition: "fill 0.12s" }}>
-            {d.year}
-          </text>
-        ))}
-
-        {/* Transparent mouse-capture overlay — must be last */}
-        <rect x={0} y={0} width={W} height={H} fill="transparent" style={{ cursor: "crosshair" }}
-          onMouseMove={handleMouseMove}
-          onMouseLeave={() => setHovered(null)} />
-      </svg>
+      <ResponsiveContainer width="100%" height="100%" minHeight={260}>
+        <AreaChart data={POP_DATA} margin={{ top: 24, right: 20, left: 4, bottom: 24 }}>
+          <defs>
+            <linearGradient id="popGrad2" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%"  stopColor={CRIMSON} stopOpacity={0.3} />
+              <stop offset="95%" stopColor={CRIMSON} stopOpacity={0} />
+            </linearGradient>
+          </defs>
+          <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
+          <XAxis dataKey="year" stroke="rgba(255,255,255,0.3)"
+            tick={{ fontSize: 11, fill: "rgba(255,255,255,0.72)", fontFamily: FF_SANS, fontWeight: "bold" }}
+            tickLine={false} />
+          <YAxis stroke="rgba(255,255,255,0.3)"
+            tick={{ fontSize: 11, fill: "rgba(255,255,255,0.75)", fontFamily: FF_SANS, fontWeight: "bold" }}
+            tickLine={false} tickFormatter={v => v >= 1000 ? `${(v / 1000).toFixed(0)}K` : String(v)}
+            domain={[0, 10000]} width={36} />
+          <Tooltip content={<CustomTooltip />}
+            cursor={{ stroke: GOLD, strokeWidth: 1.5, strokeDasharray: "4 3", opacity: 0.75 }} />
+          <Area type="monotone" dataKey="pop" stroke={CRIMSON} strokeWidth={2.5}
+            fill="url(#popGrad2)"
+            dot={{ r: 4, fill: CRIMSON, stroke: CRIMSON, strokeWidth: 2 }}
+            activeDot={{ r: 7, fill: "#fff", stroke: CRIMSON, strokeWidth: 2.5 }} />
+        </AreaChart>
+      </ResponsiveContainer>
     </div>
   );
 }
