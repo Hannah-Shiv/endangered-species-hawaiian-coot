@@ -1029,6 +1029,8 @@ function ActionContent() {
                 cursor: "pointer",
                 position: "relative",
                 overflow: "hidden",
+                display: "flex",
+                flexDirection: "column",
               }}>
               {/* Corner glow */}
               <div style={{ position: "absolute", top: 0, left: 0, width: "70%", height: "70%", background: `radial-gradient(ellipse at 0% 0%, rgba(${a.rgb},0.18), transparent 70%)`, pointerEvents: "none" }} />
@@ -1050,6 +1052,8 @@ function ActionContent() {
                   borderWidth: 1, borderStyle: "solid", borderColor: `rgba(${a.rgb},0.55)`,
                   backgroundColor: `rgba(${a.rgb},0.14)`,
                   display: "inline-block",
+                  marginTop: "auto",
+                  alignSelf: "flex-start",
                 }}>
                 {a.cta}
               </span>
