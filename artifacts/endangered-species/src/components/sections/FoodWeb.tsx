@@ -111,7 +111,7 @@ export function FoodWeb() {
   const eatenBy  = hoveredNode ? edges.filter(e => e.source === hoveredNode).map(e => nodes.find(n => n.id === e.target)!) : [];
   const hovNode  = hoveredNode ? nodes.find(n => n.id === hoveredNode) : null;
 
-  // ── Arrow path calculation — curves around any blocking node ────────────────
+  // ── Arrow path calculation — iteratively curves around every blocking node ──
   const computePath = (src: FWNode, tgt: FWNode): string => {
     const sx = src.x / 100 * dims.w,  sy = src.y / 100 * dims.h;
     const tx = tgt.x / 100 * dims.w,  ty = tgt.y / 100 * dims.h;
@@ -121,47 +121,62 @@ export function FoodWeb() {
 
     const srcR = nodeStyle[src.type].px / 2 + 6;
     const tgtR = nodeStyle[tgt.type].px / 2 + 14;
-
-    // Trimmed endpoints in pixels
     const x1 = sx + ux * srcR, y1 = sy + uy * srcR;
     const x2 = tx - ux * tgtR, y2 = ty - uy * tgtR;
 
-    // Find the node most obstructing this segment
-    let worstIntrusion = 0;
-    let blocker: FWNode | null = null;
-    for (const node of nodes) {
-      if (node.id === src.id || node.id === tgt.id) continue;
-      const nx = node.x / 100 * dims.w, ny = node.y / 100 * dims.h;
-      const r = nodeStyle[node.type].px / 2 + 8; // radius + small margin
+    // Sample N points along a quadratic bezier (or straight line when cp=null)
+    const sample = (cpX: number | null, cpY: number | null, n = 24): Array<[number, number]> =>
+      Array.from({ length: n + 1 }, (_, i) => {
+        const t = i / n;
+        if (cpX === null || cpY === null) return [x1 + t * (x2 - x1), y1 + t * (y2 - y1)] as [number, number];
+        return [
+          (1 - t) ** 2 * x1 + 2 * (1 - t) * t * cpX + t ** 2 * x2,
+          (1 - t) ** 2 * y1 + 2 * (1 - t) * t * cpY + t ** 2 * y2,
+        ] as [number, number];
+      });
 
-      // Closest point on segment [x1,y1]→[x2,y2] to node centre
-      const ex = x2 - x1, ey = y2 - y1;
-      const eLenSq = ex * ex + ey * ey;
-      const t = eLenSq > 0 ? Math.max(0.05, Math.min(0.95, ((nx - x1) * ex + (ny - y1) * ey) / eLenSq)) : 0;
-      const cpx = x1 + t * ex, cpy = y1 + t * ey;
-      const dist = Math.sqrt((nx - cpx) ** 2 + (ny - cpy) ** 2);
-
-      if (dist < r && (r - dist) > worstIntrusion) {
-        worstIntrusion = r - dist;
-        blocker = node;
+    // Find the node with the worst (deepest) intrusion into a sampled path
+    const findBlocker = (pts: Array<[number, number]>) => {
+      let worst = 0, blocker: FWNode | null = null;
+      for (const node of nodes) {
+        if (node.id === src.id || node.id === tgt.id) continue;
+        const nx = node.x / 100 * dims.w, ny = node.y / 100 * dims.h;
+        const r = nodeStyle[node.type].px / 2 + 10;
+        for (const [px, py] of pts) {
+          const d = Math.sqrt((nx - px) ** 2 + (ny - py) ** 2);
+          if (d < r && (r - d) > worst) { worst = r - d; blocker = node; }
+        }
       }
-    }
+      return { blocker, worst };
+    };
 
-    if (!blocker) return `M ${x1} ${y1} L ${x2} ${y2}`;
+    // Start: check straight line
+    const { blocker: firstBlocker, worst: firstWorst } = findBlocker(sample(null, null));
+    if (!firstBlocker) return `M ${x1} ${y1} L ${x2} ${y2}`;
 
-    // Control point: offset perpendicularly away from the blocker
+    // Determine curve direction (perpendicular, away from initial blocker)
     const mx = (x1 + x2) / 2, my = (y1 + y2) / 2;
-    const bx = blocker.x / 100 * dims.w, by = blocker.y / 100 * dims.h;
-    // Which side of the line is the blocker on? (cross product sign)
+    const bx = firstBlocker.x / 100 * dims.w, by = firstBlocker.y / 100 * dims.h;
     const cross = (bx - x1) * (y2 - y1) - (by - y1) * (x2 - x1);
-    const sign = cross > 0 ? -1 : 1; // curve to the opposite side
-    // Perpendicular unit vector
+    const sign = cross > 0 ? -1 : 1;
     const perpX = -(y2 - y1), perpY = (x2 - x1);
     const perpLen = Math.sqrt(perpX * perpX + perpY * perpY) || 1;
-    const offset = nodeStyle[blocker.type].px / 2 + 32 + worstIntrusion;
-    const cpX = mx + sign * (perpX / perpLen) * offset;
-    const cpY = my + sign * (perpY / perpLen) * offset;
+    const pnX = perpX / perpLen, pnY = perpY / perpLen;
 
+    // Iteratively grow offset until bezier is clear of all nodes (max 5 passes)
+    let offset = nodeStyle[firstBlocker.type].px / 2 + 32 + firstWorst;
+    for (let iter = 0; iter < 5; iter++) {
+      const cpX = mx + sign * pnX * offset;
+      const cpY = my + sign * pnY * offset;
+      const { blocker: still, worst: stillWorst } = findBlocker(sample(cpX, cpY));
+      if (!still) return `M ${x1} ${y1} Q ${cpX} ${cpY} ${x2} ${y2}`;
+      offset += still === firstBlocker
+        ? stillWorst + 18
+        : nodeStyle[still.type].px / 2 + stillWorst + 24;
+    }
+
+    const cpX = mx + sign * pnX * offset;
+    const cpY = my + sign * pnY * offset;
     return `M ${x1} ${y1} Q ${cpX} ${cpY} ${x2} ${y2}`;
   };
 
