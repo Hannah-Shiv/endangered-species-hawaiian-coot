@@ -50,7 +50,17 @@ const edges = [
   { source: 'insects', target: 'bullfrog' },
   { source: 'fish',    target: 'bullfrog' },
   { source: 'coot',    target: 'rats' },
-  { source: 'algae',   target: 'bacteria' },
+  // All organisms eventually flow to Decomposers
+  { source: 'algae',    target: 'bacteria' },
+  { source: 'coot',     target: 'bacteria' },
+  { source: 'stilt',    target: 'bacteria' },
+  { source: 'heron',    target: 'bacteria' },
+  { source: 'mongoose', target: 'bacteria' },
+  { source: 'rats',     target: 'bacteria' },
+  { source: 'bullfrog', target: 'bacteria' },
+  { source: 'insects',  target: 'bacteria' },
+  { source: 'fish',     target: 'bacteria' },
+  { source: 'snails',   target: 'bacteria' },
 ];
 
 const nodeStyle: Record<NodeType, { border: string; bg: string; text: string; px: number; emojiPx: number; labelPx: number }> = {
@@ -145,16 +155,16 @@ export function FoodWeb() {
           background:"rgba(212,175,55,0.07)",
           boxShadow:"0 0 18px rgba(212,175,55,0.1)",
         }}>
-          <span style={{ fontFamily:"'Playfair Display',serif", color:"rgba(255,255,255,0.88)", fontSize:"15px" }}>
+          <span style={{ fontFamily:"'Playfair Display',serif", color:"rgba(255,255,255,0.88)", fontSize:"16px" }}>
             Hover any organism
           </span>
-          <span style={{ color:"rgba(212,175,55,0.5)", margin:"0 10px", fontSize:"16px" }}>|</span>
-          <span style={{ fontFamily:"'Playfair Display',serif", fontSize:"15px" }}>
+          <span style={{ color:"rgba(212,175,55,0.5)", margin:"0 10px", fontSize:"17px" }}>|</span>
+          <span style={{ fontFamily:"'Playfair Display',serif", fontSize:"16px" }}>
             <span style={{ color:"rgba(34,197,94,1)", fontWeight:600 }}>green arrows</span>
             <span style={{ color:"rgba(255,255,255,0.75)" }}> = what it eats</span>
           </span>
-          <span style={{ color:"rgba(212,175,55,0.5)", margin:"0 10px", fontSize:"16px" }}>|</span>
-          <span style={{ fontFamily:"'Playfair Display',serif", fontSize:"15px" }}>
+          <span style={{ color:"rgba(212,175,55,0.5)", margin:"0 10px", fontSize:"17px" }}>|</span>
+          <span style={{ fontFamily:"'Playfair Display',serif", fontSize:"16px" }}>
             <span style={{ color:"rgba(239,68,68,1)", fontWeight:600 }}>red arrows</span>
             <span style={{ color:"rgba(255,255,255,0.75)" }}> = what eats it</span>
           </span>
@@ -203,7 +213,7 @@ export function FoodWeb() {
                   x1={`${x1}%`} y1={`${y1}%`}
                   x2={`${x2}%`} y2={`${y2}%`}
                   stroke={stroke}
-                  strokeWidth={isActive ? 2.8 : 1.2}
+                  strokeWidth={isActive ? 1.6 : 1.2}
                   opacity={isFaded ? 0.06 : isActive ? 1 : 0.6}
                   markerEnd={marker}
                   initial={{ opacity:0 }}
