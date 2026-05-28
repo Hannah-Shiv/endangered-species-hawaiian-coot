@@ -476,7 +476,7 @@ function BeforeAfterSlider() {
         pointerEvents: "none",
       }}>
         <div style={{
-          background: "rgba(120,30,10,0.88)",
+          background: "rgba(0,0,0,0.88)",
           border: "2px solid rgba(220,80,50,0.9)",
           padding: "7px 18px", borderRadius: 8,
           fontFamily: "'Josefin Sans', sans-serif",
@@ -497,7 +497,7 @@ function BeforeAfterSlider() {
         pointerEvents: "none",
       }}>
         <div style={{
-          background: "rgba(10,80,40,0.88)",
+          background: "rgba(0,0,0,0.88)",
           border: "2px solid rgba(60,180,80,0.9)",
           padding: "7px 18px", borderRadius: 8,
           fontFamily: "'Josefin Sans', sans-serif",
