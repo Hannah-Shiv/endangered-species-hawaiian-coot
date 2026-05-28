@@ -93,6 +93,9 @@ export function MeetSpecies() {
   const [captionIdx, setCaptionIdx] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const videoWrapRef = useRef<HTMLDivElement>(null);
+  const videoRef     = useRef<HTMLVideoElement>(null);
+  const audioRef     = useRef<HTMLAudioElement>(null);
+  const fadeRef      = useRef<number | null>(null);
 
   useEffect(() => {
     const t = setTimeout(() => setTitlePhase("hidden"), 4000);
@@ -109,6 +112,39 @@ export function MeetSpecies() {
     const handler = () => setIsFullscreen(!!document.fullscreenElement);
     document.addEventListener("fullscreenchange", handler);
     return () => document.removeEventListener("fullscreenchange", handler);
+  }, []);
+
+  // Sync background music with documentary video
+  useEffect(() => {
+    const vid = videoRef.current;
+    const aud = audioRef.current;
+    if (!vid || !aud) return;
+
+    const fadeTo = (target: number, dur = 1200) => {
+      if (fadeRef.current !== null) cancelAnimationFrame(fadeRef.current);
+      const start = aud.volume;
+      const startTime = performance.now();
+      const step = (now: number) => {
+        const t = Math.min(1, (now - startTime) / dur);
+        aud.volume = start + (target - start) * t;
+        if (t < 1) fadeRef.current = requestAnimationFrame(step);
+        else { fadeRef.current = null; if (target === 0) { aud.pause(); aud.currentTime = 0; } }
+      };
+      fadeRef.current = requestAnimationFrame(step);
+    };
+
+    const onPlay  = () => { aud.volume = 0; aud.play().catch(() => {}); fadeTo(0.35); };
+    const onPause = () => fadeTo(0, 800);
+    const onEnded = () => fadeTo(0, 1500);
+
+    vid.addEventListener("play",  onPlay);
+    vid.addEventListener("pause", onPause);
+    vid.addEventListener("ended", onEnded);
+    return () => {
+      vid.removeEventListener("play",  onPlay);
+      vid.removeEventListener("pause", onPause);
+      vid.removeEventListener("ended", onEnded);
+    };
   }, []);
 
   const toggleFullscreen = () => {
@@ -181,7 +217,9 @@ export function MeetSpecies() {
               // When this div is fullscreened, fill the screen
               ...(isFullscreen ? { width: "100vw", height: "100vh", display: "flex", alignItems: "center" } : {}),
             }}>
+              <audio ref={audioRef} src="/bg-music.mp3" loop preload="auto" style={{ display: "none" }} />
               <video
+                ref={videoRef}
                 src="/coot.mp4"
                 controls
                 controlsList="nodownload nofullscreen"
