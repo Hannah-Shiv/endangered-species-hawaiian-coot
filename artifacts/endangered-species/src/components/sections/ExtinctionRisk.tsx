@@ -141,9 +141,9 @@ function PopChart() {
     const warn = d.year === 2015 || d.year === 2010;
     return (
       <div style={{ background: "rgba(6,4,8,0.97)", border: `1.5px solid ${warn ? AMBER : CRIMSON}`, borderRadius: 9, padding: "8px 18px", minWidth: 130 }}>
-        <p style={{ fontFamily: FF_SANS, color: warn ? AMBER : CRIMSON, fontSize: 11, fontWeight: 800, margin: "0 0 2px" }}>{d.year}</p>
-        <p style={{ fontFamily: FF_SANS, color: "#fff", fontSize: 14, fontWeight: 700, margin: "0 0 2px" }}>{d.pop.toLocaleString()}</p>
-        <p style={{ fontFamily: FF_SANS, color: "rgba(255,255,255,0.5)", fontSize: 12, margin: 0 }}>{label}</p>
+        <p style={{ fontFamily: FF_SANS, color: warn ? AMBER : CRIMSON, fontSize: 13, fontWeight: 800, margin: "0 0 2px" }}>{d.year}</p>
+        <p style={{ fontFamily: FF_SANS, color: "#fff", fontSize: 16, fontWeight: 700, margin: "0 0 2px" }}>{d.pop.toLocaleString()}</p>
+        <p style={{ fontFamily: FF_SANS, color: "rgba(255,255,255,0.5)", fontSize: 14, margin: 0 }}>{label}</p>
       </div>
     );
   };
@@ -165,12 +165,12 @@ function PopChart() {
           </defs>
           <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
           <XAxis dataKey="year" stroke="rgba(255,255,255,0.3)"
-            tick={{ fontSize: 10, fill: "rgba(255,255,255,0.72)", fontFamily: FF_SANS, fontWeight: "bold" }}
+            tick={{ fontSize: 12, fill: "rgba(255,255,255,0.72)", fontFamily: FF_SANS, fontWeight: "bold" }}
             tickLine={false} ticks={[1990, 2000, 2010, 2020, 2024]} />
           <YAxis stroke="rgba(255,255,255,0.3)"
-            tick={{ fontSize: 10, fill: "rgba(255,255,255,0.72)", fontFamily: FF_SANS, fontWeight: "bold" }}
+            tick={{ fontSize: 12, fill: "rgba(255,255,255,0.72)", fontFamily: FF_SANS, fontWeight: "bold" }}
             tickLine={false} tickFormatter={v => v >= 1000 ? `${(v / 1000).toFixed(0)}K` : String(v)}
-            domain={[0, 10000]} width={32} />
+            domain={[0, 10000]} width={36} />
           <Tooltip content={<CustomTooltip />}
             cursor={{ stroke: GOLD, strokeWidth: 1, strokeDasharray: "4 3", opacity: 0.65 }} />
           <Area type="monotone" dataKey="pop" stroke={CRIMSON} strokeWidth={2}
@@ -512,9 +512,9 @@ function PopTrendChart() {
     const warn = d.year === 2015 || d.year === 2010;
     return (
       <div style={{ background: "rgba(6,4,8,0.97)", border: `1.5px solid ${warn ? AMBER : CRIMSON}`, borderRadius: 9, padding: "10px 22px", minWidth: 160 }}>
-        <p style={{ fontFamily: FF_SANS, color: warn ? AMBER : CRIMSON, fontSize: 12, fontWeight: 800, margin: "0 0 3px" }}>{d.year}</p>
-        <p style={{ fontFamily: FF_SERIF, color: "#fff", fontSize: 18, fontWeight: 700, margin: "0 0 3px" }}>{d.pop.toLocaleString()}</p>
-        <p style={{ fontFamily: FF_SANS, color: "rgba(255,255,255,0.5)", fontSize: 13, margin: 0 }}>{label}</p>
+        <p style={{ fontFamily: FF_SANS, color: warn ? AMBER : CRIMSON, fontSize: 14, fontWeight: 800, margin: "0 0 3px" }}>{d.year}</p>
+        <p style={{ fontFamily: FF_SERIF, color: "#fff", fontSize: 20, fontWeight: 700, margin: "0 0 3px" }}>{d.pop.toLocaleString()}</p>
+        <p style={{ fontFamily: FF_SANS, color: "rgba(255,255,255,0.5)", fontSize: 15, margin: 0 }}>{label}</p>
       </div>
     );
   };
@@ -536,12 +536,12 @@ function PopTrendChart() {
           </defs>
           <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
           <XAxis dataKey="year" stroke="rgba(255,255,255,0.3)"
-            tick={{ fontSize: 11, fill: "rgba(255,255,255,0.72)", fontFamily: FF_SANS, fontWeight: "bold" }}
+            tick={{ fontSize: 13, fill: "rgba(255,255,255,0.72)", fontFamily: FF_SANS, fontWeight: "bold" }}
             tickLine={false} />
           <YAxis stroke="rgba(255,255,255,0.3)"
-            tick={{ fontSize: 11, fill: "rgba(255,255,255,0.75)", fontFamily: FF_SANS, fontWeight: "bold" }}
+            tick={{ fontSize: 13, fill: "rgba(255,255,255,0.75)", fontFamily: FF_SANS, fontWeight: "bold" }}
             tickLine={false} tickFormatter={v => v >= 1000 ? `${(v / 1000).toFixed(0)}K` : String(v)}
-            domain={[0, 10000]} width={36} />
+            domain={[0, 10000]} width={40} />
           <Tooltip content={<CustomTooltip />}
             cursor={{ stroke: GOLD, strokeWidth: 1.5, strokeDasharray: "4 3", opacity: 0.75 }} />
           <Area type="monotone" dataKey="pop" stroke={CRIMSON} strokeWidth={2.5}
