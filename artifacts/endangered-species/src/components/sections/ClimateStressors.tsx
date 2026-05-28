@@ -219,11 +219,38 @@ function BeforeAfterSlider() {
         </div>
 
         {/* Drag hint — bottom center of image */}
-        <div className="absolute bottom-3 left-1/2 -translate-x-1/2" style={{ pointerEvents: "none", zIndex: 10 }}>
-          <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: 11, letterSpacing: "0.12em", color: "rgba(212,175,55,0.65)", textTransform: "uppercase", whiteSpace: "nowrap" }}>
-            ← drag to compare →
-          </p>
-        </div>
+        <motion.div
+          className="absolute bottom-4 left-1/2 -translate-x-1/2"
+          style={{ pointerEvents: "none", zIndex: 10 }}
+          animate={{ opacity: [1, 0.55, 1] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <div style={{
+            background: "rgba(0,0,0,0.75)",
+            border: "1.5px solid rgba(212,175,55,0.85)",
+            borderRadius: 999,
+            padding: "7px 18px",
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+            boxShadow: "0 0 16px rgba(212,175,55,0.35)",
+            backdropFilter: "blur(6px)",
+            whiteSpace: "nowrap",
+          }}>
+            <span style={{ fontSize: 14 }}>👆</span>
+            <p style={{
+              fontFamily: "'Josefin Sans', sans-serif",
+              fontSize: 13,
+              fontWeight: 700,
+              letterSpacing: "0.12em",
+              color: "rgba(212,175,55,1)",
+              textTransform: "uppercase",
+              margin: 0,
+            }}>
+              ← drag to compare →
+            </p>
+          </div>
+        </motion.div>
       </div>
 
       {/* Cards section — sits BELOW the full image, never overlapping */}
