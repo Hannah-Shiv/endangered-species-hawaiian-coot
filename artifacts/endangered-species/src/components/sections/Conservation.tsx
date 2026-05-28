@@ -553,12 +553,12 @@ export function Conservation() {
             initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9 }}
             style={{ position: "relative", zIndex: 2, height: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center", padding: "0 24px" }}
           >
-            <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: "clamp(0.7rem,1vw,0.85rem)", fontWeight: 700, letterSpacing: "0.22em", color: GOLD, textTransform: "uppercase", margin: "0 0 10px" }}>
-              Hawaiian Coot · <em style={{ fontStyle: "italic", fontFamily: "'Playfair Display', serif", letterSpacing: "0.05em" }}>Fulica alai</em>
-            </p>
-            <h1 style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: "clamp(1.5rem,2.2vw,2.1rem)", fontWeight: 700, letterSpacing: "0.13em", color: GOLD, textTransform: "uppercase", margin: "0 0 14px", textShadow: "0 2px 24px rgba(0,0,0,0.7)" }}>
+            <h1 style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: "clamp(1.5rem,2.2vw,2.1rem)", fontWeight: 700, letterSpacing: "0.13em", color: GOLD, textTransform: "uppercase", margin: "0 0 10px", textShadow: "0 2px 24px rgba(0,0,0,0.7)" }}>
               Conservation &amp; Solutions
             </h1>
+            <p style={{ fontFamily: "'Josefin Sans', sans-serif", fontSize: "clamp(0.7rem,1vw,0.85rem)", fontWeight: 700, letterSpacing: "0.22em", color: "rgba(212,175,55,0.75)", textTransform: "uppercase", margin: "0 0 10px" }}>
+              Hawaiian Coot · <em style={{ fontStyle: "italic", fontFamily: "'Playfair Display', serif", letterSpacing: "0.05em" }}>Fulica alai</em>
+            </p>
             <p style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", fontSize: "clamp(0.85rem,1.1vw,1rem)", color: "rgba(255,255,255,0.82)", maxWidth: 560, margin: "0 0 18px", lineHeight: 1.6 }}>
               Protecting the Hawaiian Coot requires constant vigilance: managing water, eliminating predators, and protecting land.
             </p>
