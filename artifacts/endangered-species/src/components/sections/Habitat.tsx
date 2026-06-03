@@ -235,7 +235,7 @@ function DesktopHabitat() {
 
             {/* Temperature card */}
             <div onMouseEnter={()=>setTempHover(true)} onMouseLeave={()=>setTempHover(false)}
-              style={{flex:1,minHeight:0,position:"relative",overflow:"hidden",borderRadius:"14px",
+              style={{flex:1,minHeight:0,position:"relative",overflow:"auto",borderRadius:"14px",
                 border:`2px solid ${critical?"rgba(239,68,68,0.9)":warn?"rgba(239,68,68,0.55)":"rgba(193,18,31,0.5)"}`,
                 background:"rgba(6,2,0,0.98)",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"space-between",padding:"10px 10px 12px",
                 boxShadow:critical?"0 0 28px rgba(239,68,68,0.35)":warn?"0 0 14px rgba(239,68,68,0.18)":"none",
@@ -247,8 +247,8 @@ function DesktopHabitat() {
                   animation:`heat-wave 1.85s ease-in-out ${w.delay}s infinite`,pointerEvents:"none"}}/>
               ))}
 
-              {/* Taller thermometer — tubeH=230, viewBox height=300 */}
-              <svg width="110" height="268" viewBox="0 0 145 300"
+              {/* Thermometer — scaled for laptop fit */}
+              <svg width="90" height="190" viewBox="0 0 145 300"
                 style={{flexShrink:0,animation:critical?"therm-glow 1.8s ease-in-out infinite":"none"}}>
                 {/* Scale ticks */}
                 {[0.12,0.30,0.50,0.70,0.88].map((f,i)=>{
@@ -282,7 +282,7 @@ function DesktopHabitat() {
                 <div style={{fontFamily:"'Josefin Sans',sans-serif",fontSize:"15px",letterSpacing:"0.1em",textTransform:"uppercase",color:"rgba(212,175,55,0.9)",fontWeight:700,marginBottom:"5px"}}>
                   Year-round Temperature
                 </div>
-                <div style={{fontFamily:"'Playfair Display',serif",fontSize:"16px",color:"rgba(255,255,255,0.82)",lineHeight:1.5,padding:"5px 8px",borderTop:"1px solid rgba(239,68,68,0.2)",overflow:"hidden"}}>
+                <div style={{fontFamily:"'Playfair Display',serif",fontSize:"14px",color:"rgba(255,255,255,0.82)",lineHeight:1.5,padding:"5px 8px",borderTop:"1px solid rgba(239,68,68,0.2)"}}>
                   Warm tropical temperatures allow wetlands to remain active year-round.
                 </div>
               </div>
