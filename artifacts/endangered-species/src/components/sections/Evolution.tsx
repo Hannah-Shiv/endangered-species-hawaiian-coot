@@ -245,7 +245,7 @@ export function Evolution({ domeOpen = false }: Props) {
 
       {/* ── Page title ───────────────────────────────────────────────── */}
       <motion.div
-        animate={{ top: domeOpen ? 450 : 92 }}
+        animate={{ top: domeOpen ? 450 : 14 }}
         transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
         style={{
           position: "fixed",
@@ -257,7 +257,7 @@ export function Evolution({ domeOpen = false }: Props) {
       >
         <div style={{
           fontFamily: "'Josefin Sans', sans-serif",
-          fontSize: "clamp(1.6rem, 3vw, 2.6rem)",
+          fontSize: "clamp(1.1rem, 2vw, 1.9rem)",
           fontWeight: 700,
           letterSpacing: "0.1em",
           textTransform: "uppercase",
