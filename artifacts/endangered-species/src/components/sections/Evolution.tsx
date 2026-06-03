@@ -224,12 +224,12 @@ export function Evolution({ domeOpen = false }: Props) {
   // Dome closed (paddingTop 80):  clock centre ≈ 50vh + 40px  → panel top ≈ calc(50% - 200px)
   // Dome open  (paddingTop 260):  clock centre ≈ 50%ctr + 130 → panel top ≈ calc(50% - 110px)
   const PANEL_H = 480;
-  const panelTopCSS = domeOpen ? "calc(50% - 110px)" : "calc(50% - 200px)";
+  const panelTopCSS = domeOpen ? "calc(50% - 110px)" : "calc(50% - 175px)";
 
   // PREV/NEXT bar sits just below the bottom of the ring inside the clock container
   return (
     <motion.div
-      animate={{ top: domeOpen ? 440 : 0, paddingTop: domeOpen ? 260 : 80 }}
+      animate={{ top: domeOpen ? 440 : 0, paddingTop: domeOpen ? 260 : 130 }}
       transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
       style={{
         position: "fixed",
@@ -245,7 +245,7 @@ export function Evolution({ domeOpen = false }: Props) {
 
       {/* ── Page title ───────────────────────────────────────────────── */}
       <motion.div
-        animate={{ top: domeOpen ? 450 : 14 }}
+        animate={{ top: domeOpen ? 450 : 82 }}
         transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
         style={{
           position: "fixed",
