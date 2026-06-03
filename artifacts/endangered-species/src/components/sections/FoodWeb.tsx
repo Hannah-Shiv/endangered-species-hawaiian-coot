@@ -7,7 +7,7 @@ import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useIsMobile } from "@/hooks/use-mobile";
 
-type NodeType = 'apex' | 'prey' | 'competitor' | 'scavenger' | 'producer' | 'decomposer';
+type NodeType = 'secondary' | 'primary' | 'competitor' | 'scavenger' | 'producer' | 'decomposer';
 
 type FWNode = {
   id: string;
@@ -19,15 +19,15 @@ type FWNode = {
 };
 
 const nodes: FWNode[] = [
-  { id: 'coot',     label: 'Hawaiian Coot',  emoji: '🦆', type: 'apex',       x: 50, y: 36 },
+  { id: 'coot',     label: 'Hawaiian Coot',  emoji: '🦆', type: 'secondary',  x: 50, y: 36 },
   { id: 'stilt',    label: 'Hawaiian Stilt',  emoji: '🐦', type: 'competitor', x: 18, y: 38 },
   { id: 'heron',    label: 'Night Heron',     emoji: '🦅', type: 'competitor', x: 82, y: 26 },
   { id: 'mongoose', label: 'Mongoose',        emoji: '🦡', type: 'scavenger',  x: 18, y: 16 },
   { id: 'rats',     label: 'Rats',            emoji: '🐀', type: 'scavenger',  x: 50, y: 10 },
   { id: 'bullfrog', label: 'Bullfrog',        emoji: '🐸', type: 'competitor', x: 82, y: 46 },
-  { id: 'insects',  label: 'Aquatic Insects', emoji: '🦟', type: 'prey',       x: 34, y: 60 },
-  { id: 'fish',     label: 'Small Fish',      emoji: '🐟', type: 'prey',       x: 66, y: 60 },
-  { id: 'snails',   label: 'Snails/\nMollusks', emoji: '🐌', type: 'prey',       x: 50, y: 68 },
+  { id: 'insects',  label: 'Aquatic Insects', emoji: '🦟', type: 'primary',    x: 34, y: 60 },
+  { id: 'fish',     label: 'Small Fish',      emoji: '🐟', type: 'primary',    x: 66, y: 60 },
+  { id: 'snails',   label: 'Snails/\nMollusks', emoji: '🐌', type: 'primary',    x: 50, y: 68 },
   { id: 'algae',    label: 'Algae / Plants',  emoji: '🌿', type: 'producer',   x: 50, y: 91 },
   { id: 'bacteria', label: 'Decomposers',     emoji: '🦠', type: 'decomposer', x: 82, y: 91 },
 ];
@@ -65,8 +65,8 @@ const edges = [
 ];
 
 const nodeStyle: Record<NodeType, { border: string; bg: string; text: string; px: number; emojiPx: number; labelPx: number }> = {
-  apex:       { border:"rgba(193,18,31,0.9)",   bg:"rgba(193,18,31,0.2)",   text:"rgba(255,210,210,1)",    px:164, emojiPx:54, labelPx:12 },
-  prey:       { border:"rgba(212,175,55,0.55)",  bg:"rgba(5,8,20,0.93)",     text:"rgba(212,175,55,1)",     px:124, emojiPx:42, labelPx:11 },
+  secondary:  { border:"rgba(193,18,31,0.9)",   bg:"rgba(193,18,31,0.2)",   text:"rgba(255,210,210,1)",    px:164, emojiPx:54, labelPx:12 },
+  primary:    { border:"rgba(212,175,55,0.55)",  bg:"rgba(5,8,20,0.93)",     text:"rgba(212,175,55,1)",     px:124, emojiPx:42, labelPx:11 },
   competitor: { border:"rgba(193,18,31,0.5)",   bg:"rgba(5,8,20,0.93)",     text:"rgba(255,255,255,0.85)", px:112, emojiPx:38, labelPx:10 },
   scavenger:  { border:"rgba(193,18,31,0.4)",   bg:"rgba(5,8,20,0.93)",     text:"rgba(255,255,255,0.75)", px: 96, emojiPx:32, labelPx:10 },
   producer:   { border:"rgba(34,197,94,0.6)",   bg:"rgba(34,197,94,0.13)",  text:"rgba(134,239,172,1)",    px:124, emojiPx:42, labelPx:11 },
@@ -74,8 +74,8 @@ const nodeStyle: Record<NodeType, { border: string; bg: string; text: string; px
 };
 
 const legendItems = [
-  { color:"rgba(193,18,31,0.9)",  label:"Hawaiian Coot (apex)" },
-  { color:"rgba(212,175,55,0.8)", label:"Prey species" },
+  { color:"rgba(193,18,31,0.9)",  label:"Hawaiian Coot (secondary consumer)" },
+  { color:"rgba(212,175,55,0.8)", label:"Primary Consumers" },
   { color:"rgba(193,18,31,0.55)", label:"Competitors / Predators" },
   { color:"rgba(34,197,94,0.8)",  label:"Producers (plants/algae)" },
   { color:"rgba(255,255,255,0.4)",label:"Decomposers" },
