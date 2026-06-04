@@ -3,12 +3,13 @@ import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import path from "path";
 
-const isVercel = !!process.env.VERCEL;
-const isReplit = !!process.env.REPL_ID;
+const isVercel     = !!process.env.VERCEL;
+const isGitHubPages = !!process.env.GITHUB_PAGES;
+const isReplit     = !!process.env.REPL_ID;
 
-// PORT — required on Replit, not used on Vercel
+// PORT — required on Replit dev/preview, not needed for static builds
 const port = (() => {
-  if (isVercel) return 3000;
+  if (isVercel || isGitHubPages) return 3000;
   const rawPort = process.env.PORT;
   if (!rawPort) throw new Error("PORT environment variable is required but was not provided.");
   const p = Number(rawPort);
@@ -16,8 +17,9 @@ const port = (() => {
   return p;
 })();
 
-// BASE_PATH — "/" on Vercel, set by Replit workflow otherwise
+// BASE_PATH — hardcoded for GH Pages, "/" for Vercel, injected by Replit workflow otherwise
 const basePath = (() => {
+  if (isGitHubPages) return "/endangered-species-hawaiian-coot/";
   if (isVercel) return "/";
   const bp = process.env.BASE_PATH;
   if (!bp) throw new Error("BASE_PATH environment variable is required but was not provided.");
@@ -26,11 +28,11 @@ const basePath = (() => {
 
 export default defineConfig({
   base: basePath,
-  assetsInclude: ["**/*.m4a"],
+  assetsInclude: ["**/*.m4a", "**/*.mp3"],
   plugins: [
     react(),
     tailwindcss(),
-    ...(isReplit && !isVercel
+    ...(isReplit && !isVercel && !isGitHubPages
       ? [
           (await import("@replit/vite-plugin-runtime-error-modal")).default(),
           ...(process.env.NODE_ENV !== "production"
