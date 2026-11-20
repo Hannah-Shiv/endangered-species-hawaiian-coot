@@ -52,6 +52,12 @@ jobs:
           # Empty homepage — root shows a blank page
           echo "" > site/index.html
 
+      - name: Add CASH Party site at /VoteCash
+        run: |
+          test -s VoteCash/index.html
+          mkdir -p site/VoteCash
+          cp -r VoteCash/. site/VoteCash/
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
