@@ -59,9 +59,7 @@ jobs:
           cp -r VoteCash/. site/VoteCash/
           test -s site/VoteCash/index.html
           cmp VoteCash/index.html site/VoteCash/index.html
-      - name: Generate case-insensitive VoteCash aliases
-        run: |
-          node scripts/generate-votecash-aliases.mjs site 
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
